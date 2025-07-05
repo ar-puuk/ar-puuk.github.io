@@ -1,0 +1,26 @@
+---
+title: "Pukar Bhandari"
+image: "https://metroanalytics.com/wp-content/uploads/2023/06/Pukar-Bhandari-Headshot-1-768x768.png"
+about:
+  template: jolla
+  image-width: 12em
+  image-shape: round
+  links:
+    - icon: github
+      text: Github
+      href: https://github.com/ar-puuk/
+    - icon: linkedin
+      text: LinkedIn
+      href: www.linkedin.com/in/arpuuk
+    - icon: mastodon
+      text: Mastodon
+      href: https://urbanists.social/@arpuuk
+    - icon: bluesky
+      text: Bluesky
+      href: https://bsky.app/profile/arpuuk.bsky.social
+    - icon: envelope
+      text: Email
+      href: mailto:pukar.bhnadari@outlook.com
+---
+
+I am an aspiring Associate Transportation Planner with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning.

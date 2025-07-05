@@ -1,0 +1,54 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Pukar Bhandari"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: projects.qmd
+        text: Projects
+      - href: resume.qmd
+        text: Resume
+
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/ar-puuk
+      - icon: linkedin
+        href: https://linkedin.com/in/arpuuk
+
+format:
+  html:
+    toc: true
+    number-sections: true
+    number-depth: 2
+    html-math-method: katex
+    respect-user-color-scheme: true
+    theme:
+      light: "cosmo"
+      dark: "darkly"
+    css: styles.css
+  typst:
+    toc: true
+    number-sections: true
+    number-depth: 2
+  docx:
+    toc: true
+    number-sections: true
+    number-depth: 2
+execute:
+  eval: true
+format-links:
+  # - html
+  - format: typst
+    text: PDF
+    icon: file-pdf
+  - docx
+prefer-html: true
+
+
+
+
