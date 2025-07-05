@@ -8,6 +8,9 @@ author:
         url: "https://www.metroanalytics.com/"
 date: "2025-07-05"
 categories: [r, python, gis, data science, spatial analysis, transportation]
+format:
+  html:
+    code-tools: true
 
 ---
 
