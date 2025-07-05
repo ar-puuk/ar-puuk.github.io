@@ -22,26 +22,13 @@ website:
         href: https://www.linkedin.com/in/arpuuk
       - icon: github
         href: https://github.com/ar-puuk/
-
 format:
   html:
-    toc: true
-    number-sections: true
-    number-depth: 2
-    html-math-method: katex
     respect-user-color-scheme: true
     theme:
       light: "flatly"
       dark: "darkly"
     css: styles.css
-  typst:
-    toc: true
-    number-sections: true
-    number-depth: 2
-  docx:
-    toc: true
-    number-sections: true
-    number-depth: 2
 execute:
   eval: true
 format-links:
