@@ -17,14 +17,14 @@ website:
         text: Resume
 
     right:
-      - icon: mastodon
-        href: https://urbanists.social/@arpuuk
       - icon: globe2
         href: https://bhandaripukar.com.np/
       - icon: linkedin
         href: https://www.linkedin.com/in/arpuuk
       - icon: github
         href: https://github.com/ar-puuk/
+      - icon: mastodon
+        href: https://urbanists.social/@arpuuk
 format:
   html:
     respect-user-color-scheme: true
