@@ -12,6 +12,12 @@ about:
     - icon: linkedin
       text: LinkedIn
       href: https://www.linkedin.com/in/arpuuk
+    - text: "{{< ai orcid >}} ORCID 0000-0002-1043-2937"
+      href: https://orcid.org/0000-0002-1043-2937
+    - text: "{{< ai google-scholar >}} Google Scholar"
+      href: https://scholar.google.com/citations?user=vnwRlAsAAAAJ&hl=en
+    - text: "{{< fa bluesky >}} Bluesky"
+      href: https://bsky.app/profile/arpuuk.bsky.social
     - icon: mastodon
       text: Mastodon
       href: https://urbanists.social/@arpuuk
