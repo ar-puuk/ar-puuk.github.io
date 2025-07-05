@@ -1,6 +1,6 @@
 ---
 title: "Pukar Bhandari"
-image: "https://metroanalytics.com/wp-content/uploads/2023/06/Pukar-Bhandari-Headshot-1-768x768.png"
+image: "attachments/Headshot_PukarBhandari_July2025.png"
 about:
   template: jolla
   image-width: 12em

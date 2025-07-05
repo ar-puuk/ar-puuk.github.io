@@ -4,6 +4,7 @@ project:
 
 website:
   title: "Pukar Bhandari"
+  favicon: "attachments/Headshot_PukarBhandari_July2025.png"
   navbar:
     left:
       - href: index.qmd
