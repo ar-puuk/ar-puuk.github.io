@@ -26,3 +26,14 @@ format:
     number-sections: true
     number-depth: 2
 
+execute:
+  eval: true
+
+format-links:
+  # - html
+  - format: typst
+    text: PDF
+    icon: file-pdf
+  - docx
+
+prefer-html: true

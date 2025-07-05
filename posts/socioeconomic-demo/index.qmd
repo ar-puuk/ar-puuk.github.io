@@ -11,7 +11,6 @@ categories: [r, python, gis, data science, spatial analysis, transportation]
 format:
   html:
     code-tools: true
-
 ---
 
 ```{r setup, include=FALSE}

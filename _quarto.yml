@@ -29,15 +29,6 @@ format:
       light: "flatly"
       dark: "darkly"
     css: styles.css
-execute:
-  eval: true
-format-links:
-  # - html
-  - format: typst
-    text: PDF
-    icon: file-pdf
-  - docx
-prefer-html: true
 
 
 
