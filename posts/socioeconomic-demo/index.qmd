@@ -6,7 +6,7 @@ author:
     affiliation:
       - name: Metro Analytics
         url: "https://www.metroanalytics.com/"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+date: "2025-07-05"
 ---
 
 ```{r setup, include=FALSE}

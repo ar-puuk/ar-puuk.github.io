@@ -1,5 +1,11 @@
 ---
-title: "resume"
+title: "Resume"
 format: html
 ---
+
+<iframe 
+  width="1050" 
+  height="1200" 
+  src="pdfs/Resume_PukarBhandari_July2025.pdf">
+</iframe>
 
