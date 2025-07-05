@@ -31,7 +31,7 @@ format:
     html-math-method: katex
     respect-user-color-scheme: true
     theme:
-      light: "cosmo"
+      light: "flatly"
       dark: "darkly"
     css: styles.css
   typst:
