@@ -83,9 +83,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-categories"],
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -402,7 +402,7 @@ window.Quarto = {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(0)</span></div></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="projects.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="projects.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="projects.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="projects.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -416,8 +416,38 @@ window.Quarto = {
 
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="listing-actions-group">
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
 <div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-listing-date-sort="NaN" data-listing-file-modified-sort="1751687751030" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="42" data-listing-word-count-sort="8263">
+<div class="thumbnail"><a href="./posts/socioeconomic-demo/index.html" class="no-external">
 
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/socioeconomic-demo/index.html" class="no-external">LSCOG 2050 LRTP - Base Year SE Data Development</a>
+</h3>
+<div class="delink listing-description"><a href="./posts/socioeconomic-demo/index.html" class="no-external">
+This section establishes the computational environment for processing socioeconomic data inputs for the Lower Savannah Council of Governments regional travel demand model…
+</a></div>
+</div>
+<div class="metadata">
+<a href="./posts/socioeconomic-demo/index.html" class="no-external">
+<div class="listing-date">
+Invalid Date
+</div>
+<div class="listing-author">
+Pukar Bhandari
+</div>
+</a>
+</div>
+</div>
 </div>
 <div class="listing-no-matching d-none">No matching items</div>
 </div></main> <!-- /main -->
