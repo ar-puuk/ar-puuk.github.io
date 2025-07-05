@@ -2,7 +2,7 @@
 title: "Pukar Bhandari"
 image: "https://metroanalytics.com/wp-content/uploads/2023/06/Pukar-Bhandari-Headshot-1-768x768.png"
 about:
-  template: jolla
+  template: trestles
   image-width: 12em
   image-shape: round
   links:
@@ -11,13 +11,39 @@ about:
       href: https://github.com/ar-puuk/
     - icon: linkedin
       text: LinkedIn
-      href: www.linkedin.com/in/arpuuk
+      href: https://www.linkedin.com/in/arpuuk
     - icon: mastodon
       text: Mastodon
       href: https://urbanists.social/@arpuuk
     - icon: envelope
       text: Email
       href: mailto:pukar.bhnadari@outlook.com
+format:
+  html:
+    page-layout: full
 ---
 
+:::{#main-content}
+
+## Professional Overview
+
 I am an aspiring Associate Transportation Planner with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning.
+
+-----
+
+## Work Experience
+
+ - **Associate Transportation Planner** [| Metro Analytics *(June 2023 - Present)*]{.gray}
+ - **Graduate Teaching & Research Assistant** [| University of Utah *(August 2021 - May 2023)*]{.gray}
+ - **GIS Data Analyst** [| Energy & Geoscience Institute *(June 2022 - August 2022)*]{.gray}
+ - **Associate Architect** [| Prabal Thapa Architects *(June 2020 - July 2021)*]{.gray}
+ - **Architect & Planner** [| Urban Park Nepal Pvt. Ltd. *(2020)*]{.gray}
+
+-----
+
+## Education
+
+ - **Master of City & Metropolitan Planning** [| University of Utah *(August 2021 - May 2023)*]{.gray}
+ - **Bachelors Degree in Architecture** [| Tribhuvan University *(October 2013 - August 2018)*]{.gray}
+
+:::

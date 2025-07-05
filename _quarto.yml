@@ -6,11 +6,14 @@ website:
   title: "Pukar Bhandari"
   navbar:
     left:
-      - href: index.qmd
-        text: Home
+      - href: about.qmd
+        icon: person-circle
+        text: About
       - href: projects.qmd
+        icon: link-45deg
         text: Projects
       - href: resume.qmd
+        icon: file-earmark-text-fill
         text: Resume
 
     right:
