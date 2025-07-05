@@ -16,7 +16,7 @@ about:
       href: https://orcid.org/0000-0002-1043-2937
     - text: "{{< ai google-scholar >}} Google Scholar"
       href: https://scholar.google.com/citations?user=vnwRlAsAAAAJ&hl=en
-    - text: "{{< fa bluesky >}} Bluesky"
+    - text: "{{< fa brands bluesky >}} Bluesky"
       href: https://bsky.app/profile/arpuuk.bsky.social
     - icon: mastodon
       text: Mastodon
@@ -39,17 +39,17 @@ I am an aspiring Associate Transportation Planner with a Master’s in City & Me
 
 ## Work Experience
 
- - **Associate Transportation Planner** [| Metro Analytics *(June 2023 - Present)*]{.gray}
- - **Graduate Teaching & Research Assistant** [| University of Utah *(August 2021 - May 2023)*]{.gray}
- - **GIS Data Analyst** [| Energy & Geoscience Institute *(June 2022 - August 2022)*]{.gray}
- - **Associate Architect** [| Prabal Thapa Architects *(June 2020 - July 2021)*]{.gray}
- - **Architect & Planner** [| Urban Park Nepal Pvt. Ltd. *(January 2019 - June 2020)*]{.gray}
+ - **Associate Transportation Planner** [| Metro Analytics | *June 2023 - Present*]{.gray}
+ - **Graduate Teaching & Research Assistant** [| University of Utah | *August 2021 - May 2023*]{.gray}
+ - **GIS Data Analyst** [| Energy & Geoscience Institute | *June 2022 - August 2022*]{.gray}
+ - **Associate Architect** [| Prabal Thapa Architects | *June 2020 - July 2021*]{.gray}
+ - **Architect & Planner** [| Urban Park Nepal Pvt. Ltd. | *January 2019 - June 2020*]{.gray}
 
 -----
 
 ## Education
 
- - **Master of City & Metropolitan Planning** [| University of Utah *(August 2021 - May 2023)*]{.gray}
- - **Bachelors Degree in Architecture** [| Tribhuvan University *(October 2013 - August 2018)*]{.gray}
+ - **Master of City & Metropolitan Planning** [| University of Utah | *August 2021 - May 2023*]{.gray}
+ - **Bachelors Degree in Architecture** [| Tribhuvan University | *October 2013 - August 2018*]{.gray}
 
 :::
