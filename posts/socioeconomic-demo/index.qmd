@@ -8,9 +8,6 @@ author:
         url: "https://www.metroanalytics.com/"
 date: "2025-07-05"
 categories: [r, python, gis, data science, spatial analysis, transportation]
-format:
-  html:
-    code-tools: true
 ---
 
 ```{r setup, include=FALSE}
@@ -34,7 +31,7 @@ This section establishes the computational environment for processing socioecono
 
 The package installation process incorporates essential libraries for comprehensive geospatial data analysis.
 
-The R environment utilizes the `pacman` package manager to streamline the installation of multiple packages simultaneously, including `tidyverse` for data manipulation, `sf` for spatial data handling, `tidycensus` for Census Bureau data access, and `lehdr` for Longitudinal Employer-Household Dynamics data retrieval. 
+The R environment utilizes the `pacman` package manager to streamline the installation of multiple packages simultaneously, including `tidyverse` for data manipulation, `sf` for spatial data handling, `tidycensus` for Census Bureau data access, and `lehdr` for Longitudinal Employer-Household Dynamics data retrieval.
 
 The Python environment focuses on core data science libraries including `pandas` for data manipulation, `geopandas` for spatial analysis, and `pygris` for Census data queries. These packages form the analytical backbone for processing demographic, employment, and geographic data required for travel demand modeling.
 
@@ -95,7 +92,7 @@ from pygris.data import get_census, get_lodes
 
 ## Set global options and parameters
 
-Configuration settings optimize performance and establish spatial consistency. The tigris cache prevents redundant TIGER/Line shapefile downloads. The South Carolina State Plane coordinate system (`EPSG:3361`) serves as the standard projection for accurate GIS operations
+Configuration settings optimize performance and establish spatial consistency. The `tigris` cache prevents redundant TIGER/Line shapefile downloads. The South Carolina State Plane coordinate system (`EPSG:3361`) serves as the standard projection for accurate GIS operations
 
 ::: panel-tabset
 
@@ -104,9 +101,8 @@ Configuration settings optimize performance and establish spatial consistency. T
 ```{r}
 # Set options
 options(tigris_use_cache = TRUE) # cache tiger/line shapefile for future use
-tmap::tmap_mode("view") # interactive thematic map viewing
 
-# set project crs
+# set project CRS
 project_crs <- "EPSG:3361"
 ```
 
@@ -749,6 +745,8 @@ str(lscog_pub_sch_enroll)
 #### Python
 
 ```{python}
+#| code-fold: true
+
 # Create function to read ArcGIS FeatureLayer or Table
 def arc_read(url, where="1=1", outFields="*", outSR=4326, **kwargs):
     """
@@ -957,21 +955,85 @@ str(lscog_acs_cb)
 ```
 
 #### Python
+
+```{python}
+#| code-fold: true
+#| eval: false
+
+# Create function for population-weighted interpolation
+def interpolate_pw(from_gdf, to_gdf, to_id, extensive=True, weight_column=None, crs=None):
+    """
+    Population-weighted interpolation between geometries.
+
+    Interpolates numeric variables from source geometries to target geometries
+    using area-based weighting with optional population weights.
+
+    Parameters:
+    -----------
+    from_gdf : GeoDataFrame
+        Source geometries with data to interpolate
+    to_gdf : GeoDataFrame
+        Target geometries to interpolate to
+    to_id : str
+        Column name for unique identifier in target geometries
+    extensive : bool, default True
+        If True, variables are extensive (sum). If False, intensive (average)
+    weight_column : str, optional
+        Column name in to_gdf for population weights (e.g., 'HH', 'POP')
+    crs : str or CRS object, optional
+        Coordinate reference system to project both datasets to
+
+    Returns:
+    --------
+    GeoDataFrame
+        Target geometries with interpolated values
+    """
+    # Set CRS if provided
+    if crs:
+        from_gdf = from_gdf.to_crs(crs)
+        to_gdf = to_gdf.to_crs(crs)
+
+    # Perform overlay to get intersections
+    overlay = gpd.overlay(from_gdf, to_gdf, how='intersection')
+
+    # Calculate area weights
+    overlay['area_weight'] = overlay.geometry.area / overlay.groupby(overlay.index)['geometry'].transform(lambda x: x.area.sum())
+
+    # Apply population weights if specified
+    if weight_column and weight_column in to_gdf.columns:
+        overlay = overlay.merge(to_gdf[[to_id, weight_column]], on=to_id, how='left', suffixes=('', '_weight'))
+        overlay['area_weight'] *= overlay[weight_column + '_weight']
+
+    # Interpolate numeric columns
+    numeric_cols = from_gdf.select_dtypes(include=['number']).columns
+    result = to_gdf[[to_id, 'geometry']].copy()
+
+    for col in numeric_cols:
+        if col in overlay.columns:
+            weighted_vals = overlay.groupby(to_id).apply(
+                lambda x: (x[col] * x['area_weight']).sum() / x['area_weight'].sum() if extensive else (x[col] * x['area_weight']).sum()
+            )
+            result[col] = result[to_id].map(weighted_vals).fillna(0)
+
+    return result
+```
+
 ```{python}
 #| eval: false
 
-# Spatially interpolate ACS data to decennial census blocks
-lscog_acs_cb = gpd.sjoin(lscog_dec, lscog_acs, how="left", predicate="intersects")
-
-# Apply population-weighted interpolation
-lscog_acs_cb = (
-    lscog_acs_cb.assign(weight=lambda df: df["HH"] / df["HH"].sum())
-                .apply(lambda row: row.drop(["geometry", "HH"]) * row["weight"], axis=1)
+# Interpolate ACS data to Decennial Census blocks
+lscog_acs_cb = interpolate_pw(
+    from_gdf=lscog_acs,
+    to_gdf=lscog_dec,
+    to_id='GEOID',
+    extensive=True,
+    weight_column='HH',
+    crs=project_crs
 )
 
-# Convert back to a GeoDataFrame with original block geometries
-lscog_acs_cb = gpd.GeoDataFrame(lscog_dec[["GEOID", "geometry"]].join(lscog_acs_cb))
+lscog_acs_cb.info()
 ```
+
 :::
 
 The comparative visualization reveals the increased spatial resolution achieved through interpolation. Block-level data provides more granular detail for transportation modeling applications, enabling better representation of local variations in income distribution across the study area.
@@ -1865,7 +1927,7 @@ lscog_se_base = lscog_taz_pop.merge(
 ] + list(lscog_taz_pop.columns.difference(['ID', 'Area', 'TAZ_ID',
                                             'COUNTY', 'AREA_TYPE',
                                             'COUNTYID']))]
-                                            
+
 lscog_se_base.info()
 ```
 
@@ -2054,4 +2116,3 @@ lscog_se_base |>
 ```
 
 :::
-
