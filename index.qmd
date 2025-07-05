@@ -11,7 +11,7 @@ about:
       href: https://github.com/ar-puuk/
     - icon: linkedin
       text: LinkedIn
-      href: www.linkedin.com/in/arpuuk
+      href: https://www.linkedin.com/in/arpuuk
     - icon: mastodon
       text: Mastodon
       href: https://urbanists.social/@arpuuk

@@ -2053,7 +2053,3 @@ lscog_se_base |>
 
 :::
 
-```{html}
-<!--
-quarto::quarto_render("SE_2020_Download_SC.Qmd", output_format = "all") -->
-```
