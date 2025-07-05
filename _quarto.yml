@@ -14,11 +14,14 @@ website:
         text: Resume
 
     right:
-      - about.qmd
-      - icon: github
-        href: https://github.com/ar-puuk
+      - icon: mastodon
+        href: https://urbanists.social/@arpuuk
+      - icon: bluesky
+        href: https://bsky.app/profile/arpuuk.bsky.social
       - icon: linkedin
-        href: https://linkedin.com/in/arpuuk
+        href: www.linkedin.com/in/arpuuk
+      - icon: github
+        href: https://github.com/ar-puuk/
 
 format:
   html:
