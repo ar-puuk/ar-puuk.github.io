@@ -6,7 +6,7 @@ website:
   title: "Pukar Bhandari"
   navbar:
     left:
-      - href: about.qmd
+      - href: index.qmd
         icon: person-circle
         text: About
       - href: projects.qmd
