@@ -1,0 +1,5 @@
+{
+    "positron.reticulate.enabled": true,
+    "editor.defaultFormatter": "Posit.air-vscode",
+    "notebook.defaultFormatter": "Posit.air-vscode"
+}

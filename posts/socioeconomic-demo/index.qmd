@@ -7,20 +7,29 @@ author:
       - name: Metro Analytics
         url: "https://www.metroanalytics.com/"
 date: "2025-07-05"
+engine: knitr
+execute: 
+  message: false
+  warning: false
 categories: [r, python, gis, data science, spatial analysis, transportation]
 ---
 
-```{r setup, include=FALSE}
+```{r reticulate}
+#| include: false
+
 # Setup reticulate for Python code execution
 # install.packages("reticulate", dependencies = TRUE)
 library(reticulate)
 
 reticulate::use_condaenv("metro", required = TRUE)
 
-# reticulate::conda_install("metro", c(
-#   "numpy", "pandas", "geopandas", "matplotlib", "seaborn",
-#   "folium", "pygris", "requests"
-# ))
+# # Install python packages
+# reticulate::py_install(
+#   packages = c("numpy", "pandas", "geopandas", "shapely", "folium", "requests", "pygris"),
+#   envname = "metro",
+#   method = "conda",
+#   pip = TRUE
+# )
 ```
 
 # Set up the environment
@@ -66,21 +75,21 @@ pacman::p_load(
 # Install required packages if not available
 # pip install numpy pandas geopandas matplotlib seaborn folium pathlib zipfile requests urllib warnings pygris
 
-# Data and Visualization
-import numpy as np
-import pandas as pd
-import geopandas as gpd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import folium
-
-# Query online data
+# General
+import os
 from pathlib import Path
 import zipfile
 import requests
 import urllib.parse
 import warnings
 warnings.filterwarnings('ignore')
+
+# Data and Visualization
+import numpy as np
+import pandas as pd
+import geopandas as gpd
+import folium
+from shapely.geometry import Point
 
 # Census data query
 from pygris import blocks, block_groups
@@ -138,7 +147,6 @@ tidycensus::census_api_key("your_api_key_here", install = TRUE)
 #| eval: false
 
 # Set your API key into environment
-import os
 os.environ['CENSUS_API_KEY'] = 'your_api_key_here'
 ```
 
@@ -215,7 +223,7 @@ FIPS code conversion translates state abbreviations and county names into standa
 #### R
 
 ```{r}
-# converting state abbreviation code to FIPS code
+# Converting state abbreviation code to FIPS code
 state_fips <- tidycensus:::validate_state(state = state_abb)
 county_fips <- vapply(
   county_names,
@@ -223,7 +231,7 @@ county_fips <- vapply(
   character(1)
 )
 
-# converting County Names to FIPS code
+# Converting County Names to FIPS code
 fips_codes <- paste(state_fips, county_fips, sep = "")
 fips_codes
 ```
@@ -278,7 +286,7 @@ lscog_taz <- sf::read_sf(
     COUNTYID = countyID
   )
 
-str(lscog_taz)
+lscog_taz
 ```
 
 #### Python
@@ -299,7 +307,7 @@ lscog_taz = lscog_taz.rename(
     'countyID': 'COUNTYID'
 })[['ID', 'Area', 'Acres', 'TAZ_ID', 'AREA_TYPE', 'COUNTY', 'COUNTYID', 'geometry']]
 
-lscog_taz.info()
+lscog_taz
 ```
 
 :::
@@ -359,12 +367,13 @@ lscog_dec <- tidycensus::get_decennial(
   year = 2020,
   sumfile = "dhc",
   geography = "block",
-  state = state_abb,
-  county = county_names,
+  state = state_fips,
+  county = county_fips,
   output = "wide",
   cb = FALSE,
   geometry = TRUE,
   keep_geo_vars = TRUE,
+  # key = Sys.getenv('CENSUS_API_KEY'),
   variables = dec_variables
 ) |>
   sf::st_transform(project_crs) |>
@@ -374,7 +383,7 @@ lscog_dec <- tidycensus::get_decennial(
   ) |>
   dplyr::select(GEOID, TOTPOP, GQPOP, HHPOP, HH, HH_1, HH_2, HH_3, HH_4, DU)
 
-str(lscog_dec)
+lscog_dec
 ```
 
 #### Python
@@ -410,10 +419,11 @@ lscog_dec = get_census(
     variables=list(dec_variables.keys()),
     params={
         "for": f"block:*",
+        # "key": f"{os.getenv('CENSUS_API_KEY')}",
         "in": f"state:{state_fips} county:{','.join(county_fips)}"
     },
     return_geoid=True,
-    guess_dtypes=True
+    guess_dtypes=True,
 )
 
 # join data to geometry
@@ -435,7 +445,7 @@ lscog_dec['HH_4'] = lscog_dec['HH'] - (
 lscog_dec = lscog_dec[['GEOID', 'TOTPOP', 'GQPOP', 'HHPOP',
                       'HH', 'HH_1', 'HH_2', 'HH_3', 'HH_4', 'DU', 'geometry']]
 
-lscog_dec.info()
+lscog_dec
 ```
 :::
 
@@ -481,6 +491,7 @@ lscog_acs <- tidycensus::get_acs(
   output = "wide",
   cb = FALSE,
   geometry = TRUE,
+  # key = Sys.getenv('CENSUS_API_KEY'),
   variables = acs_variables
 ) |>
   sf::st_transform(project_crs) |>
@@ -497,7 +508,7 @@ lscog_acs <- tidycensus::get_acs(
   ) |>
   dplyr::select(GEOID, INC_TOTAL = INC_CAT_01E, INC_14999, INC_49999, INC_50000)
 
-str(lscog_acs)
+lscog_acs
 ```
 
 #### Python
@@ -539,6 +550,7 @@ lscog_acs = get_census(
     variables=list(acs_variables.keys()),
     params={
         "for": f"block group:*",
+        # "key": f"{os.getenv('CENSUS_API_KEY')}",
         "in": f"state:{state_fips} county:{','.join(county_fips)}"
     },
     return_geoid=True,
@@ -574,7 +586,7 @@ lscog_acs = lscog_acs.rename(columns={'INC_CAT_01': 'INC_TOTAL'})
 lscog_acs = lscog_acs[['GEOID', 'INC_TOTAL', 'INC_14999', 'INC_49999', 'INC_50000', 'geometry'
 ]]
 
-lscog_acs.info()
+lscog_acs
 ```
 :::
 
@@ -643,7 +655,7 @@ lscog_emp <- lehdr::grab_lodes(
     PUBLIC_ADM
   )
 
-str(lscog_emp)
+lscog_emp
 ```
 
 #### Python
@@ -660,7 +672,7 @@ lscog_emp = get_lodes(
     job_type="JT00",
     agg_level="block",
     cache=True,
-    return_geometry=True
+    return_geometry=False
 )
 
 # Filter for specific FIPS codes
@@ -691,16 +703,13 @@ lscog_emp = lscog_emp.assign(
     PUBLIC_ADM=lscog_emp['CNS20']  # Public Administration employment
 )
 
-# Transform CRS
-lscog_emp = lscog_emp.to_crs(project_crs)
-
 # Select only the desired columns
 lscog_emp = lscog_emp[['GEOID', 'TOTAL_EMP', 'AGR_FOR_FI', 'MINING', 'CONSTRUCTI',
                        'MANUFACTUR', 'TRANSP_COM', 'WHOLESALE', 'RETAIL', 'FIRE',
                        'SERVICES', 'PUBLIC_ADM']]
 
 # Display structure/info about the dataframe
-lscog_emp.info()
+lscog_emp
 ```
 :::
 
@@ -739,7 +748,7 @@ lscog_pub_sch_enroll <- arcgislayers::arc_read(
     TEACHER_COUNT_PUB = FTE
   )
 
-str(lscog_pub_sch_enroll)
+lscog_pub_sch_enroll
 ```
 
 #### Python
@@ -807,7 +816,7 @@ lscog_pub_sch_enroll = lscog_pub_sch_enroll.rename(columns={
     'FTE': 'TEACHER_COUNT_PUB'
 })
 
-lscog_pub_sch_enroll.info()
+lscog_pub_sch_enroll
 ```
 :::
 
@@ -850,7 +859,7 @@ lscog_pvt_sch_enroll <- vroom::vroom(
     TEACHER_COUNT_PVT = NUMTEACH
   )
 
-str(lscog_pvt_sch_enroll)
+lscog_pvt_sch_enroll
 ```
 
 #### Python
@@ -883,7 +892,7 @@ lscog_pvt_sch_enroll = gpd.sjoin(lscog_pvt_sch_enroll, lscog_taz, how='inner', p
     'NUMTEACH': 'TEACHER_COUNT_PVT'
 })
 
-lscog_pvt_sch_enroll.info()
+lscog_pvt_sch_enroll
 ```
 :::
 
@@ -909,7 +918,7 @@ lscog_college_loc <- arcgislayers::arc_read(
   crs = project_crs
 )
 
-str(lscog_college_loc)
+lscog_college_loc
 ```
 
 #### Python
@@ -924,7 +933,7 @@ lscog_college_loc = arc_read(
 
 lscog_college_loc = lscog_college_loc.to_crs(project_crs)
 
-lscog_college_loc.info()
+lscog_college_loc
 ```
 :::
 
@@ -951,87 +960,213 @@ lscog_acs_cb <- tidycensus::interpolate_pw(
   weight_column = "HH"
 )
 
-str(lscog_acs_cb)
+lscog_acs_cb
 ```
 
 #### Python
 
 ```{python}
 #| code-fold: true
-#| eval: false
 
-# Create function for population-weighted interpolation
-def interpolate_pw(from_gdf, to_gdf, to_id, extensive=True, weight_column=None, crs=None):
+def interpolate_pw(from_gdf, to_gdf, weights_gdf, to_id=None, extensive=True, 
+                   weight_column=None, weight_placement='surface', crs=None):
     """
-    Population-weighted interpolation between geometries.
-
-    Interpolates numeric variables from source geometries to target geometries
-    using area-based weighting with optional population weights.
-
+    Population-weighted areal interpolation between geometries.
+    
+    Transfers numeric data from source geometries to target geometries using
+    population-weighted interpolation based on point weights (e.g., census blocks).
+    
     Parameters:
     -----------
     from_gdf : GeoDataFrame
-        Source geometries with data to interpolate
-    to_gdf : GeoDataFrame
-        Target geometries to interpolate to
-    to_id : str
-        Column name for unique identifier in target geometries
+        Source geometries with numeric data to interpolate
+    to_gdf : GeoDataFrame  
+        Target geometries to interpolate data to
+    weights_gdf : GeoDataFrame
+        Weight geometries (e.g., census blocks) used for interpolation.
+        If polygons, will be converted to points. Can be the same as to_gdf.
+    to_id : str, optional
+        Column name for unique identifier in target geometries.
+        If None, creates an 'id' column.
     extensive : bool, default True
-        If True, variables are extensive (sum). If False, intensive (average)
+        If True, return weighted sums (for counts).
+        If False, return weighted means (for rates/percentages).
     weight_column : str, optional
-        Column name in to_gdf for population weights (e.g., 'HH', 'POP')
+        Column name in weights_gdf for weighting (e.g., 'POP', 'HH').
+        If None, all weights are equal.
+    weight_placement : str, default 'surface'
+        How to convert polygons to points: 'surface' or 'centroid'
     crs : str or CRS object, optional
-        Coordinate reference system to project both datasets to
-
+        Coordinate reference system to project all datasets to
+        
     Returns:
     --------
     GeoDataFrame
-        Target geometries with interpolated values
+        Target geometries with interpolated numeric values
     """
+    
+    # Input validation
+    if not all(isinstance(gdf, gpd.GeoDataFrame) for gdf in [from_gdf, to_gdf, weights_gdf]):
+        raise ValueError("All inputs must be GeoDataFrames")
+    
+    # Make copies to avoid modifying originals
+    from_gdf = from_gdf.copy()
+    to_gdf = to_gdf.copy()
+    weights_gdf = weights_gdf.copy()
+    
     # Set CRS if provided
     if crs:
         from_gdf = from_gdf.to_crs(crs)
         to_gdf = to_gdf.to_crs(crs)
-
-    # Perform overlay to get intersections
-    overlay = gpd.overlay(from_gdf, to_gdf, how='intersection')
-
-    # Calculate area weights
-    overlay['area_weight'] = overlay.geometry.area / overlay.groupby(overlay.index)['geometry'].transform(lambda x: x.area.sum())
-
-    # Apply population weights if specified
-    if weight_column and weight_column in to_gdf.columns:
-        overlay = overlay.merge(to_gdf[[to_id, weight_column]], on=to_id, how='left', suffixes=('', '_weight'))
-        overlay['area_weight'] *= overlay[weight_column + '_weight']
-
-    # Interpolate numeric columns
-    numeric_cols = from_gdf.select_dtypes(include=['number']).columns
-    result = to_gdf[[to_id, 'geometry']].copy()
-
+        weights_gdf = weights_gdf.to_crs(crs)
+    
+    # Check CRS consistency
+    if not (from_gdf.crs == to_gdf.crs == weights_gdf.crs):
+        raise ValueError("All inputs must have the same CRS")
+    
+    # Handle to_id
+    if to_id is None:
+        to_id = 'id'
+        to_gdf[to_id] = to_gdf.index.astype(str)
+    
+    # Remove conflicting columns
+    if to_id in from_gdf.columns:
+        from_gdf = from_gdf.drop(columns=[to_id])
+    
+    # Create unique from_id
+    from_id = 'from_id'
+    from_gdf[from_id] = from_gdf.index.astype(str)
+    
+    # Handle weight column
+    if weight_column is None:
+        weight_column = 'interpolation_weight'
+        weights_gdf[weight_column] = 1.0
+    else:
+        # Rename to avoid conflicts
+        weights_gdf['interpolation_weight'] = weights_gdf[weight_column]
+        weight_column = 'interpolation_weight'
+    
+    # Convert weights to points if needed
+    if weights_gdf.geometry.geom_type.iloc[0] in ['Polygon', 'MultiPolygon']:
+        if weight_placement == 'surface':
+            weights_gdf = weights_gdf.copy()
+            weights_gdf.geometry = weights_gdf.geometry.representative_point()
+        elif weight_placement == 'centroid':
+            weights_gdf = weights_gdf.copy()
+            weights_gdf.geometry = weights_gdf.geometry.centroid
+        else:
+            raise ValueError("weight_placement must be 'surface' or 'centroid'")
+    
+    # Keep only weight column and geometry
+    weight_points = weights_gdf[[weight_column, 'geometry']].copy()
+    
+    # Calculate denominators (total weights per source geometry)
+    with warnings.catch_warnings():
+        warnings.filterwarnings('ignore', category=UserWarning)
+        source_weights = gpd.sjoin(from_gdf, weight_points, how='left', predicate='contains')
+    
+    denominators = (source_weights.groupby(from_id)[weight_column]
+                   .sum()
+                   .reset_index()
+                   .rename(columns={weight_column: 'weight_total'}))
+    
+    # Calculate intersections between from and to
+    with warnings.catch_warnings():
+        warnings.filterwarnings('ignore', category=UserWarning)
+        intersections = gpd.overlay(from_gdf, to_gdf, how='intersection')
+    
+    # Filter to keep only polygon intersections
+    intersections = intersections[intersections.geometry.geom_type.isin(['Polygon', 'MultiPolygon', 'GeometryCollection'])]
+    
+    if len(intersections) == 0:
+        raise ValueError("No valid polygon intersections found between source and target geometries")
+    
+    # Add intersection ID
+    intersections['intersection_id'] = range(len(intersections))
+    
+    # Spatial join intersections with weight points to get weights within each intersection
+    with warnings.catch_warnings():
+        warnings.filterwarnings('ignore', category=UserWarning)
+        intersection_weights = gpd.sjoin(intersections, weight_points, how='left', predicate='contains')
+    
+    # Calculate intersection values (sum of weights per intersection)
+    intersection_values = (intersection_weights.groupby('intersection_id')[weight_column]
+                         .sum()
+                         .reset_index()
+                         .rename(columns={weight_column: 'intersection_value'}))
+    
+    # Merge back to intersections and keep only unique intersections
+    intersections = intersections.merge(intersection_values, on='intersection_id', how='left')
+    intersections['intersection_value'] = intersections['intersection_value'].fillna(0)
+    
+    # Remove duplicates created by the spatial join
+    intersections = intersections.drop_duplicates(subset='intersection_id')
+    
+    # Merge with denominators to calculate weight coefficients
+    intersections = intersections.merge(denominators, on=from_id, how='left')
+    intersections['weight_total'] = intersections['weight_total'].fillna(1)
+    
+    # Calculate weight coefficients (intersection weight / total weight in source)
+    intersections.loc[intersections['weight_total'] > 0, 'weight_coef'] = (
+        intersections['intersection_value'] / intersections['weight_total']
+    )
+    intersections['weight_coef'] = intersections['weight_coef'].fillna(0)
+    
+    # Get numeric columns from source data
+    numeric_cols = from_gdf.select_dtypes(include=[np.number]).columns
+    # Remove ID columns
+    numeric_cols = [col for col in numeric_cols if col not in [from_id]]
+    
+    # Prepare intersection data for interpolation
+    intersection_data = intersections[[from_id, to_id, 'weight_coef'] + numeric_cols].copy()
+    
+    if extensive:
+        # For extensive variables: multiply by weight coefficient, then sum by target
+        for col in numeric_cols:
+            intersection_data[col] = intersection_data[col] * intersection_data['weight_coef']
+        
+        interpolated = (intersection_data.groupby(to_id)[numeric_cols]
+                       .sum()
+                       .reset_index())
+    else:
+        # For intensive variables: weighted average
+        interpolated_data = []
+        for target_id in intersection_data[to_id].unique():
+            target_data = intersection_data[intersection_data[to_id] == target_id]
+            if len(target_data) > 0 and target_data['weight_coef'].sum() > 0:
+                weighted_vals = {}
+                for col in numeric_cols:
+                    weighted_vals[col] = (target_data[col] * target_data['weight_coef']).sum() / target_data['weight_coef'].sum()
+                weighted_vals[to_id] = target_id
+                interpolated_data.append(weighted_vals)
+        
+        interpolated = pd.DataFrame(interpolated_data)
+    
+    # Merge with target geometries
+    result = to_gdf[[to_id, 'geometry']].merge(interpolated, on=to_id, how='left')
+    
+    # Fill NaN values with 0 for missing interpolations
     for col in numeric_cols:
-        if col in overlay.columns:
-            weighted_vals = overlay.groupby(to_id).apply(
-                lambda x: (x[col] * x['area_weight']).sum() / x['area_weight'].sum() if extensive else (x[col] * x['area_weight']).sum()
-            )
-            result[col] = result[to_id].map(weighted_vals).fillna(0)
-
+        if col in result.columns:
+            result[col] = result[col].fillna(0)
+    
     return result
 ```
 
 ```{python}
-#| eval: false
 
 # Interpolate ACS data to Decennial Census blocks
 lscog_acs_cb = interpolate_pw(
     from_gdf=lscog_acs,
     to_gdf=lscog_dec,
+    weights_gdf=lscog_dec,
     to_id='GEOID',
     extensive=True,
     weight_column='HH',
     crs=project_crs
 )
 
-lscog_acs_cb.info()
+lscog_acs_cb.head()
 ```
 
 :::
@@ -1075,12 +1210,11 @@ lscog_pop_hh <- lscog_dec |>
     by = dplyr::join_by(GEOID)
   )
 
-str(lscog_pop_hh)
+lscog_pop_hh
 ```
 
 #### Python
 ```{python}
-#| eval: false
 
 ## Combine ACS Data to Decennial data
 lscog_pop_hh = lscog_dec.merge(
@@ -1089,7 +1223,7 @@ lscog_pop_hh = lscog_dec.merge(
     how='left'
 )
 
-lscog_pop_hh.info()
+lscog_pop_hh
 ```
 :::
 
@@ -1109,13 +1243,12 @@ lscog_pop_hh <- lscog_pop_hh |>
   ) |>
   dplyr::select(-INC_TOTAL)
 
-str(lscog_pop_hh)
+lscog_pop_hh
 ```
 
 #### Python
 
 ```{python}
-#| eval: false
 
 ## Combine adjusted HH income level to Decennial census instead of ACS
 lscog_pop_hh["INC_49999"] = ((lscog_pop_hh["INC_49999"] / lscog_pop_hh["INC_TOTAL"]) * lscog_pop_hh["HH"]).round().fillna(0)
@@ -1123,7 +1256,7 @@ lscog_pop_hh["INC_50000"] = ((lscog_pop_hh["INC_50000"] / lscog_pop_hh["INC_TOTA
 lscog_pop_hh["INC_14999"] = lscog_pop_hh["HH"] - (lscog_pop_hh["INC_49999"] + lscog_pop_hh["INC_50000"])
 
 lscog_pop_hh = lscog_pop_hh.drop(columns="INC_TOTAL")
-lscog_pop_hh.info()
+lscog_pop_hh
 ```
 
 :::
@@ -1142,13 +1275,12 @@ The employment integration incorporates LEHD (Longitudinal Employer-Household Dy
 lscog_pop_hh_emp <- lscog_pop_hh |>
   dplyr::left_join(lscog_emp, by = dplyr::join_by(GEOID))
 
-str(lscog_pop_hh_emp)
+lscog_pop_hh_emp
 ```
 
 #### Python
 
 ```{python}
-#| eval: false
 
 # Join LEHD Data to the Decennial data
 lscog_pop_hh_emp = lscog_pop_hh.merge(
@@ -1157,7 +1289,7 @@ lscog_pop_hh_emp = lscog_pop_hh.merge(
     how='left'
 )
 
-lscog_pop_hh_emp.info()
+lscog_pop_hh_emp
 ```
 
 :::
@@ -1738,48 +1870,54 @@ lscog_taz_pop <- lscog_taz |>
     PUBLIC_ADM = sum(PUBLIC_ADM, na.rm = TRUE)
   )
 
-str(lscog_taz_pop)
+lscog_taz_pop
 ```
 
 #### Python
 
 ```{python}
-#| eval: false
 
 # Aggregate population, households, and employment to TAZ
-lscog_taz_pop = lscog_taz.sjoin(
-    lscog_pop_hh_emp.to_crs(project_crs),
-    how='left'
-).groupby(
-    ['ID', 'Area', 'TAZ_ID', 'COUNTY', 'AREA_TYPE', 'COUNTYID'],
-    as_index=False
-).agg({
-    'TOTPOP': 'sum',
-    'GQPOP': 'sum',
-    'HHPOP': 'sum',
-    'HH': 'sum',
-    'HH_1': 'sum',
-    'HH_2': 'sum',
-    'HH_3': 'sum',
-    'HH_4': 'sum',
-    'DU': 'sum',
-    'INC_14999': 'sum',
-    'INC_49999': 'sum',
-    'INC_50000': 'sum',
-    'TOTAL_EMP': 'sum',
-    'AGR_FOR_FI': 'sum',
-    'MINING': 'sum',
-    'CONSTRUCTI': 'sum',
-    'MANUFACTUR': 'sum',
-    'TRANSP_COM': 'sum',
-    'WHOLESALE': 'sum',
-    'RETAIL': 'sum',
-    'FIRE': 'sum',
-    'SERVICES': 'sum',
-    'PUBLIC_ADM': 'sum'
-})
+lscog_taz_pop = (lscog_taz
+    .sjoin(
+        lscog_pop_hh_emp.assign(geometry=lscog_pop_hh_emp.geometry.centroid).to_crs(lscog_taz.crs),
+        how='left'
+    )
+    .groupby(['ID', 'Area', 'TAZ_ID', 'COUNTY', 'AREA_TYPE', 'COUNTYID'], 
+             as_index=False, dropna=False)
+    .agg({
+        # Population and Household Size
+        'TOTPOP': lambda x: x.sum(skipna=True),
+        'GQPOP': lambda x: x.sum(skipna=True),
+        'HHPOP': lambda x: x.sum(skipna=True),
+        'HH': lambda x: x.sum(skipna=True),
+        'HH_1': lambda x: x.sum(skipna=True),
+        'HH_2': lambda x: x.sum(skipna=True),
+        'HH_3': lambda x: x.sum(skipna=True),
+        'HH_4': lambda x: x.sum(skipna=True),
+        'DU': lambda x: x.sum(skipna=True),
+        # Household Income
+        'INC_14999': lambda x: x.sum(skipna=True),
+        'INC_49999': lambda x: x.sum(skipna=True),
+        'INC_50000': lambda x: x.sum(skipna=True),
+        # Employment
+        'TOTAL_EMP': lambda x: x.sum(skipna=True),
+        'AGR_FOR_FI': lambda x: x.sum(skipna=True),
+        'MINING': lambda x: x.sum(skipna=True),
+        'CONSTRUCTI': lambda x: x.sum(skipna=True),
+        'MANUFACTUR': lambda x: x.sum(skipna=True),
+        'TRANSP_COM': lambda x: x.sum(skipna=True),
+        'WHOLESALE': lambda x: x.sum(skipna=True),
+        'RETAIL': lambda x: x.sum(skipna=True),
+        'FIRE': lambda x: x.sum(skipna=True),
+        'SERVICES': lambda x: x.sum(skipna=True),
+        'PUBLIC_ADM': lambda x: x.sum(skipna=True),
+        'geometry': 'first'
+    })
+)
 
-lscog_taz_pop.info()
+lscog_taz_pop = gpd.GeoDataFrame(lscog_taz_pop, crs=lscog_taz.crs)
+lscog_taz_pop
 ```
 :::
 
@@ -1804,13 +1942,12 @@ lscog_sch_enroll <- dplyr::bind_rows(
       dplyr::coalesce(TEACHER_COUNT_PVT, 0)
   )
 
-str(lscog_sch_enroll)
+lscog_sch_enroll
 ```
 
 #### Python
 
 ```{python}
-#| eval: false
 
 # Combine school enrollment data
 lscog_sch_enroll = pd.concat([
@@ -1824,7 +1961,7 @@ lscog_sch_enroll = pd.concat([
     )
 ])
 
-lscog_sch_enroll.info()
+lscog_sch_enroll
 ```
 
 :::
@@ -1853,18 +1990,19 @@ lscog_taz_enroll <- lscog_taz |>
     STUDENT_COUNT = sum(STUDENT_COUNT, na.rm = TRUE)
   )
 
-str(lscog_taz_enroll)
+lscog_taz_enroll
 ```
 
 #### Python
 
 ```{python}
-#| eval: false
 
 # count the number of school enrollment within each TAZ
 lscog_taz_enroll = lscog_taz.sjoin(lscog_sch_enroll, how='left') \
     .groupby(['ID', 'Area', 'TAZ_ID', 'COUNTY', 'AREA_TYPE', 'COUNTYID'], as_index=False) \
     .agg({'STUDENT_COUNT': 'sum'})
+    
+lscog_taz_enroll
 ```
 
 :::
@@ -1906,29 +2044,32 @@ lscog_se_base <- lscog_taz_pop |>
     dplyr::everything()
   )
 
-str(lscog_se_base)
+lscog_se_base
 ```
 
 #### Python
 
 ```{python}
-#| eval: false
+
+# Define the column order
+column_order = [
+    'ID', 'Area', 'TAZ_ID', 'COUNTY', 'AREA_TYPE', 'COUNTYID',
+    'INC_14999', 'INC_49999', 'INC_50000',
+    'TOTPOP', 'GQPOP', 'HHPOP',
+    'HH', 'HH_1', 'HH_2', 'HH_3', 'HH_4', 'DU'
+]
 
 # Combine population, household, employments, and school enrollment
 lscog_se_base = lscog_taz_pop.merge(
     lscog_taz_enroll,
     on=['ID', 'Area', 'TAZ_ID', 'COUNTY', 'AREA_TYPE', 'COUNTYID'],
     how='left'
-)[[
-    'ID', 'Area', 'TAZ_ID', 'COUNTY', 'AREA_TYPE', 'COUNTYID',
-    'INC_14999', 'INC_49999', 'INC_50000',
-    'TOTPOP', 'GQPOP', 'HHPOP',
-    'HH', 'HH_1', 'HH_2', 'HH_3', 'HH_4', 'DU'
-] + list(lscog_taz_pop.columns.difference(['ID', 'Area', 'TAZ_ID',
-                                            'COUNTY', 'AREA_TYPE',
-                                            'COUNTYID']))]
+)
 
-lscog_se_base.info()
+lscog_se_base = lscog_se_base[column_order + 
+                              list(lscog_se_base.columns.difference(column_order))]
+
+lscog_se_base
 ```
 
 :::
@@ -1954,7 +2095,6 @@ lscog_se_base |>
 #### Python
 
 ```{python}
-#| eval: false
 
 # check the sum of household by household size
 lscog_se_base[
@@ -1982,10 +2122,9 @@ lscog_se_base |>
 #### Python
 
 ```{python}
-#| eval: false
 
 # check the sum of household by income level
-lsccog_se_base[
+lscog_se_base[
     lscog_se_base['HH'] != (lscog_se_base['INC_14999'] + lscog_se_base['INC_49999'] +
                             lscog_se_base['INC_50000'])
 ].shape[0]
@@ -2023,7 +2162,6 @@ lscog_se_base |>
 #### Python
 
 ```{python}
-#| eval: false
 
 # check the sum of employment by categories
 lscog_se_base[
