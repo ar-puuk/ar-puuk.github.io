@@ -8,7 +8,7 @@ author:
         url: "https://www.metroanalytics.com/"
 date: "2025-07-05"
 engine: knitr
-execute: 
+execute:
   warning: false
   message: false
 categories: [r, python, gis, data science, spatial analysis, transportation]
@@ -49,32 +49,36 @@ The Python environment focuses on core data science libraries including `pandas`
 #### R
 
 ```{r}
-# Install and load the pacman package
-if (!require("pacman")) {
-  install.packages("pacman")
-}
-library("pacman") # Package Management Tool CRAN v0.5.1
+# # Install required packages
+# install.packages(c(
+#   "tidyverse",
+#   "sf",
+#   "tidycensus",
+#   "lehdr",
+#   "arcgislayers",
+#   "mapview",
+#   "RColorBrewer",
+#   "janitor"
+# ), dependencies = TRUE)
 
-# Install and load multiple desired packages at once
-pacman::p_load(
-  tidyverse, # Easily Install and Load the 'Tidyverse'
-  sf, # Simple Features for R
-  tidycensus, # Load US Census Boundary and Attribute Data
-  lehdr, # Grab Longitudinal Employer-Household Dynamics (LEHD)
-  arcgis, # ArcGIS Location Services Meta-Package
-  mapview, # Interactive Viewing of Spatial Data
-  RColorBrewer, # Color Palettes
-  janitor # Simple Tools for Examining and Cleaning Dirty Data
-)
+# Load packages
+library(tidyverse)    # Data manipulation and visualization
+library(sf)           # Spatial analysis
+library(tidycensus)   # Accessing US Census Data
+library(lehdr)        # Access LODES data
+library(arcgislayers) # ArcGIS REST API access
+library(mapview)      # Interactive mapping
+library(RColorBrewer) # Color palettes for maps
+library(janitor)      # Data cleaning and preparation
 ```
 
 #### Python
 
 ```{python}
 # Install required packages if not available
-# pip install numpy pandas geopandas matplotlib seaborn folium pathlib zipfile requests urllib warnings pygris
+# pip install numpy pandas geopandas shapely folium requests pygris
 
-# General
+# Load processing libraries & modules
 import os
 from pathlib import Path
 import zipfile
@@ -83,14 +87,14 @@ import urllib.parse
 import warnings
 warnings.filterwarnings('ignore')
 
-# Data and Visualization
+# Load data and visualization libraries & modules
 import numpy as np
 import pandas as pd
 import geopandas as gpd
 import folium
 from shapely.geometry import Point
 
-# Census data query
+# Census data query libraries & modules
 from pygris import blocks, block_groups
 from pygris.helpers import validate_state, validate_county
 from pygris.data import get_census, get_lodes
@@ -341,6 +345,8 @@ The 2020 Decennial Census provides population and housing data at the census blo
 
 Household size distributions are consolidated into four categories: 1-person, 2-person, 3-person, and 4-or-more-person households. The 4-or-more category aggregates larger household sizes to simplify model implementation while maintaining essential demographic stratification for trip generation analysis.
 
+> For more information on the Decennial Census data, refer to the [Decennial Census Technical Documentation](https://www.census.gov/programs-surveys/decennial-census/technical-documentation.html).
+
 ::: panel-tabset
 
 #### R
@@ -453,6 +459,8 @@ lscog_dec
 The American Community Survey 5-year estimates provide household income data at the block group level. Income categories are aggregated into three broad ranges: under \$15,000, \$15,000-\$49,999, and \$50,000 and above. This stratification aligns with travel behavior research indicating distinct mobility patterns across income levels.
 
 The block group geography represents the finest spatial resolution available for ACS income data, providing sufficient detail for socioeconomic modeling while maintaining statistical reliability through the 5-year aggregation period.
+
+> For more information on the ACS data, refer to the [ACS Technical Documentation](https://www.census.gov/programs-surveys/acs/technical-documentation.html).
 
 ::: panel-tabset
 
@@ -595,6 +603,8 @@ The Longitudinal Employer-Household Dynamics Workplace Area Characteristics data
 
 The 2019 reference year represents pre-pandemic employment patterns, providing a stable baseline for long-term transportation planning. Employment data at the block level enables precise spatial allocation of work destinations within the travel demand model framework.
 
+> For more information on the LEHD data, refer to the [LODES Technical Documentation](https://lehd.ces.census.gov/data/lodes/LODES8/LODESTechDoc8.3.pdf).
+
 ::: panel-tabset
 #### R
 
@@ -718,7 +728,11 @@ The National Center for Education Statistics provides comprehensive educational 
 
 ### Public schools
 
-Public school data is retrieved from the NCES ArcGIS REST service for the 2019-2020 academic year. The dataset includes total student enrollment and full-time equivalent teacher counts for each institution within the six-county region. Public schools represent major trip generation sources for both student and employee travel, requiring precise spatial location data for accurate modeling.
+Public school data is made available by National Center for Education Statistics through their Common Core of Data (CCD) program. For ease of processing, we retrieve the CCD from the ArcGIS REST service for the 2019-2020 academic year. The dataset includes total student enrollment and full-time equivalent teacher counts for each institution within the six-county region. Public schools represent major trip generation sources for both student and employee travel, requiring precise spatial location data for accurate modeling.
+
+> For more information on the NCES Public School data, refer to [CCD Online Documentation](https://nces.ed.gov/ccd/).
+
+To retreive the data from ArcGIS REST service, we use the `arcgislayers` package in R and create a custom function in Python to read the ArcGIS FeatureLayer or Table. This has been implemented to function similarly to the `arcgislayers` package in R, allowing us to query the service with a SQL WHERE clause and return the data as a GeoDataFrame.
 
 ::: panel-tabset
 
@@ -821,7 +835,9 @@ lscog_pub_sch_enroll
 
 ### Private schools
 
-Private school enrollment data is accessed from the NCES Private School Survey archived dataset. The data is spatially enabled using latitude and longitude coordinates and filtered to include only institutions within the study area TAZ boundaries. Private schools contribute to the regional education trip matrix and must be incorporated alongside public institutions for comprehensive coverage.
+Private school enrollment data is accessed from the NCES Private School Universe Survey (PSS) archived dataset. The data is spatially enabled using latitude and longitude coordinates and filtered to include only institutions within the study area TAZ boundaries. Private schools contribute to the regional education trip matrix and must be incorporated alongside public institutions for comprehensive coverage.
+
+> For more information on the NCES Private Schools data, refer to [PSS Online Documentation](https://nces.ed.gov/surveys/pss/).
 
 ::: panel-tabset
 
@@ -897,7 +913,9 @@ lscog_pvt_sch_enroll
 
 ### Post-secondary institutions
 
-Post-secondary institution locations are obtained from the NCES Postsecondary School Locations service, filtered by state and county FIPS codes. These institutions generate significant travel demand through student commuting, employee travel, and visitor trips, making them essential components of the regional transportation network analysis.
+Post-secondary institution locations are obtained from the NCES Integrated Postsecondary Education Data System (IPEDS), filtered by state and county FIPS codes. These institutions generate significant travel demand through student commuting, employee travel, and visitor trips, making them essential components of the regional transportation network analysis.
+
+> For more information on the NCES Post-Secondary Education data, refer to [IPEDS Documentation](https://nces.ed.gov/ipeds/).
 
 ::: panel-tabset
 
@@ -942,7 +960,7 @@ The data cleaning process involves harmonizing multiple Census data sources to c
 
 ## Household-weighted interpolation
 
-The interpolation process transfers ACS block group data to individual census blocks using household counts as weights. This method ensures that socioeconomic characteristics are distributed proportionally based on residential density rather than simple geometric overlay. The tidycensus package provides robust interpolation functionality that preserves the extensive nature of count variables while maintaining spatial relationships.
+The interpolation process transfers ACS block group data to individual census blocks using household counts as weights. This method ensures that socioeconomic characteristics are distributed proportionally based on residential density rather than simple geometric overlay. The `tidycensus` package provides robust interpolation functionality that preserves the extensive nature of count variables while maintaining spatial relationships. For Python, the `interpolate_pw()` function is implemented to achieve similar functionality using population-weighted interpolation.
 
 :::panel-tabset
 
@@ -967,19 +985,19 @@ lscog_acs_cb
 ```{python}
 #| code-fold: true
 
-def interpolate_pw(from_gdf, to_gdf, weights_gdf, to_id=None, extensive=True, 
+def interpolate_pw(from_gdf, to_gdf, weights_gdf, to_id=None, extensive=True,
                    weight_column=None, weight_placement='surface', crs=None):
     """
     Population-weighted areal interpolation between geometries.
-    
+
     Transfers numeric data from source geometries to target geometries using
     population-weighted interpolation based on point weights (e.g., census blocks).
-    
+
     Parameters:
     -----------
     from_gdf : GeoDataFrame
         Source geometries with numeric data to interpolate
-    to_gdf : GeoDataFrame  
+    to_gdf : GeoDataFrame
         Target geometries to interpolate data to
     weights_gdf : GeoDataFrame
         Weight geometries (e.g., census blocks) used for interpolation.
@@ -997,45 +1015,45 @@ def interpolate_pw(from_gdf, to_gdf, weights_gdf, to_id=None, extensive=True,
         How to convert polygons to points: 'surface' or 'centroid'
     crs : str or CRS object, optional
         Coordinate reference system to project all datasets to
-        
+
     Returns:
     --------
     GeoDataFrame
         Target geometries with interpolated numeric values
     """
-    
+
     # Input validation
     if not all(isinstance(gdf, gpd.GeoDataFrame) for gdf in [from_gdf, to_gdf, weights_gdf]):
         raise ValueError("All inputs must be GeoDataFrames")
-    
+
     # Make copies to avoid modifying originals
     from_gdf = from_gdf.copy()
     to_gdf = to_gdf.copy()
     weights_gdf = weights_gdf.copy()
-    
+
     # Set CRS if provided
     if crs:
         from_gdf = from_gdf.to_crs(crs)
         to_gdf = to_gdf.to_crs(crs)
         weights_gdf = weights_gdf.to_crs(crs)
-    
+
     # Check CRS consistency
     if not (from_gdf.crs == to_gdf.crs == weights_gdf.crs):
         raise ValueError("All inputs must have the same CRS")
-    
+
     # Handle to_id
     if to_id is None:
         to_id = 'id'
         to_gdf[to_id] = to_gdf.index.astype(str)
-    
+
     # Remove conflicting columns
     if to_id in from_gdf.columns:
         from_gdf = from_gdf.drop(columns=[to_id])
-    
+
     # Create unique from_id
     from_id = 'from_id'
     from_gdf[from_id] = from_gdf.index.astype(str)
-    
+
     # Handle weight column
     if weight_column is None:
         weight_column = 'interpolation_weight'
@@ -1044,7 +1062,7 @@ def interpolate_pw(from_gdf, to_gdf, weights_gdf, to_id=None, extensive=True,
         # Rename to avoid conflicts
         weights_gdf['interpolation_weight'] = weights_gdf[weight_column]
         weight_column = 'interpolation_weight'
-    
+
     # Convert weights to points if needed
     if weights_gdf.geometry.geom_type.iloc[0] in ['Polygon', 'MultiPolygon']:
         if weight_placement == 'surface':
@@ -1055,75 +1073,75 @@ def interpolate_pw(from_gdf, to_gdf, weights_gdf, to_id=None, extensive=True,
             weights_gdf.geometry = weights_gdf.geometry.centroid
         else:
             raise ValueError("weight_placement must be 'surface' or 'centroid'")
-    
+
     # Keep only weight column and geometry
     weight_points = weights_gdf[[weight_column, 'geometry']].copy()
-    
+
     # Calculate denominators (total weights per source geometry)
     with warnings.catch_warnings():
         warnings.filterwarnings('ignore', category=UserWarning)
         source_weights = gpd.sjoin(from_gdf, weight_points, how='left', predicate='contains')
-    
+
     denominators = (source_weights.groupby(from_id)[weight_column]
                    .sum()
                    .reset_index()
                    .rename(columns={weight_column: 'weight_total'}))
-    
+
     # Calculate intersections between from and to
     with warnings.catch_warnings():
         warnings.filterwarnings('ignore', category=UserWarning)
         intersections = gpd.overlay(from_gdf, to_gdf, how='intersection')
-    
+
     # Filter to keep only polygon intersections
     intersections = intersections[intersections.geometry.geom_type.isin(['Polygon', 'MultiPolygon', 'GeometryCollection'])]
-    
+
     if len(intersections) == 0:
         raise ValueError("No valid polygon intersections found between source and target geometries")
-    
+
     # Add intersection ID
     intersections['intersection_id'] = range(len(intersections))
-    
+
     # Spatial join intersections with weight points to get weights within each intersection
     with warnings.catch_warnings():
         warnings.filterwarnings('ignore', category=UserWarning)
         intersection_weights = gpd.sjoin(intersections, weight_points, how='left', predicate='contains')
-    
+
     # Calculate intersection values (sum of weights per intersection)
     intersection_values = (intersection_weights.groupby('intersection_id')[weight_column]
                          .sum()
                          .reset_index()
                          .rename(columns={weight_column: 'intersection_value'}))
-    
+
     # Merge back to intersections and keep only unique intersections
     intersections = intersections.merge(intersection_values, on='intersection_id', how='left')
     intersections['intersection_value'] = intersections['intersection_value'].fillna(0)
-    
+
     # Remove duplicates created by the spatial join
     intersections = intersections.drop_duplicates(subset='intersection_id')
-    
+
     # Merge with denominators to calculate weight coefficients
     intersections = intersections.merge(denominators, on=from_id, how='left')
     intersections['weight_total'] = intersections['weight_total'].fillna(1)
-    
+
     # Calculate weight coefficients (intersection weight / total weight in source)
     intersections.loc[intersections['weight_total'] > 0, 'weight_coef'] = (
         intersections['intersection_value'] / intersections['weight_total']
     )
     intersections['weight_coef'] = intersections['weight_coef'].fillna(0)
-    
+
     # Get numeric columns from source data
     numeric_cols = from_gdf.select_dtypes(include=[np.number]).columns
     # Remove ID columns
     numeric_cols = [col for col in numeric_cols if col not in [from_id]]
-    
+
     # Prepare intersection data for interpolation
     intersection_data = intersections[[from_id, to_id, 'weight_coef'] + numeric_cols].copy()
-    
+
     if extensive:
         # For extensive variables: multiply by weight coefficient, then sum by target
         for col in numeric_cols:
             intersection_data[col] = intersection_data[col] * intersection_data['weight_coef']
-        
+
         interpolated = (intersection_data.groupby(to_id)[numeric_cols]
                        .sum()
                        .reset_index())
@@ -1138,17 +1156,17 @@ def interpolate_pw(from_gdf, to_gdf, weights_gdf, to_id=None, extensive=True,
                     weighted_vals[col] = (target_data[col] * target_data['weight_coef']).sum() / target_data['weight_coef'].sum()
                 weighted_vals[to_id] = target_id
                 interpolated_data.append(weighted_vals)
-        
+
         interpolated = pd.DataFrame(interpolated_data)
-    
+
     # Merge with target geometries
     result = to_gdf[[to_id, 'geometry']].merge(interpolated, on=to_id, how='left')
-    
+
     # Fill NaN values with 0 for missing interpolations
     for col in numeric_cols:
         if col in result.columns:
             result[col] = result[col].fillna(0)
-    
+
     return result
 ```
 
@@ -1882,7 +1900,7 @@ lscog_taz_pop = (lscog_taz
         lscog_pop_hh_emp.assign(geometry=lscog_pop_hh_emp.geometry.centroid).to_crs(lscog_taz.crs),
         how='left'
     )
-    .groupby(['ID', 'Area', 'TAZ_ID', 'COUNTY', 'AREA_TYPE', 'COUNTYID'], 
+    .groupby(['ID', 'Area', 'TAZ_ID', 'COUNTY', 'AREA_TYPE', 'COUNTYID'],
              as_index=False, dropna=False)
     .agg({
         # Population and Household Size
@@ -2000,7 +2018,7 @@ lscog_taz_enroll
 lscog_taz_enroll = lscog_taz.sjoin(lscog_sch_enroll, how='left') \
     .groupby(['ID', 'Area', 'TAZ_ID', 'COUNTY', 'AREA_TYPE', 'COUNTYID'], as_index=False) \
     .agg({'STUDENT_COUNT': 'sum'})
-    
+
 lscog_taz_enroll
 ```
 
@@ -2065,7 +2083,7 @@ lscog_se_base = lscog_taz_pop.merge(
     how='left'
 )
 
-lscog_se_base = lscog_se_base[field_order + 
+lscog_se_base = lscog_se_base[field_order +
                               list(lscog_se_base.columns.difference(field_order))]
 
 lscog_se_base
