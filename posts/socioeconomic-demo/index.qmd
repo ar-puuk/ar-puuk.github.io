@@ -325,14 +325,14 @@ The interactive map visualization displays the TAZ structure colored by county, 
 
 ```{r eval = knitr::is_html_output()}
 # Create interactive map
-mapview::mapview(lscog_taz, zcol = "COUNTY", lwd = 1.6, map.types = "CartoDB.Positron", col.regions = RColorBrewer::brewer.pal(6, "Dark2"))
+mapview::mapview(lscog_taz, zcol = "COUNTY", lwd = 1.6, map.types = "CartoDB.Voyager", col.regions = RColorBrewer::brewer.pal(6, "Dark2"))
 ```
 
 #### Python
 
 ```{python eval = knitr::is_html_output()}
 # Create interactive map
-lscog_taz.explore(column="COUNTY", categorical=True, legend=True, tiles="CartoDB positron", zoom_start=8)
+lscog_taz.explore(column="COUNTY", categorical=True, legend=True, tiles="CartoDB.Voyager", zoom_start=8)
 ```
 
 :::
