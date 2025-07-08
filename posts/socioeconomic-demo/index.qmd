@@ -59,7 +59,6 @@ library("pacman") # Package Management Tool CRAN v0.5.1
 pacman::p_load(
   tidyverse, # Easily Install and Load the 'Tidyverse'
   sf, # Simple Features for R
-  sfdep, # Spatial Dependence for Simple Features
   tidycensus, # Load US Census Boundary and Attribute Data
   lehdr, # Grab Longitudinal Employer-Household Dynamics (LEHD)
   arcgis, # ArcGIS Location Services Meta-Package
