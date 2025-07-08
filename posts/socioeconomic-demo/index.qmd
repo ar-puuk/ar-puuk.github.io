@@ -40,9 +40,9 @@ This section establishes the computational environment for processing socioecono
 
 The package installation process incorporates essential libraries for comprehensive geospatial data analysis.
 
-The R environment utilizes the `pacman` package manager to streamline the installation of multiple packages simultaneously, including `tidyverse` for data manipulation, `sf` for spatial data handling, `tidycensus` for Census Bureau data access, and `lehdr` for Longitudinal Employer-Household Dynamics data retrieval.
+The R environment includes `{tidyverse}` for data manipulation, `{sf}` for spatial data handling, `{tidycensus}` for Census Bureau data access, and `{lehdr}` for Longitudinal Employer-Household Dynamics data retrieval.
 
-The Python environment focuses on core data science libraries including `pandas` for data manipulation, `geopandas` for spatial analysis, and `pygris` for Census data queries. These packages form the analytical backbone for processing demographic, employment, and geographic data required for travel demand modeling.
+The Python environment focuses on core data science libraries including `{pandas}` for data manipulation, `{geopandas}` for spatial analysis, and `{pygris}` for Census data queries. These packages form the analytical backbone for processing demographic, employment, and geographic data required for travel demand modeling.
 
 ::: panel-tabset
 
@@ -52,6 +52,7 @@ The Python environment focuses on core data science libraries including `pandas`
 # # Install required packages
 # install.packages(c(
 #   "tidyverse",
+#   "vroom",
 #   "sf",
 #   "tidycensus",
 #   "lehdr",
@@ -63,6 +64,7 @@ The Python environment focuses on core data science libraries including `pandas`
 
 # Load packages
 library(tidyverse)    # Data manipulation and visualization
+library(vroom)        # Read rectangular data
 library(sf)           # Spatial analysis
 library(tidycensus)   # Accessing US Census Data
 library(lehdr)        # Access LODES data
@@ -732,7 +734,7 @@ Public school data is made available by National Center for Education Statistics
 
 > For more information on the NCES Public School data, refer to [CCD Online Documentation](https://nces.ed.gov/ccd/).
 
-To retreive the data from ArcGIS REST service, we use the `arcgislayers` package in R and create a custom function in Python to read the ArcGIS FeatureLayer or Table. This has been implemented to function similarly to the `arcgislayers` package in R, allowing us to query the service with a SQL WHERE clause and return the data as a GeoDataFrame.
+To retrieve the data from ArcGIS REST service, we use the `{arcgislayers}` package in R and create a custom function in Python to read the ArcGIS FeatureLayer or Table. This has been implemented to function similarly to the `{arcgislayers}` package in R, allowing us to query the service with a SQL WHERE clause and return the data as a GeoDataFrame.
 
 ::: panel-tabset
 
@@ -960,7 +962,7 @@ The data cleaning process involves harmonizing multiple Census data sources to c
 
 ## Household-weighted interpolation
 
-The interpolation process transfers ACS block group data to individual census blocks using household counts as weights. This method ensures that socioeconomic characteristics are distributed proportionally based on residential density rather than simple geometric overlay. The `tidycensus` package provides robust interpolation functionality that preserves the extensive nature of count variables while maintaining spatial relationships. For Python, the `interpolate_pw()` function is implemented to achieve similar functionality using population-weighted interpolation.
+The interpolation process transfers ACS block group data to individual census blocks using household counts as weights. This method ensures that socioeconomic characteristics are distributed proportionally based on residential density rather than simple geometric overlay. The `{tidycensus}` package provides robust interpolation functionality that preserves the extensive nature of count variables while maintaining spatial relationships. For Python, the `interpolate_pw()` function is implemented to achieve similar functionality using population-weighted interpolation.
 
 :::panel-tabset
 
