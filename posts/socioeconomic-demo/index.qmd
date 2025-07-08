@@ -9,8 +9,8 @@ author:
 date: "2025-07-05"
 engine: knitr
 execute: 
-  message: false
   warning: false
+  message: false
 categories: [r, python, gis, data science, spatial analysis, transportation]
 ---
 
@@ -2052,7 +2052,7 @@ lscog_se_base
 ```{python}
 
 # Define the column order
-column_order = [
+field_order = [
     'ID', 'Area', 'TAZ_ID', 'COUNTY', 'AREA_TYPE', 'COUNTYID',
     'INC_14999', 'INC_49999', 'INC_50000',
     'TOTPOP', 'GQPOP', 'HHPOP',
@@ -2066,8 +2066,8 @@ lscog_se_base = lscog_taz_pop.merge(
     how='left'
 )
 
-lscog_se_base = lscog_se_base[column_order + 
-                              list(lscog_se_base.columns.difference(column_order))]
+lscog_se_base = lscog_se_base[field_order + 
+                              list(lscog_se_base.columns.difference(field_order))]
 
 lscog_se_base
 ```
