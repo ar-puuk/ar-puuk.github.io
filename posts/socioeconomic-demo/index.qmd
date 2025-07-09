@@ -46,7 +46,7 @@ The Python environment focuses on core data science libraries including `{pandas
 
 ::: panel-tabset
 
-#### {{< fa brands r-project >}} R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 # # Install required packages
@@ -74,7 +74,7 @@ library(RColorBrewer) # Color palettes for maps
 library(janitor)      # Data cleaning and preparation
 ```
 
-#### {{< fa brands python >}} Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 # Install required packages if not available
@@ -110,7 +110,7 @@ Configuration settings optimize performance and establish spatial consistency. T
 
 ::: panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 # Set options
@@ -120,7 +120,7 @@ options(tigris_use_cache = TRUE) # cache tiger/line shapefile for future use
 project_crs <- "EPSG:3361"
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 # Set project CRS
@@ -137,7 +137,7 @@ API authentication enables access to detailed demographic and economic datasets 
 
 ::: panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 #| eval: false
@@ -146,7 +146,7 @@ API authentication enables access to detailed demographic and economic datasets 
 tidycensus::census_api_key("your_api_key_here", install = TRUE)
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| eval: false
@@ -163,14 +163,14 @@ The centralized directory structure organizes input data, processing files, and 
 
 ::: panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 # Set your main data folder
 root <- "M:/MA_Project/SC_LSCOG LRTP"
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 # Set your main data folder
@@ -189,7 +189,7 @@ The study area encompasses six counties within South Carolina: Aiken, Allendale,
 
 ::: panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 # Define state abbreviation and county names
@@ -204,7 +204,7 @@ county_names <- c(
 )
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 # Define state abbreviation and county names
@@ -225,7 +225,7 @@ FIPS code conversion translates state abbreviations and county names into standa
 
 ::: panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 # Converting state abbreviation code to FIPS code
@@ -241,7 +241,7 @@ fips_codes <- paste(state_fips, county_fips, sep = "")
 fips_codes
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 # Converting state abbreviation code to FIPS code
@@ -268,7 +268,7 @@ Coordinate transformation converts the TAZ geometry to the project's standard co
 
 ::: panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 # Load TAZ Shapefile
@@ -294,7 +294,7 @@ lscog_taz <- sf::read_sf(
 lscog_taz
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 # Load TAZ Shapefile
@@ -321,14 +321,14 @@ The interactive map visualization displays the TAZ structure colored by county, 
 
 ::: panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r eval = knitr::is_html_output()}
 # Create interactive map
 mapview::mapview(lscog_taz, zcol = "COUNTY", lwd = 1.6, map.types = "CartoDB.Voyager", col.regions = RColorBrewer::brewer.pal(6, "Dark2"))
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python eval = knitr::is_html_output()}
 # Create interactive map
@@ -351,7 +351,7 @@ Household size distributions are consolidated into four categories: 1-person, 2-
 
 ::: panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 # Define variables to download
@@ -393,7 +393,7 @@ lscog_dec <- tidycensus::get_decennial(
 lscog_dec
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 # Define variables to download
@@ -466,7 +466,7 @@ The block group geography represents the finest spatial resolution available for
 
 ::: panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 # Define variables to download
@@ -520,7 +520,7 @@ lscog_acs <- tidycensus::get_acs(
 lscog_acs
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 # Define variables to download
@@ -608,7 +608,7 @@ The 2019 reference year represents pre-pandemic employment patterns, providing a
 > For more information on the LEHD data, refer to the [LODES Technical Documentation](https://lehd.ces.census.gov/data/lodes/LODES8/LODESTechDoc8.3.pdf).
 
 ::: panel-tabset
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 
@@ -669,7 +669,7 @@ lscog_emp <- lehdr::grab_lodes(
 lscog_emp
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 # Download LEHD WAC data at block level
@@ -738,7 +738,7 @@ To retrieve the data from ArcGIS REST service, we use the `{arcgislayers}` packa
 
 ::: panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 
@@ -766,7 +766,7 @@ lscog_pub_sch_enroll <- arcgislayers::arc_read(
 lscog_pub_sch_enroll
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| code-fold: true
@@ -843,7 +843,7 @@ Private school enrollment data is accessed from the NCES Private School Universe
 
 ::: panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 ```{r}
 # Private School Enrollment data 2019-2020
 lscog_pvt_sch_enroll <- vroom::vroom(
@@ -879,7 +879,7 @@ lscog_pvt_sch_enroll <- vroom::vroom(
 lscog_pvt_sch_enroll
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 # Private School Enrollment data 2019-2020
@@ -921,7 +921,7 @@ Post-secondary institution locations are obtained from the NCES Integrated Posts
 
 ::: panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 ```{r}
 # Post-Secondary Location data 2019-2020
 lscog_college_loc <- arcgislayers::arc_read(
@@ -940,7 +940,7 @@ lscog_college_loc <- arcgislayers::arc_read(
 lscog_college_loc
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 ```{python}
 # Post-Secondary Location data 2019-2020
 lscog_college_loc = arc_read(
@@ -966,7 +966,7 @@ The interpolation process transfers ACS block group data to individual census bl
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 ```{r}
 # Interpolate ACS data to Decennial Census blocks
 lscog_acs_cb <- tidycensus::interpolate_pw(
@@ -982,7 +982,7 @@ lscog_acs_cb <- tidycensus::interpolate_pw(
 lscog_acs_cb
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| code-fold: true
@@ -1194,7 +1194,7 @@ The comparative visualization reveals the increased spatial resolution achieved 
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 ```{r}
 #| eval: false
 
@@ -1203,7 +1203,7 @@ mapview::mapview(lscog_acs_cb, zcol = "INC_49999", color = NA) |
   mapview::mapview(lscog_acs, zcol = "INC_49999", color = NA)
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 ```{python}
 #| eval: false
 
@@ -1220,7 +1220,7 @@ The integration step merges the interpolated ACS socioeconomic data with the Dec
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 ```{r}
 ## Combine ACS Data to Decennial data
 lscog_pop_hh <- lscog_dec |>
@@ -1232,7 +1232,7 @@ lscog_pop_hh <- lscog_dec |>
 lscog_pop_hh
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 ```{python}
 
 ## Combine ACS Data to Decennial data
@@ -1250,7 +1250,7 @@ Income category adjustments reconcile the interpolated ACS estimates with actual
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 ```{r}
 
 ## Combine adjusted HH income level to Decennial census instead of ACS
@@ -1265,7 +1265,7 @@ lscog_pop_hh <- lscog_pop_hh |>
 lscog_pop_hh
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 
@@ -1286,7 +1286,7 @@ The employment integration incorporates LEHD (Longitudinal Employer-Household Dy
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 
@@ -1297,7 +1297,7 @@ lscog_pop_hh_emp <- lscog_pop_hh |>
 lscog_pop_hh_emp
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 
@@ -1325,7 +1325,7 @@ The Traffic Analysis Zone (TAZ) boundary export provides the fundamental geograp
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 #| eval: false
@@ -1342,7 +1342,7 @@ lscog_taz |>
   )
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| eval: false
@@ -1360,7 +1360,7 @@ lscog_taz.to_csv(
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 ```{r}
 #| eval: false
 
@@ -1376,7 +1376,7 @@ lscog_taz |>
   )
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| eval: false
@@ -1399,7 +1399,7 @@ The block-to-TAZ conversion table establishes the critical linkage between fine-
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 #| eval: false
@@ -1418,7 +1418,7 @@ lscog_cb |>
   )
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| eval: false
@@ -1440,7 +1440,7 @@ The decennial census block export captures the foundational demographic counts u
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 #| eval: false
@@ -1457,7 +1457,7 @@ lscog_dec |>
   )
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| eval: false
@@ -1475,7 +1475,7 @@ lscog_dec.to_csv(
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 #| eval: false
@@ -1492,7 +1492,7 @@ lscog_dec |>
   )
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| eval: false
@@ -1515,7 +1515,7 @@ The interpolated ACS data export delivers income distribution estimates at the c
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 #| eval: false
@@ -1533,7 +1533,7 @@ lscog_acs_cb |>
   )
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| eval: false
@@ -1551,7 +1551,7 @@ lscog_acs_cb[['GEOID', 'INC_14999', 'INC_49999', 'INC_50000']].to_csv(
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 #| eval: false
@@ -1569,7 +1569,7 @@ lscog_acs_cb |>
   )
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| eval: false
@@ -1592,7 +1592,7 @@ The employment data export provides comprehensive workplace characteristics by i
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 ```{r}
 #| eval: false
 
@@ -1609,7 +1609,7 @@ lscog_pop_hh_emp |>
   )
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| eval: false
@@ -1629,7 +1629,7 @@ lscog_pop_hh_emp[['GEOID', 'TOTAL_EMP', 'AGR_FOR_FI', 'MINING', 'CONSTRUCTI',
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 #| eval: false
@@ -1647,7 +1647,7 @@ lscog_pop_hh_emp |>
   )
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| eval: false
@@ -1672,7 +1672,7 @@ The public school location export integrates educational facility data with the 
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 #| eval: false
@@ -1690,7 +1690,7 @@ lscog_pub_sch_enroll |>
   )
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| eval: false
@@ -1712,7 +1712,7 @@ lscog_pub_sch_enroll.sjoin(
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 #| eval: false
@@ -1730,7 +1730,7 @@ lscog_pub_sch_enroll |>
   )
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| eval: false
@@ -1756,7 +1756,7 @@ The private school dataset complements the public education data by capturing en
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 #| eval: false
@@ -1774,7 +1774,7 @@ lscog_pvt_sch_enroll |>
   )
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| eval: false
@@ -1796,7 +1796,7 @@ lscog_pvt_sch_enroll.sjoin(
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 #| eval: false
@@ -1814,7 +1814,7 @@ lscog_pvt_sch_enroll |>
   )
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| eval: false
@@ -1842,7 +1842,7 @@ The spatial join operation aggregates all demographic, housing, and employment v
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 # Aggregate population, households, and employment to TAZ
@@ -1892,7 +1892,7 @@ lscog_taz_pop <- lscog_taz |>
 lscog_taz_pop
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 
@@ -1946,7 +1946,7 @@ The school enrollment combination merges public and private educational institut
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 # Combine school enrollment data
@@ -1964,7 +1964,7 @@ lscog_sch_enroll <- dplyr::bind_rows(
 lscog_sch_enroll
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 
@@ -1989,7 +1989,7 @@ The subsequent TAZ aggregation counts total student enrollment within each zone,
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 # count the number of school enrollment within each TAZ
@@ -2012,7 +2012,7 @@ lscog_taz_enroll <- lscog_taz |>
 lscog_taz_enroll
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 
@@ -2032,7 +2032,7 @@ This step integrates all TAZ-level socioeconomic datasets into a comprehensive b
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 # Combine population, household, employments, and school enrollment
@@ -2066,7 +2066,7 @@ lscog_se_base <- lscog_taz_pop |>
 lscog_se_base
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 
@@ -2103,7 +2103,7 @@ This validation confirms that the total household count matches the sum of all h
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 ```{r}
 # check the sum of household by household size
 lscog_se_base |>
@@ -2111,7 +2111,7 @@ lscog_se_base |>
   nrow()
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 
@@ -2129,7 +2129,7 @@ The income category validation verifies that household totals equal the sum of a
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 # check the sum of household by income level
@@ -2138,7 +2138,7 @@ lscog_se_base |>
   nrow()
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 
@@ -2157,7 +2157,7 @@ The employment validation confirms that total employment equals the sum of all i
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 # check the sum of employment by categories
@@ -2178,7 +2178,7 @@ lscog_se_base |>
   nrow()
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 
@@ -2208,7 +2208,7 @@ The final export creates the complete TAZ-level socioeconomic dataset in both ta
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 #| eval: false
@@ -2222,7 +2222,7 @@ lscog_se_base |>
   )
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| eval: false
@@ -2241,7 +2241,7 @@ lscog_se_base |>
 
 :::panel-tabset
 
-#### R
+#### {{< fa brands r-project >}}  R
 
 ```{r}
 #| eval: false
@@ -2258,7 +2258,7 @@ lscog_se_base |>
   )
 ```
 
-#### Python
+#### {{< fa brands python >}}  Python
 
 ```{python}
 #| eval: false
