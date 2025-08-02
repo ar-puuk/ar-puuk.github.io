@@ -9,23 +9,6 @@ title-block-banner: true
 
 page-layout: article
 
-format:
-  html:
-    toc: true
-    number-sections: true
-    number-depth: 2
-    html-math-method: katex
-    code-link: true
-    code-tools: true
-  typst:
-    toc: true
-    number-sections: true
-    number-depth: 2
-  docx:
-    toc: true
-    number-sections: true
-    number-depth: 2
-
 execute:
   eval: true
 
