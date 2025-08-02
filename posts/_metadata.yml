@@ -36,8 +36,6 @@ format-links:
     icon: file-pdf
   - docx
 
-prefer-html: true
-
 knitr:
   opts_chunk:
     dev: ragg_png

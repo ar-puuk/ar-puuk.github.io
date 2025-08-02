@@ -2,7 +2,7 @@
 title: "Quantifying Economic Effects of Transportation Investments"
 subtitle: "Methods and Applications for Regional Planning"
 author: "Pukar Bhandari"
-date: "August 7 2025"
+date: "2025-08-07"
 draft: true
 categories: [R, Transportation, Economic Impact Analysis, Benefit Cost Analysis]
 ---
