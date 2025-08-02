@@ -37,3 +37,7 @@ format-links:
   - docx
 
 prefer-html: true
+
+knitr:
+  opts_chunk:
+    dev: ragg_png

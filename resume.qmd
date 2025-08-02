@@ -1,11 +1,10 @@
 ---
-title: "Resume"
+pagetitle: Resume | Pukar Bhandari
 format: html
 ---
 
-<iframe 
-  width="1050" 
-  height="1200" 
-  src="attachments/Resume_PukarBhandari_July2025.pdf">
+<iframe
+  width="1050"
+  height="1200"
+  src="assets/pdfs/Resume_PukarBhandari_July2025.pdf">
 </iframe>
-

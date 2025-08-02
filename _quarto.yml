@@ -18,22 +18,29 @@ website:
         text: Resume
 
     right:
-      - icon: globe2
-        href: https://bhandaripukar.com.np/
       - icon: linkedin
         href: https://www.linkedin.com/in/arpuuk
       - icon: github
         href: https://github.com/ar-puuk/
-      - icon: mastodon
-        href: https://urbanists.social/@arpuuk
+    page-footer:
+      left: 2025 Pukar Bhandari &#8729; Made with [Quarto](https://quarto.org)
+      right:
+        - text: Contact
+          aria-label: Contact Form
+          href: contact.qmd
+        - text: License
+          aria-label: License Details
+          href: license.qmd
 format:
   html:
     respect-user-color-scheme: true
     theme:
-      light: "flatly"
-      dark: "darkly"
-    css: styles.css
-
-
-
-
+      light:
+        - "flatly"
+        - theme.scss
+      dark:
+        - "darkly"
+        - theme.scss
+    mainfont: "Poppins"
+    monofont: "Fira Code"
+    css: assets/css/index.css

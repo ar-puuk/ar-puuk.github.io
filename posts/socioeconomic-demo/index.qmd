@@ -11,14 +11,16 @@ engine: knitr
 execute:
   warning: false
   message: false
-categories: [r, python, gis, data science, spatial analysis, transportation]
+categories: [R, Python, GIS, Data Science, Spatial Analysis, Transportation]
 ---
 
 ```{r reticulate}
 #| include: false
 
 # Setup reticulate for Python code execution
-# install.packages("reticulate", dependencies = TRUE)
+if (!requireNamespace("reticulate", quietly = TRUE)) {
+  install.packages("reticulate", dependencies = TRUE)
+}
 library(reticulate)
 
 reticulate::use_condaenv("metro", required = TRUE)
@@ -106,7 +108,7 @@ from pygris.data import get_census, get_lodes
 
 ## Set global options and parameters
 
-Configuration settings optimize performance and establish spatial consistency. The `tigris` cache prevents redundant TIGER/Line shapefile downloads. The South Carolina State Plane coordinate system (`EPSG:3361`) serves as the standard projection for accurate GIS operations
+Configuration settings optimize performance and establish spatial consistency. The `{tigris}` cache prevents redundant TIGER/Line shapefile downloads. The South Carolina State Plane coordinate system (`EPSG:3361`) serves as the standard projection for accurate GIS operations
 
 ::: panel-tabset
 

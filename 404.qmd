@@ -1,0 +1,19 @@
+---
+pagetitle: Page Not Found | Pukar Bhandari
+---
+
+<!-- Source: https://github.com/Paulj1989/paulrjohnson.net/blob/main/404.qmd -->
+
+<br>
+
+<div style="text-align: center">
+
+# {{< fa face-frown >}} Page Not Found {{< fa face-frown >}}
+
+The page you have requested cannot be found<br>(perhaps it has been moved or renamed).
+
+<iframe src="https://c.xkcd.com/random/comic/" width="100%" height="600" frameborder="0" style="max-width: 800px; margin: 20px auto;"></iframe>
+
+Please return from whence you came and try again.
+
+</div>

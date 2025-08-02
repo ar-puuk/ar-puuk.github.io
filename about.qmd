@@ -1,6 +1,6 @@
 ---
-title: "Pukar Bhandari"
-image: "attachments/Headshot_PukarBhandari_July2025.png"
+pagetitle: About | Pukar Bhandari
+image: "assets/images/Headshot_PukarBhandari_July2025.png"
 about:
   template: jolla
   image-width: 12em

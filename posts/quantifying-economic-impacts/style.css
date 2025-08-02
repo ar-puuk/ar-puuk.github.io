@@ -1,0 +1,211 @@
+/* custom-style.css - Adapted from Emi Tanaka's Toronto2022 presentation */
+
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root {
+  --r-background-color: #ffffff;
+  --r-main-font: 'Atkinson Hyperlegible', sans-serif;
+  --r-main-font-size: 36px;
+  --r-main-color: #333333;
+  --r-block-margin: 12px;
+  --r-heading-margin: 0 0 12px 0;
+  --r-heading-font: 'Atkinson Hyperlegible', sans-serif;
+  --r-heading-color: #333333;
+  --r-heading-line-height: 1.2;
+  --r-heading-letter-spacing: normal;
+  --r-heading-text-transform: none;
+  --r-heading-text-shadow: none;
+  --r-heading-font-weight: 700;
+  --r-heading1-text-shadow: none;
+  --r-heading1-size: 2.4em;
+  --r-heading2-size: 1.8em;
+  --r-heading3-size: 1.4em;
+  --r-heading4-size: 1.2em;
+  --r-code-font: 'Fira Code', 'Consolas', 'Monaco', monospace;
+  --r-link-color: #1f5582;
+  --r-link-color-dark: #1a4c73;
+  --r-link-color-hover: #2a6a94;
+}
+
+.reveal {
+  font-family: var(--r-main-font);
+  font-size: var(--r-main-font-size);
+  font-weight: normal;
+  color: var(--r-main-color);
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+  margin: var(--r-heading-margin);
+  color: var(--r-heading-color);
+  font-family: var(--r-heading-font);
+  font-weight: var(--r-heading-font-weight);
+  line-height: var(--r-heading-line-height);
+  letter-spacing: var(--r-heading-letter-spacing);
+  text-transform: var(--r-heading-text-transform);
+  text-shadow: var(--r-heading-text-shadow);
+  word-wrap: break-word;
+}
+
+.reveal h1 {
+  font-size: var(--r-heading1-size);
+  color: #1f5582;
+}
+
+.reveal h2 {
+  font-size: var(--r-heading2-size);
+  color: #1f5582;
+}
+
+.reveal h3 {
+  font-size: var(--r-heading3-size);
+  color: #666666;
+}
+
+/* Title slide styling */
+.reveal .title-slide h1.title {
+  color: #1f5582;
+  font-size: 2.2em;
+  font-weight: 700;
+  margin-bottom: 0.3em;
+}
+
+.reveal .title-slide .subtitle {
+  color: #666666;
+  font-size: 1.3em;
+  font-style: italic;
+  margin-bottom: 1em;
+}
+
+.reveal .title-slide .author {
+  color: #333333;
+  font-size: 1.1em;
+  margin-bottom: 0.5em;
+}
+
+.reveal .title-slide .date {
+  color: #666666;
+  font-size: 0.9em;
+}
+
+/* Code styling */
+.reveal pre {
+  display: block;
+  position: relative;
+  width: 90%;
+  margin: var(--r-block-margin) auto;
+  text-align: left;
+  font-size: 0.75em;
+  font-family: var(--r-code-font);
+  line-height: 1.2em;
+  word-wrap: break-word;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+}
+
+.reveal code {
+  font-family: var(--r-code-font);
+  text-transform: none;
+  tab-size: 2;
+  background-color: #f8f8f8;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+/* Lists */
+.reveal ul {
+  margin-left: 1em;
+}
+
+.reveal ul li {
+  margin-bottom: 0.5em;
+}
+
+/* Links */
+.reveal a {
+  color: var(--r-link-color);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.reveal a:hover {
+  color: var(--r-link-color-hover);
+  text-shadow: none;
+  border: none;
+}
+
+/* Fragments */
+.reveal .fragment.highlight-current-blue.current-fragment {
+  color: #1f5582;
+  font-weight: bold;
+}
+
+/* Custom utility classes */
+.center {
+  text-align: center;
+}
+
+.smaller {
+  font-size: 0.8em;
+}
+
+.large {
+  font-size: 1.2em;
+}
+
+/* Columns */
+.reveal .columns {
+  display: flex;
+  align-items: flex-start;
+}
+
+.reveal .column {
+  flex: 1;
+  margin: 0 10px;
+}
+
+/* Footer styling */
+.reveal .footer {
+  position: absolute;
+  bottom: 1em;
+  left: 1em;
+  font-size: 0.6em;
+  color: #666666;
+}
+
+/* Slide number */
+.reveal .slide-number {
+  color: #666666;
+  background-color: transparent;
+  font-size: 0.6em;
+}
+
+/* Notes styling */
+.reveal .notes {
+  font-size: 0.7em;
+  color: #666666;
+  font-style: italic;
+}
+
+/* Info box styling - adapted from Emi Tanaka's style */
+.info-box {
+  margin-top: 10px;
+  margin-right: 10px;
+  border-left: 10px solid #006DAE;
+  padding-left: 20px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #e8f4f8;
+}
+
+.fa-ul {
+    list-style-type: none!important;
+    margin-left: var(--fa-li-margin, 2.5em)!important;
+    padding-left: 0!important;
+}

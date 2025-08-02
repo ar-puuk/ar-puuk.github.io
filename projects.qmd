@@ -1,5 +1,5 @@
 ---
-title: "Projects"
+pagetitle: Projects | Pukar Bhandari
 listing:
   contents: posts/**/*.qmd
   sort: "date desc"
