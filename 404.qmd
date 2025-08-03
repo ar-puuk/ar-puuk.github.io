@@ -10,10 +10,50 @@ pagetitle: Page Not Found | Pukar Bhandari
 
 # {{< fa face-frown >}} Page Not Found {{< fa face-frown >}}
 
-The page you have requested cannot be found<br>(perhaps it has been moved or renamed).
+The page you have requested cannot be found<br>(perhaps it has been moved or renamed). 
 
-<iframe src="https://c.xkcd.com/random/comic/" width="100%" height="600" frameborder="0" style="max-width: 800px; margin: 20px auto;"></iframe>
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+if (!requireNamespace("httr2", quietly = TRUE)) {
+  install.packages("httr2", dependencies = TRUE)
+}
+library(httr2)
 
+# Function to get random xkcd comic
+get_random_xkcd <- function() {
+  tryCatch({
+    # Get latest comic info to know the range
+    latest_data <- httr2::request("https://xkcd.com/info.0.json") |>
+      httr2::req_perform() |>
+      httr2::resp_body_json()
+    
+    # Generate random comic number
+    random_num <- sample(1:latest_data$num, 1)
+    
+    # Get the random comic
+    comic_data <- httr2::request(paste0("https://xkcd.com/", random_num, "/info.0.json")) |>
+      httr2::req_perform() |>
+      httr2::resp_body_json()
+    
+    return(comic_data)
+  }, error = function(e) {
+    return(NULL)
+  })
+}
+
+# Get random comic
+comic <- get_random_xkcd()
+
+if (!is.null(comic)) {
+  cat(paste0("### [", comic$title, "](https://xkcd.com/", comic$num, "){target='_blank'}\n\n"))
+  cat(paste0("![", comic$alt, "](", comic$img, "){style='max-width: 100%; height: auto;'}\n\n"))
+  cat(paste0("*", comic$alt, "*\n\n"))
+} else {
+  cat("Could not load xkcd comic. [Visit xkcd.com](https://xkcd.com){target='_blank'}\n\n")
+}
+```
 Please return from whence you came and try again.
 
 </div>
