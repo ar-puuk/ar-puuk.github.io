@@ -44,5 +44,5 @@ format:
     mainfont: "Poppins"
     monofont: "Fira Code"
     css: assets/css/index.css
-# include-in-header:
-#   - _includes/preload-fonts.html
+    include-in-header:
+      - _includes/preload-fonts.html
