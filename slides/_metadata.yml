@@ -1,7 +1,19 @@
-# This completely overrides the parent posts/_metadata.yml for this subfolder
+# options specified here will apply to all slides in this folder
+
+# freeze computational output
+# (see https://quarto.org/docs/projects/code-execution.html#freeze)
+freeze: auto
+
+# Enable banner style title blocks
+title-block-banner: false
+
+# Full page layout
+page-layout: full
+
+# Specify slide format
 format:
   revealjs:
-    # theme: default
+    theme: default
     slide-number: true
     show-slide-number: all
     show-notes: false
@@ -28,6 +40,3 @@ format:
         themeVariables:
           fontSize: "12px"
 
-# Disable other parent settings
-title-block-banner: false
-page-layout: full

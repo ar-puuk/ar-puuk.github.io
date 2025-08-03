@@ -7,8 +7,10 @@ freeze: auto
 # Enable banner style title blocks
 title-block-banner: true
 
+# Article page layout
 page-layout: article
 
+# Specify post formats
 format:
   html:
     toc: true
