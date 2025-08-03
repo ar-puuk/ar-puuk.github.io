@@ -16,6 +16,9 @@ The page you have requested cannot be found<br>(perhaps it has been moved or ren
 #| echo: false
 #| warning: false
 #| message: false
+#| results: asis
+
+# Load httr2 package
 if (!requireNamespace("httr2", quietly = TRUE)) {
   install.packages("httr2", dependencies = TRUE)
 }
@@ -46,6 +49,7 @@ get_random_xkcd <- function() {
 # Get random comic
 comic <- get_random_xkcd()
 
+# display the comic with respective information
 if (!is.null(comic)) {
   cat(paste0("### [", comic$title, "](https://xkcd.com/", comic$num, "){target='_blank'}\n\n"))
   cat(paste0("![", comic$alt, "](", comic$img, "){style='max-width: 100%; height: auto;'}\n\n"))
