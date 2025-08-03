@@ -10,6 +10,9 @@ webr:
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
 <br>
+
+<div>
+
 <div style="text-align: center">
 
 # {{< fa face-frown >}} Page Not Found {{< fa face-frown >}}
@@ -18,16 +21,10 @@ The page you have requested cannot be found<br>(perhaps it has been moved or ren
 
 **But hey, generate your own random xkcd comic to cheer up!**
 
+</div>
+
 ```{webr}
 #| label: random-xkcd
-#| autorun: false
-#| runbutton: true
-#| timelimit: 30
-#| startover: true
-#| edit: true
-#| echo: true
-#| results: asis
-
 library(httr2)
 
 # Function to get random xkcd comic
@@ -59,12 +56,15 @@ comic <- get_random_xkcd()
 if (!is.null(comic)) {
   cat(paste0("### [", comic$title, "](https://xkcd.com/", comic$num, "){target='_blank'}\n\n"))
   cat(paste0("![", comic$alt, "](", comic$img, "){style='max-width: 100%; height: auto;'}\n\n"))
-  cat(paste0("*", comic$alt, "*\n\n"))
 } else {
   cat("Could not load xkcd comic. [Visit xkcd.com](https://xkcd.com){target='_blank'}\n\n")
 }
 ```
 
+<div style="text-align: center">
+
 Please return from whence you came and try again.
+
+</div>
 
 </div>
