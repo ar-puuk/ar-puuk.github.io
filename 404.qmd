@@ -55,9 +55,11 @@ get_random_xkcd <- function() {
 # Get random comic
 comic <- get_random_xkcd()
 
+# display the comic with respective information
 if (!is.null(comic)) {
   cat(paste0("### [", comic$title, "](https://xkcd.com/", comic$num, "){target='_blank'}\n\n"))
   cat(paste0("![", comic$alt, "](", comic$img, "){style='max-width: 100%; height: auto;'}\n\n"))
+  cat(paste0("*", comic$alt, "*\n\n"))
 } else {
   cat("Could not load xkcd comic. [Visit xkcd.com](https://xkcd.com){target='_blank'}\n\n")
 }
