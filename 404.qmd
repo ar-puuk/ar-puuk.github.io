@@ -5,59 +5,42 @@ pagetitle: Page Not Found | Pukar Bhandari
 <!-- Source: https://github.com/Paulj1989/paulrjohnson.net/blob/main/404.qmd -->
 
 <br>
-
 <div style="text-align: center">
-
 # {{< fa face-frown >}} Page Not Found {{< fa face-frown >}}
+The page you have requested cannot be found<br>(perhaps it has been moved or renamed).
 
-The page you have requested cannot be found<br>(perhaps it has been moved or renamed). 
+Look at this random XQCD comic instead:
 
-```{r}
-#| echo: false
-#| warning: false
-#| message: false
-#| results: asis
+<div id="xkcd-comic" style="margin: 20px auto; max-width: 600px;">
+  <p>Loading random xkcd comic...</p>
+</div>
 
-# Load httr2 package
-if (!requireNamespace("httr2", quietly = TRUE)) {
-  install.packages("httr2", dependencies = TRUE)
-}
-library(httr2)
-
-# Function to get random xkcd comic
-get_random_xkcd <- function() {
-  tryCatch({
-    # Get latest comic info to know the range
-    latest_data <- httr2::request("https://xkcd.com/info.0.json") |>
-      httr2::req_perform() |>
-      httr2::resp_body_json()
+<script>
+async function loadRandomXkcd() {
+  try {
+    // Get latest comic number
+    const latestResponse = await fetch('https://xkcd.com/info.0.json');
+    const latest = await latestResponse.json();
     
-    # Generate random comic number
-    random_num <- sample(1:latest_data$num, 1)
+    // Get random comic
+    const randomNum = Math.floor(Math.random() * latest.num) + 1;
+    const comicResponse = await fetch(`https://xkcd.com/${randomNum}/info.0.json`);
+    const comic = await comicResponse.json();
     
-    # Get the random comic
-    comic_data <- httr2::request(paste0("https://xkcd.com/", random_num, "/info.0.json")) |>
-      httr2::req_perform() |>
-      httr2::resp_body_json()
-    
-    return(comic_data)
-  }, error = function(e) {
-    return(NULL)
-  })
+    // Display comic
+    document.getElementById('xkcd-comic').innerHTML = `
+      <h3><a href="https://xkcd.com/${comic.num}" target="_blank">${comic.title}</a></h3>
+      <img src="${comic.img}" alt="${comic.alt}" style="max-width: 100%; height: auto;">
+      <p><em>${comic.alt}</em></p>
+    `;
+  } catch (error) {
+    document.getElementById('xkcd-comic').innerHTML = '<p>Could not load xkcd comic. <a href="https://xkcd.com" target="_blank">Visit xkcd.com</a></p>';
+  }
 }
 
-# Get random comic
-comic <- get_random_xkcd()
+// Load comic when page loads
+loadRandomXkcd();
+</script>
 
-# display the comic with respective information
-if (!is.null(comic)) {
-  cat(paste0("### [", comic$title, "](https://xkcd.com/", comic$num, "){target='_blank'}\n\n"))
-  cat(paste0("![", comic$alt, "](", comic$img, "){style='max-width: 100%; height: auto;'}\n\n"))
-  cat(paste0("*", comic$alt, "*\n\n"))
-} else {
-  cat("Could not load xkcd comic. [Visit xkcd.com](https://xkcd.com){target='_blank'}\n\n")
-}
-```
-Please return from whence you came and try again.
-
+Or, please return from whence you came and try again.
 </div>

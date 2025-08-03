@@ -319,20 +319,43 @@ ul.task-list li input[type="checkbox"] {
 
 
 <!-- Source: https://github.com/Paulj1989/paulrjohnson.net/blob/main/404.qmd -->
-<p><br></p>
+<br>
 <section id="page-not-found" class="level1" style="text-align: center">
 <h1><i class="fa-solid fa-face-frown" aria-label="face-frown"></i> Page Not Found <i class="fa-solid fa-face-frown" aria-label="face-frown"></i></h1>
 <p>The page you have requested cannot be found<br>(perhaps it has been moved or renamed).</p>
-<section id="squirrel-plan" class="level3">
-<h3 class="anchored" data-anchor-id="squirrel-plan"><a href="https://xkcd.com/1503" target="_blank">Squirrel Plan</a></h3>
-<div class="quarto-figure quarto-figure-center" style="max-width: 100%; height: auto;">
-<figure class="figure">
-<p><img src="https://imgs.xkcd.com/comics/squirrel_plan.png" class="img-fluid figure-img"></p>
-<figcaption>[Halfway to the Sun …] Heyyyy … what if this BALLOON is full of acorns?!</figcaption>
-</figure>
+<p>Look at this random XQCD comic instead:</p>
+<div id="xkcd-comic" style="margin: 20px auto; max-width: 600px;">
+<p>
+Loading random xkcd comic…
+</p>
 </div>
-<p><em>[Halfway to the Sun …] Heyyyy … what if this BALLOON is full of acorns?!</em> Please return from whence you came and try again.</p>
-</section>
+<script>
+async function loadRandomXkcd() {
+  try {
+    // Get latest comic number
+    const latestResponse = await fetch('https://xkcd.com/info.0.json');
+    const latest = await latestResponse.json();
+    
+    // Get random comic
+    const randomNum = Math.floor(Math.random() * latest.num) + 1;
+    const comicResponse = await fetch(`https://xkcd.com/${randomNum}/info.0.json`);
+    const comic = await comicResponse.json();
+    
+    // Display comic
+    document.getElementById('xkcd-comic').innerHTML = `
+      <h3><a href="https://xkcd.com/${comic.num}" target="_blank">${comic.title}</a></h3>
+      <img src="${comic.img}" alt="${comic.alt}" style="max-width: 100%; height: auto;">
+      <p><em>${comic.alt}</em></p>
+    `;
+  } catch (error) {
+    document.getElementById('xkcd-comic').innerHTML = '<p>Could not load xkcd comic. <a href="https://xkcd.com" target="_blank">Visit xkcd.com</a></p>';
+  }
+}
+
+// Load comic when page loads
+loadRandomXkcd();
+</script>
+<p>Or, please return from whence you came and try again.</p>
 </section>
 
 
