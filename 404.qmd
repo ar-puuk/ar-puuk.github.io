@@ -4,89 +4,393 @@ format: live-html
 engine: knitr
 webr:
   packages:
-    - httr2
+    - dplyr
+    - ggplot2
 ---
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+{{< include ./_extensions/r-wasm/live/_gradethis.qmd >}}
 
 <br>
 
-<div>
-
 <div style="text-align: center">
 
-# {{< fa face-frown >}} Page Not Found {{< fa face-frown >}}
+# {{< fa road-barrier >}} Road Closed Ahead! {{< fa road-barrier >}}
 
-The page you have requested cannot be found<br>(perhaps it has been moved or renamed). 
+Looks like you've taken a wrong turn on the information highway. Perhaps the page you were looking for has been affected by the recent funding cuts. 
 
-**But hey, generate your own random xkcd comic to cheer up!**
+**While we wait for the public comment period, why not test your Transportation & Data Science smarts?** It’s more fun than hitting the back button. Probably.**
+
+Or if you're feeling conventional, <a href="javascript:history.back()">go back to where you came from</a>. But where’s the adventure in that?
 
 </div>
 
 ```{webr}
-#| label: random-xkcd
-#| results: asis
-library(httr2)
+#| context: setup
+#| include: false
 
-# Function to get random xkcd comic
-get_random_xkcd <- function() {
-  tryCatch({
-    # Use CORS proxy to access xkcd API
-    cors_proxy <- "https://corsproxy.io/?"
-    
-    # Get latest comic info to know the range
-    latest_resp <- httr2::request(paste0(cors_proxy, "https://xkcd.com/info.0.json")) |>
-      httr2::req_perform()
-    
-    if (httr2::resp_status(latest_resp) != 200) {
-      return(NULL)
-    }
-    
-    latest_data <- httr2::resp_body_json(latest_resp)
-    
-    # Generate random comic number
-    random_num <- sample(1:latest_data$num, 1)
-    
-    # Get the random comic
-    comic_resp <- httr2::request(paste0(cors_proxy, "https://xkcd.com/", random_num, "/info.0.json")) |>
-      httr2::req_perform()
-    
-    if (httr2::resp_status(comic_resp) != 200) {
-      return(NULL)
-    }
-    
-    comic_data <- httr2::resp_body_json(comic_resp)
-    
-    return(comic_data)
-  }, error = function(e) {
-    message("Error fetching xkcd comic: ", e$message)
-    return(NULL)
-  })
-}
+# Sample transportation data
+traffic_data <- data.frame(
+  location = c("Main St", "Oak Ave", "Park Rd", "First St", "Center Blvd"),
+  aadt = c(15000, 8500, 12000, 6800, 22000),  # Average Annual Daily Traffic
+  speed_limit = c(35, 25, 30, 25, 45),
+  lanes = c(4, 2, 3, 2, 6),
+  accidents_2023 = c(12, 3, 8, 2, 18)
+)
 
-# Get random comic
-comic <- get_random_xkcd()
+transit_ridership <- data.frame(
+  route = paste0("Route ", 1:8),
+  daily_riders = c(1200, 850, 2100, 650, 1800, 950, 1400, 780),
+  route_length_miles = c(12.5, 8.2, 18.3, 6.1, 15.7, 9.8, 13.2, 7.9)
+)
 
-# display the comic with respective information
-if (!is.null(comic)) {
-  # Clean the alt text for better display
-  alt_text <- gsub('"', '&quot;', comic$alt)
-  
-  cat(paste0("### [", comic$title, "](https://xkcd.com/", comic$num, "){target='_blank'}\n\n"))
-  cat(paste0("![", alt_text, "](", comic$img, "){style='max-width: 100%; height: auto;'}\n\n"))
-} else {
-  # Fallback: show a specific popular xkcd comic
-  cat("*Could not fetch random comic, but here's a classic!\n\n")
-  cat("### [Standards](https://xkcd.com/927){target='_blank'}\n\n")
-  cat(paste0("![How standards proliferate](https://imgs.xkcd.com/comics/standards.png){style='max-width: 100%; height: auto;'}\n\n"))
-  cat("[Visit xkcd.com for more](https://xkcd.com){target='_blank'}\n\n")
-}
+# Set gradethis options
+gradethis_setup(
+  pass = "✅ Excellent work!",
+  fail = "❌ Not quite right. Try again!",
+  code_correct = "🎯 Perfect code!",
+  code_incorrect = "🔧 Check your code syntax."
+)
 ```
 
-<div style="text-align: center">
+::: {.callout-tip}
+## Welcome to the Transportation Data Science Challenge! 🚦
 
-Please return from whence you came and try again.
+Complete these interactive R exercises to test your skills in transportation planning and data analysis. Each exercise builds on real-world scenarios you'll encounter as a transportation professional.
+:::
 
-</div>
+## Exercise 1: Traffic Volume Analysis 📊
 
-</div>
+Calculate the **Peak Hour Factor (PHF)** for a location where the peak hour volume is 1,800 vehicles and the peak 15-minute volume is 520 vehicles.
+
+*Remember: PHF = Peak Hour Volume / (4 × Peak 15-min Volume)*
+
+```{webr}
+#| exercise: ex_1
+
+# Calculate the Peak Hour Factor (PHF)
+peak_hour_volume <- 1800
+peak_15min_volume <- 520
+
+# Your code here:
+phf <- ___
+
+phf
+```
+
+```{webr}
+#| exercise: ex_1
+#| check: true
+
+# Model solution
+phf <- peak_hour_volume / (4 * peak_15min_volume)
+phf
+
+grade_result(
+  pass_if(~ round(.result, 3) == 0.865, "Perfect! PHF = 0.865 indicates moderate traffic peaking."),
+  fail_if(~ .result > 1, "PHF cannot exceed 1.0. Check your calculation."),
+  fail_if(~ .result < 0.5, "PHF too low. Double-check the formula: PHF = Peak Hour / (4 × Peak 15-min).")
+)
+```
+
+## Exercise 2: Level of Service Classification 🚥
+
+Using the `traffic_data` dataset, create a new column `los_category` that classifies each location's Level of Service based on volume-to-capacity ratio:
+- LOS A-C: "Good" (V/C ≤ 0.8)  
+- LOS D: "Acceptable" (0.8 < V/C ≤ 0.9)
+- LOS E-F: "Poor" (V/C > 0.9)
+
+*Assume capacity = 2,400 vehicles/hour/lane during peak hour (8% of AADT)*
+
+```{webr}
+#| exercise: ex_2
+
+# View the traffic data first
+head(traffic_data)
+
+# Calculate V/C ratio and classify LOS
+result <- traffic_data |>
+  mutate(
+    peak_hour_volume = ___ * ___,  # 8% of AADT
+    capacity = ___ * ___,          # 2400 per lane
+    vc_ratio = ___,
+    los_category = case_when(
+      ___ <= 0.8 ~ "Good",
+      ___ <= 0.9 ~ "Acceptable", 
+      TRUE ~ "Poor"
+    )
+  )
+
+# Show the result
+select(result, location, aadt, lanes, vc_ratio, los_category)
+```
+
+```{webr}
+#| exercise: ex_2
+#| check: true
+
+# Model solution
+result <- traffic_data |>
+  mutate(
+    peak_hour_volume = aadt * 0.08,
+    capacity = lanes * 2400,
+    vc_ratio = peak_hour_volume / capacity,
+    los_category = case_when(
+      vc_ratio <= 0.8 ~ "Good",
+      vc_ratio <= 0.9 ~ "Acceptable",
+      TRUE ~ "Poor"
+    )
+  )
+
+select(result, location, aadt, lanes, vc_ratio, los_category)
+
+grade_this({
+  if (!exists("result")) {
+    fail("Create a data frame called 'result'")
+  }
+  
+  if (!"los_category" %in% names(.result)) {
+    fail("Make sure to create the 'los_category' column")
+  }
+  
+  expected_categories <- c("Good", "Good", "Good", "Good", "Good")
+  if (all(.result$los_category == expected_categories)) {
+    pass("Excellent! Your LOS classification is correct. All locations show 'Good' service levels.")
+  } else {
+    fail("Check your V/C ratio calculation and LOS thresholds")
+  }
+})
+```
+
+## Exercise 3: Transit Performance Metrics 🚌
+
+Calculate the **riders per mile** for each transit route and identify the most efficient route.
+
+```{webr}
+#| exercise: ex_3
+
+# View the transit data
+head(transit_ridership)
+
+# Calculate efficiency and find the best route
+transit_analysis <- transit_ridership |>
+  mutate(riders_per_mile = ___) |>
+  arrange(___)
+
+# Show top 3 most efficient routes
+head(transit_analysis, 3)
+
+# Store the most efficient route name
+most_efficient_route <- ___
+
+paste("Most efficient route:", most_efficient_route)
+```
+
+```{webr}
+#| exercise: ex_3  
+#| check: true
+
+# Model solution
+transit_analysis <- transit_ridership |>
+  mutate(riders_per_mile = daily_riders / route_length_miles) |>
+  arrange(desc(riders_per_mile))
+
+head(transit_analysis, 3)
+
+most_efficient_route <- transit_analysis |>
+  slice(1) |>
+  pull(route)
+
+paste("Most efficient route:", most_efficient_route)
+
+grade_this({
+  if (!exists("most_efficient_route")) {
+    fail("Create a variable called 'most_efficient_route'")
+  }
+  
+  if (.result != "Route 2") {
+    fail("Check your calculation. Which route has the highest riders per mile?")
+  }
+  
+  pass("Perfect! Route 2 is indeed the most efficient with ~104 riders per mile.")
+})
+```
+
+## Exercise 4: Safety Analysis Visualization 📈
+
+Create a scatter plot showing the relationship between AADT and accidents, with point sizes representing the number of lanes.
+
+```{webr}
+#| exercise: ex_4
+
+library(ggplot2)
+
+# Create the safety analysis plot
+safety_plot <- ggplot(traffic_data, aes(x = ___, y = ___)) +
+  geom_point(aes(size = ___), alpha = 0.7, color = "steelblue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red", linetype = "dashed") +
+  labs(
+    title = "Traffic Volume vs. Accidents (2023)",
+    x = "Average Annual Daily Traffic",
+    y = "Number of Accidents",
+    size = "Number of Lanes"
+  ) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+safety_plot
+```
+
+```{webr}
+#| exercise: ex_4
+#| check: true
+
+# Model solution
+library(ggplot2)
+
+safety_plot <- ggplot(traffic_data, aes(x = aadt, y = accidents_2023)) +
+  geom_point(aes(size = lanes), alpha = 0.7, color = "steelblue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red", linetype = "dashed") +
+  labs(
+    title = "Traffic Volume vs. Accidents (2023)",
+    x = "Average Annual Daily Traffic", 
+    y = "Number of Accidents",
+    size = "Number of Lanes"
+  ) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+safety_plot
+
+grade_this({
+  if (!inherits(.result, "ggplot")) {
+    fail("Create a ggplot object called 'safety_plot'")
+  }
+  
+  # Check if the plot has the right aesthetics
+  aes_names <- names(.result$mapping)
+  if (!all(c("x", "y") %in% aes_names)) {
+    fail("Make sure to map AADT to x and accidents to y")
+  }
+  
+  pass("Great visualization! The plot clearly shows the relationship between traffic volume and safety.")
+})
+```
+
+## Exercise 5: Advanced Pipe Operations 🔧
+
+Using the base R pipe (`|>`), calculate summary statistics for high-volume locations (AADT > 10,000).
+
+```{webr}
+#| exercise: ex_5
+
+# Calculate summary statistics for high-volume locations
+high_volume_summary <- traffic_data |>
+  filter(___) |>
+  summarise(
+    count = ___,
+    avg_aadt = ___,
+    avg_accidents = ___,
+    total_lanes = ___,
+    accident_rate_per_1000_aadt = ___
+  )
+
+high_volume_summary
+```
+
+```{webr}
+#| exercise: ex_5
+#| check: true
+
+grade_this({
+  if (!exists("high_volume_summary")) {
+    fail("Create a summary called 'high_volume_summary'")
+  }
+  
+  if (nrow(.result) != 1) {
+    fail("Result should be a single summary row")
+  }
+  
+  if (.result$count != 3) {
+    fail("There should be 3 high-volume locations (AADT > 10,000)")
+  }
+  
+  pass("Excellent! Your summary statistics are correct. High-volume locations average 16,333 AADT.")
+})
+
+# Solution
+traffic_data |>
+  filter(aadt > 10000) |>
+  summarise(
+    count = n(),
+    avg_aadt = round(mean(aadt)),
+    avg_accidents = round(mean(accidents_2023), 1),
+    total_lanes = sum(lanes),
+    accident_rate_per_1000_aadt = round(sum(accidents_2023) / sum(aadt) * 1000, 2)
+  )
+```
+
+## 🏆 Final Challenge: Modal Split Analysis
+
+Bonus exercise! Calculate the percentage of total ridership for each transit route.
+
+```{webr}
+#| exercise: bonus
+
+# Calculate modal split percentages
+modal_split <- transit_ridership |>
+  mutate(
+    total_daily_ridership = ___,
+    percentage_share = ___,
+    percentage_share = round(percentage_share, 1)
+  ) |>
+  arrange(___)
+
+modal_split
+```
+
+```{webr}
+#| exercise: bonus
+#| check: true
+
+grade_this({
+  if (!exists("modal_split")) {
+    fail("Create a data frame called 'modal_split'")
+  }
+  
+  total_pct <- sum(.result$percentage_share)
+  if (abs(total_pct - 100) > 0.1) {
+    fail("Percentages should sum to 100%")
+  }
+  
+  pass("🎉 Fantastic! You've mastered transportation data analysis with R!")
+})
+
+# Solution
+transit_ridership |>
+  mutate(
+    total_daily_ridership = sum(daily_riders),
+    percentage_share = daily_riders / total_daily_ridership * 100,
+    percentage_share = round(percentage_share, 1)
+  ) |>
+  arrange(desc(percentage_share))
+```
+
+::: {.callout-success}
+## 🎯 Quiz Complete!
+
+Congratulations on completing the Transportation Data Science Quiz! You've demonstrated skills in:
+
+- **Traffic Engineering**: PHF calculations and LOS classification
+- **Data Manipulation**: Using `dplyr` with base R pipes
+- **Safety Analysis**: Accident rate calculations and visualization  
+- **Transit Planning**: Performance metrics and modal split analysis
+- **R Programming**: Advanced data wrangling and visualization
+
+Keep practicing these skills in your transportation planning work! 🚀
+:::
+
+---
+
+*Built with [Quarto Live](https://r-wasm.github.io/quarto-live/) and [WebR](https://docs.r-wasm.org/webr/latest/)*
+
