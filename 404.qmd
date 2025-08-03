@@ -20,12 +20,12 @@ The page you have requested cannot be found<br>(perhaps it has been moved or ren
 
 ```{webr}
 #| label: random-xkcd
-#| autorun: true
-#| runbutton: false
+#| autorun: false
+#| runbutton: true
 #| timelimit: 30
-#| startover: false
-#| edit: false
-#| echo: false
+#| startover: true
+#| edit: true
+#| echo: true
 #| results: asis
 
 library(httr2)
