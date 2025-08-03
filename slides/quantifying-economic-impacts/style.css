@@ -6,7 +6,7 @@
 :root {
   --r-background-color: #ffffff;
   --r-main-font: 'Atkinson Hyperlegible', sans-serif;
-  --r-main-font-size: 36px;
+  --r-main-font-size: 32px;
   --r-main-color: #333333;
   --r-block-margin: 12px;
   --r-heading-margin: 0 0 12px 0;
@@ -18,10 +18,10 @@
   --r-heading-text-shadow: none;
   --r-heading-font-weight: 700;
   --r-heading1-text-shadow: none;
-  --r-heading1-size: 2.4em;
-  --r-heading2-size: 1.8em;
-  --r-heading3-size: 1.4em;
-  --r-heading4-size: 1.2em;
+  --r-heading1-size: 2.2em;
+  --r-heading2-size: 1.6em;
+  --r-heading3-size: 1.2em;
+  --r-heading4-size: 1.0em;
   --r-code-font: 'Fira Code', 'Consolas', 'Monaco', monospace;
   --r-link-color: #1f5582;
   --r-link-color-dark: #1a4c73;
@@ -209,3 +209,4 @@
     margin-left: var(--fa-li-margin, 2.5em)!important;
     padding-left: 0!important;
 }
+

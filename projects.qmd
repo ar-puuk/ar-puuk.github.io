@@ -1,7 +1,9 @@
 ---
 pagetitle: Projects | Pukar Bhandari
 listing:
-  contents: posts/**/*.qmd
+  contents:
+    - posts/**/*.qmd
+    - slides/**/*.qmd
   sort: "date desc"
   type: default
   categories: true

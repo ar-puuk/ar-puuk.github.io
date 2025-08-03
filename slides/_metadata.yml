@@ -1,0 +1,33 @@
+# This completely overrides the parent posts/_metadata.yml for this subfolder
+format:
+  revealjs:
+    # theme: default
+    slide-number: true
+    show-slide-number: all
+    show-notes: false
+    incremental: false
+    transition: slide
+    background-transition: fade
+    highlight-style: ayu-mirage
+    mainfont: "Atkinson Hyperlegible"
+    fontsize: "20px"
+    chalkboard: false
+    preview-links: auto
+    logo: ""
+    footer: "Transportation Data Scientist Candidate | WFRC Interview"
+    css: style.css
+    embed-resources: true
+    mermaid:
+      theme: neutral
+      config:
+        flowchart:
+          nodeSpacing: 20
+          rankSpacing: 30
+          curve: basis
+          padding: 5
+        themeVariables:
+          fontSize: "12px"
+
+# Disable other parent settings
+title-block-banner: false
+page-layout: full

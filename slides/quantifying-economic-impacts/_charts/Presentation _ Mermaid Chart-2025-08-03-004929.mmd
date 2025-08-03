@@ -1,0 +1,46 @@
+---
+config:
+  layout: fixed
+---
+flowchart TD
+ subgraph s1[" "]
+        A1[("Travel times, VMT,<br>volumes, crashes")]
+        B1[("tidyverse, sf,<br>data validation")]
+        C1[("NPV calculations,<br>discount rates")]
+        D1[("Industry multipliers,<br>job coefficients")]
+        E1[("Jobs, income,<br>output impacts")]
+        F1[("Dashboards, reports,<br>visualizations")]
+  end
+    A["🚗 **Travel Demand Model Outputs**"] --> B("📊 **R-based Data Cleaning**")
+    B --> C("💰 **Benefit Cost Analysis Framework in MS Excel**")
+    C --> D("🏭 **IMPLAN Economic Multipliers**")
+    D --> E("📈 **Regional Impact Assessment**")
+    E --> F("👥 **Stakeholder Communication Tools**")
+    A -.-> A1
+    B -.-> B1
+    C -.-> C1
+    D -.-> D1
+    E -.-> E1
+    F -.-> F1
+     A1:::outputs
+     B1:::outputs
+     C1:::outputs
+     D1:::outputs
+     E1:::outputs
+     F1:::outputs
+     s1:::outputs
+    classDef default font-size:20px
+    classDef outputs font-size:14px
+    style A1 fill:#f9f9f9,stroke:#999,stroke-dasharray: 3 3
+    style B1 fill:#f9f9f9,stroke:#999,stroke-dasharray: 3 3
+    style C1 fill:#f9f9f9,stroke:#999,stroke-dasharray: 3 3
+    style D1 fill:#f9f9f9,stroke:#999,stroke-dasharray: 3 3
+    style E1 fill:#f9f9f9,stroke:#999,stroke-dasharray: 3 3
+    style F1 fill:#f9f9f9,stroke:#999,stroke-dasharray: 3 3
+    style A fill:#1f5582,color:#ffffff,stroke-width:2px,stroke-dasharray: 0
+    style B fill:#e8f5e8
+    style C fill:#fff3e0
+    style D fill:#e1f5fe
+    style E fill:#f3e5f5
+    style F fill:#fce4ec
+    style s1 stroke:none,fill:transparent

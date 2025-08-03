@@ -5,105 +5,104 @@ author: "Pukar Bhandari"
 date: "2025-08-07"
 draft: true
 categories: [R, Transportation, Economic Impact Analysis, Benefit Cost Analysis]
+filters:
+  - fontawesome
 ---
 
 ## My Background & Utah Connection {.smaller}
 
-:::: {.columns}
-
-::: {.column width="70%"}
-
+:::::: columns
+::: {.column width="80%"}
 **Experience:**
 
-- Graduate education at University of Utah (Transportation Planning)
-- 3+ years developing economic impact methods for transportation investments
-- Direct experience with Utah's transportation planning context
-- Led economic assessments for Utah's Unified Transportation Plan 2023-2050
-
+-   Graduate education at University of Utah (Transportation Planning)
+-   3+ years developing economic impact methods for transportation investments
+-   Direct experience with Utah's transportation planning context
+-   Led economic assessments for Utah's Unified Transportation Plan 2023-2050
 :::
 
-::: {.column width="30%"}
+:::: {.column width="20%"}
 ::: info-box
 **What Excites Me About WFRC**
 
-<ul>
-  <li><i class="fa-solid fa-chart-line"></i> Supporting investment prioritization</li>
-  <li><i class="fa-solid fa-medal"></i> 2034 Olympic legacy planning</li>
-  <li><i class="fa-solid fa-city"></i> Nation's fastest-growing region</li>
-  <li><i class="fa-solid fa-users"></i> Activity-based modeling</li>
-</ul>
+-   {{< fa chart-line >}} Supporting investment prioritization
+-   {{< fa users >}} Activity-based modeling
+-   {{< fa city >}} Nation's fastest-growing region
+-   {{< fa medal >}} 2034 Olympic legacy planning
 
 *Ready to contribute from day one*
 :::
-:::
-
 ::::
+::::::
 
 **Technical Expertise:**
 
-- Travel demand modeling: Cube, TransCAD (complementing WFRC's existing expertise)
-- Economic impact modeling: IMPLAN, TREDIS
-- R-based automated workflows for reproducible analysis
-- Bridging transportation modeling with economic quantification
+-   Travel demand modeling: Cube, TransCAD (complementing WFRC's existing
+    expertise)
+-   Economic impact modeling: IMPLAN, TREDIS
+-   R-based automated workflows for reproducible analysis
+-   Bridging transportation modeling with economic quantification
 
-::: {.notes}
-- Brief personal intro: 3+ years experience in travel demand modeling and economic impact analysis
-- Excited to discuss how these methods can support WFRC's regional planning mission
-- Draw from experience with Utah UTP 2023-2050 and multiple MPO projects
+::: notes
+-   Brief personal intro: 3+ years experience in travel demand modeling and
+    economic impact analysis
+-   Excited to discuss how these methods can support WFRC's regional planning
+    mission
+-   Draw from experience with Utah UTP 2023-2050 and multiple MPO projects
 :::
 
----
+--------------------------------------------------------------------------------
 
-## The Opportunity: From Performance to Impact {.smaller}
+## An Opportunity: From Performance to Impact {.smaller}
 
-**WFRC's Strong Foundation:**
-- Sophisticated travel demand modeling capabilities
-- Activity-based modeling transition underway
-- Regional transportation planning expertise
-- Growing region with complex investment decisions
+**WFRC's Strong Foundation:** - Sophisticated travel demand modeling
+capabilities - Activity-based modeling transition underway - Regional
+transportation planning expertise - Growing region with complex investment
+decisions
 
-**The Next Step I'd Love to Support:** Moving from "How does the system perform?" to "What does this investment do for our region's economy?"
+**The Next Step I'd Love to Support:** Moving from "How does the system
+perform?" to "What economic value do Utahns get back from their transportation investments?"
 
-:::: {.columns}
-
+::::: columns
 ::: {.column width="50%"}
 **Traditional Analysis:**
 
-- Travel time savings
-- VMT reduction
-- Crash reduction
-- Emissions benefits
+-   Travel time savings
+-   VMT reduction
+-   Crash reduction
+-   Emissions benefits
 :::
 
 ::: {.column width="50%"}
 **Enhanced Analysis:**
 
-- Regional job creation
-- Economic multiplier effects
-- Business attraction potential
-- Return on investment metrics
+-   Regional job creation
+-   Economic multiplier effects
+-   Business attraction potential
+-   Return on investment metrics
 :::
-
-::::
+:::::
 
 ::: info-box
-This enhanced perspective helps justify investments to stakeholders and supports competitive grant applications.
+This enhanced perspective helps justify investments to stakeholders and supports
+competitive grant applications.
 :::
 
-::: {.notes}
-- Set up the problem: MPOs need to justify investments beyond just traffic metrics
-- WFRC faces unique challenges with rapid growth and upcoming Olympics
-- Economic analysis helps prioritize limited resources
+::: notes
+-   Set up the problem: MPOs need to justify investments beyond just traffic
+    metrics
+-   WFRC faces unique challenges with rapid growth and upcoming Olympics
+-   Economic analysis helps prioritize limited resources
 :::
 
----
+--------------------------------------------------------------------------------
 
 ## Economic Impact Framework I've Applied {.smaller}
 
-:::{.center}
+::: center
 ```{mermaid}
 %%| eval: true
-%%| fig-width: 30
+%%| fig-width: 40
 %%| fig-height: 10
 %%| fig-dpi: 300
 
@@ -125,44 +124,56 @@ flowchart TB
 :::
 
 ::: info-box
-**Key insight from my experience**: Not all transportation benefits create wider economic impacts. Understanding this distinction helps prioritize projects that maximize both mobility and economic returns.
+**Key insight from my experience**: Not all transportation benefits create wider
+economic impacts. Understanding this distinction helps prioritize projects that
+maximize both mobility and economic returns.
 :::
 
-::: {.notes}
-- This is where my technical skills differentiate me from other candidates
-- Systematic approach that emphasizes the practical insight about different types of benefits
+::: notes
+-   This is where my technical skills differentiate me from other candidates
+-   Systematic approach that emphasizes the practical insight about different
+    types of benefits
 :::
 
----
+--------------------------------------------------------------------------------
 
-## Real Application: Utah's Unified Plan 2023-2050 {.smaller}
+## Utah's Unified Plan 2023-2050 {.smaller}
 
-**What I contributed to Utah's $36 billion transportation plan:**
+:::::: columns
+:::: {.column width="50%"}
+**What I contributed to Utah's \$36 billion transportation plan:**
 
-:::: {.columns}
+<br>
 
-::: {.column width="50%"}
-**Methodology:**
-- Integrated travel demand model outputs with benefit-cost analysis framework and economic impact analysis
-- Custom R and MS Excel based workflows linking transportation performance to economic metrics
-- Scenario-based analysis across multi-modal investment alternatives
+<!-- **Methodology:** -->
 
-**Key Results:**
-- Construction phase: 50,000+ direct jobs
-- Societal Benefits: $40+ B present value (28 years)
-- Economic Impact: $540 B regional output increase (28 years)
-- Return Ratio: $5.11 economic activity per dollar invested annually
-:::
+<!-- - Integrated travel demand model outputs with benefit-cost and economic impact analyses frameworks -->
 
-::: {.column width="50%"}
+<!-- - Custom R and MS Excel based workflows linking transportation performance to economic metrics -->
+
+<!-- - Scenario-based analysis across multi-modal investment alternatives -->
 
 ::: info-box
+**Key Results:**
+
+-   Construction phase: 50,000+ direct jobs
+-   Societal Benefits: \$40+ B present value (28 years)
+-   Economic Impact: \$540 B regional output increase (28 years)
+-   Return Ratio: \$5.11 economic activity per dollar invested annually
+:::
+
+<br>
+
+**Relevance to WFRC:** This same methodology can support WFRC's RTP development,
+enhance travel demand modeling, and federal grant applications.
+
+::::
+
+::: {.column width="50%"}
 <!-- **Technical Integration** -->
 
 ```{mermaid}
-%%| eval: true
-%%| fig-width: 10
-%%| fig-height: 20
+%%| eval: false
 flowchart TD
     A["🚗 Travel Demand Model Outputs"] --> B("📊 R-based Data Cleaning")
     B --> C("💰 Benefit Cost Analysis Framework in MS Excel")
@@ -194,117 +205,112 @@ flowchart TD
 classDef default font-size:14px;
 ```
 
-*Reproducible, automated pipeline*
+![](_charts/Presentation%20_%20Mermaid%20Chart-2025-08-03-004921.svg){style="height: 70vh;"}
 
+<!-- *Reproducible, automated pipeline* -->
+:::
+::::::
+
+::: notes
+-   Show concrete results and proven methodology
+-   Emphasize the technical pipeline I've built
+-   Connect directly to their upcoming needs
+-   Numbers are impressive but not overwhelming
 :::
 
-:::
-
-::::
-
-::: {.fragment}
-**Relevance to WFRC:** This same methodology can support WFRC's RTP development, Olympic planning, and federal grant applications.
-:::
-
-::: {.notes}
-- Show concrete results and proven methodology
-- Emphasize the technical pipeline I've built
-- Connect directly to their upcoming needs
-- Numbers are impressive but not overwhelming
-:::
-
----
+--------------------------------------------------------------------------------
 
 ## Potential Applications for WFRC {.smaller}
 
 **Areas where economic impact analysis could enhance WFRC's work:**
 
-:::: {.columns}
+::::: columns
 ::: {.column width="50%"}
 **Investment Prioritization:**
 
-- Compare economic returns across RTP projects
-- Identify investments with highest job creation potential
-- Quantify equity impacts across communities
+-   Compare economic returns across RTP scenarios
+-   Identify investments with highest job creation potential
+-   Quantify equity impacts across communities
 
 **Major Project Support:**
 
-- FrontRunner electrification business case
-- Transit routes expansion
-- Point of the Mountain development
-- 2034 Olympic transportation investments
-
+-   FrontRunner electrification business case
+-   Transit routes expansion
+-   Point of the Mountain development
+-   2034 Olympic transportation investments
 :::
 
 ::: {.column width="50%"}
 **Stakeholder Communication:**
 
-- Translate technical analysis into economic narratives
-- Support federal grant applications with economic justification
-- Demonstrate transportation's role in regional competitiveness
+-   Translate analysis into economic narratives
+-   Support federal grant applications with economic justification
+-   Demonstrate transportation's role in regional competitiveness
 
 **Technical Integration:**
 
-- R-based workflows compatible with WFRC's analytical environment
-- Automated reporting for consistent analysis
-- Integration with activity-based model transition
+-   R-based workflows compatible with WFRC's analytical environment
+-   Automated reporting for consistent analysis
+-   Integration with activity-based model transition
+:::
+:::::
 
+:::: fragment
+::: info-box
+**My perspective:** Economic impact analysis works best when it complements and
+enhances existing technical capabilities rather than replacing them.
 :::
 ::::
 
-::: {.fragment}
-**My perspective:** Economic impact analysis works best when it complements and enhances existing technical capabilities rather than replacing them.
+::: notes
+-   Connect directly to WFRC's current priorities and challenges
+-   Show how this isn't just academic - it's immediately useful
+-   Emphasize the R integration since that matches WFRC's technical environment
+-   Shows understanding of WFRC's major initiatives
 :::
 
-::: {.notes}
-- Connect directly to WFRC's current priorities and challenges
-- Show how this isn't just academic - it's immediately useful
-- Emphasize the R integration since that matches WFRC's technical environment
-- Shows understanding of WFRC's major initiatives
-:::
-
----
+--------------------------------------------------------------------------------
 
 ## What I'm Excited to Explore with WFRC {.center}
 
 #### Questions I'd love to explore with the WFRC team:
 
-::: {.incremental}
-- How to communicate the economic value of transportation investments to stakeholders?
-- What role might economic analysis play in the activity-based modeling transition?
-- How to best support economic justification for major transportation investments in the future?
-- What are the priorities for federal grant applications where economic impact matters?
+::: incremental
+-   How to communicate the economic value of transportation investments to
+    stakeholders?
+-   What role might economic analysis play in the activity-based modeling
+    transition?
+-   How to best support economic justification for major transportation
+    investments in the future?
+-   What are the priorities for federal grant applications where economic impact
+    matters?
 :::
 
-::: {.notes}
+--------------------------------------------------------------------------------
 
+<br>
+
+### **Thank you for this opportunity!** {.center}
+
+<br><br><br>
+
+::: {.info-box style="border-right: 10px solid #006DAE; padding-left: 40px; padding-right: 40px;"}
+I'm eager to contribute to WFRC's mission of building consensus around
+data-driven transportation solutions that enhance quality of life in the Wasatch
+Front.
 :::
 
----
+<br><br><br>
 
-### **Thank you for this opportunity!**  {.center}
-
-<br><br>
-
-::: info-box
-**I'm eager to contribute to WFRC's mission of building consensus around data-driven transportation solutions that enhance quality of life in the Wasatch Front.**
-:::
-
-<br><br>
-
-:::{.center}
+::: center
 **Pukar Bhandari**
 
-<span style="font-size: 0.7em;">
-<i class="fa-solid fa-envelope"></i> pukar.bhandari@outlook.com &nbsp;&nbsp;|&nbsp;&nbsp; <i class="fa-brands fa-linkedin"></i> linkedin.com/in/arpuuk &nbsp;&nbsp;|&nbsp;&nbsp; <i class="fa-brands fa-github"></i> github.com/ar-puuk
-</span>
+[{{< fa envelope >}} pukar.bhandari\@outlook.com   \|  
+{{< fa brands linkedin >}} linkedin.com/in/arpuuk   \|  
+{{< fa brands github >}} github.com/ar-puuk]{style="font-size: 0.7em;"}
 :::
 
-::: {.notes}
-
-:::
-
----
+--------------------------------------------------------------------------------
 
 ## Technical Deep-Dive {.smaller} {visibility="hidden"}
 
@@ -335,17 +341,19 @@ regional_impacts <- calculate_economic_impacts(
 impact_dashboard <- create_interactive_results(regional_impacts)
 grant_narrative <- generate_economic_justification(regional_impacts)
 ```
-:::info-box
-**Benefits:** Reproducible, well-documented analysis that can be adapted for different projects and scenarios.
+
+::: info-box
+**Benefits:** Reproducible, well-documented analysis that can be adapted for
+different projects and scenarios.
 :::
 
-::: {.notes}
-- Have this ready if they want to dig into technical implementation
-- Shows actual R code skills and modern workflow practices
-- Demonstrates understanding of reproducible research principles
+::: notes
+-   Have this ready if they want to dig into technical implementation
+-   Shows actual R code skills and modern workflow practices
+-   Demonstrates understanding of reproducible research principles
 :::
 
----
+--------------------------------------------------------------------------------
 
 ##  {visibility="hidden"}
 
@@ -353,27 +361,29 @@ grant_narrative <- generate_economic_justification(regional_impacts)
 
 **Economic impact methodologies applied across multiple contexts:**
 
-::::{.columns}
-
-:::{.column width = "60%"}
-- **Bowling Green-Warren County MPO (KY)**: $180M MTP economic analysis for 200,000+ population
-- **Lower Savannah COG (SC)**: Multi-county freight corridor impact assessment
-- **Des Moines Area MPO**: Scenario-based Multimodal investment economic evaluation
-- **Ohio DOT Cleveland**: Intersection improvement benefit-cost analysis
-
+::: columns
+:::{.column width = "60%"} - **Bowling Green-Warren County MPO (KY)**: \$180M
+MTP economic analysis for 200,000+ population - **Lower Savannah COG (SC)**:
+Multi-county freight corridor impact assessment - **Des Moines Area MPO**:
+Scenario-based Multimodal investment economic evaluation - **Ohio DOT
+Cleveland**: Intersection improvement benefit-cost analysis
 :::
 
-:::{.column width = "40%"}
-**Consistent Approach**: Automated R workflows linking travel demand model outputs with regional economic impact assessment using IMPLAN and other industry-standard tools.
+:::{.column width = "40%"} **Consistent Approach**: Automated R workflows
+linking travel demand model outputs with regional economic impact assessment
+using IMPLAN and other industry-standard tools.
 
-**What this demonstrates:** I can adapt the methodology to different regional contexts while maintaining analytical rigor and technical consistency. Each project has strengthened my ability to communicate complex economic concepts to diverse stakeholder groups.
+**What this demonstrates:** I can adapt the methodology to different regional
+contexts while maintaining analytical rigor and technical consistency. Each
+project has strengthened my ability to communicate complex economic concepts to
+diverse stakeholder groups.
 
 :::
 
 ::::
 
-::: {.notes}
-- Shows breadth of experience across different regions and project types
-- Demonstrates that the methodology is transferable and scalable
-- All used similar R-based integration approaches
+::: notes
+-   Shows breadth of experience across different regions and project types
+-   Demonstrates that the methodology is transferable and scalable
+-   All used similar R-based integration approaches
 :::

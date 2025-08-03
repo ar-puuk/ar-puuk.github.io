@@ -7,11 +7,6 @@ author:
       - name: Metro Analytics
         url: "https://www.metroanalytics.com/"
 date: "2025-07-05"
-prefer-html: true
-engine: knitr
-execute:
-  warning: false
-  message: false
 categories: [R, Python, GIS, Data Science, Spatial Analysis, Transportation]
 ---
 

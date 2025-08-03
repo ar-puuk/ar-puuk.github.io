@@ -1,5 +1,61 @@
 [
   {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Pukar Bhandari",
+    "section": "",
+    "text": "Order By\n      Default\n      \n        Title\n      \n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Author\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nLSCOG 2050 LRTP - Base Year SE Data Development\n\n\n\nR\n\nPython\n\nGIS\n\nData Science\n\nSpatial Analysis\n\nTransportation\n\n\n\n\n\n\n\n\n\nJul 5, 2025\n\n\nPukar Bhandari\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "license.html",
+    "href": "license.html",
+    "title": "License",
+    "section": "",
+    "text": "The blog posts on this website are all released under a Creative Commons Attribution-ShareAlike 4.0 International License. Please feel free to use and share anything you find valuable in these posts, but please cite me too!"
+  },
+  {
+    "objectID": "contact.html",
+    "href": "contact.html",
+    "title": "Contact",
+    "section": "",
+    "text": "I’m always excited to connect with fellow transportation professionals, urban planners, data scientists, and anyone passionate about improving mobility through data-driven insights. Whether you want to discuss the latest developments in transportation modeling, share experiences with R and geospatial analysis, or debate the merits of different traffic flow algorithms, I’m here for it.\nIf you have questions about transportation planning methodologies, want to discuss R techniques for mobility data analysis, share interesting datasets, or just want to chat about anything related to transportation and data science, please use this contact form.\n\n\n\n\n\n\n\n\nFull Name \nEmail Address \nMessage\n\n\nSend message"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Pukar Bhandari",
+    "section": "",
+    "text": "I am an aspiring Associate Transportation Planner with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Pukar Bhandari",
+    "section": "",
+    "text": "I am an aspiring Associate Transportation Planner with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning.\n\n\n\n\n\nAssociate Transportation Planner | Metro Analytics | June 2023 - Present\nGraduate Teaching & Research Assistant | University of Utah | August 2021 - May 2023\nGIS Data Analyst | Energy & Geoscience Institute | June 2022 - August 2022\nAssociate Architect | Prabal Thapa Architects | June 2020 - July 2021\nArchitect & Planner | Urban Park Nepal Pvt. Ltd. | January 2019 - June 2020\n\n\n\n\n\n\nMaster of City & Metropolitan Planning | University of Utah | August 2021 - May 2023\nBachelors Degree in Architecture | Tribhuvan University | October 2013 - August 2018"
+  },
+  {
+    "objectID": "index.html#professional-overview",
+    "href": "index.html#professional-overview",
+    "title": "Pukar Bhandari",
+    "section": "",
+    "text": "I am an aspiring Associate Transportation Planner with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning."
+  },
+  {
+    "objectID": "index.html#work-experience",
+    "href": "index.html#work-experience",
+    "title": "Pukar Bhandari",
+    "section": "",
+    "text": "Associate Transportation Planner | Metro Analytics | June 2023 - Present\nGraduate Teaching & Research Assistant | University of Utah | August 2021 - May 2023\nGIS Data Analyst | Energy & Geoscience Institute | June 2022 - August 2022\nAssociate Architect | Prabal Thapa Architects | June 2020 - July 2021\nArchitect & Planner | Urban Park Nepal Pvt. Ltd. | January 2019 - June 2020"
+  },
+  {
+    "objectID": "index.html#education",
+    "href": "index.html#education",
+    "title": "Pukar Bhandari",
+    "section": "",
+    "text": "Master of City & Metropolitan Planning | University of Utah | August 2021 - May 2023\nBachelors Degree in Architecture | Tribhuvan University | October 2013 - August 2018"
+  },
+  {
     "objectID": "posts/socioeconomic-demo/index.html",
     "href": "posts/socioeconomic-demo/index.html",
     "title": "LSCOG 2050 LRTP - Base Year SE Data Development",
@@ -180,61 +236,5 @@
     "title": "LSCOG 2050 LRTP - Base Year SE Data Development",
     "section": "8.3 Employment categories",
     "text": "8.3 Employment categories\nThe employment validation confirms that total employment equals the sum of all industry sector categories for each TAZ. This comprehensive check validates the LEHD data integration and ensures that no employment is lost or double-counted during the sectoral disaggregation process.RetryClaude can make mistakes. Please double-check responses.\n\n R Python\n\n\n\n# check the sum of employment by categories\nlscog_se_base |&gt;\n  dplyr::filter(\n    TOTAL_EMP !=\n      (AGR_FOR_FI +\n        MINING +\n        CONSTRUCTI +\n        MANUFACTUR +\n        TRANSP_COM +\n        WHOLESALE +\n        RETAIL +\n        FIRE +\n        SERVICES +\n        PUBLIC_ADM)\n  ) |&gt;\n  nrow()\n\n[1] 0\n\n\n\n\n\n# check the sum of employment by categories\nlscog_se_base[\n    lscog_se_base['TOTAL_EMP'] != (\n        lscog_se_base['AGR_FOR_FI'] +\n        lscog_se_base['MINING'] +\n        lscog_se_base['CONSTRUCTI'] +\n        lscog_se_base['MANUFACTUR'] +\n        lscog_se_base['TRANSP_COM'] +\n        lscog_se_base['WHOLESALE'] +\n        lscog_se_base['RETAIL'] +\n        lscog_se_base['FIRE'] +\n        lscog_se_base['SERVICES'] +\n        lscog_se_base['PUBLIC_ADM']\n    )\n].shape[0]\n\n0"
-  },
-  {
-    "objectID": "license.html",
-    "href": "license.html",
-    "title": "License",
-    "section": "",
-    "text": "The blog posts on this website are all released under a Creative Commons Attribution-ShareAlike 4.0 International License. Please feel free to use and share anything you find valuable in these posts, but please cite me too!"
-  },
-  {
-    "objectID": "contact.html",
-    "href": "contact.html",
-    "title": "Contact",
-    "section": "",
-    "text": "I’m always excited to connect with fellow transportation professionals, urban planners, data scientists, and anyone passionate about improving mobility through data-driven insights. Whether you want to discuss the latest developments in transportation modeling, share experiences with R and geospatial analysis, or debate the merits of different traffic flow algorithms, I’m here for it.\nIf you have questions about transportation planning methodologies, want to discuss R techniques for mobility data analysis, share interesting datasets, or just want to chat about anything related to transportation and data science, please use this contact form.\n\n\n\n\n\n\n\n\nFull Name \nEmail Address \nMessage\n\n\nSend message"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "Pukar Bhandari",
-    "section": "",
-    "text": "I am an aspiring Associate Transportation Planner with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Pukar Bhandari",
-    "section": "",
-    "text": "I am an aspiring Associate Transportation Planner with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning.\n\n\n\n\n\nAssociate Transportation Planner | Metro Analytics | June 2023 - Present\nGraduate Teaching & Research Assistant | University of Utah | August 2021 - May 2023\nGIS Data Analyst | Energy & Geoscience Institute | June 2022 - August 2022\nAssociate Architect | Prabal Thapa Architects | June 2020 - July 2021\nArchitect & Planner | Urban Park Nepal Pvt. Ltd. | January 2019 - June 2020\n\n\n\n\n\n\nMaster of City & Metropolitan Planning | University of Utah | August 2021 - May 2023\nBachelors Degree in Architecture | Tribhuvan University | October 2013 - August 2018"
-  },
-  {
-    "objectID": "index.html#professional-overview",
-    "href": "index.html#professional-overview",
-    "title": "Pukar Bhandari",
-    "section": "",
-    "text": "I am an aspiring Associate Transportation Planner with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning."
-  },
-  {
-    "objectID": "index.html#work-experience",
-    "href": "index.html#work-experience",
-    "title": "Pukar Bhandari",
-    "section": "",
-    "text": "Associate Transportation Planner | Metro Analytics | June 2023 - Present\nGraduate Teaching & Research Assistant | University of Utah | August 2021 - May 2023\nGIS Data Analyst | Energy & Geoscience Institute | June 2022 - August 2022\nAssociate Architect | Prabal Thapa Architects | June 2020 - July 2021\nArchitect & Planner | Urban Park Nepal Pvt. Ltd. | January 2019 - June 2020"
-  },
-  {
-    "objectID": "index.html#education",
-    "href": "index.html#education",
-    "title": "Pukar Bhandari",
-    "section": "",
-    "text": "Master of City & Metropolitan Planning | University of Utah | August 2021 - May 2023\nBachelors Degree in Architecture | Tribhuvan University | October 2013 - August 2018"
-  },
-  {
-    "objectID": "projects.html",
-    "href": "projects.html",
-    "title": "Pukar Bhandari",
-    "section": "",
-    "text": "Order By\n      Default\n      \n        Title\n      \n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Author\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nLSCOG 2050 LRTP - Base Year SE Data Development\n\n\n\nR\n\nPython\n\nGIS\n\nData Science\n\nSpatial Analysis\n\nTransportation\n\n\n\n\n\n\n\n\n\nJul 5, 2025\n\n\nPukar Bhandari\n\n\n\n\n\nNo matching items"
   }
 ]
