@@ -33,7 +33,7 @@ include-in-header:
 
 The page you were looking for has been affected by the recent funding cuts. 
 
-**While we wait for the public comment period, why not test your Transportation & Data Science smarts?** It’s more fun than hitting the <a href="javascript:history.back()">back</a> button. Probably.**
+**While we wait for the public comment period, why not test your Transportation & Data Science smarts?** It’s more fun than hitting the <a href="javascript:history.back()">back</a> button. Probably.
 
 
 </div>
