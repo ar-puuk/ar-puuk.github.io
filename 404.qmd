@@ -1,7 +1,6 @@
 ---
 pagetitle: Page Not Found | Pukar Bhandari
-format:
-  live-html
+format: live-html
 engine: knitr
 webr:
   render-df: gt-interactive
