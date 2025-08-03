@@ -1,11 +1,26 @@
 ---
 pagetitle: Page Not Found | Pukar Bhandari
-format: live-html
+format:
+  live-html
 engine: knitr
 webr:
+  render-df: gt-interactive
   packages:
     - dplyr
     - ggplot2
+respect-user-color-scheme: true
+theme:
+  light:
+    - "flatly"
+    - theme.scss
+  dark:
+    - "darkly"
+    - theme.scss
+mainfont: "Poppins"
+monofont: "Fira Code"
+css: assets/css/index.css
+include-in-header:
+  - _includes/preload-fonts.html
 ---
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
@@ -15,7 +30,7 @@ webr:
 
 <div style="text-align: center">
 
-# {{< fa road-barrier >}} Road Closed Ahead! {{< fa road-barrier >}}
+# {{< fa road-barrier >}}  Road Closed Ahead!  {{< fa road-barrier >}}
 
 Looks like you've taken a wrong turn on the information highway. Perhaps the page you were looking for has been affected by the recent funding cuts. 
 
