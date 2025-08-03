@@ -131,7 +131,7 @@ flowchart TB
 
 :::: {.columns}
 ::: {.column width="50%"}
-**What I contributed to Utah's \$36 billion transportation plan:**
+**What I contributed to Utah's \$88 billion transportation plan:**
 
 <br>
 
@@ -146,10 +146,10 @@ flowchart TB
 ::: info-box
 **Key Results:**
 
--   Construction phase: 50,000+ direct jobs
--   Societal Benefits: \$40+ B present value (28 years)
--   Economic Impact: \$540 B regional output increase (28 years)
--   Return Ratio: \$5.11 economic activity per dollar invested annually
+-   Construction phase: 70,000+ direct jobs
+-   Societal Benefits: \$230+ B present value (28 years)
+-   Economic Impact: \$490 B regional output increase (28 years)
+-   Return Ratio: \$5.57 economic activity per dollar invested annually
 :::
 
 <br>
