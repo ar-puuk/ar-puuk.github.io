@@ -25,26 +25,41 @@ The page you have requested cannot be found<br>(perhaps it has been moved or ren
 
 ```{webr}
 #| label: random-xkcd
+#| results: asis
 library(httr2)
 
 # Function to get random xkcd comic
 get_random_xkcd <- function() {
   tryCatch({
+    # Use CORS proxy to access xkcd API
+    cors_proxy <- "https://corsproxy.io/?"
+    
     # Get latest comic info to know the range
-    latest_data <- httr2::request("https://xkcd.com/info.0.json") |>
-      httr2::req_perform() |>
-      httr2::resp_body_json()
+    latest_resp <- httr2::request(paste0(cors_proxy, "https://xkcd.com/info.0.json")) |>
+      httr2::req_perform()
+    
+    if (httr2::resp_status(latest_resp) != 200) {
+      return(NULL)
+    }
+    
+    latest_data <- httr2::resp_body_json(latest_resp)
     
     # Generate random comic number
     random_num <- sample(1:latest_data$num, 1)
     
     # Get the random comic
-    comic_data <- httr2::request(paste0("https://xkcd.com/", random_num, "/info.0.json")) |>
-      httr2::req_perform() |>
-      httr2::resp_body_json()
+    comic_resp <- httr2::request(paste0(cors_proxy, "https://xkcd.com/", random_num, "/info.0.json")) |>
+      httr2::req_perform()
+    
+    if (httr2::resp_status(comic_resp) != 200) {
+      return(NULL)
+    }
+    
+    comic_data <- httr2::resp_body_json(comic_resp)
     
     return(comic_data)
   }, error = function(e) {
+    message("Error fetching xkcd comic: ", e$message)
     return(NULL)
   })
 }
@@ -54,10 +69,17 @@ comic <- get_random_xkcd()
 
 # display the comic with respective information
 if (!is.null(comic)) {
+  # Clean the alt text for better display
+  alt_text <- gsub('"', '&quot;', comic$alt)
+  
   cat(paste0("### [", comic$title, "](https://xkcd.com/", comic$num, "){target='_blank'}\n\n"))
-  cat(paste0("![", comic$alt, "](", comic$img, "){style='max-width: 100%; height: auto;'}\n\n"))
+  cat(paste0("![", alt_text, "](", comic$img, "){style='max-width: 100%; height: auto;'}\n\n"))
 } else {
-  cat("Could not load xkcd comic. [Visit xkcd.com](https://xkcd.com){target='_blank'}\n\n")
+  # Fallback: show a specific popular xkcd comic
+  cat("*Could not fetch random comic, but here's a classic!\n\n")
+  cat("### [Standards](https://xkcd.com/927){target='_blank'}\n\n")
+  cat(paste0("![How standards proliferate](https://imgs.xkcd.com/comics/standards.png){style='max-width: 100%; height: auto;'}\n\n"))
+  cat("[Visit xkcd.com for more](https://xkcd.com){target='_blank'}\n\n")
 }
 ```
 
