@@ -7,7 +7,7 @@ webr:
   packages:
     - dplyr
     - ggplot2
-    - gradethis
+    # - gradethis
 respect-user-color-scheme: true
 theme:
   light:

@@ -80,8 +80,10 @@ transportation planning expertise - Growing region with complex investment decis
 :::
 ::::
 
+::: fragment
 ::: info-box
 This enhanced perspective helps justify investments to stakeholders and supports competitive grant applications.
+:::
 :::
 
 ::: notes
@@ -122,8 +124,10 @@ flowchart TB
 ```
 :::
 
+::: fragment
 ::: info-box
 **Key insight from my experience**: Not all transportation benefits create wider economic impacts. Understanding this distinction helps prioritize projects that maximize both mobility and economic returns.
+:::
 :::
 
 ::: notes
