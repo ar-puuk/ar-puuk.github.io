@@ -218,13 +218,11 @@ classDef default font-size:14px;
 ::: notes
 Let me show you how this works in practice with Utah's \$88+ billion transportation plan.
 
-My methodology integrated travel demand model outputs with benefit-cost analysis frameworks and economic impact analysis. I built custom R and Excel-based workflows that link transportation performance directly to economic metrics, allowing for scenario-based analysis across multimodal investment alternatives.
+My methodology integrated travel demand model outputs with benefit-cost analysis frameworks and economic impact analysis. I built custom R and Excel-based workflows that link transportation performance metrics directly to benefit-cost frameworks, integrate IMPLAN economic multipliers, and produce economic metrics, allowing for scenario-based analysis across multimodal investment alternatives.
 
 The results were significant: construction phase impacts of over 70,000 direct jobs, operations phase benefits with \$230 billion present value over 28 years, total economic impact of \$490 billion in cumulative regional output increase, and a return ratio of $5.6 in economic activity per dollar invested.
 
-The technical integration follows this pipeline - we start with travel model outputs, process them through R-based analysis, apply benefit-cost frameworks, integrate IMPLAN economic multipliers, and produce impact reports.
-
-This same methodology can directly support WFRC's RTP development, Olympic planning, and federal grant applications.
+This workflow produces clear, reproducible, data-driven impact reports that can directly support WFRC’s future RTP development, Olympic planning, and federal grant applications.
 :::
 
 --------------------------------------------------------------------------------
