@@ -1,13 +1,19 @@
 ---
 pagetitle: Page Not Found | Pukar Bhandari
-format: live-html
+format:
+  live-html:
+    webr:
+      packages:
+        - dplyr
+        - ggplot2
+        - gradethis
+      cell-options:
+        completion: true
+      render-df: gt-interactive
+    live:
+      show-solutions: true
+      show-grading: true
 engine: knitr
-webr:
-  render-df: gt-interactive
-  packages:
-    - dplyr
-    - ggplot2
-    # - gradethis
 respect-user-color-scheme: true
 theme:
   light:
@@ -98,8 +104,7 @@ If a traffic light has a 90-second cycle and the green light lasts 60 seconds, h
 
 ```{webr}
 #| exercise: know_1
-#| completion: true
-#| label: "Knowledge Question 1"
+#| caption: "Knowledge Question 1"
 # Calculate how many cars can pass in one green phase
 green_time <- 60  # seconds
 time_per_car <- 3  # seconds
@@ -110,7 +115,8 @@ cars_per_cycle <- ______
 cars_per_cycle
 ```
 
-::: {.solution exercise="know_1"}
+::: { .solution exercise="know_1" }
+
 ```{webr}
 #| exercise: know_1
 #| solution: true
@@ -149,8 +155,7 @@ Calculate the volume-to-capacity (V/C) ratio for an intersection with 1,600 vehi
 
 ```{webr}
 #| exercise: know_2
-#| completion: true
-#| label: "Knowledge Question 2"
+#| caption: "Knowledge Question 2"
 volume <- 1600
 capacity <- 1800
 
@@ -217,8 +222,7 @@ In a city where 40% of trips are by car, 25% by transit, 20% by walking, and 15%
 
 ```{webr}
 #| exercise: know_3
-#| completion: true
-#| label: "Knowledge Question 3"
+#| caption: "Knowledge Question 3"
 car_percent <- 40
 transit_percent <- 25
 walking_percent <- 20
@@ -272,8 +276,7 @@ A residential development has 200 housing units. Using ITE trip generation rate 
 
 ```{webr}
 #| exercise: know_4
-#| completion: true
-#| label: "Knowledge Question 4"
+#| caption: "Knowledge Question 4"
 housing_units <- 200
 trip_rate <- 9.5
 pm_peak_percent <- 15
@@ -336,8 +339,7 @@ A bus route operates every 12 minutes during peak hours. How many buses pass a g
 
 ```{webr}
 #| exercise: know_5
-#| completion: true
-#| label: "Knowledge Question 5"
+#| caption: "Knowledge Question 5"
 frequency_minutes <- 12
 bus_capacity <- 40
 load_factor <- 0.75
@@ -412,16 +414,14 @@ library(dplyr)
 
 ```{webr}
 #| autorun: true
-#| show-solutions: false
-#| label: "Traffic Data"
+#| caption: "Traffic Data"
 # First, let's see the data
 traffic_data
 ```
 
 ```{webr}
 #| exercise: skill_1
-#| completion: true
-#| label: "Skill Question 1"
+#| caption: "Skill Question 1"
 # Filter for high-traffic locations and count them
 high_traffic <- traffic_data |>
   filter(______)
@@ -480,8 +480,7 @@ Calculate the accident rate per 1,000 AADT for each location. Create a new colum
 
 ```{webr}
 #| exercise: skill_2
-#| completion: true
-#| label: "Skill Question 2"
+#| caption: "Skill Question 2"
 # Calculate accident rates and arrange
 safety_analysis <- traffic_data |>
   mutate(accident_rate = ______) |>
@@ -544,16 +543,14 @@ Calculate riders per mile for each transit route and identify the most efficient
 
 ```{webr}
 #| autorun: true
-#| show-solutions: false
-#| label: "Transit Data"
+#| caption: "Transit Data"
 # Look at transit data first
 transit_data
 ```
 
 ```{webr}
 #| exercise: skill_3
-#| completion: true
-#| label: "Skill Question 3"
+#| caption: "Skill Question 3"
 # Calculate efficiency and find the best route
 transit_efficiency <- transit_data |>
   mutate(riders_per_mile = ______) |>
@@ -627,16 +624,14 @@ library(ggplot2)
 
 ```{webr}
 #| autorun: true
-#| show-solutions: false
-#| label: "Bike Data"
+#| caption: "Bike Data"
 # Look at bike data first
 bike_data
 ```
 
 ```{webr}
 #| exercise: skill_4
-#| completion: true
-#| label: "Skill Question 4"
+#| caption: "Skill Question 4"
 # Create the bike share analysis plot
 bike_plot <- ggplot(bike_data, aes(x = ______, y = ______)) +
   geom_point(size = 3, alpha = 0.7, color = "steelblue") +
@@ -705,8 +700,7 @@ Create a summary table showing for each location: total daily volume, accidents 
 
 ```{webr}
 #| exercise: skill_5
-#| completion: true
-#| label: "Skill Question 5"
+#| caption: "Skill Question 5"
 # Create comprehensive performance summary
 performance_summary <- traffic_data |>
   mutate(
