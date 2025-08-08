@@ -6,7 +6,6 @@ format:
       packages:
         - dplyr
         - ggplot2
-        # - gradethis
       cell-options:
         completion: true
       render-df: gt-interactive
@@ -30,7 +29,6 @@ include-in-header:
 ---
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
-<!-- {{< include ./_extensions/r-wasm/live/_gradethis.qmd >}} -->
 
 <br>
 
@@ -119,21 +117,17 @@ cars_per_cycle
 #| exercise: know_1
 #| check: true
 # Custom feedback function
-check_result <- function() {
-  if (!exists("cars_per_cycle")) {
-    return("🚫 Please create the 'cars_per_cycle' variable and run your code.")
-  } else if (identical(cars_per_cycle, 20)) {
-    return("🎯 Perfect! 20 cars can pass through in one green cycle. This is a fundamental capacity calculation used in traffic signal timing.")
-  } else if (cars_per_cycle > 20) {
-    return("🤔 Too many cars! Remember, each car needs 3 seconds to clear the intersection. Try dividing the green time by the time per car.")
-  } else if (cars_per_cycle < 20) {
-    return("🚗 Not quite enough cars! How many 3-second periods fit in 60 seconds? Think: 60 ÷ 3 = ?")
-  } else {
-    return("🔢 Make sure your result is a number. Check your calculation.")
-  }
+if (!exists("cars_per_cycle")) {
+  list(correct = FALSE, message = "🚫 Please create the 'cars_per_cycle' variable and run your code.", type = "error")
+} else if (identical(cars_per_cycle, 20)) {
+  list(correct = TRUE, message = "🎯 Perfect! 20 cars can pass through in one green cycle. This is a fundamental capacity calculation used in traffic signal timing.", type = "success")
+} else if (cars_per_cycle > 20) {
+  list(correct = FALSE, message = "🤔 Too many cars! Remember, each car needs 3 seconds to clear the intersection. Try dividing the green time by the time per car.", type = "warning")
+} else if (cars_per_cycle < 20) {
+  list(correct = FALSE, message = "🚗 Not quite enough cars! How many 3-second periods fit in 60 seconds? Think: 60 ÷ 3 = ?", type = "info")
+} else {
+  list(correct = FALSE, message = "🔢 Make sure your result is a number. Check your calculation.", type = "error")
 }
-
-cat(check_result())
 ```
 
 ### Question 2: Level of Service 🚦
@@ -158,26 +152,22 @@ list(vc_ratio = vc_ratio, los_category = los_category)
 ```{webr}
 #| exercise: know_2
 #| check: true
-check_result <- function() {
-  if (!exists("vc_ratio") || !exists("los_category")) {
-    return("🚫 Please create both 'vc_ratio' and 'los_category' variables.")
+if (!exists("vc_ratio") || !exists("los_category")) {
+  list(correct = FALSE, message = "🚫 Please create both 'vc_ratio' and 'los_category' variables.", type = "error")
+} else {
+  vc_correct <- round(vc_ratio, 3) == round(1600/1800, 3)
+  los_correct <- los_category == "D"
+  
+  if (vc_correct && los_correct) {
+    list(correct = TRUE, message = "🎯 Excellent! V/C = 0.889 puts this intersection at LOS D. This indicates approaching unstable flow with tolerable delays.", type = "success")
+  } else if (!vc_correct && los_correct) {
+    list(correct = FALSE, message = "🔢 LOS category is correct, but check your V/C calculation: volume ÷ capacity = 1600 ÷ 1800", type = "warning")
+  } else if (vc_correct && !los_correct) {
+    list(correct = FALSE, message = "📊 V/C ratio is correct (0.889), but check the LOS thresholds: 0.8-0.9 = Level D", type = "warning")
   } else {
-    vc_correct <- round(vc_ratio, 3) == round(1600/1800, 3)
-    los_correct <- los_category == "D"
-    
-    if (vc_correct && los_correct) {
-      return("🎯 Excellent! V/C = 0.889 puts this intersection at LOS D. This indicates approaching unstable flow with tolerable delays.")
-    } else if (!vc_correct && los_correct) {
-      return("🔢 LOS category is correct, but check your V/C calculation: volume ÷ capacity = 1600 ÷ 1800")
-    } else if (vc_correct && !los_correct) {
-      return("📊 V/C ratio is correct (0.889), but check the LOS thresholds: 0.8-0.9 = Level D")
-    } else {
-      return("🚦 Both calculations need work. V/C ratio = volume ÷ capacity, then check: ≤0.8=A-C, 0.8-0.9=D, >0.9=E-F")
-    }
+    list(correct = FALSE, message = "🚦 Both calculations need work. V/C ratio = volume ÷ capacity, then check: ≤0.8=A-C, 0.8-0.9=D, >0.9=E-F", type = "error")
   }
 }
-
-cat(check_result())
 ```
 
 ### Question 3: Modal Split 🚌🚲🚗
@@ -202,21 +192,17 @@ transit_share_of_non_car
 ```{webr}
 #| exercise: know_3
 #| check: true
-check_result <- function() {
-  if (!exists("transit_share_of_non_car")) {
-    return("🚫 Please create the 'transit_share_of_non_car' variable and run your code.")
-  } else if (round(transit_share_of_non_car, 1) == 41.7) {
-    return("🚌 Perfect! 41.7% of non-car trips are made by transit. This shows transit's importance in the sustainable transportation mix.")
-  } else if (transit_share_of_non_car == 25) {
-    return("🤔 That's the overall transit share (25%). But what about just among non-car trips? Hint: transit % ÷ non-car total % × 100")
-  } else if (round(transit_share_of_non_car, 0) == 42) {
-    return("🚌 Very close! 41.7% of non-car trips are made by transit. Your calculation method is correct!")
-  } else {
-    return("📊 Remember: First find non-car total (100 - car %), then calculate: (transit %) ÷ (non-car total %) × 100")
-  }
+if (!exists("transit_share_of_non_car")) {
+  list(correct = FALSE, message = "🚫 Please create the 'transit_share_of_non_car' variable and run your code.", type = "error")
+} else if (round(transit_share_of_non_car, 1) == 41.7) {
+  list(correct = TRUE, message = "🚌 Perfect! 41.7% of non-car trips are made by transit. This shows transit's importance in the sustainable transportation mix.", type = "success")
+} else if (transit_share_of_non_car == 25) {
+  list(correct = FALSE, message = "🤔 That's the overall transit share (25%). But what about just among non-car trips? Hint: transit % ÷ non-car total % × 100", type = "info")
+} else if (round(transit_share_of_non_car, 0) == 42) {
+  list(correct = FALSE, message = "🚌 Very close! 41.7% of non-car trips are made by transit. Your calculation method is correct!", type = "warning")
+} else {
+  list(correct = FALSE, message = "📊 Remember: First find non-car total (100 - car %), then calculate: (transit %) ÷ (non-car total %) × 100", type = "error")
 }
-
-cat(check_result())
 ```
 
 ### Question 4: Trip Generation 🏠
@@ -242,26 +228,22 @@ list(daily = total_daily_trips, pm_peak = pm_peak_trips)
 ```{webr}
 #| exercise: know_4
 #| check: true
-check_result <- function() {
-  if (!exists("total_daily_trips") || !exists("pm_peak_trips")) {
-    return("🚫 Please create both 'total_daily_trips' and 'pm_peak_trips' variables.")
+if (!exists("total_daily_trips") || !exists("pm_peak_trips")) {
+  list(correct = FALSE, message = "🚫 Please create both 'total_daily_trips' and 'pm_peak_trips' variables.", type = "error")
+} else {
+  daily_correct <- total_daily_trips == 1900
+  peak_correct <- pm_peak_trips == 285
+  
+  if (daily_correct && peak_correct) {
+    list(correct = TRUE, message = "🏠 Excellent! 1,900 daily trips with 285 during PM peak. These are key numbers for traffic impact studies.", type = "success")
+  } else if (!daily_correct && peak_correct) {
+    list(correct = FALSE, message = "🏘️ PM peak trips are correct, but check daily trips: units × trip rate = 200 × 9.5", type = "warning")
+  } else if (daily_correct && !peak_correct) {
+    list(correct = FALSE, message = "🕔 Daily trips correct, but check PM peak: daily trips × 15% = 1900 × 0.15", type = "warning")
   } else {
-    daily_correct <- total_daily_trips == 1900
-    peak_correct <- pm_peak_trips == 285
-    
-    if (daily_correct && peak_correct) {
-      return("🏠 Excellent! 1,900 daily trips with 285 during PM peak. These are key numbers for traffic impact studies.")
-    } else if (!daily_correct && peak_correct) {
-      return("🏘️ PM peak trips are correct, but check daily trips: units × trip rate = 200 × 9.5")
-    } else if (daily_correct && !peak_correct) {
-      return("🕔 Daily trips correct, but check PM peak: daily trips × 15% = 1900 × 0.15")
-    } else {
-      return("📊 Both calculations need work. Daily = units × rate, PM peak = daily × 15%")
-    }
+    list(correct = FALSE, message = "📊 Both calculations need work. Daily = units × rate, PM peak = daily × 15%", type = "error")
   }
 }
-
-cat(check_result())
 ```
 
 ### Question 5: Transit Frequency 🚍
@@ -288,26 +270,22 @@ list(buses_per_hour = buses_per_hour, hourly_capacity = hourly_passenger_capacit
 ```{webr}
 #| exercise: know_5
 #| check: true
-check_result <- function() {
-  if (!exists("buses_per_hour") || !exists("hourly_passenger_capacity")) {
-    return("🚫 Please create both 'buses_per_hour' and 'hourly_passenger_capacity' variables.")
+if (!exists("buses_per_hour") || !exists("hourly_passenger_capacity")) {
+  list(correct = FALSE, message = "🚫 Please create both 'buses_per_hour' and 'hourly_passenger_capacity' variables.", type = "error")
+} else {
+  buses_correct <- buses_per_hour == 5
+  capacity_correct <- hourly_passenger_capacity == 150
+  
+  if (buses_correct && capacity_correct) {
+    list(correct = TRUE, message = "🚍 Perfect! 5 buses per hour with 150 passenger capacity. This helps determine route efficiency and passenger service levels.", type = "success")
+  } else if (!buses_correct && capacity_correct) {
+    list(correct = FALSE, message = "🕒 Passenger capacity is correct, but check buses per hour: 60 minutes ÷ frequency = 60 ÷ 12", type = "warning")
+  } else if (buses_correct && !capacity_correct) {
+    list(correct = FALSE, message = "👥 Buses per hour correct, but check capacity: buses × capacity × load factor = 5 × 40 × 0.75", type = "warning")
   } else {
-    buses_correct <- buses_per_hour == 5
-    capacity_correct <- hourly_passenger_capacity == 150
-    
-    if (buses_correct && capacity_correct) {
-      return("🚍 Perfect! 5 buses per hour with 150 passenger capacity. This helps determine route efficiency and passenger service levels.")
-    } else if (!buses_correct && capacity_correct) {
-      return("🕒 Passenger capacity is correct, but check buses per hour: 60 minutes ÷ frequency = 60 ÷ 12")
-    } else if (buses_correct && !capacity_correct) {
-      return("👥 Buses per hour correct, but check capacity: buses × capacity × load factor = 5 × 40 × 0.75")
-    } else {
-      return("🚌 Both calculations need work. Buses/hour = 60 ÷ frequency, Capacity = buses × seats × load factor")
-    }
+    list(correct = FALSE, message = "🚌 Both calculations need work. Buses/hour = 60 ÷ frequency, Capacity = buses × seats × load factor", type = "error")
   }
 }
-
-cat(check_result())
 ```
 
 ---
@@ -351,27 +329,23 @@ count_high_traffic
 #| exercise: skill_1
 #| check: true
 # Custom feedback function
-check_result <- function() {
-  if (!exists("high_traffic") || !exists("count_high_traffic")) {
-    return("📊 Make sure to create both 'high_traffic' and 'count_high_traffic' variables.")
+if (!exists("high_traffic") || !exists("count_high_traffic")) {
+  list(correct = FALSE, message = "📊 Make sure to create both 'high_traffic' and 'count_high_traffic' variables.", type = "error")
+} else {
+  expected_high_traffic <- traffic_data |> filter(aadt > 15000)
+  filter_correct <- identical(high_traffic, expected_high_traffic)
+  count_correct <- count_high_traffic == nrow(expected_high_traffic)
+  
+  if (filter_correct && count_correct) {
+    list(correct = TRUE, message = "🎯 Perfect! You correctly identified 3 high-traffic locations (Main St, Center Blvd, Highway 101) with AADT > 15,000. This type of analysis helps prioritize infrastructure investments.", type = "success")
+  } else if (!filter_correct && count_correct) {
+    list(correct = FALSE, message = "🔍 Count is correct, but check your filtering condition. You should use: filter(aadt > 15000)", type = "warning")
+  } else if (filter_correct && !count_correct) {
+    list(correct = FALSE, message = "📋 Filtering is correct, but check your count calculation. Use nrow() to count the filtered results.", type = "warning")
   } else {
-    expected_high_traffic <- traffic_data |> filter(aadt > 15000)
-    filter_correct <- identical(high_traffic, expected_high_traffic)
-    count_correct <- count_high_traffic == nrow(expected_high_traffic)
-    
-    if (filter_correct && count_correct) {
-      return("🎯 Perfect! You correctly identified 3 high-traffic locations (Main St, Center Blvd, Highway 101) with AADT > 15,000. This type of analysis helps prioritize infrastructure investments.")
-    } else if (!filter_correct && count_correct) {
-      return("🔍 Count is correct, but check your filtering condition. You should use: filter(aadt > 15000)")
-    } else if (filter_correct && !count_correct) {
-      return("📋 Filtering is correct, but check your count calculation. Use nrow() to count the filtered results.")
-    } else {
-      return("🚗 Check both your filter condition (aadt > 15000) and count method (use nrow()).")
-    }
+    list(correct = FALSE, message = "🚗 Check both your filter condition (aadt > 15000) and count method (use nrow()).", type = "error")
   }
 }
-
-cat(check_result())
 ```
 
 ### Question 2: Safety Rate Calculation 🔍
@@ -395,32 +369,28 @@ safety_analysis
 #| exercise: skill_2
 #| check: true
 # Custom feedback function
-check_result <- function() {
-  if (!exists("safety_analysis")) {
-    return("📊 Make sure to create the 'safety_analysis' variable.")
-  } else {
-    expected_result <- traffic_data |>
-      mutate(accident_rate = (accidents_2023 / aadt) * 1000) |>
-      arrange(desc(accident_rate))
+if (!exists("safety_analysis")) {
+  list(correct = FALSE, message = "📊 Make sure to create the 'safety_analysis' variable.", type = "error")
+} else {
+  expected_result <- traffic_data |>
+    mutate(accident_rate = (accidents_2023 / aadt) * 1000) |>
+    arrange(desc(accident_rate))
+  
+  if (!"accident_rate" %in% names(safety_analysis)) {
+    list(correct = FALSE, message = "📋 Make sure to create the 'accident_rate' column using mutate().", type = "error")
+  } else if (!identical(safety_analysis, expected_result)) {
+    unsorted_check <- traffic_data |>
+      mutate(accident_rate = (accidents_2023 / aadt) * 1000)
     
-    if (!"accident_rate" %in% names(safety_analysis)) {
-      return("📋 Make sure to create the 'accident_rate' column using mutate().")
-    } else if (!identical(safety_analysis, expected_result)) {
-      unsorted_check <- traffic_data |>
-        mutate(accident_rate = (accidents_2023 / aadt) * 1000)
-      
-      if (identical(safety_analysis, unsorted_check)) {
-        return("📈 Accident rate calculation is correct, but you need to arrange by desc(accident_rate) to show highest rates first.")
-      } else {
-        return("🔢 Check your accident rate calculation: (accidents_2023 / aadt) * 1000")
-      }
+    if (identical(safety_analysis, unsorted_check)) {
+      list(correct = FALSE, message = "📈 Accident rate calculation is correct, but you need to arrange by desc(accident_rate) to show highest rates first.", type = "warning")
     } else {
-      return("🎯 Excellent! You've calculated accident rates per 1,000 AADT and sorted by highest risk. Park Rd has the highest rate at 0.67 accidents per 1,000 AADT, making it a priority for safety improvements.")
+      list(correct = FALSE, message = "🔢 Check your accident rate calculation: (accidents_2023 / aadt) * 1000", type = "error")
     }
+  } else {
+    list(correct = TRUE, message = "🎯 Excellent! You've calculated accident rates per 1,000 AADT and sorted by highest risk. Park Rd has the highest rate at 0.67 accidents per 1,000 AADT, making it a priority for safety improvements.", type = "success")
   }
 }
-
-cat(check_result())
 ```
 
 ### Question 3: Transit Efficiency Analysis 🚌
@@ -454,31 +424,27 @@ most_efficient
 ```{webr}
 #| exercise: skill_3
 #| check: true
-check_result <- function() {
-  if (!exists("transit_efficiency") || !exists("most_efficient")) {
-    return("📊 Make sure to create both 'transit_efficiency' and 'most_efficient' variables.")
+if (!exists("transit_efficiency") || !exists("most_efficient")) {
+  list(correct = FALSE, message = "📊 Make sure to create both 'transit_efficiency' and 'most_efficient' variables.", type = "error")
+} else {
+  expected_efficiency <- transit_data |>
+    mutate(riders_per_mile = daily_riders / route_length_miles) |>
+    arrange(desc(riders_per_mile))
+  expected_most_efficient <- expected_efficiency |> slice(1) |> pull(route)
+  
+  efficiency_correct <- identical(transit_efficiency, expected_efficiency)
+  route_correct <- identical(most_efficient, expected_most_efficient)
+  
+  if (efficiency_correct && route_correct) {
+    list(correct = TRUE, message = "🎯 Perfect! Route 3 is the most efficient with 114.8 riders per mile. This analysis helps transit agencies optimize route planning and resource allocation.", type = "success")
+  } else if (!efficiency_correct && route_correct) {
+    list(correct = FALSE, message = "🚌 Most efficient route is correct, but check your efficiency calculation: daily_riders / route_length_miles", type = "warning")
+  } else if (efficiency_correct && !route_correct) {
+    list(correct = FALSE, message = "📊 Efficiency calculation is correct, but check how you're extracting the most efficient route name using pull(route)", type = "warning")
   } else {
-    expected_efficiency <- transit_data |>
-      mutate(riders_per_mile = daily_riders / route_length_miles) |>
-      arrange(desc(riders_per_mile))
-    expected_most_efficient <- expected_efficiency |> slice(1) |> pull(route)
-    
-    efficiency_correct <- identical(transit_efficiency, expected_efficiency)
-    route_correct <- identical(most_efficient, expected_most_efficient)
-    
-    if (efficiency_correct && route_correct) {
-      return("🎯 Perfect! Route 3 is the most efficient with 114.8 riders per mile. This analysis helps transit agencies optimize route planning and resource allocation.")
-    } else if (!efficiency_correct && route_correct) {
-      return("🚌 Most efficient route is correct, but check your efficiency calculation: daily_riders / route_length_miles")
-    } else if (efficiency_correct && !route_correct) {
-      return("📊 Efficiency calculation is correct, but check how you're extracting the most efficient route name using pull(route)")
-    } else {
-      return("🚍 Check both your efficiency calculation (riders ÷ miles) and route extraction (slice(1) |> pull(route))")
-    }
+    list(correct = FALSE, message = "🚍 Check both your efficiency calculation (riders ÷ miles) and route extraction (slice(1) |> pull(route))", type = "error")
   }
 }
-
-cat(check_result())
 ```
 
 ### Question 4: Bike Share Visualization 📈
@@ -519,29 +485,25 @@ bike_plot
 ```{webr}
 #| exercise: skill_4
 #| check: true
-check_result <- function() {
-  if (!exists("bike_plot")) {
-    return("📊 Make sure to create the 'bike_plot' variable.")
-  } else if (!inherits(bike_plot, "ggplot")) {
-    return("📈 Make sure 'bike_plot' is a ggplot object.")
+if (!exists("bike_plot")) {
+  list(correct = FALSE, message = "📊 Make sure to create the 'bike_plot' variable.", type = "error")
+} else if (!inherits(bike_plot, "ggplot")) {
+  list(correct = FALSE, message = "📈 Make sure 'bike_plot' is a ggplot object.", type = "error")
+} else {
+  aes_data <- bike_plot$mapping
+  x_correct <- "distance_downtown_km" %in% as.character(aes_data$x)
+  y_correct <- "daily_trips" %in% as.character(aes_data$y)
+  
+  if (x_correct && y_correct) {
+    list(correct = TRUE, message = "🎯 Excellent visualization! Your plot shows the relationship between distance from downtown and bike share usage. The trend line reveals that stations closer to downtown tend to have higher usage - a key insight for bike share planning.", type = "success")
+  } else if (!x_correct && y_correct) {
+    list(correct = FALSE, message = "📊 Y-axis (daily_trips) is correct, but check your x-axis mapping: use distance_downtown_km", type = "warning")
+  } else if (x_correct && !y_correct) {
+    list(correct = FALSE, message = "📊 X-axis (distance_downtown_km) is correct, but check your y-axis mapping: use daily_trips", type = "warning")
   } else {
-    aes_data <- bike_plot$mapping
-    x_correct <- "distance_downtown_km" %in% as.character(aes_data$x)
-    y_correct <- "daily_trips" %in% as.character(aes_data$y)
-    
-    if (x_correct && y_correct) {
-      return("🎯 Excellent visualization! Your plot shows the relationship between distance from downtown and bike share usage. The trend line reveals that stations closer to downtown tend to have higher usage - a key insight for bike share planning.")
-    } else if (!x_correct && y_correct) {
-      return("📊 Y-axis (daily_trips) is correct, but check your x-axis mapping: use distance_downtown_km")
-    } else if (x_correct && !y_correct) {
-      return("📊 X-axis (distance_downtown_km) is correct, but check your y-axis mapping: use daily_trips")
-    } else {
-      return("🚲 Check your aesthetic mappings: x = distance_downtown_km, y = daily_trips")
-    }
+    list(correct = FALSE, message = "🚲 Check your aesthetic mappings: x = distance_downtown_km, y = daily_trips", type = "error")
   }
 }
-
-cat(check_result())
 ```
 
 ### Question 5: Comprehensive Performance Summary 🏆
@@ -571,49 +533,45 @@ performance_summary
 ```{webr}
 #| exercise: skill_5
 #| check: true
-check_result <- function() {
-  if (!exists("performance_summary")) {
-    return("📊 Make sure to create the 'performance_summary' variable.")
+if (!exists("performance_summary")) {
+  list(correct = FALSE, message = "📊 Make sure to create the 'performance_summary' variable.", type = "error")
+} else {
+  expected_result <- traffic_data |>
+    mutate(
+      daily_volume = aadt,
+      accidents_per_1000 = (accidents_2023 / aadt) * 1000,
+      congestion_level = case_when(
+        congestion_hours < 3 ~ "Low",
+        congestion_hours <= 5 ~ "Medium", 
+        TRUE ~ "High"
+      )
+    ) |>
+    select(location, daily_volume, accidents_per_1000, congestion_level)
+  
+  expected_cols <- c("location", "daily_volume", "accidents_per_1000", "congestion_level")
+  has_correct_cols <- all(expected_cols %in% names(performance_summary))
+  
+  if (!has_correct_cols) {
+    missing_cols <- setdiff(expected_cols, names(performance_summary))
+    list(correct = FALSE, message = paste("📋 Missing columns:", paste(missing_cols, collapse = ", ")), type = "error")
+  } else if (identical(performance_summary, expected_result)) {
+    list(correct = TRUE, message = "🎯 Outstanding! You've created a comprehensive performance dashboard showing volume, safety rates, and congestion levels. This type of integrated analysis is essential for transportation planning and helps identify priority locations for improvements.", type = "success")
   } else {
-    expected_result <- traffic_data |>
-      mutate(
-        daily_volume = aadt,
-        accidents_per_1000 = (accidents_2023 / aadt) * 1000,
-        congestion_level = case_when(
-          congestion_hours < 3 ~ "Low",
-          congestion_hours <= 5 ~ "Medium", 
-          TRUE ~ "High"
-        )
-      ) |>
-      select(location, daily_volume, accidents_per_1000, congestion_level)
+    daily_vol_correct <- identical(performance_summary$daily_volume, expected_result$daily_volume)
+    accidents_correct <- all(abs(performance_summary$accidents_per_1000 - expected_result$accidents_per_1000) < 0.001)
+    congestion_correct <- identical(performance_summary$congestion_level, expected_result$congestion_level)
     
-    expected_cols <- c("location", "daily_volume", "accidents_per_1000", "congestion_level")
-    has_correct_cols <- all(expected_cols %in% names(performance_summary))
-    
-    if (!has_correct_cols) {
-      missing_cols <- setdiff(expected_cols, names(performance_summary))
-      return(paste("📋 Missing columns:", paste(missing_cols, collapse = ", ")))
-    } else if (identical(performance_summary, expected_result)) {
-      return("🎯 Outstanding! You've created a comprehensive performance dashboard showing volume, safety rates, and congestion levels. This type of integrated analysis is essential for transportation planning and helps identify priority locations for improvements.")
+    if (!daily_vol_correct) {
+      list(correct = FALSE, message = "📊 Check daily_volume calculation: should be the same as aadt", type = "warning")
+    } else if (!accidents_correct) {
+      list(correct = FALSE, message = "🔢 Check accidents_per_1000 calculation: (accidents_2023 / aadt) * 1000", type = "warning")
+    } else if (!congestion_correct) {
+      list(correct = FALSE, message = "🚦 Check congestion_level case_when logic: <3='Low', <=5='Medium', >5='High'", type = "warning")
     } else {
-      daily_vol_correct <- identical(performance_summary$daily_volume, expected_result$daily_volume)
-      accidents_correct <- all(abs(performance_summary$accidents_per_1000 - expected_result$accidents_per_1000) < 0.001)
-      congestion_correct <- identical(performance_summary$congestion_level, expected_result$congestion_level)
-      
-      if (!daily_vol_correct) {
-        return("📊 Check daily_volume calculation: should be the same as aadt")
-      } else if (!accidents_correct) {
-        return("🔢 Check accidents_per_1000 calculation: (accidents_2023 / aadt) * 1000")
-      } else if (!congestion_correct) {
-        return("🚦 Check congestion_level case_when logic: <3='Low', <=5='Medium', >5='High'")
-      } else {
-        return("📋 Almost there! Check your mutate and select statements carefully.")
-      }
+      list(correct = FALSE, message = "📋 Almost there! Check your mutate and select statements carefully.", type = "error")
     }
   }
 }
-
-cat(check_result())
 ```
 
 ---
@@ -627,4 +585,3 @@ cat(check_result())
 
 ---
 *Built with [Quarto Live](https://r-wasm.github.io/quarto-live/) and [WebR](https://docs.r-wasm.org/webr/latest/)*
-

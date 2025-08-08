@@ -1,0 +1,583 @@
+---
+pagetitle: Page Not Found | Pukar Bhandari
+format:
+  live-html:
+    webr:
+      packages:
+        - dplyr
+        - ggplot2
+        # - gradethis
+      cell-options:
+        completion: true
+      render-df: gt-interactive
+    live:
+      show-solutions: true
+      show-grading: true
+engine: knitr
+respect-user-color-scheme: true
+theme:
+  light:
+    - "flatly"
+    - theme.scss
+  dark:
+    - "darkly"
+    - theme.scss
+mainfont: "Poppins"
+monofont: "Fira Code"
+css: assets/css/index.css
+include-in-header:
+  - _includes/preload-fonts.html
+draft: true
+---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+{{< include ./_extensions/r-wasm/live/_gradethis.qmd >}}
+
+<br>
+
+<div style="text-align: center">
+
+# {{< fa road-barrier >}}  Road Closed Ahead!  {{< fa road-barrier >}}
+
+The page you were looking for has been affected by the recent funding cuts. 
+
+**While we wait for the public comment period, why not test your Transportation & Data Science smarts?** It’s more fun than hitting the <a href="javascript:history.back()">back</a> button. Probably.
+
+
+</div>
+
+::: {.callout-tip}
+## Welcome to the Transportation Data Science Challenge! 🚦
+
+Complete these interactive R exercises to test your skills in transportation planning and data analysis. Each exercise builds on real-world scenarios you'll encounter as a transportation professional.
+:::
+
+----
+
+```{webr}
+#| context: setup
+#| include: false
+
+# Sample transportation data
+traffic_data <- data.frame(
+  location = c("Main St", "Oak Ave", "Park Rd", "First St", "Center Blvd", "Highway 101"),
+  aadt = c(15000, 8500, 12000, 6800, 22000, 45000),
+  speed_limit = c(35, 25, 30, 25, 45, 65),
+  lanes = c(4, 2, 3, 2, 6, 8),
+  accidents_2023 = c(12, 3, 8, 2, 18, 35),
+  congestion_hours = c(4, 2, 3, 1, 6, 8)
+)
+
+# Bike share data
+bike_data <- data.frame(
+  station = paste("Station", LETTERS[1:6]),
+  daily_trips = c(45, 78, 23, 56, 89, 34),
+  distance_downtown_km = c(0.5, 2.1, 4.2, 1.8, 0.8, 3.5),
+  bike_capacity = c(20, 30, 15, 25, 35, 20)
+)
+
+# Transit data
+transit_data <- data.frame(
+  route = paste0("Route ", 1:5),
+  daily_riders = c(1200, 850, 2100, 650, 1800),
+  route_length_miles = c(12.5, 8.2, 18.3, 6.1, 15.7),
+  frequency_minutes = c(15, 20, 10, 30, 12)
+)
+
+# Level of Service data
+los_data <- data.frame(
+  intersection = c("A", "B", "C", "D", "E"),
+  delay_seconds = c(10, 25, 45, 75, 120),
+  volume = c(800, 1200, 1600, 1800, 2000),
+  capacity = c(1800, 1800, 1800, 1800, 1800)
+)
+```
+
+---
+
+## 🧠 **Knowledge Test**
+
+*Test your understanding of transportation planning fundamentals*
+
+### Question 1: Traffic Signal Timing ⏱️
+
+If a traffic light has a 90-second cycle and the green light lasts 60 seconds, how many cars can pass through if each car takes 3 seconds to clear the intersection?
+
+```{webr}
+#| exercise: know_1
+#| caption: "Knowledge Question 1"
+# Calculate how many cars can pass in one green phase
+green_time <- 60  # seconds
+time_per_car <- 3  # seconds
+
+# Your calculation:
+cars_per_cycle <- ______
+
+cars_per_cycle
+```
+
+::: { .solution exercise="know_1" }
+
+```{webr}
+#| exercise: know_1
+#| solution: true
+# Calculate how many cars can pass in one green phase
+green_time <- 60  # seconds
+time_per_car <- 3  # seconds
+
+# Divide green time by time per car
+cars_per_cycle <- green_time / time_per_car
+
+cars_per_cycle
+```
+:::
+
+```{webr}
+#| exercise: know_1
+#| check: true
+gradethis::grade_this_code()
+```
+
+### Question 2: Level of Service 🚦
+
+Calculate the volume-to-capacity (V/C) ratio for an intersection with 1,600 vehicles/hour and capacity of 1,800 vehicles/hour. What LOS category does this represent? (A-C: ≤0.8, D: 0.8-0.9, E-F: >0.9)
+
+```{webr}
+#| exercise: know_2
+#| caption: "Knowledge Question 2"
+volume <- 1600
+capacity <- 1800
+
+# Calculate V/C ratio
+vc_ratio <- ______
+
+# Determine LOS category
+los_category <- ______  # Should be "A-C", "D", or "E-F"
+
+list(vc_ratio = vc_ratio, los_category = los_category)
+```
+
+::: {.solution exercise="know_2"}
+```{webr}
+#| exercise: know_2
+#| solution: true
+volume <- 1600
+capacity <- 1800
+
+# Calculate V/C ratio
+vc_ratio <- volume / capacity
+
+# Determine LOS category based on thresholds
+los_category <- if (vc_ratio <= 0.8) {
+  "A-C"
+} else if (vc_ratio <= 0.9) {
+  "D" 
+} else {
+  "E-F"
+}
+
+list(vc_ratio = vc_ratio, los_category = los_category)
+```
+:::
+
+```{webr}
+#| exercise: know_2
+#| check: true
+gradethis::grade_this_code()
+```
+
+### Question 3: Modal Split 🚌🚲🚗
+
+In a city where 40% of trips are by car, 25% by transit, 20% by walking, and 15% by cycling, what percentage of non-car trips are made by transit?
+
+```{webr}
+#| exercise: know_3
+#| caption: "Knowledge Question 3"
+car_percent <- 40
+transit_percent <- 25
+walking_percent <- 20
+cycling_percent <- 15
+
+# Calculate percentage of non-car trips that are transit
+non_car_total <- ______
+transit_share_of_non_car <- ______
+
+transit_share_of_non_car
+```
+
+::: {.solution exercise="know_3"}
+```{webr}
+#| exercise: know_3
+#| solution: true
+car_percent <- 40
+transit_percent <- 25
+walking_percent <- 20
+cycling_percent <- 15
+
+# Calculate percentage of non-car trips that are transit
+non_car_total <- 100 - car_percent  # 60%
+transit_share_of_non_car <- (transit_percent / non_car_total) * 100
+
+transit_share_of_non_car
+```
+:::
+
+```{webr}
+#| exercise: know_3
+#| check: true
+gradethis::grade_this_code()
+```
+
+### Question 4: Trip Generation 🏠
+
+A residential development has 200 housing units. Using ITE trip generation rate of 9.5 trips per dwelling unit per day, calculate total daily trips. If 15% occur during PM peak hour, how many PM peak trips?
+
+```{webr}
+#| exercise: know_4
+#| caption: "Knowledge Question 4"
+housing_units <- 200
+trip_rate <- 9.5
+pm_peak_percent <- 15
+
+# Calculate total daily trips
+total_daily_trips <- ______
+
+# Calculate PM peak hour trips  
+pm_peak_trips <- ______
+
+list(daily = total_daily_trips, pm_peak = pm_peak_trips)
+```
+
+::: {.solution exercise="know_4"}
+```{webr}
+#| exercise: know_4
+#| solution: true
+housing_units <- 200
+trip_rate <- 9.5
+pm_peak_percent <- 15
+
+# Calculate total daily trips
+total_daily_trips <- housing_units * trip_rate
+
+# Calculate PM peak hour trips
+pm_peak_trips <- total_daily_trips * (pm_peak_percent / 100)
+
+list(daily = total_daily_trips, pm_peak = pm_peak_trips)
+```
+:::
+
+```{webr}
+#| exercise: know_4
+#| check: true
+gradethis::grade_this_code()
+```
+
+### Question 5: Transit Frequency 🚍
+
+A bus route operates every 12 minutes during peak hours. How many buses pass a given stop in one hour? If each bus has 40-passenger capacity and average load is 75%, what's the hourly passenger capacity past that stop?
+
+```{webr}
+#| exercise: know_5
+#| caption: "Knowledge Question 5"
+frequency_minutes <- 12
+bus_capacity <- 40
+load_factor <- 0.75
+
+# Calculate buses per hour
+buses_per_hour <- ______
+
+# Calculate hourly passenger capacity
+hourly_passenger_capacity <- ______
+
+list(buses_per_hour = buses_per_hour, hourly_capacity = hourly_passenger_capacity)
+```
+
+::: {.solution exercise="know_5"}
+```{webr}
+#| exercise: know_5
+#| solution: true
+frequency_minutes <- 12
+bus_capacity <- 40
+load_factor <- 0.75
+
+# Calculate buses per hour
+buses_per_hour <- 60 / frequency_minutes
+
+# Calculate hourly passenger capacity
+hourly_passenger_capacity <- buses_per_hour * bus_capacity * load_factor
+
+list(buses_per_hour = buses_per_hour, hourly_capacity = hourly_passenger_capacity)
+```
+:::
+
+```{webr}
+#| exercise: know_5
+#| check: true
+gradethis::grade_this_code()
+```
+
+---
+
+## 🚀 **Skills Test**
+
+*Put your R and dplyr skills to work with real transportation datasets*
+
+### Question 1: High-Traffic Location Analysis 📊
+
+Using the `traffic_data` dataset, filter for locations with AADT > 15,000 and count how many locations meet this criteria.
+
+```{webr}
+#| context: setup
+#| include: false
+library(dplyr)
+```
+
+```{webr}
+#| autorun: true
+#| caption: "Traffic Data"
+# First, let's see the data
+traffic_data
+```
+
+```{webr}
+#| exercise: skill_1
+#| caption: "Skill Question 1"
+# Filter for high-traffic locations and count them
+high_traffic <- traffic_data |>
+  filter(______)
+
+# Count the results
+count_high_traffic <- ______
+
+count_high_traffic
+```
+
+::: {.solution exercise="skill_1"}
+```{webr}
+#| exercise: skill_1
+#| solution: true
+# Filter for high-traffic locations and count them
+high_traffic <- traffic_data |>
+  filter(aadt > 15000)
+
+# Count the results
+count_high_traffic <- nrow(high_traffic)
+
+count_high_traffic
+```
+:::
+
+```{webr}
+#| exercise: skill_1
+#| check: true
+gradethis::grade_this_code()
+```
+
+### Question 2: Safety Rate Calculation 🔍
+
+Calculate the accident rate per 1,000 AADT for each location. Create a new column called `accident_rate` and arrange by highest rate.
+
+```{webr}
+#| exercise: skill_2
+#| caption: "Skill Question 2"
+# Calculate accident rates and arrange
+safety_analysis <- traffic_data |>
+  mutate(accident_rate = ______) |>
+  arrange(______)
+
+# Show the results
+safety_analysis
+```
+
+::: {.solution exercise="skill_2"}
+```{webr}
+#| exercise: skill_2
+#| solution: true
+# Calculate accident rates and arrange
+safety_analysis <- traffic_data |>
+  mutate(accident_rate = (accidents_2023 / aadt) * 1000) |>
+  arrange(desc(accident_rate))
+
+# Show the results
+safety_analysis
+```
+:::
+
+```{webr}
+#| exercise: skill_2
+#| check: true
+gradethis::grade_this_code()
+```
+
+### Question 3: Transit Efficiency Analysis 🚌
+
+Calculate riders per mile for each transit route and identify the most efficient route (highest riders per mile).
+
+```{webr}
+#| autorun: true
+#| caption: "Transit Data"
+# Look at transit data first
+transit_data
+```
+
+```{webr}
+#| exercise: skill_3
+#| caption: "Skill Question 3"
+# Calculate efficiency and find the best route
+transit_efficiency <- transit_data |>
+  mutate(riders_per_mile = ______) |>
+  arrange(______)
+
+# Get the most efficient route name
+most_efficient <- transit_efficiency |>
+  slice(1) |>
+  pull(______)
+
+most_efficient
+```
+
+::: {.solution exercise="skill_3"}
+```{webr}
+#| exercise: skill_3
+#| solution: true
+# Calculate efficiency and find the best route
+transit_efficiency <- transit_data |>
+  mutate(riders_per_mile = daily_riders / route_length_miles) |>
+  arrange(desc(riders_per_mile))
+
+# Get the most efficient route name
+most_efficient <- transit_efficiency |>
+  slice(1) |>
+  pull(route)
+
+most_efficient
+```
+:::
+
+```{webr}
+#| exercise: skill_3
+#| check: true
+gradethis::grade_this_code()
+```
+
+### Question 4: Bike Share Visualization 📈
+
+Create a scatter plot showing the relationship between distance from downtown and daily trips for bike share stations. Add a smooth trend line.
+
+```{webr}
+#| context: setup
+#| include: false
+library(ggplot2)
+```
+
+```{webr}
+#| autorun: true
+#| caption: "Bike Data"
+# Look at bike data first
+bike_data
+```
+
+```{webr}
+#| exercise: skill_4
+#| caption: "Skill Question 4"
+# Create the bike share analysis plot
+bike_plot <- ggplot(bike_data, aes(x = ______, y = ______)) +
+  geom_point(size = 3, alpha = 0.7, color = "steelblue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(
+    title = "Bike Share Usage vs Distance from Downtown",
+    x = "Distance from Downtown (km)",
+    y = "Daily Trips"
+  ) +
+  theme_minimal()
+
+bike_plot
+```
+
+::: {.solution exercise="skill_4"}
+```{webr}
+#| exercise: skill_4
+#| solution: true
+# Create the bike share analysis plot
+bike_plot <- ggplot(bike_data, aes(x = distance_downtown_km, y = daily_trips)) +
+  geom_point(size = 3, alpha = 0.7, color = "steelblue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(
+    title = "Bike Share Usage vs Distance from Downtown",
+    x = "Distance from Downtown (km)",
+    y = "Daily Trips"
+  ) +
+  theme_minimal()
+
+bike_plot
+```
+:::
+
+```{webr}
+#| exercise: skill_4
+#| check: true
+gradethis::grade_this_code()
+```
+
+### Question 5: Comprehensive Performance Summary 🏆
+
+Create a summary table showing for each location: total daily volume, accidents per 1000 vehicles, and congestion level (Low: <3hrs, Medium: 3-5hrs, High: >5hrs).
+
+```{webr}
+#| exercise: skill_5
+#| caption: "Skill Question 5"
+# Create comprehensive performance summary
+performance_summary <- traffic_data |>
+  mutate(
+    daily_volume = ______,
+    accidents_per_1000 = ______,
+    congestion_level = case_when(
+      ______ < 3 ~ "Low",
+      ______ <= 5 ~ "Medium",
+      TRUE ~ "High"
+    )
+  ) |>
+  select(location, daily_volume, accidents_per_1000, congestion_level)
+
+performance_summary
+```
+
+::: {.solution exercise="skill_5"}
+```{webr}
+#| exercise: skill_5
+#| solution: true
+# Create comprehensive performance summary
+performance_summary <- traffic_data |>
+  mutate(
+    daily_volume = aadt,
+    accidents_per_1000 = (accidents_2023 / aadt) * 1000,
+    congestion_level = case_when(
+      congestion_hours < 3 ~ "Low",
+      congestion_hours <= 5 ~ "Medium", 
+      TRUE ~ "High"
+    )
+  ) |>
+  select(location, daily_volume, accidents_per_1000, congestion_level)
+
+performance_summary
+```
+:::
+
+```{webr}
+#| exercise: skill_5
+#| check: true
+gradethis::grade_this_code()
+```
+
+---
+
+::: {.callout-success}
+## 🎯 Quiz Complete!
+**Congratulations, You are now a Transportation Data Scientist!** 🏆
+:::
+
+*P.S. - If you got this far, you're definitely not lost anymore. You're a certified Transportation Data Scientist! 🎯*
+
+---
+*Built with [Quarto Live](https://r-wasm.github.io/quarto-live/) and [WebR](https://docs.r-wasm.org/webr/latest/)*
+
