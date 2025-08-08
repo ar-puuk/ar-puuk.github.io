@@ -1,5 +1,5 @@
 ---
-pagetitle: Projects | Pukar Bhandari
+pagetitle: Projects
 listing:
   contents:
     - posts/**/*.qmd

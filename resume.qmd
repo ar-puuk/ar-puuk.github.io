@@ -1,5 +1,5 @@
 ---
-pagetitle: Resume | Pukar Bhandari
+pagetitle: Resume
 format: html
 ---
 

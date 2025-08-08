@@ -1,5 +1,5 @@
 ---
-pagetitle: Contact | Pukar Bhandari
+pagetitle: Contact
 name: Contact Form
 page-layout: article
 format:

@@ -1,5 +1,5 @@
 ---
-pagetitle: Page Not Found | Pukar Bhandari
+pagetitle: Page Not Found {gradethis}
 format:
   live-html:
     webr:
