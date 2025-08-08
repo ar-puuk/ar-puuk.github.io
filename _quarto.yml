@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "Pukar Bhandari"
+  title: "**Pukar Bhandari**"
   favicon: "assets/images/Headshot_PukarBhandari_July2025.png"
   navbar:
     left:
