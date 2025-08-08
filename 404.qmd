@@ -6,7 +6,7 @@ format:
       packages:
         - dplyr
         - ggplot2
-        - gradethis
+        # - gradethis
       cell-options:
         completion: true
       render-df: gt-interactive
@@ -30,7 +30,7 @@ include-in-header:
 ---
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
-{{< include ./_extensions/r-wasm/live/_gradethis.qmd >}}
+<!-- {{< include ./_extensions/r-wasm/live/_gradethis.qmd >}} -->
 
 <br>
 
@@ -115,38 +115,25 @@ cars_per_cycle <- ______
 cars_per_cycle
 ```
 
-::: { .solution exercise="know_1" }
-
-```{webr}
-#| exercise: know_1
-#| solution: true
-# Calculate how many cars can pass in one green phase
-green_time <- 60  # seconds
-time_per_car <- 3  # seconds
-
-# Divide green time by time per car
-cars_per_cycle <- green_time / time_per_car
-
-cars_per_cycle
-```
-:::
-
 ```{webr}
 #| exercise: know_1
 #| check: true
-gradethis::grade_this({
-  if (missing(.result) || is.null(.result)) {
-    fail("🚫 Please run your code to get a result.")
-  } else if (identical(.result, 20)) {
-    pass("🎯 Perfect! 20 cars can pass through in one green cycle. This is a fundamental capacity calculation used in traffic signal timing.")
-  } else if (.result > 20) {
-    fail("🤔 Too many cars! Remember, each car needs 3 seconds to clear the intersection. Try dividing the green time by the time per car.")
-  } else if (.result < 20) {
-    fail("🚗 Not quite enough cars! How many 3-second periods fit in 60 seconds? Think: 60 ÷ 3 = ?")
+# Custom feedback function
+check_result <- function() {
+  if (!exists("cars_per_cycle")) {
+    return("🚫 Please create the 'cars_per_cycle' variable and run your code.")
+  } else if (identical(cars_per_cycle, 20)) {
+    return("🎯 Perfect! 20 cars can pass through in one green cycle. This is a fundamental capacity calculation used in traffic signal timing.")
+  } else if (cars_per_cycle > 20) {
+    return("🤔 Too many cars! Remember, each car needs 3 seconds to clear the intersection. Try dividing the green time by the time per car.")
+  } else if (cars_per_cycle < 20) {
+    return("🚗 Not quite enough cars! How many 3-second periods fit in 60 seconds? Think: 60 ÷ 3 = ?")
   } else {
-    fail("🔢 Make sure your result is a number. Check your calculation.")
+    return("🔢 Make sure your result is a number. Check your calculation.")
   }
-})
+}
+
+cat(check_result())
 ```
 
 ### Question 2: Level of Service 🚦
@@ -168,52 +155,29 @@ los_category <- ______  # Should be "A-C", "D", or "E-F"
 list(vc_ratio = vc_ratio, los_category = los_category)
 ```
 
-::: {.solution exercise="know_2"}
-```{webr}
-#| exercise: know_2
-#| solution: true
-volume <- 1600
-capacity <- 1800
-
-# Calculate V/C ratio
-vc_ratio <- volume / capacity
-
-# Determine LOS category based on thresholds
-los_category <- if (vc_ratio <= 0.8) {
-  "A-C"
-} else if (vc_ratio <= 0.9) {
-  "D" 
-} else {
-  "E-F"
-}
-
-list(vc_ratio = vc_ratio, los_category = los_category)
-```
-:::
-
 ```{webr}
 #| exercise: know_2
 #| check: true
-gradethis::grade_this({
-  if (missing(.result) || is.null(.result)) {
-    fail("🚫 Please run your code to get a result.")
-  } else if (!is.list(.result) || is.null(.result$vc_ratio) || is.null(.result$los_category)) {
-    fail("📋 Make sure your result is a list with both 'vc_ratio' and 'los_category' elements.")
+check_result <- function() {
+  if (!exists("vc_ratio") || !exists("los_category")) {
+    return("🚫 Please create both 'vc_ratio' and 'los_category' variables.")
   } else {
-    vc_correct <- round(.result$vc_ratio, 3) == round(1600/1800, 3)
-    los_correct <- .result$los_category == "D"
+    vc_correct <- round(vc_ratio, 3) == round(1600/1800, 3)
+    los_correct <- los_category == "D"
     
     if (vc_correct && los_correct) {
-      pass("🎯 Excellent! V/C = 0.889 puts this intersection at LOS D. This indicates approaching unstable flow with tolerable delays.")
+      return("🎯 Excellent! V/C = 0.889 puts this intersection at LOS D. This indicates approaching unstable flow with tolerable delays.")
     } else if (!vc_correct && los_correct) {
-      fail("🔢 LOS category is correct, but check your V/C calculation: volume ÷ capacity = 1600 ÷ 1800")
+      return("🔢 LOS category is correct, but check your V/C calculation: volume ÷ capacity = 1600 ÷ 1800")
     } else if (vc_correct && !los_correct) {
-      fail("📊 V/C ratio is correct (0.889), but check the LOS thresholds: 0.8-0.9 = Level D")
+      return("📊 V/C ratio is correct (0.889), but check the LOS thresholds: 0.8-0.9 = Level D")
     } else {
-      fail("🚦 Both calculations need work. V/C ratio = volume ÷ capacity, then check: ≤0.8=A-C, 0.8-0.9=D, >0.9=E-F")
+      return("🚦 Both calculations need work. V/C ratio = volume ÷ capacity, then check: ≤0.8=A-C, 0.8-0.9=D, >0.9=E-F")
     }
   }
-})
+}
+
+cat(check_result())
 ```
 
 ### Question 3: Modal Split 🚌🚲🚗
@@ -235,39 +199,24 @@ transit_share_of_non_car <- ______
 transit_share_of_non_car
 ```
 
-::: {.solution exercise="know_3"}
-```{webr}
-#| exercise: know_3
-#| solution: true
-car_percent <- 40
-transit_percent <- 25
-walking_percent <- 20
-cycling_percent <- 15
-
-# Calculate percentage of non-car trips that are transit
-non_car_total <- 100 - car_percent  # 60%
-transit_share_of_non_car <- (transit_percent / non_car_total) * 100
-
-transit_share_of_non_car
-```
-:::
-
 ```{webr}
 #| exercise: know_3
 #| check: true
-gradethis::grade_this({
-  if (missing(.result) || is.null(.result)) {
-    fail("🚫 Please run your code to get a result.")
-  } else if (round(.result, 1) == 41.7) {
-    pass("🚌 Perfect! 41.7% of non-car trips are made by transit. This shows transit's importance in the sustainable transportation mix.")
-  } else if (.result == 25) {
-    fail("🤔 That's the overall transit share (25%). But what about just among non-car trips? Hint: transit % ÷ non-car total % × 100")
-  } else if (round(.result, 0) == 42) {
-    pass("🚌 Very close! 41.7% of non-car trips are made by transit. Your calculation method is correct!")
+check_result <- function() {
+  if (!exists("transit_share_of_non_car")) {
+    return("🚫 Please create the 'transit_share_of_non_car' variable and run your code.")
+  } else if (round(transit_share_of_non_car, 1) == 41.7) {
+    return("🚌 Perfect! 41.7% of non-car trips are made by transit. This shows transit's importance in the sustainable transportation mix.")
+  } else if (transit_share_of_non_car == 25) {
+    return("🤔 That's the overall transit share (25%). But what about just among non-car trips? Hint: transit % ÷ non-car total % × 100")
+  } else if (round(transit_share_of_non_car, 0) == 42) {
+    return("🚌 Very close! 41.7% of non-car trips are made by transit. Your calculation method is correct!")
   } else {
-    fail("📊 Remember: First find non-car total (100 - car %), then calculate: (transit %) ÷ (non-car total %) × 100")
+    return("📊 Remember: First find non-car total (100 - car %), then calculate: (transit %) ÷ (non-car total %) × 100")
   }
-})
+}
+
+cat(check_result())
 ```
 
 ### Question 4: Trip Generation 🏠
@@ -290,47 +239,29 @@ pm_peak_trips <- ______
 list(daily = total_daily_trips, pm_peak = pm_peak_trips)
 ```
 
-::: {.solution exercise="know_4"}
-```{webr}
-#| exercise: know_4
-#| solution: true
-housing_units <- 200
-trip_rate <- 9.5
-pm_peak_percent <- 15
-
-# Calculate total daily trips
-total_daily_trips <- housing_units * trip_rate
-
-# Calculate PM peak hour trips
-pm_peak_trips <- total_daily_trips * (pm_peak_percent / 100)
-
-list(daily = total_daily_trips, pm_peak = pm_peak_trips)
-```
-:::
-
 ```{webr}
 #| exercise: know_4
 #| check: true
-gradethis::grade_this({
-  if (missing(.result) || is.null(.result)) {
-    fail("🚫 Please run your code to get a result.")
-  } else if (!is.list(.result) || is.null(.result$daily) || is.null(.result$pm_peak)) {
-    fail("📋 Make sure your result is a list with both 'daily' and 'pm_peak' elements.")
+check_result <- function() {
+  if (!exists("total_daily_trips") || !exists("pm_peak_trips")) {
+    return("🚫 Please create both 'total_daily_trips' and 'pm_peak_trips' variables.")
   } else {
-    daily_correct <- .result$daily == 1900
-    peak_correct <- .result$pm_peak == 285
+    daily_correct <- total_daily_trips == 1900
+    peak_correct <- pm_peak_trips == 285
     
     if (daily_correct && peak_correct) {
-      pass("🏠 Excellent! 1,900 daily trips with 285 during PM peak. These are key numbers for traffic impact studies.")
+      return("🏠 Excellent! 1,900 daily trips with 285 during PM peak. These are key numbers for traffic impact studies.")
     } else if (!daily_correct && peak_correct) {
-      fail("🏘️ PM peak trips are correct, but check daily trips: units × trip rate = 200 × 9.5")
+      return("🏘️ PM peak trips are correct, but check daily trips: units × trip rate = 200 × 9.5")
     } else if (daily_correct && !peak_correct) {
-      fail("🕔 Daily trips correct, but check PM peak: daily trips × 15% = 1900 × 0.15")
+      return("🕔 Daily trips correct, but check PM peak: daily trips × 15% = 1900 × 0.15")
     } else {
-      fail("📊 Both calculations need work. Daily = units × rate, PM peak = daily × 15%")
+      return("📊 Both calculations need work. Daily = units × rate, PM peak = daily × 15%")
     }
   }
-})
+}
+
+cat(check_result())
 ```
 
 ### Question 5: Transit Frequency 🚍
@@ -353,47 +284,30 @@ hourly_passenger_capacity <- ______
 list(buses_per_hour = buses_per_hour, hourly_capacity = hourly_passenger_capacity)
 ```
 
-::: {.solution exercise="know_5"}
-```{webr}
-#| exercise: know_5
-#| solution: true
-frequency_minutes <- 12
-bus_capacity <- 40
-load_factor <- 0.75
-
-# Calculate buses per hour
-buses_per_hour <- 60 / frequency_minutes
-
-# Calculate hourly passenger capacity
-hourly_passenger_capacity <- buses_per_hour * bus_capacity * load_factor
-
-list(buses_per_hour = buses_per_hour, hourly_capacity = hourly_passenger_capacity)
-```
-:::
 
 ```{webr}
 #| exercise: know_5
 #| check: true
-gradethis::grade_this({
-  if (missing(.result) || is.null(.result)) {
-    fail("🚫 Please run your code to get a result.")
-  } else if (!is.list(.result) || is.null(.result$buses_per_hour) || is.null(.result$hourly_capacity)) {
-    fail("📋 Make sure your result is a list with both 'buses_per_hour' and 'hourly_capacity' elements.")
+check_result <- function() {
+  if (!exists("buses_per_hour") || !exists("hourly_passenger_capacity")) {
+    return("🚫 Please create both 'buses_per_hour' and 'hourly_passenger_capacity' variables.")
   } else {
-    buses_correct <- .result$buses_per_hour == 5
-    capacity_correct <- .result$hourly_capacity == 150
+    buses_correct <- buses_per_hour == 5
+    capacity_correct <- hourly_passenger_capacity == 150
     
     if (buses_correct && capacity_correct) {
-      pass("🚍 Perfect! 5 buses per hour with 150 passenger capacity. This helps determine route efficiency and passenger service levels.")
+      return("🚍 Perfect! 5 buses per hour with 150 passenger capacity. This helps determine route efficiency and passenger service levels.")
     } else if (!buses_correct && capacity_correct) {
-      fail("🕒 Passenger capacity is correct, but check buses per hour: 60 minutes ÷ frequency = 60 ÷ 12")
+      return("🕒 Passenger capacity is correct, but check buses per hour: 60 minutes ÷ frequency = 60 ÷ 12")
     } else if (buses_correct && !capacity_correct) {
-      fail("👥 Buses per hour correct, but check capacity: buses × capacity × load factor = 5 × 40 × 0.75")
+      return("👥 Buses per hour correct, but check capacity: buses × capacity × load factor = 5 × 40 × 0.75")
     } else {
-      fail("🚌 Both calculations need work. Buses/hour = 60 ÷ frequency, Capacity = buses × seats × load factor")
+      return("🚌 Both calculations need work. Buses/hour = 60 ÷ frequency, Capacity = buses × seats × load factor")
     }
   }
-})
+}
+
+cat(check_result())
 ```
 
 ---
@@ -432,46 +346,32 @@ count_high_traffic <- ______
 count_high_traffic
 ```
 
-::: {.solution exercise="skill_1"}
-```{webr}
-#| exercise: skill_1
-#| solution: true
-# Filter for high-traffic locations and count them
-high_traffic <- traffic_data |>
-  filter(aadt > 15000)
-
-# Count the results
-count_high_traffic <- nrow(high_traffic)
-
-count_high_traffic
-```
-:::
 
 ```{webr}
 #| exercise: skill_1
 #| check: true
-gradethis::grade_this({
-  if (missing(.result) || is.null(.result)) {
-    fail("🚫 Please run your code to get a result.")
-  } else if (!exists("high_traffic") || !exists("count_high_traffic")) {
-    fail("📊 Make sure to create both 'high_traffic' and 'count_high_traffic' variables.")
+# Custom feedback function
+check_result <- function() {
+  if (!exists("high_traffic") || !exists("count_high_traffic")) {
+    return("📊 Make sure to create both 'high_traffic' and 'count_high_traffic' variables.")
   } else {
-    # Check the filtering
     expected_high_traffic <- traffic_data |> filter(aadt > 15000)
     filter_correct <- identical(high_traffic, expected_high_traffic)
     count_correct <- count_high_traffic == nrow(expected_high_traffic)
     
     if (filter_correct && count_correct) {
-      pass("🎯 Perfect! You correctly identified 3 high-traffic locations (Main St, Center Blvd, Highway 101) with AADT > 15,000. This type of analysis helps prioritize infrastructure investments.")
+      return("🎯 Perfect! You correctly identified 3 high-traffic locations (Main St, Center Blvd, Highway 101) with AADT > 15,000. This type of analysis helps prioritize infrastructure investments.")
     } else if (!filter_correct && count_correct) {
-      fail("🔍 Count is correct, but check your filtering condition. You should use: filter(aadt > 15000)")
+      return("🔍 Count is correct, but check your filtering condition. You should use: filter(aadt > 15000)")
     } else if (filter_correct && !count_correct) {
-      fail("📋 Filtering is correct, but check your count calculation. Use nrow() to count the filtered results.")
+      return("📋 Filtering is correct, but check your count calculation. Use nrow() to count the filtered results.")
     } else {
-      fail("🚗 Check both your filter condition (aadt > 15000) and count method (use nrow()).")
+      return("🚗 Check both your filter condition (aadt > 15000) and count method (use nrow()).")
     }
   }
-})
+}
+
+cat(check_result())
 ```
 
 ### Question 2: Safety Rate Calculation 🔍
@@ -490,51 +390,37 @@ safety_analysis <- traffic_data |>
 safety_analysis
 ```
 
-::: {.solution exercise="skill_2"}
-```{webr}
-#| exercise: skill_2
-#| solution: true
-# Calculate accident rates and arrange
-safety_analysis <- traffic_data |>
-  mutate(accident_rate = (accidents_2023 / aadt) * 1000) |>
-  arrange(desc(accident_rate))
-
-# Show the results
-safety_analysis
-```
-:::
 
 ```{webr}
 #| exercise: skill_2
 #| check: true
-gradethis::grade_this({
-  if (missing(.result) || is.null(.result)) {
-    fail("🚫 Please run your code to get a result.")
-  } else if (!exists("safety_analysis")) {
-    fail("📊 Make sure to create the 'safety_analysis' variable.")
+# Custom feedback function
+check_result <- function() {
+  if (!exists("safety_analysis")) {
+    return("📊 Make sure to create the 'safety_analysis' variable.")
   } else {
     expected_result <- traffic_data |>
       mutate(accident_rate = (accidents_2023 / aadt) * 1000) |>
       arrange(desc(accident_rate))
     
-    # Check if accident_rate column exists
     if (!"accident_rate" %in% names(safety_analysis)) {
-      fail("📋 Make sure to create the 'accident_rate' column using mutate().")
+      return("📋 Make sure to create the 'accident_rate' column using mutate().")
     } else if (!identical(safety_analysis, expected_result)) {
-      # Check if just the sorting is wrong
       unsorted_check <- traffic_data |>
         mutate(accident_rate = (accidents_2023 / aadt) * 1000)
       
       if (identical(safety_analysis, unsorted_check)) {
-        fail("📈 Accident rate calculation is correct, but you need to arrange by desc(accident_rate) to show highest rates first.")
+        return("📈 Accident rate calculation is correct, but you need to arrange by desc(accident_rate) to show highest rates first.")
       } else {
-        fail("🔢 Check your accident rate calculation: (accidents_2023 / aadt) * 1000")
+        return("🔢 Check your accident rate calculation: (accidents_2023 / aadt) * 1000")
       }
     } else {
-      pass("🎯 Excellent! You've calculated accident rates per 1,000 AADT and sorted by highest risk. Park Rd has the highest rate at 0.67 accidents per 1,000 AADT, making it a priority for safety improvements.")
+      return("🎯 Excellent! You've calculated accident rates per 1,000 AADT and sorted by highest risk. Park Rd has the highest rate at 0.67 accidents per 1,000 AADT, making it a priority for safety improvements.")
     }
   }
-})
+}
+
+cat(check_result())
 ```
 
 ### Question 3: Transit Efficiency Analysis 🚌
@@ -564,32 +450,13 @@ most_efficient <- transit_efficiency |>
 most_efficient
 ```
 
-::: {.solution exercise="skill_3"}
-```{webr}
-#| exercise: skill_3
-#| solution: true
-# Calculate efficiency and find the best route
-transit_efficiency <- transit_data |>
-  mutate(riders_per_mile = daily_riders / route_length_miles) |>
-  arrange(desc(riders_per_mile))
-
-# Get the most efficient route name
-most_efficient <- transit_efficiency |>
-  slice(1) |>
-  pull(route)
-
-most_efficient
-```
-:::
 
 ```{webr}
 #| exercise: skill_3
 #| check: true
-gradethis::grade_this({
-  if (missing(.result) || is.null(.result)) {
-    fail("🚫 Please run your code to get a result.")
-  } else if (!exists("transit_efficiency") || !exists("most_efficient")) {
-    fail("📊 Make sure to create both 'transit_efficiency' and 'most_efficient' variables.")
+check_result <- function() {
+  if (!exists("transit_efficiency") || !exists("most_efficient")) {
+    return("📊 Make sure to create both 'transit_efficiency' and 'most_efficient' variables.")
   } else {
     expected_efficiency <- transit_data |>
       mutate(riders_per_mile = daily_riders / route_length_miles) |>
@@ -600,16 +467,18 @@ gradethis::grade_this({
     route_correct <- identical(most_efficient, expected_most_efficient)
     
     if (efficiency_correct && route_correct) {
-      pass("🎯 Perfect! Route 3 is the most efficient with 114.8 riders per mile. This analysis helps transit agencies optimize route planning and resource allocation.")
+      return("🎯 Perfect! Route 3 is the most efficient with 114.8 riders per mile. This analysis helps transit agencies optimize route planning and resource allocation.")
     } else if (!efficiency_correct && route_correct) {
-      fail("🚌 Most efficient route is correct, but check your efficiency calculation: daily_riders / route_length_miles")
+      return("🚌 Most efficient route is correct, but check your efficiency calculation: daily_riders / route_length_miles")
     } else if (efficiency_correct && !route_correct) {
-      fail("📊 Efficiency calculation is correct, but check how you're extracting the most efficient route name using pull(route)")
+      return("📊 Efficiency calculation is correct, but check how you're extracting the most efficient route name using pull(route)")
     } else {
-      fail("🚍 Check both your efficiency calculation (riders ÷ miles) and route extraction (slice(1) |> pull(route))")
+      return("🚍 Check both your efficiency calculation (riders ÷ miles) and route extraction (slice(1) |> pull(route))")
     }
   }
-})
+}
+
+cat(check_result())
 ```
 
 ### Question 4: Bike Share Visualization 📈
@@ -646,52 +515,33 @@ bike_plot <- ggplot(bike_data, aes(x = ______, y = ______)) +
 bike_plot
 ```
 
-::: {.solution exercise="skill_4"}
-```{webr}
-#| exercise: skill_4
-#| solution: true
-# Create the bike share analysis plot
-bike_plot <- ggplot(bike_data, aes(x = distance_downtown_km, y = daily_trips)) +
-  geom_point(size = 3, alpha = 0.7, color = "steelblue") +
-  geom_smooth(method = "lm", se = FALSE, color = "red") +
-  labs(
-    title = "Bike Share Usage vs Distance from Downtown",
-    x = "Distance from Downtown (km)",
-    y = "Daily Trips"
-  ) +
-  theme_minimal()
-
-bike_plot
-```
-:::
 
 ```{webr}
 #| exercise: skill_4
 #| check: true
-gradethis::grade_this({
-  if (missing(.result) || is.null(.result)) {
-    fail("🚫 Please run your code to create the plot.")
-  } else if (!exists("bike_plot")) {
-    fail("📊 Make sure to create the 'bike_plot' variable.")
+check_result <- function() {
+  if (!exists("bike_plot")) {
+    return("📊 Make sure to create the 'bike_plot' variable.")
   } else if (!inherits(bike_plot, "ggplot")) {
-    fail("📈 Make sure 'bike_plot' is a ggplot object.")
+    return("📈 Make sure 'bike_plot' is a ggplot object.")
   } else {
-    # Check if the basic aesthetics are correct
     aes_data <- bike_plot$mapping
     x_correct <- "distance_downtown_km" %in% as.character(aes_data$x)
     y_correct <- "daily_trips" %in% as.character(aes_data$y)
     
     if (x_correct && y_correct) {
-      pass("🎯 Excellent visualization! Your plot shows the relationship between distance from downtown and bike share usage. The trend line reveals that stations closer to downtown tend to have higher usage - a key insight for bike share planning.")
+      return("🎯 Excellent visualization! Your plot shows the relationship between distance from downtown and bike share usage. The trend line reveals that stations closer to downtown tend to have higher usage - a key insight for bike share planning.")
     } else if (!x_correct && y_correct) {
-      fail("📊 Y-axis (daily_trips) is correct, but check your x-axis mapping: use distance_downtown_km")
+      return("📊 Y-axis (daily_trips) is correct, but check your x-axis mapping: use distance_downtown_km")
     } else if (x_correct && !y_correct) {
-      fail("📊 X-axis (distance_downtown_km) is correct, but check your y-axis mapping: use daily_trips")
+      return("📊 X-axis (distance_downtown_km) is correct, but check your y-axis mapping: use daily_trips")
     } else {
-      fail("🚲 Check your aesthetic mappings: x = distance_downtown_km, y = daily_trips")
+      return("🚲 Check your aesthetic mappings: x = distance_downtown_km, y = daily_trips")
     }
   }
-})
+}
+
+cat(check_result())
 ```
 
 ### Question 5: Comprehensive Performance Summary 🏆
@@ -717,35 +567,13 @@ performance_summary <- traffic_data |>
 performance_summary
 ```
 
-::: {.solution exercise="skill_5"}
-```{webr}
-#| exercise: skill_5
-#| solution: true
-# Create comprehensive performance summary
-performance_summary <- traffic_data |>
-  mutate(
-    daily_volume = aadt,
-    accidents_per_1000 = (accidents_2023 / aadt) * 1000,
-    congestion_level = case_when(
-      congestion_hours < 3 ~ "Low",
-      congestion_hours <= 5 ~ "Medium", 
-      TRUE ~ "High"
-    )
-  ) |>
-  select(location, daily_volume, accidents_per_1000, congestion_level)
-
-performance_summary
-```
-:::
 
 ```{webr}
 #| exercise: skill_5
 #| check: true
-gradethis::grade_this({
-  if (missing(.result) || is.null(.result)) {
-    fail("🚫 Please run your code to get a result.")
-  } else if (!exists("performance_summary")) {
-    fail("📊 Make sure to create the 'performance_summary' variable.")
+check_result <- function() {
+  if (!exists("performance_summary")) {
+    return("📊 Make sure to create the 'performance_summary' variable.")
   } else {
     expected_result <- traffic_data |>
       mutate(
@@ -759,33 +587,33 @@ gradethis::grade_this({
       ) |>
       select(location, daily_volume, accidents_per_1000, congestion_level)
     
-    # Check column names
     expected_cols <- c("location", "daily_volume", "accidents_per_1000", "congestion_level")
     has_correct_cols <- all(expected_cols %in% names(performance_summary))
     
     if (!has_correct_cols) {
       missing_cols <- setdiff(expected_cols, names(performance_summary))
-      fail(paste("📋 Missing columns:", paste(missing_cols, collapse = ", ")))
+      return(paste("📋 Missing columns:", paste(missing_cols, collapse = ", ")))
     } else if (identical(performance_summary, expected_result)) {
-      pass("🎯 Outstanding! You've created a comprehensive performance dashboard showing volume, safety rates, and congestion levels. This type of integrated analysis is essential for transportation planning and helps identify priority locations for improvements.")
+      return("🎯 Outstanding! You've created a comprehensive performance dashboard showing volume, safety rates, and congestion levels. This type of integrated analysis is essential for transportation planning and helps identify priority locations for improvements.")
     } else {
-      # Check individual components
       daily_vol_correct <- identical(performance_summary$daily_volume, expected_result$daily_volume)
       accidents_correct <- all(abs(performance_summary$accidents_per_1000 - expected_result$accidents_per_1000) < 0.001)
       congestion_correct <- identical(performance_summary$congestion_level, expected_result$congestion_level)
       
       if (!daily_vol_correct) {
-        fail("📊 Check daily_volume calculation: should be the same as aadt")
+        return("📊 Check daily_volume calculation: should be the same as aadt")
       } else if (!accidents_correct) {
-        fail("🔢 Check accidents_per_1000 calculation: (accidents_2023 / aadt) * 1000")
+        return("🔢 Check accidents_per_1000 calculation: (accidents_2023 / aadt) * 1000")
       } else if (!congestion_correct) {
-        fail("🚦 Check congestion_level case_when logic: <3='Low', <=5='Medium', >5='High'")
+        return("🚦 Check congestion_level case_when logic: <3='Low', <=5='Medium', >5='High'")
       } else {
-        fail("📋 Almost there! Check your mutate and select statements carefully.")
+        return("📋 Almost there! Check your mutate and select statements carefully.")
       }
     }
   }
-})
+}
+
+cat(check_result())
 ```
 
 ---
