@@ -43,8 +43,7 @@ The R environment includes `{tidyverse}` for data manipulation, `{sf}` for spati
 The Python environment focuses on core data science libraries including `{pandas}` for data manipulation, `{geopandas}` for spatial analysis, and `{pygris}` for Census data queries. These packages form the analytical backbone for processing demographic, employment, and geographic data required for travel demand modeling.
 
 ::: panel-tabset
-
-#### {{< fa brands r-project >}}  R
+#### {{< fa brands r-project >}} R
 
 ```{r}
 # # Install required packages
@@ -72,7 +71,7 @@ library(RColorBrewer) # Color palettes for maps
 library(janitor)      # Data cleaning and preparation
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 # Install required packages if not available
@@ -99,7 +98,6 @@ from pygris import blocks, block_groups
 from pygris.helpers import validate_state, validate_county
 from pygris.data import get_census, get_lodes
 ```
-
 :::
 
 ## Set global options and parameters
@@ -107,8 +105,7 @@ from pygris.data import get_census, get_lodes
 Configuration settings optimize performance and establish spatial consistency. The `{tigris}` cache prevents redundant TIGER/Line shapefile downloads. The South Carolina State Plane coordinate system (`EPSG:3361`) serves as the standard projection for accurate GIS operations
 
 ::: panel-tabset
-
-#### {{< fa brands r-project >}}  R
+#### {{< fa brands r-project >}} R
 
 ```{r}
 # Set options
@@ -118,13 +115,12 @@ options(tigris_use_cache = TRUE) # cache tiger/line shapefile for future use
 project_crs <- "EPSG:3361"
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 # Set project CRS
 project_crs = "EPSG:3361"
 ```
-
 :::
 
 ## Set census API key
@@ -134,8 +130,7 @@ API authentication enables access to detailed demographic and economic datasets 
 > 💡 **Need a Census API key?** Get one for free at [census.gov/developers](https://www.census.gov/developers/)
 
 ::: panel-tabset
-
-#### {{< fa brands r-project >}}  R
+#### {{< fa brands r-project >}} R
 
 ```{r}
 #| eval: false
@@ -144,7 +139,7 @@ API authentication enables access to detailed demographic and economic datasets 
 tidycensus::census_api_key("your_api_key_here", install = TRUE)
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| eval: false
@@ -152,7 +147,6 @@ tidycensus::census_api_key("your_api_key_here", install = TRUE)
 # Set your API key into environment
 os.environ['CENSUS_API_KEY'] = 'your_api_key_here'
 ```
-
 :::
 
 ## Project folder
@@ -160,21 +154,19 @@ os.environ['CENSUS_API_KEY'] = 'your_api_key_here'
 The centralized directory structure organizes input data, processing files, and model outputs. The standardized `root` folder path ensures consistent file management across computing environments and team members.
 
 ::: panel-tabset
-
-#### {{< fa brands r-project >}}  R
+#### {{< fa brands r-project >}} R
 
 ```{r}
 # Set your main data folder
 root <- "M:/MA_Project/SC_LSCOG LRTP"
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 # Set your main data folder
 root = "M:/MA_Project/SC_LSCOG LRTP"
 ```
-
 :::
 
 # Define study area
@@ -186,8 +178,7 @@ This section defines the geographic extent of the Lower Savannah Council of Gove
 The study area encompasses six counties within South Carolina: Aiken, Allendale, Bamberg, Barnwell, Calhoun, and Orangeburg. These counties constitute the LSCOG planning region for travel demand modeling purposes.
 
 ::: panel-tabset
-
-#### {{< fa brands r-project >}}  R
+#### {{< fa brands r-project >}} R
 
 ```{r}
 # Define state abbreviation and county names
@@ -202,7 +193,7 @@ county_names <- c(
 )
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 # Define state abbreviation and county names
@@ -216,14 +207,12 @@ county_names = [
     "Orangeburg"
 ]
 ```
-
 :::
 
 FIPS code conversion translates state abbreviations and county names into standardized Federal Information Processing Standard codes. These codes enable consistent data retrieval across census datasets and ensure proper geographic matching with demographic and economic data sources.
 
 ::: panel-tabset
-
-#### {{< fa brands r-project >}}  R
+#### {{< fa brands r-project >}} R
 
 ```{r}
 # Converting state abbreviation code to FIPS code
@@ -239,7 +228,7 @@ fips_codes <- paste(state_fips, county_fips, sep = "")
 fips_codes
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 # Converting state abbreviation code to FIPS code
@@ -255,7 +244,6 @@ county_fips = [
 fips_codes = [f"{state_fips}{county}" for county in county_fips]
 fips_codes
 ```
-
 :::
 
 ## Load TAZ geometry
@@ -265,13 +253,12 @@ The TAZ shapefile provides the fundamental spatial framework for travel demand m
 Coordinate transformation converts the TAZ geometry to the project's standard coordinate reference system (`EPSG:3361`) for accurate spatial calculations. The attribute selection retains essential fields including TAZ identifiers, area measurements, area type classifications, and county assignments.
 
 ::: panel-tabset
-
-#### {{< fa brands r-project >}}  R
+#### {{< fa brands r-project >}} R
 
 ```{r}
 # Load TAZ Shapefile
 lscog_taz <- sf::read_sf(
-  file.path(root, "GIS/data_temp/TDM Exports/TDM_Exports.gdb"),
+  "data/SE_2019_AD_10_30_2023.gpkg",
   query = paste0(
     "SELECT * FROM \"SE_2019_AD_10_30_2023\" WHERE countyID IN (",
     paste0("'", fips_codes, "'", collapse = ", "),
@@ -292,12 +279,12 @@ lscog_taz <- sf::read_sf(
 lscog_taz
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 # Load TAZ Shapefile
 lscog_taz = gpd.read_file(
-    Path(root) / "GIS/data_temp/TDM Exports/TDM_Exports.gdb",
+    "data/SE_2019_AD_10_30_2023.gpkg",
     layer="SE_2019_AD_10_30_2023",
     where=f"countyID IN ({', '.join([f"'{fips}'" for fips in fips_codes])})"
 )
@@ -312,27 +299,24 @@ lscog_taz = lscog_taz.rename(
 
 lscog_taz
 ```
-
 :::
 
 The interactive map visualization displays the TAZ structure colored by county, providing spatial context for the analysis area and enabling quality assurance of the geometric data loading process.
 
 ::: panel-tabset
-
-#### {{< fa brands r-project >}}  R
+#### {{< fa brands r-project >}} R
 
 ```{r eval = knitr::is_html_output()}
 # Create interactive map
 mapview::mapview(lscog_taz, zcol = "COUNTY", lwd = 1.6, map.types = "CartoDB.Voyager", col.regions = RColorBrewer::brewer.pal(6, "Dark2"))
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python eval = knitr::is_html_output()}
 # Create interactive map
 lscog_taz.explore(column="COUNTY", categorical=True, legend=True, tiles="CartoDB.Voyager", zoom_start=8)
 ```
-
 :::
 
 # Fetch raw data
@@ -348,8 +332,7 @@ Household size distributions are consolidated into four categories: 1-person, 2-
 > For more information on the Decennial Census data, refer to the [Decennial Census Technical Documentation](https://www.census.gov/programs-surveys/decennial-census/technical-documentation.html).
 
 ::: panel-tabset
-
-#### {{< fa brands r-project >}}  R
+#### {{< fa brands r-project >}} R
 
 ```{r}
 # Define variables to download
@@ -391,7 +374,7 @@ lscog_dec <- tidycensus::get_decennial(
 lscog_dec
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 # Define variables to download
@@ -463,8 +446,7 @@ The block group geography represents the finest spatial resolution available for
 > For more information on the ACS data, refer to the [ACS Technical Documentation](https://www.census.gov/programs-surveys/acs/technical-documentation.html).
 
 ::: panel-tabset
-
-#### {{< fa brands r-project >}}  R
+#### {{< fa brands r-project >}} R
 
 ```{r}
 # Define variables to download
@@ -518,7 +500,7 @@ lscog_acs <- tidycensus::get_acs(
 lscog_acs
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 # Define variables to download
@@ -606,7 +588,7 @@ The 2019 reference year represents pre-pandemic employment patterns, providing a
 > For more information on the LEHD data, refer to the [LODES Technical Documentation](https://lehd.ces.census.gov/data/lodes/LODES8/LODESTechDoc8.3.pdf).
 
 ::: panel-tabset
-#### {{< fa brands r-project >}}  R
+#### {{< fa brands r-project >}} R
 
 ```{r}
 
@@ -667,7 +649,7 @@ lscog_emp <- lehdr::grab_lodes(
 lscog_emp
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 # Download LEHD WAC data at block level
@@ -735,8 +717,7 @@ Public school data is made available by National Center for Education Statistics
 To retrieve the data from ArcGIS REST service, we use the `{arcgislayers}` package in R and create a custom function in Python to read the ArcGIS FeatureLayer or Table. This has been implemented to function similarly to the `{arcgislayers}` package in R, allowing us to query the service with a SQL WHERE clause and return the data as a GeoDataFrame.
 
 ::: panel-tabset
-
-#### {{< fa brands r-project >}}  R
+#### {{< fa brands r-project >}} R
 
 ```{r}
 
@@ -764,7 +745,7 @@ lscog_pub_sch_enroll <- arcgislayers::arc_read(
 lscog_pub_sch_enroll
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| code-fold: true
@@ -840,8 +821,8 @@ Private school enrollment data is accessed from the NCES Private School Universe
 > For more information on the NCES Private Schools data, refer to [PSS Online Documentation](https://nces.ed.gov/surveys/pss/).
 
 ::: panel-tabset
+#### {{< fa brands r-project >}} R
 
-#### {{< fa brands r-project >}}  R
 ```{r}
 # Private School Enrollment data 2019-2020
 lscog_pvt_sch_enroll <- vroom::vroom(
@@ -877,7 +858,7 @@ lscog_pvt_sch_enroll <- vroom::vroom(
 lscog_pvt_sch_enroll
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 # Private School Enrollment data 2019-2020
@@ -918,8 +899,8 @@ Post-secondary institution locations are obtained from the NCES Integrated Posts
 > For more information on the NCES Post-Secondary Education data, refer to [IPEDS Documentation](https://nces.ed.gov/ipeds/).
 
 ::: panel-tabset
+#### {{< fa brands r-project >}} R
 
-#### {{< fa brands r-project >}}  R
 ```{r}
 # Post-Secondary Location data 2019-2020
 lscog_college_loc <- arcgislayers::arc_read(
@@ -938,7 +919,8 @@ lscog_college_loc <- arcgislayers::arc_read(
 lscog_college_loc
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
+
 ```{python}
 # Post-Secondary Location data 2019-2020
 lscog_college_loc = arc_read(
@@ -962,9 +944,9 @@ The data cleaning process involves harmonizing multiple Census data sources to c
 
 The interpolation process transfers ACS block group data to individual census blocks using household counts as weights. This method ensures that socioeconomic characteristics are distributed proportionally based on residential density rather than simple geometric overlay. The `{tidycensus}` package provides robust interpolation functionality that preserves the extensive nature of count variables while maintaining spatial relationships. For Python, the `interpolate_pw()` function is implemented to achieve similar functionality using population-weighted interpolation.
 
-:::panel-tabset
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
-#### {{< fa brands r-project >}}  R
 ```{r}
 # Interpolate ACS data to Decennial Census blocks
 lscog_acs_cb <- tidycensus::interpolate_pw(
@@ -980,7 +962,7 @@ lscog_acs_cb <- tidycensus::interpolate_pw(
 lscog_acs_cb
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| code-fold: true
@@ -1185,14 +1167,13 @@ lscog_acs_cb = interpolate_pw(
 
 lscog_acs_cb.head()
 ```
-
 :::
 
 The comparative visualization reveals the increased spatial resolution achieved through interpolation. Block-level data provides more granular detail for transportation modeling applications, enabling better representation of local variations in income distribution across the study area.
 
-:::panel-tabset
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
-#### {{< fa brands r-project >}}  R
 ```{r}
 #| eval: false
 
@@ -1201,7 +1182,8 @@ mapview::mapview(lscog_acs_cb, zcol = "INC_49999", color = NA) |
   mapview::mapview(lscog_acs, zcol = "INC_49999", color = NA)
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
+
 ```{python}
 #| eval: false
 
@@ -1209,16 +1191,15 @@ mapview::mapview(lscog_acs_cb, zcol = "INC_49999", color = NA) |
 lscog_acs_cb.explore(column="INC_49999", color="blue", legend=True, tiles="CartoDB positron") |\
     lscog_acs.explore(column="INC_49999", color="red", legend=True, tiles="CartoDB positron")
 ```
-
 :::
 
 ## Combine population and households
 
 The integration step merges the interpolated ACS socioeconomic data with the Decennial Census population and household counts. This join operation creates a unified dataset containing both demographic totals and detailed characteristics at the census block level. The left join ensures that all census blocks retain their geographic boundaries while incorporating available socioeconomic attributes.
 
-:::panel-tabset
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
-#### {{< fa brands r-project >}}  R
 ```{r}
 ## Combine ACS Data to Decennial data
 lscog_pop_hh <- lscog_dec |>
@@ -1230,7 +1211,8 @@ lscog_pop_hh <- lscog_dec |>
 lscog_pop_hh
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
+
 ```{python}
 
 ## Combine ACS Data to Decennial data
@@ -1246,9 +1228,9 @@ lscog_pop_hh
 
 Income category adjustments reconcile the interpolated ACS estimates with actual household counts from the Decennial Census. The proportional allocation method redistributes income categories based on the ratio of interpolated totals to observed household counts, maintaining consistency between data sources. The three-tier income classification (under \$15,000, \$15,000-\$49,999, and \$50,000 and above) provides sufficient granularity for travel demand modeling while ensuring statistical reliability.
 
-:::panel-tabset
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
-#### {{< fa brands r-project >}}  R
 ```{r}
 
 ## Combine adjusted HH income level to Decennial census instead of ACS
@@ -1263,7 +1245,7 @@ lscog_pop_hh <- lscog_pop_hh |>
 lscog_pop_hh
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 
@@ -1275,16 +1257,14 @@ lscog_pop_hh["INC_14999"] = lscog_pop_hh["HH"] - (lscog_pop_hh["INC_49999"] + ls
 lscog_pop_hh = lscog_pop_hh.drop(columns="INC_TOTAL")
 lscog_pop_hh
 ```
-
 :::
 
 ## Employment data
 
 The employment integration incorporates LEHD (Longitudinal Employer-Household Dynamics) workplace area characteristics into the combined dataset. This addition provides employment counts by census block, enabling the development of trip attraction models and work-based travel pattern analysis. The merge operation maintains the geographic integrity of census blocks while adding employment variables essential for comprehensive transportation planning.
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 
@@ -1295,7 +1275,7 @@ lscog_pop_hh_emp <- lscog_pop_hh |>
 lscog_pop_hh_emp
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 
@@ -1308,7 +1288,6 @@ lscog_pop_hh_emp = lscog_pop_hh.merge(
 
 lscog_pop_hh_emp
 ```
-
 :::
 
 # Export raw data
@@ -1321,9 +1300,8 @@ The Traffic Analysis Zone (TAZ) boundary export provides the fundamental geograp
 
 **Export as CSV flat file**
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 #| eval: false
@@ -1340,7 +1318,7 @@ lscog_taz |>
   )
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| eval: false
@@ -1351,14 +1329,13 @@ lscog_taz.to_csv(
     index=False
 )
 ```
-
 :::
 
 **Export as Geodatabase layer**
 
-:::panel-tabset
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
-#### {{< fa brands r-project >}}  R
 ```{r}
 #| eval: false
 
@@ -1374,7 +1351,7 @@ lscog_taz |>
   )
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| eval: false
@@ -1386,7 +1363,6 @@ lscog_taz.to_file(
     driver='FileGDB'
 )
 ```
-
 :::
 
 ## Census blocks to TAZ conversion
@@ -1395,9 +1371,8 @@ The block-to-TAZ conversion table establishes the critical linkage between fine-
 
 **Export as CSV flat file**
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 #| eval: false
@@ -1416,7 +1391,7 @@ lscog_cb |>
   )
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| eval: false
@@ -1427,7 +1402,6 @@ lscog_cb.merge(lscog_taz[['ID', 'TAZ_ID']], left_on='GEOID20', right_on='ID')[['
     index=False
 )
 ```
-
 :::
 
 ## Decennial census data at census block level
@@ -1436,9 +1410,8 @@ The decennial census block export captures the foundational demographic counts u
 
 **Export as CSV flat file**
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 #| eval: false
@@ -1455,7 +1428,7 @@ lscog_dec |>
   )
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| eval: false
@@ -1466,14 +1439,12 @@ lscog_dec.to_csv(
     index=False
 )
 ```
-
 :::
 
 **Export as Geodatabase layer**
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 #| eval: false
@@ -1490,7 +1461,7 @@ lscog_dec |>
   )
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| eval: false
@@ -1502,7 +1473,6 @@ lscog_dec.to_file(
     driver='FileGDB'
 )
 ```
-
 :::
 
 ## ACS estimates at census block level
@@ -1511,9 +1481,8 @@ The interpolated ACS data export delivers income distribution estimates at the c
 
 **Export as CSV flat file**
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 #| eval: false
@@ -1531,7 +1500,7 @@ lscog_acs_cb |>
   )
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| eval: false
@@ -1542,14 +1511,12 @@ lscog_acs_cb[['GEOID', 'INC_14999', 'INC_49999', 'INC_50000']].to_csv(
     index=False
 )
 ```
-
 :::
 
 **Export as Geodatabase layer**
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 #| eval: false
@@ -1567,7 +1534,7 @@ lscog_acs_cb |>
   )
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| eval: false
@@ -1579,7 +1546,6 @@ lscog_acs_cb[['GEOID', 'INC_14999', 'INC_49999', 'INC_50000']].to_file(
     driver='FileGDB'
 )
 ```
-
 :::
 
 ## LEHD data at census block level
@@ -1588,9 +1554,9 @@ The employment data export provides comprehensive workplace characteristics by i
 
 **Export as CSV flat file**
 
-:::panel-tabset
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
-#### {{< fa brands r-project >}}  R
 ```{r}
 #| eval: false
 
@@ -1607,7 +1573,7 @@ lscog_pop_hh_emp |>
   )
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| eval: false
@@ -1620,14 +1586,12 @@ lscog_pop_hh_emp[['GEOID', 'TOTAL_EMP', 'AGR_FOR_FI', 'MINING', 'CONSTRUCTI',
     index=False
 )
 ```
-
 :::
 
 **Export as Geodatabase layer**
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 #| eval: false
@@ -1645,7 +1609,7 @@ lscog_pop_hh_emp |>
   )
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| eval: false
@@ -1659,7 +1623,6 @@ lscog_pop_hh_emp[['GEOID', 'TOTAL_EMP', 'AGR_FOR_FI', 'MINING', 'CONSTRUCTI',
         driver='FileGDB'
     )
 ```
-
 :::
 
 ## Public schools to TAZ
@@ -1668,9 +1631,8 @@ The public school location export integrates educational facility data with the 
 
 **Export as CSV flat file**
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 #| eval: false
@@ -1688,7 +1650,7 @@ lscog_pub_sch_enroll |>
   )
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| eval: false
@@ -1703,14 +1665,12 @@ lscog_pub_sch_enroll.sjoin(
         index=False
     )
 ```
-
 :::
 
 **Export as Geodatabase layer**
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 #| eval: false
@@ -1728,7 +1688,7 @@ lscog_pub_sch_enroll |>
   )
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| eval: false
@@ -1743,7 +1703,6 @@ lscog_pub_sch_enroll.sjoin(
     driver='FileGDB'
 )
 ```
-
 :::
 
 ## Private schools to TAZ
@@ -1752,9 +1711,8 @@ The private school dataset complements the public education data by capturing en
 
 **Export as CSV flat file**
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 #| eval: false
@@ -1772,7 +1730,7 @@ lscog_pvt_sch_enroll |>
   )
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| eval: false
@@ -1787,14 +1745,12 @@ lscog_pvt_sch_enroll.sjoin(
         index=False
     )
 ```
-
 :::
 
 **Export as Geodatabase layer**
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 #| eval: false
@@ -1812,7 +1768,7 @@ lscog_pvt_sch_enroll |>
   )
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| eval: false
@@ -1827,7 +1783,6 @@ lscog_pvt_sch_enroll.sjoin(
     driver='FileGDB'
 )
 ```
-
 :::
 
 # Aggregate data to TAZ
@@ -1838,9 +1793,8 @@ The aggregation process transforms fine-scale census block data into TAZ-level i
 
 The spatial join operation aggregates all demographic, housing, and employment variables from census blocks to their corresponding TAZs using centroid-based assignment. This process ensures that each block's socioeconomic characteristics are properly allocated to the appropriate modeling zone while maintaining data integrity through comprehensive summation of all relevant variables.
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 # Aggregate population, households, and employment to TAZ
@@ -1890,7 +1844,7 @@ lscog_taz_pop <- lscog_taz |>
 lscog_taz_pop
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 
@@ -1942,9 +1896,8 @@ lscog_taz_pop
 
 The school enrollment combination merges public and private educational institution data into a unified dataset for comprehensive coverage of student populations.
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 # Combine school enrollment data
@@ -1962,7 +1915,7 @@ lscog_sch_enroll <- dplyr::bind_rows(
 lscog_sch_enroll
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 
@@ -1980,14 +1933,12 @@ lscog_sch_enroll = pd.concat([
 
 lscog_sch_enroll
 ```
-
 :::
 
 The subsequent TAZ aggregation counts total student enrollment within each zone, providing essential data for modeling education-related trip patterns and supporting specialized trip generation rates for school-based travel.
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 # count the number of school enrollment within each TAZ
@@ -2010,7 +1961,7 @@ lscog_taz_enroll <- lscog_taz |>
 lscog_taz_enroll
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 
@@ -2021,16 +1972,14 @@ lscog_taz_enroll = lscog_taz.sjoin(lscog_sch_enroll, how='left') \
 
 lscog_taz_enroll
 ```
-
 :::
 
 # Combine into a single data
 
 This step integrates all TAZ-level socioeconomic datasets into a comprehensive base year file for travel demand modeling. This consolidated dataset contains all essential variables organized in a standardized format with geographic identifiers, demographic characteristics, employment data, and educational enrollment totals for each traffic analysis zone in the study region.
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 # Combine population, household, employments, and school enrollment
@@ -2064,7 +2013,7 @@ lscog_se_base <- lscog_taz_pop |>
 lscog_se_base
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 
@@ -2088,7 +2037,6 @@ lscog_se_base = lscog_se_base[field_order +
 
 lscog_se_base
 ```
-
 :::
 
 # Data checks and validation
@@ -2099,9 +2047,9 @@ The validation process ensures data integrity and consistency across all socioec
 
 This validation confirms that the total household count matches the sum of all household size categories for each TAZ. Any discrepancies indicate potential issues in the household size distribution that require investigation and correction before model implementation.
 
-:::panel-tabset
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
-#### {{< fa brands r-project >}}  R
 ```{r}
 # check the sum of household by household size
 lscog_se_base |>
@@ -2109,7 +2057,7 @@ lscog_se_base |>
   nrow()
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 
@@ -2125,9 +2073,8 @@ lscog_se_base[
 
 The income category validation verifies that household totals equal the sum of all three income brackets across all zones. This check ensures the integrity of the income distribution data following the proportional allocation methodology applied during the ACS interpolation process.
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 # check the sum of household by income level
@@ -2136,7 +2083,7 @@ lscog_se_base |>
   nrow()
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 
@@ -2146,16 +2093,14 @@ lscog_se_base[
                             lscog_se_base['INC_50000'])
 ].shape[0]
 ```
-
 :::
 
 ## Employment categories
 
 The employment validation confirms that total employment equals the sum of all industry sector categories for each TAZ. This comprehensive check validates the LEHD data integration and ensures that no employment is lost or double-counted during the sectoral disaggregation process.RetryClaude can make mistakes. Please double-check responses.
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 # check the sum of employment by categories
@@ -2176,7 +2121,7 @@ lscog_se_base |>
   nrow()
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 
@@ -2204,9 +2149,8 @@ The final export creates the complete TAZ-level socioeconomic dataset in both ta
 
 **Export as CSV flat file**
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 #| eval: false
@@ -2220,7 +2164,7 @@ lscog_se_base |>
   )
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| eval: false
@@ -2232,14 +2176,12 @@ lscog_se_base |>
     index=False
   )
 ```
-
 :::
 
 **Export as Geodatabase layer**
 
-:::panel-tabset
-
-#### {{< fa brands r-project >}}  R
+::: panel-tabset
+#### {{< fa brands r-project >}} R
 
 ```{r}
 #| eval: false
@@ -2256,7 +2198,7 @@ lscog_se_base |>
   )
 ```
 
-#### {{< fa brands python >}}  Python
+#### {{< fa brands python >}} Python
 
 ```{python}
 #| eval: false
@@ -2269,5 +2211,4 @@ lscog_se_base |>
     driver='FileGDB'
   )
 ```
-
 :::
