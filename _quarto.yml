@@ -4,26 +4,87 @@ project:
 
 website:
   title: "Pukar Bhandari"
+  description: Pukar Bhandari is a Transportation Planner and Data Scientist working at the intersection of Transportation Modeling, Economic Impact Analysis, and Data Science.
   favicon: "assets/images/Headshot_PukarBhandari_July2025.png"
+  repo-url: "https://github.com/ar-puuk/ar-puuk.github.io"
+
+  page-navigation: true
+  back-to-top-navigation: false
+
+  # announcement:
+  #   icon: info-circle
+  #   dismissable: true
+  #   content: "**Alert** - this is currently under development."
+  #   type: primary
+  #   position: below-navbar
+
+  twitter-card:
+    creator: "@arpuuk"
+    site: "@arpuuk"
+    card-style: summary_large_image
   navbar:
-    left:
-      - href: index.qmd
-        icon: person-circle
-        text: About
-      - href: projects.qmd
-        icon: link-45deg
-        text: Projects
-      - href: resume.qmd
-        icon: file-earmark-text-fill
-        text: Resume
+    # left:
+    #   - href: about.qmd
+    #     # icon: person-circle
+    #     text: About
+    #   - href: projects.qmd
+    #     # icon: link-45deg
+    #     text: Projects
+    #   - href: resume.qmd
+    #     # icon: file-earmark-text-fill
+    #     text: Resume
 
     right:
-      - icon: linkedin
-        href: https://www.linkedin.com/in/arpuuk
-      - icon: github
-        href: https://github.com/ar-puuk/
+      - href: about.qmd
+        # icon: person-circle
+        text: About
+      - href: resume.qmd
+        # icon: file-earmark-text-fill
+        text: Resume
+      - href: projects.qmd
+        # icon: link-45deg
+        text: Projects
+      - href: research.qmd
+        # icon: flask-fill
+        text: Research
+      - text: Socials
+        menu:
+          - icon: github
+            text: Github
+            href: https://github.com/ar-puuk/
+            target: _blank
+          - icon: linkedin
+            text: LinkedIn
+            href: https://www.linkedin.com/in/arpuuk
+            target: _blank
+          - icon: mastodon
+            text: Mastodon
+            href: https://urbanists.social/@arpuuk
+            target: _blank
+          - text: "{{< fa brands bluesky >}} &nbsp;Bluesky"
+            href: https://bsky.app/profile/arpuuk.bsky.social
+            target: _blank
+          - icon: envelope-fill
+            text: E-mail
+            href: mailto:pukar.bhandari@outlook.com
+            target: _blank
+
   page-footer:
-    left: 2025 Pukar Bhandari &#8729; Made with [Quarto](https://quarto.org)
+    left: 2025 Pukar Bhandari &#8729; Made with [{{< fa brands r-project title="R Project" >}}](https://www.r-project.org/about.html){target=_blank}, [<img src="https://quarto.org/favicon.png" width="14">](https://quarto.org/){target=_blank}, [{{< fa brands git-alt title="Git alt logo" >}}](https://git-scm.com/){target=_blank} and [{{< fa brands github title="GitHub octocat logo" >}}](https://github.com/){target=_blank}
+    center: |
+          <a href="https://www.linkedin.com/in/arpuuk" title="LinkedIn" target="_blank" rel="noopener">{{< fa brands linkedin >}}</a>
+          &nbsp;
+          <a href="https://github.com/ar-puuk/" title="github" target="_blank" rel="noopener">{{< fa brands github >}}</a>
+          &nbsp;
+          <a href="https://bsky.app/profile/arpuuk.bsky.social" title="Bluesky" target="_blank" rel="noopener">{{< fa brands bluesky >}}</a>
+          &nbsp;
+          <a href="https://urbanists.social/@arpuuk" title="Mastodon" target="_blank" rel="noopener">{{< fa brands mastodon >}}</a>
+          &nbsp;
+          <a href="https://orcid.org/0000-0002-1043-2937" title="orcid" target="_blank" rel="noopener">{{< ai orcid >}}</a>
+          &nbsp;
+          <a href="https://scholar.google.com/citations?user=vnwRlAsAAAAJ&hl=en" title="Google Scholar" target="_blank"rel="noopener">{{< ai google-scholar >}}</a>
+          &nbsp;
+          <a href="mailto:pukar.bhandari@outlook.com" title="E-mail" target="_blank" rel="noopener">{{< fa envelope >}}</a>
     right:
       - text: Contact
         aria-label: Contact Form
@@ -36,11 +97,14 @@ format:
     respect-user-color-scheme: true
     theme:
       light:
-        - "flatly"
-        - theme.scss
+        # - "flatly"
+        - cosmo
+        - assets/theme/index.scss
+        - assets/theme/theme-light.scss
       dark:
-        - "darkly"
-        - theme.scss
+        # - "darkly"
+        - assets/theme/index.scss
+        - assets/theme/theme-dark.scss
     mainfont: "Poppins"
     monofont: "Fira Code"
     css: assets/css/index.css

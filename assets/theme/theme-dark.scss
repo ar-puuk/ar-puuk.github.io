@@ -1,0 +1,146 @@
+/*-- scss:defaults --*/
+
+// Import shared files
+@import "colors";
+@import "fonts";
+
+// Colors: Quarto variables
+$primary:                    $pb-primary-light;
+$secondary:                  $pb-secondary-light;  // Using darker orange for better contrast
+// Colors: custom variables
+$primary-dark:               $pb-primary;
+$secondary-light:            $pb-secondary;        // Lighter orange for hover
+$accent:                     $pb-accent;
+$accent-light:               $pb-accent-light;
+$accent-dark:                $pb-accent-dark;
+
+// Body - DARK MODE COLORS
+$body-color:                 $pb-text-dark;        // #FFFBF2 (cream text)
+$body-bg:                    $pb-bg-0-dark;        // #0E171E (dark navy background)
+$body-secondary:             #9DA3AA;
+
+// Links - ACTUAL SITE COLORS
+$link-color:                  $pb-secondary;        // #D96E34
+$link-decoration:             underline;
+$link-hover-color:            $pb-secondary-light;  // #A23E02
+$link-hover-decoration:       none;
+
+// Tables
+$table-border-color:          darken($pb-text-dark, 20%);
+$table-group-separator-color: darken($pb-text-dark, 20%);
+$table-caption-color:         $body-secondary;
+
+// Code blocks (Dark mode)
+$code-block-bg:              $pb-bg-1-dark;
+$code-block-border:          $pb-border-dark;
+
+// Inline code (Dark mode)
+$code-color:                  $body-bg;
+$code-bg:                     $pb-accent;
+
+// Table of contents
+$toc-color:                   $link-color;
+$toc-active-border:           $toc-color;
+$toc-inactive-border:         lighten($toc-color, 50%);
+
+// Navbar
+$navbar-fg:                   $pb-secondary;
+
+// Footer
+$footer-fg:                   $pb-text-dark;
+
+// Miscellaneous
+$gray-200:                    darken($pb-text-dark, 30%);
+$gray-700:                    darken($pb-text-dark, 30%);
+
+/*-- scss:rules --*/
+
+// Dark mode specific styles
+
+// Code blocks
+div.sourceCode {
+  background-color: $code-block-bg;
+  border: 1px solid $code-block-border;
+}
+
+// Code output
+pre code {
+  color: $pb-text-dark;
+}
+
+// Code with filename
+.code-with-filename .code-with-filename-file {
+  color: $code-color;
+  background-color: $code-bg !important;
+  border: 1px solid $code-block-border;
+  border-bottom: none;
+  pre {
+    background-color: $code-bg !important;
+  }
+}
+
+// Blockquotes
+.blockquote {
+  color: darken($pb-text-dark, 15%);
+}
+
+// Pagination
+.page-link {
+  color: $pb-text-dark;
+  background-color: $pb-bg-1-dark;
+  border-color: lighten($pb-bg-1-dark, 20%);
+  &:hover {
+    color: $body-bg;
+    background-color: $pb-primary-light;
+    border-color: $pb-primary-light;
+  }
+}
+
+// Categories
+.quarto-category {
+  background-color: $body-bg;
+  color: $pb-text-dark;
+  border-color: $pb-text-dark;
+  &:hover {
+    background-color: $pb-primary-light;
+    color: $body-bg;
+  }
+}
+
+// Navbar title
+.navbar-title {
+  font-size: 1.00em;
+  font-weight: 500;
+  color: $pb-text-dark;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+
+  &:hover {
+    border-bottom: 1px solid $pb-text-dark !important;
+  }
+}
+
+// Listing cards
+.card {
+  background: $pb-bg-1-dark !important;
+  box-shadow: 1px 1px 10px $pb-bg-00-dark !important;
+}
+
+// Details/summaries
+details > summary {
+  color: $body-secondary;
+}
+
+// Title banner (opposite colors for dark theme)
+.quarto-title-banner {
+  background-color: $pb-bg-0 !important;  // Light background
+
+  .title, .subtitle, .quarto-title-author-name, .quarto-title-affiliation {
+    color: $pb-text-light !important;  // Dark text
+  }
+}
+
+// Filter and sort icon backgrounds
+.input-group-text {
+  background-color: $pb-bg-1-dark !important;
+}

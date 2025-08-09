@@ -1,58 +1,48 @@
 ---
-pagetitle: About
+pagetitle: Home
 image: "assets/images/Headshot_PukarBhandari_July2025.png"
 about:
-  template: trestles
+  template: jolla
   image-width: 12em
   image-shape: round
-  links:
-    - icon: github
-      text: Github
-      href: https://github.com/ar-puuk/
-    - icon: linkedin
-      text: LinkedIn
-      href: https://www.linkedin.com/in/arpuuk
-    - text: "{{< ai orcid >}} ORCID 0000-0002-1043-2937"
-      href: https://orcid.org/0000-0002-1043-2937
-    - text: "{{< ai google-scholar >}} Google Scholar"
-      href: https://scholar.google.com/citations?user=vnwRlAsAAAAJ&hl=en
-    - text: "{{< fa brands bluesky >}} Bluesky"
-      href: https://bsky.app/profile/arpuuk.bsky.social
-    - icon: mastodon
-      text: Mastodon
-      href: https://urbanists.social/@arpuuk
-    - icon: globe2
-      text: bhandaripukar.com.np
-      href: https://bhandaripukar.com.np/
-    - icon: envelope
-      text: Email
-      href: mailto:pukar.bhnadari@outlook.com
-format:
-  html:
-    page-layout: full
+  # links:
+  #   - icon: github
+  #     aria-label: Github
+  #     href: https://github.com/ar-puuk/
+  #   - icon: linkedin
+  #     aria-label: LinkedIn
+  #     href: https://www.linkedin.com/in/arpuuk
+  #   - icon: mastodon
+  #     aria-label: Mastodon
+  #     href: https://urbanists.social/@arpuuk
+  #   - icon: bluesky
+  #     aria-label: Bluesky
+  #     href: https://bsky.app/profile/arpuuk.bsky.social
+  #   - icon: envelope
+  #     aria-label: Email
+  #     href: mailto:pukar.bhandari@outlook.com
+  
+twitter-card:
+    title: Pukar Bhandari
+    description: |
+      Transportation Planner and Data Scientist.
+    image: assets/images/Headshot_PukarBhandari_July2025.png
+    
+header-includes: >
+  <link rel="stylesheet" href="assets/theme/index.css">
+resources:
+  - assets/theme/index.css
 ---
 
-:::{#main-content}
+::: {#bio}
 
-## Professional Overview
+# Hi! I am <span class="name-highlight">Pukar Bhandari</span>
 
-I am an aspiring Associate Transportation Planner with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning.
+I am an aspiring Transportation Planner with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning.
 
------
+<!-- [Learn more about me &rarr;](/about.html) -->
 
-## Work Experience
-
- - **Associate Transportation Planner** [| Metro Analytics | *June 2023 - Present*]{.gray}
- - **Graduate Teaching & Research Assistant** [| University of Utah | *August 2021 - May 2023*]{.gray}
- - **GIS Data Analyst** [| Energy & Geoscience Institute | *June 2022 - August 2022*]{.gray}
- - **Associate Architect** [| Prabal Thapa Architects | *June 2020 - July 2021*]{.gray}
- - **Architect & Planner** [| Urban Park Nepal Pvt. Ltd. | *January 2019 - June 2020*]{.gray}
-
------
-
-## Education
-
- - **Master of City & Metropolitan Planning** [| University of Utah | *August 2021 - May 2023*]{.gray}
- - **Bachelors Degree in Architecture** [| Tribhuvan University | *October 2013 - August 2018*]{.gray}
-
+::: {#landing-icons}
+[{{< fa brands linkedin title="linkedin" >}}](https://www.linkedin.com/in/arpuuk/){target="_blank"} &nbsp; [{{< fa brands github title="github" >}}](https://github.com/ar-puuk){target="_blank"} &nbsp; [{{< fa brands bluesky title="bluesky" >}}](https://bsky.app/profile/arpuuk.bsky.social){target="_blank"} &nbsp; [{{< fa envelope title="envelope" >}}](mailto:pukar.bhandari@outlook.com)
+:::
 :::

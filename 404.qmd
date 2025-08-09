@@ -16,11 +16,14 @@ engine: knitr
 respect-user-color-scheme: true
 theme:
   light:
-    - "flatly"
-    - theme.scss
+    # - "flatly"
+    - cosmo
+    - assets/theme/index.scss
+    - assets/theme/theme-light.scss
   dark:
-    - "darkly"
-    - theme.scss
+    # - "darkly"
+    - assets/theme/index.scss
+    - assets/theme/theme-dark.scss
 mainfont: "Poppins"
 monofont: "Fira Code"
 css: assets/css/index.css
@@ -34,22 +37,24 @@ include-in-header:
 
 <div style="text-align: center">
 
-# {{< fa road-barrier >}}  Road Closed Ahead!  {{< fa road-barrier >}}
+# {{< fa road-barrier >}}  Under Construction!  {{< fa road-barrier >}}
 
-The page you were looking for has been affected by the recent funding cuts. 
+**Uh-oh — the page you are looking for didn’t survive the latest round of funding cuts.** Try using the {{< fa magnifying-glass >}} **search button** at the top of the page or <a href="https://www.google.com/search?q=site%3ar-puuk.github.io" target="_blank">searching on Google.</a>
 
 **While we wait for the public comment period, why not test your Transportation & Data Science smarts?** It’s more fun than hitting the <a href="javascript:history.back()">back</a> button. Probably.
 
 
 </div>
 
+<br><br><br>
+
+----
+
 ::: {.callout-tip}
 ## Welcome to the Transportation Data Science Challenge! 🚦
 
 Complete these interactive R exercises to test your skills in transportation planning and data analysis. Each exercise builds on real-world scenarios you'll encounter as a transportation professional.
 :::
-
-----
 
 ```{webr}
 #| context: setup
