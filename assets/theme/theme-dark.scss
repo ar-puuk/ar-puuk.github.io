@@ -144,3 +144,33 @@ details > summary {
 .input-group-text {
   background-color: $pb-bg-1-dark !important;
 }
+
+// Panel tabset selected tab - simple white text
+.panel-tabset .nav-tabs .nav-link.active {
+  color: $pb-text-dark !important;  // White text
+}
+
+// WebR cell background - correct class
+.cm-content {
+  background-color: $pb-bg-1-dark !important;
+}
+
+// Preserve active line highlighting
+.cm-activeLine {
+  background-color: lighten($pb-bg-1-dark, 10%) !important;
+}
+
+// Fix selection highlighting z-index and color
+.cm-selectionLayer {
+  z-index: 1 !important;
+}
+
+.cm-selectionBackground {
+  background-color: $pb-secondary !important;
+  opacity: 0.3 !important;
+}
+
+// WebR cell comment color
+.tok-comment {
+  color: $body-secondary !important;  // Uses your existing grey color
+}

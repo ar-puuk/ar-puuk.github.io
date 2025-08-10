@@ -80,7 +80,7 @@
 .navbar-nav .dropdown-menu .dropdown-item {
   &:hover {
     background-color: $pb-secondary !important;
-    color: white !important;
+    color: $pb-bg-0 !important;
   }
 }
 
@@ -212,7 +212,7 @@ td code:not(.sourceCode) {
 .dropdown-menu .dropdown-item {
   &:hover {
     background-color: $pb-secondary !important;
-    color: white !important;
+    color: $pb-bg-0 !important;
   }
 }
 
