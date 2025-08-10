@@ -5,7 +5,10 @@ author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com
 date: "2023-01-03"
-categories: [R, GIS, Data Science, Spatial Analysis]
+categories: [R, GIS, Data Science]
+draft: false
+execute:
+  eval: false
 ---
 
 ## Project Overview

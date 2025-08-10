@@ -30,6 +30,12 @@ cv:
 ```
 
 ```{=html}
+<div style="text-align: center; margin-top: 10px;">
+  <a href="assets/pdfs/Resume_PukarBhandari_July2025.pdf" target="_blank" class="btn btn-outline-secondary">Download Latest Resume</a>
+</div>
+
+<br>
+
 <div class="embed-container">
   <iframe
   src="assets/pdfs/Resume_PukarBhandari_July2025.pdf"

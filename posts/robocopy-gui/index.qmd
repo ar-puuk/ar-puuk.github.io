@@ -1,0 +1,50 @@
+---
+title: "Interactive Robocopy GUI Tool"
+description: "A web-based interface for generating Windows robocopy commands with ease"
+author:
+  - name: Pukar Bhandari
+    email: pukar.bhandari@outlook.com
+date: "2025-06-15"
+categories: [Tools, Utilities, Windows]
+---
+
+## Robocopy Command Generator
+
+I've developed an interactive web-based tool that simplifies creating robocopy commands through a user-friendly graphical interface. Instead of memorizing complex command-line syntax, users can simply select options and generate commands visually.
+
+<iframe src="https://ar-puuk.github.io/robocopy-gui/" 
+        width="100%" 
+        height="1000px" 
+        style="border: 1px solid #ddd; border-radius: 8px;"
+        title="Robocopy GUI Tool">
+</iframe>
+
+<div style="text-align: center; margin-top: 10px;">
+  <a href="https://ar-puuk.github.io/robocopy-gui/" target="_blank" class="btn btn-primary">Open in New Tab</a>
+  <a href="https://github.com/ar-puuk/robocopy-gui" target="_blank" class="btn btn-outline-secondary">View Source Code</a>
+</div>
+
+## Features
+
+The tool provides an intuitive interface for:
+
+- **Source and Destination Selection**: Easy path input with validation
+- **Copy Options**: Checkboxes for common robocopy parameters like `/E`, `/MIR`, `/R:n`, etc.
+- **Real-time Preview**: See your robocopy command as you build it
+- **Copy to Clipboard**: One-click copying of the generated command
+- **Parameter Explanations**: Tooltips and descriptions for each option
+
+## Technical Details
+
+This tool is built with vanilla HTML, CSS, and JavaScript, making it lightweight and fast. It's hosted on GitHub Pages, which means it automatically updates whenever I push changes to the [source repository](https://github.com/ar-puuk/robocopy-gui).
+
+The interface translates user selections into proper robocopy syntax, helping both beginners learn the command structure and experienced users save time on complex operations.
+
+## Use Cases
+
+This tool is particularly useful for:
+
+- System administrators managing file synchronization
+- IT professionals setting up backup routines  
+- Anyone needing to copy large directory structures with specific parameters
+- Learning robocopy syntax through visual exploration

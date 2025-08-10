@@ -3,6 +3,8 @@
     "listing": "/projects.html",
     "items": [
       "/posts/socioeconomic-demo/index.html",
+      "/posts/robocopy-gui/index.html",
+      "/posts/overture-data-download/index.html",
       "/posts/nepal-population-density/index.html"
     ]
   }
