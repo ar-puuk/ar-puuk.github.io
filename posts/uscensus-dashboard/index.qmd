@@ -292,4 +292,4 @@ For transportation planners specifically, having easy access to demographic char
 
 ------------------------------------------------------------------------
 
-*Want to contribute or suggest improvements? Visit the project repository at: https://github.com/ar-puuk/uscensus-dashboard/*
+*Want to contribute or suggest improvements? Visit the project repository at:* <https://github.com/ar-puuk/uscensus-dashboard>

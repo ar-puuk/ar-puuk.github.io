@@ -342,7 +342,7 @@ pop_raster |>
 
 ### Spatial Data Processing Pipeline
 
-1.  **Data Transformation**: Vector hexagon data converted to standardized coordinate reference system (EPSG:6207)
+1.  **Data Transformation**: Vector hexagon data converted to standardized coordinate reference system (Nepal Nagarkot TM - ESRI:102306)
 2.  **Rasterization**: Optimal grid resolution calculated to balance detail with computational efficiency
 3.  **Matrix Conversion**: Raster data transformed into height matrix for 3D rendering
 4.  **Texture Mapping**: Population values mapped to color gradients using perceptually uniform color spaces
