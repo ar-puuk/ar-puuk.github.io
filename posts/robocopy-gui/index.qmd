@@ -49,3 +49,7 @@ This tool is particularly useful for:
 - IT professionals setting up backup routines  
 - Anyone needing to copy large directory structures with specific parameters
 - Learning robocopy syntax through visual exploration
+
+------------------------------------------------------------------------
+
+*Want to contribute or suggest improvements? Visit the project repository at:* <https://github.com/ar-puuk/robocopy-gui>

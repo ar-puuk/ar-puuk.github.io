@@ -435,3 +435,7 @@ For more information about Overture Maps:
 - [Official Documentation](https://docs.overturemaps.org/)
 - [Data Schema Reference](https://docs.overturemaps.org/schema/)
 - [Community Forum](https://github.com/OvertureMaps/data/discussions)
+
+------------------------------------------------------------------------
+
+*Want to contribute or suggest improvements? Visit the project repository at:* <https://github.com/ar-puuk/overture-data-download>

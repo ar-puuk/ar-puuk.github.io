@@ -242,3 +242,7 @@ This Population Pyramid Explorer demonstrates the power of combining modern web 
 The modular architecture makes it straightforward to extend the application with additional demographic variables or geographic scales, while the story map format provides an intuitive user experience that encourages exploration and discovery.
 
 Whether you're a transportation planner analyzing ridership demographics, an urban researcher studying neighborhood change, or a policy analyst examining service delivery patterns, this application framework provides a foundation for demographic-geographic analysis that can be adapted to various planning contexts.
+
+------------------------------------------------------------------------
+
+*Want to contribute or suggest improvements? Visit the project repository at:* <https://github.com/ar-puuk/population-pyramid-explorer>

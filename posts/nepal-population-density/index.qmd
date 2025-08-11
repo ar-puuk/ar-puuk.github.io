@@ -379,3 +379,5 @@ This workflow demonstrates the power of combining modern R packages for geospati
 The methodology is transferable to other geographic contexts and can be adapted for various demographic or infrastructure planning applications in transportation and urban development projects.
 
 ------------------------------------------------------------------------
+
+*Want to contribute or suggest improvements? Visit the project repository at:* <https://github.com/ar-puuk/Population-Density-Maps>

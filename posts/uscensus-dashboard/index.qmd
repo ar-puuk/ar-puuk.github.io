@@ -34,7 +34,7 @@ The dashboard serves as a one-stop interface for Census data retrieval, featurin
 -   Export capabilities for both tabular and geospatial data
 -   Responsive design optimized for different screen sizes
 
-**🔗 Repository**: You can find the complete source code and documentation at: https://github.com/ar-puuk/uscensus-dashboard/
+**🔗 Repository**: You can find the complete source code and documentation at: <https://github.com/ar-puuk/uscensus-dashboard/>
 
 ## Technical Architecture
 
