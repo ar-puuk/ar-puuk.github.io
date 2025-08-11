@@ -1,9 +1,9 @@
 ---
 title: "Building an Interactive Population Pyramid Explorer"
-subtitle: "Exploring demographic patterns across US counties through interactive visualization using R Shiny and {mapgl}"
+subtitle: "Exploring demographic patterns across US counties through interactive visualization using {R-Shiny} and {mapgl}"
 description: |
-  "A deep dive into creating a story-driven Shiny application that combines interactive mapping with demographic visualizations using Census data."
-image: "https://raw.githubusercontent.com/ar-puuk/population-pyramid-explorer/refs/heads/main/screenshots/county_pyramid.png"
+  A deep dive into creating a story-driven Shiny application that combines interactive mapping with demographic visualizations using Census data.
+image: "population_pyramid_explorer.png"
 author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com

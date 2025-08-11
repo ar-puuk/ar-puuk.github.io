@@ -2,8 +2,8 @@
 title: "Building a U.S. Census Data Explorer"
 subtitle: "A Shiny Dashboard for ACS, Decennial Census, and LEHD Data"
 description: |
-  "Learn how to build an interactive Shiny dashboard for exploring U.S. Census data including ACS, Decennial Census, and LEHD datasets with integrated mapping capabilities."
-image: "https://raw.githubusercontent.com/ar-puuk/uscensus-dashboard/refs/heads/main/Data%20Explorer%20Preview.png"
+  Learn how to build an interactive Shiny dashboard for exploring U.S. Census data including ACS, Decennial Census, and LEHD datasets with integrated mapping capabilities.
+image: "uscensus_dashboard.png"
 author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com

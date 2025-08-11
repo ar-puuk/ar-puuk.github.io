@@ -4,6 +4,7 @@ subtitle: "Using Rayshader for Advanced Geospatial Visualization"
 author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com
+image: "nepal_population_density.png"
 date: "2023-01-03"
 categories: [R, GIS, Data Science]
 draft: false

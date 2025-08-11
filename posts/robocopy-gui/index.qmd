@@ -4,6 +4,7 @@ description: "A web-based interface for generating Windows robocopy commands wit
 author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com
+image: "robocopy_gui.png"
 date: "2025-06-15"
 categories: [Tools, Utilities, Windows]
 ---
