@@ -1,7 +1,0 @@
----
-title: Research
-description: |
-  These are my research publications along with their accompanying materials.
-format: html
----
-

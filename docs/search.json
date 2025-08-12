@@ -1,430 +1,38 @@
 [
   {
-    "objectID": "posts/uscensus-dashboard/index.html",
-    "href": "posts/uscensus-dashboard/index.html",
-    "title": "Building a U.S. Census Data Explorer",
-    "section": "",
-    "text": "As a transportation planner, accessing and visualizing demographic and employment data is crucial for informed decision-making. The U.S. Census Bureau provides a wealth of information through various datasets, but navigating multiple APIs and data formats can be challenging. To streamline this process, I developed an interactive R Shiny dashboard that provides unified access to three major Census data sources:\n\nAmerican Community Survey (ACS) - Detailed demographic and socioeconomic estimates\nDecennial Census - Complete population counts every 10 years\n\nLongitudinal Employer-Household Dynamics (LEHD) - Employment and commuting patterns\n\nThis post walks through the development process, key technical decisions, and lessons learned while building this data exploration tool."
-  },
-  {
-    "objectID": "posts/uscensus-dashboard/index.html#introduction",
-    "href": "posts/uscensus-dashboard/index.html#introduction",
-    "title": "Building a U.S. Census Data Explorer",
-    "section": "",
-    "text": "As a transportation planner, accessing and visualizing demographic and employment data is crucial for informed decision-making. The U.S. Census Bureau provides a wealth of information through various datasets, but navigating multiple APIs and data formats can be challenging. To streamline this process, I developed an interactive R Shiny dashboard that provides unified access to three major Census data sources:\n\nAmerican Community Survey (ACS) - Detailed demographic and socioeconomic estimates\nDecennial Census - Complete population counts every 10 years\n\nLongitudinal Employer-Household Dynamics (LEHD) - Employment and commuting patterns\n\nThis post walks through the development process, key technical decisions, and lessons learned while building this data exploration tool."
-  },
-  {
-    "objectID": "posts/uscensus-dashboard/index.html#project-overview",
-    "href": "posts/uscensus-dashboard/index.html#project-overview",
-    "title": "Building a U.S. Census Data Explorer",
-    "section": "2 Project Overview",
-    "text": "2 Project Overview\nThe dashboard serves as a one-stop interface for Census data retrieval, featuring:\n\nInteractive geographic selection (state/county level)\nVariable selection through searchable tables\nReal-time data visualization on interactive maps\nExport capabilities for both tabular and geospatial data\nResponsive design optimized for different screen sizes\n\n🔗 Repository: You can find the complete source code and documentation at: https://github.com/ar-puuk/uscensus-dashboard/"
-  },
-  {
-    "objectID": "posts/uscensus-dashboard/index.html#technical-architecture",
-    "href": "posts/uscensus-dashboard/index.html#technical-architecture",
-    "title": "Building a U.S. Census Data Explorer",
-    "section": "3 Technical Architecture",
-    "text": "3 Technical Architecture\n\nCore Dependencies\nThe application leverages several specialized R packages for Census data access and geospatial processing:\n# Census data access\nlibrary(tidycensus)   # ACS and Decennial Census API\nlibrary(lehdr)        # LEHD Origin-Destination data\nlibrary(tigris)       # Geographic boundaries\n\n# Geospatial processing  \nlibrary(sf)           # Simple features for spatial data\nlibrary(leaflet)      # Interactive mapping\n\n# Shiny ecosystem\nlibrary(shiny)\nlibrary(shinydashboard)\nlibrary(shinyWidgets)\nlibrary(DT)          # Interactive data tables\n\n\nApplication Structure\nThe app follows a modular design pattern with separate UI and server components for each data source. This approach enhances maintainability and allows for independent feature development.\n# Modular UI components\nacsUI &lt;- fluidPage(...)      # American Community Survey interface\ncensusUI &lt;- fluidPage(...)   # Decennial Census interface  \nlehdUI &lt;- fluidPage(...)     # LEHD interface\n\n# Unified navigation\nui &lt;- navbarPage(...)"
-  },
-  {
-    "objectID": "posts/uscensus-dashboard/index.html#data-source-integration",
-    "href": "posts/uscensus-dashboard/index.html#data-source-integration",
-    "title": "Building a U.S. Census Data Explorer",
-    "section": "4 Data Source Integration",
-    "text": "4 Data Source Integration\n\nAmerican Community Survey (ACS)\nThe ACS module provides access to detailed demographic estimates from 2009-2022. Key implementation features:\nDynamic Variable Loading: Variables are loaded based on the selected year and geographic level, ensuring users only see relevant options.\nvariables_acs &lt;- reactive({\n  if (!is.null(input$year_acs)) {\n    variables &lt;- load_variables(year = as.numeric(input$year_acs), \n                               dataset = \"acs5\", cache = TRUE)\n    # Filter variables based on geographic level\n    if (input$level_acs == \"tract\") {\n      variables &lt;- variables |&gt;\n        filter(geography %in% c(\"tract\", \"block group\"))\n    }\n    return(variables)\n  }\n})\nGeographic Hierarchy: The interface maintains proper geographic relationships, with county options updating based on state selection.\n\n\nDecennial Census\nThe Decennial Census module focuses on the 2000, 2010, and 2020 complete counts, using the PL 94-171 dataset optimized for redistricting data.\nStreamlined Variable Selection: Since Decennial Census has fewer variables than ACS, the interface emphasizes ease of use while maintaining the same interaction patterns.\n\n\nLongitudinal Employer-Household Dynamics (LEHD)\nThe LEHD module provides employment statistics and origin-destination flows, crucial for transportation planning applications.\nVersion Management: Different LODES versions cover different time periods, requiring dynamic year filtering:\nobserve({\n  version &lt;- if (!is.null(input$version_lehd)) input$version_lehd else \"default\"\n  \n  options &lt;- if (version == \"LODES5\") {\n    2002:2009\n  } else if (version == \"LODES7\") {\n    2002:2019  \n  } else {\n    2002:2021\n  }\n  \n  updateSelectInput(session, \"year_lehd\", choices = options, selected = max(options))\n})"
-  },
-  {
-    "objectID": "posts/uscensus-dashboard/index.html#interactive-mapping",
-    "href": "posts/uscensus-dashboard/index.html#interactive-mapping",
-    "title": "Building a U.S. Census Data Explorer",
-    "section": "5 Interactive Mapping",
-    "text": "5 Interactive Mapping\n\nBase Map Configuration\nThe application uses Leaflet for interactive mapping, with a carefully chosen base layer that balances aesthetics and functionality:\ndefault_map &lt;- leaflet(options = leafletOptions(crs = leafletCRS())) |&gt;\n  addProviderTiles(\"CartoDB.Voyager\") |&gt;\n  addPolygons(data = sf_states, color = \"#222222\", weight = 1, fillOpacity = 0.15)\nCartoDB.Voyager was selected for its clean design and good contrast with overlay data, though the code structure allows for easy switching between provider tiles.\n\n\nDynamic Geographic Focus\nMaps automatically adjust to show selected geographic areas, providing contextual awareness:\noutput$map_acs &lt;- renderLeaflet({\n  if (!is.null(input$state_acs) && input$state_acs != \"\") {\n    selected_state_acs &lt;- sf_states[sf_states$NAME == input$state_acs, ]\n    selected_bbox_acs &lt;- sf::st_bbox(selected_state_acs)\n    \n    default_map |&gt;\n      addPolygons(data = selected_state_acs, color = \"#222222\", weight = 4) |&gt;\n      fitBounds(selected_bbox_acs[[1]], selected_bbox_acs[[2]], \n               selected_bbox_acs[[3]], selected_bbox_acs[[4]])\n  }\n})"
-  },
-  {
-    "objectID": "posts/uscensus-dashboard/index.html#data-export-functionality",
-    "href": "posts/uscensus-dashboard/index.html#data-export-functionality",
-    "title": "Building a U.S. Census Data Explorer",
-    "section": "6 Data Export Functionality",
-    "text": "6 Data Export Functionality\n\nFlexible Format Support\nUsers can export data in multiple formats depending on their needs:\n\nCSV files for tabular analysis\nShapefiles (zipped) for GIS applications\n\noutput$download_acs &lt;- downloadHandler(\n  filename = function() {\n    if (input$geometry_acs) {\n      paste0(\"acs_data_\", input$state_acs, \"_\", input$year_acs, \".zip\")\n    } else {\n      paste0(\"acs_data_\", input$state_acs, \"_\", input$year_acs, \".csv\")\n    }\n  },\n  content = function(file) {\n    if (input$geometry_acs) {\n      write_sf_zip(data_acs(), file, overwrite = TRUE)\n    } else {\n      readr::write_csv(data_acs() |&gt; st_drop_geometry(), file)\n    }\n  }\n)\n\n\nCustom Shapefile Export\nSince R’s sf package doesn’t directly export zipped shapefiles, I implemented a custom function to handle the complete shapefile format:\nwrite_sf_zip &lt;- function(obj, zipfile, overwrite = FALSE) {\n  # Create temporary directory for shapefile components\n  tmp &lt;- tempfile()\n  dir.create(tmp)\n  on.exit(unlink(tmp, recursive = TRUE, force = TRUE))\n  \n  # Write shapefile and zip all components\n  sf::write_sf(obj, file.path(tmp, shp_name), delete_layer = TRUE)\n  withr::with_dir(tmp, zip(tmp_zip, list.files()))\n  \n  file.copy(file.path(tmp, tmp_zip), zipfile, overwrite = overwrite)\n}"
-  },
-  {
-    "objectID": "posts/uscensus-dashboard/index.html#user-experience-considerations",
-    "href": "posts/uscensus-dashboard/index.html#user-experience-considerations",
-    "title": "Building a U.S. Census Data Explorer",
-    "section": "7 User Experience Considerations",
-    "text": "7 User Experience Considerations\n\nVariable Selection Interface\nOne of the biggest UX challenges was making Census variable selection intuitive. The solution uses modal dialogs with searchable data tables:\nvar_modal_acs &lt;- modalDialog(\n  title = h4(\"Select Variable(s) from the List\"),\n  DTOutput(\"var_table_acs\"),\n  size = \"l\",\n  easyClose = TRUE,\n  footer = actionButton(\"selectVarButton_acs\", \"Select Variable(s)\")\n)\nThis approach allows users to browse thousands of variables efficiently while maintaining a clean main interface.\n\n\nResponsive Geographic Selection\nThe cascading geographic selection (State → County → Geographic Level) follows familiar patterns while enforcing data availability constraints.\n\n\nProgress Feedback\nAPI calls can take several seconds, so the interface provides clear feedback through action buttons and conditional panels that appear after data is loaded."
-  },
-  {
-    "objectID": "posts/uscensus-dashboard/index.html#performance-optimizations",
-    "href": "posts/uscensus-dashboard/index.html#performance-optimizations",
-    "title": "Building a U.S. Census Data Explorer",
-    "section": "8 Performance Optimizations",
-    "text": "8 Performance Optimizations\n\nCaching Strategy\noptions(tigris_use_cache = TRUE)  # Geographic boundaries\nload_variables(..., cache = TRUE) # Variable metadata\nCaching is enabled for static data like geographic boundaries and variable definitions, significantly reducing load times for repeat users.\n\n\nData Processing Efficiency\nFor ACS data, margin of error columns are automatically removed to focus on estimates:\nresult_acs &lt;- result_acs |&gt;\n  select(-matches(\"M$\")) |&gt;    # Remove margin columns\n  rename_all(~ sub(\"E$\", \"\", .)) # Clean estimate column names"
-  },
-  {
-    "objectID": "posts/uscensus-dashboard/index.html#deployment-considerations",
-    "href": "posts/uscensus-dashboard/index.html#deployment-considerations",
-    "title": "Building a U.S. Census Data Explorer",
-    "section": "9 Deployment Considerations",
-    "text": "9 Deployment Considerations\n\nAPI Key Management\nThe application requires Census API keys but handles them securely through user input rather than hardcoding. This approach ensures:\n\nNo sensitive credentials in source code\nUsers maintain control over their API usage\nEasy deployment across different environments\n\n\n\nError Handling\nRobust error handling prevents crashes when API calls fail or users make invalid selections:\nreq(input$api_key_acs, input$year_acs, input$state_acs, input$county_acs, input$level_acs)\nThe req() function ensures all required inputs are available before processing."
-  },
-  {
-    "objectID": "posts/uscensus-dashboard/index.html#future-enhancements",
-    "href": "posts/uscensus-dashboard/index.html#future-enhancements",
-    "title": "Building a U.S. Census Data Explorer",
-    "section": "10 Future Enhancements",
-    "text": "10 Future Enhancements\nSeveral features are planned for future releases:\n\nData Visualization: Built-in charts and maps with Census data overlays\nComparison Tools: Side-by-side analysis across years or geographies\n\nCustom Geography: Support for user-uploaded boundary files\nBatch Processing: Multiple state/year combinations in single requests\nAPI Integration: Direct connection to external GIS platforms"
-  },
-  {
-    "objectID": "posts/uscensus-dashboard/index.html#conclusion",
-    "href": "posts/uscensus-dashboard/index.html#conclusion",
-    "title": "Building a U.S. Census Data Explorer",
-    "section": "11 Conclusion",
-    "text": "11 Conclusion\nThis Census data explorer demonstrates the power of R Shiny for creating specialized data access tools. By combining multiple Census APIs into a single interface, it significantly reduces the technical barrier for accessing demographic and employment data.\nThe modular architecture and attention to user experience make it a valuable tool for researchers, planners, and analysts who regularly work with Census data. The open-source approach ensures continued development and community contributions.\nFor transportation planners specifically, having easy access to demographic characteristics, employment patterns, and commuting flows in a single application streamlines the data gathering phase of project development, allowing more time for analysis and decision-making.\n\nWant to contribute or suggest improvements? Visit the project repository at: https://github.com/ar-puuk/uscensus-dashboard"
-  },
-  {
-    "objectID": "posts/robocopy-gui/index.html",
-    "href": "posts/robocopy-gui/index.html",
-    "title": "Interactive Robocopy GUI Tool",
-    "section": "",
-    "text": "I’ve developed an interactive web-based tool that simplifies creating robocopy commands through a user-friendly graphical interface. Instead of memorizing complex command-line syntax, users can simply select options and generate commands visually.\n\n\n\nOpen in New Tab View Source Code"
-  },
-  {
-    "objectID": "posts/robocopy-gui/index.html#robocopy-command-generator",
-    "href": "posts/robocopy-gui/index.html#robocopy-command-generator",
-    "title": "Interactive Robocopy GUI Tool",
-    "section": "",
-    "text": "I’ve developed an interactive web-based tool that simplifies creating robocopy commands through a user-friendly graphical interface. Instead of memorizing complex command-line syntax, users can simply select options and generate commands visually.\n\n\n\nOpen in New Tab View Source Code"
-  },
-  {
-    "objectID": "posts/robocopy-gui/index.html#features",
-    "href": "posts/robocopy-gui/index.html#features",
-    "title": "Interactive Robocopy GUI Tool",
-    "section": "2 Features",
-    "text": "2 Features\nThe tool provides an intuitive interface for:\n\nSource and Destination Selection: Easy path input with validation\nCopy Options: Checkboxes for common robocopy parameters like /E, /MIR, /R:n, etc.\nReal-time Preview: See your robocopy command as you build it\nCopy to Clipboard: One-click copying of the generated command\nParameter Explanations: Tooltips and descriptions for each option"
-  },
-  {
-    "objectID": "posts/robocopy-gui/index.html#technical-details",
-    "href": "posts/robocopy-gui/index.html#technical-details",
-    "title": "Interactive Robocopy GUI Tool",
-    "section": "3 Technical Details",
-    "text": "3 Technical Details\nThis tool is built with vanilla HTML, CSS, and JavaScript, making it lightweight and fast. It’s hosted on GitHub Pages, which means it automatically updates whenever I push changes to the source repository.\nThe interface translates user selections into proper robocopy syntax, helping both beginners learn the command structure and experienced users save time on complex operations."
-  },
-  {
-    "objectID": "posts/robocopy-gui/index.html#use-cases",
-    "href": "posts/robocopy-gui/index.html#use-cases",
-    "title": "Interactive Robocopy GUI Tool",
-    "section": "4 Use Cases",
-    "text": "4 Use Cases\nThis tool is particularly useful for:\n\nSystem administrators managing file synchronization\nIT professionals setting up backup routines\n\nAnyone needing to copy large directory structures with specific parameters\nLearning robocopy syntax through visual exploration\n\n\nWant to contribute or suggest improvements? Visit the project repository at: https://github.com/ar-puuk/robocopy-gui"
-  },
-  {
-    "objectID": "posts/overture-data-download/index.html",
-    "href": "posts/overture-data-download/index.html",
-    "title": "Overture Maps Data Download",
-    "section": "",
-    "text": "Overture Maps Foundation provides a collaborative, open-source initiative to create the world’s most comprehensive and interoperable geospatial dataset. As transportation planners and data analysts, we often need access to high-quality geospatial data for buildings, transportation networks, places, and administrative boundaries. This post demonstrates how to efficiently download Overture Maps data using both R and Python with DuckDB’s powerful spatial capabilities.\n\nOverture Maps is an open-source mapping initiative that provides global-scale geospatial data across four main themes:\n\n\nBuildings: Footprints and building parts\n\nTransportation: Road segments and connectors\n\n\nPlaces: Points of interest and place data\n\nAdmins: Administrative boundaries and localities\n\nBase: Infrastructure, land use, land cover, and water features\n\nThe data is stored in cloud-optimized Parquet format on AWS S3, making it ideal for efficient querying and analysis.\n\nBefore diving into the code, ensure you have the following dependencies installed:\n\n\n R\n Python\n\n\n\n\n# Install required packages\ninstall.packages(c(\"tidyverse\", \"sf\", \"tmap\", \"DBI\", \"duckdb\", \"arrow\"))\n\n\n\n\n# Install required packages\npip install duckdb matplotlib geopandas pandas shapely folium pathlib\n\n\n\n\n\nFirst, we need to load our libraries and configure the environment for spatial data processing.\n\n\n R\n Python\n\n\n\n\n# Load required libraries\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(tmap)\nlibrary(DBI)\nlibrary(duckdb)\nlibrary(arrow)\n\n# Set global options\noptions(scipen = 999) # avoiding scientific notation\ntmap_mode(mode = \"view\")\n\n\n\n\nimport duckdb\nimport geopandas as gpd\nimport pandas as pd\nimport shapely.wkb\nimport matplotlib.pyplot as plt\nimport folium\nfrom pathlib import Path\n\n\n\n\n\nOverture data is organized by themes, and we need to map specific data types to their corresponding themes for proper S3 path construction.\n\n\n R\n Python\n\n\n\n\n# Define the theme map\nmap_themes &lt;- list(\n  \"locality\" = \"admins\",\n  \"locality_area\" = \"admins\",\n  \"administrative_boundary\" = \"admins\",\n  \"building\" = \"buildings\",\n  \"building_part\" = \"buildings\",\n  \"place\" = \"places\",\n  \"segment\" = \"transportation\",\n  \"connector\" = \"transportation\",\n  \"infrastructure\" = \"base\",\n  \"land\" = \"base\",\n  \"land_use\" = \"base\",\n  \"water\" = \"base\"\n)\n\n\n\n\n# Define theme mapping\nTHEME_MAP = {\n    \"locality\": \"admins\",\n    \"locality_area\": \"admins\",\n    \"administrative_boundary\": \"admins\",\n    \"building\": \"buildings\",\n    \"building_part\": \"buildings\",\n    \"place\": \"places\",\n    \"segment\": \"transportation\",\n    \"connector\": \"transportation\",\n    \"infrastructure\": \"base\",\n    \"land\": \"base\",\n    \"land_use\": \"base\",\n    \"water\": \"base\",\n}\n\n\n\n\n\nThis function handles the DuckDB connection, S3 configuration, and spatial filtering to download only the data within your specified bounding box.\n\n\n R\n Python\n\n\n\n\noverture_data &lt;- function(bbox, overture_type, dst_parquet) {\n  \n  # Validate overture_type\n  if (!overture_type %in% names(map_themes)) {\n    stop(paste(\"Valid Overture types are:\", paste(names(map_themes), collapse = \", \")))\n  }\n  \n  # Configure S3 path\n  s3_region &lt;- \"us-west-2\"\n  base_url &lt;- sprintf(\"s3://overturemaps-%s/release\", s3_region)\n  version &lt;- \"2024-04-16-beta.0\"\n  theme &lt;- map_themes[[overture_type]]\n  remote_path &lt;- sprintf(\"%s/%s/theme=%s/type=%s/*\", base_url, version, theme, overture_type)\n  \n  # Connect to DuckDB and install extensions\n  conn &lt;- dbConnect(duckdb::duckdb())\n  dbExecute(conn, \"INSTALL httpfs;\")\n  dbExecute(conn, \"INSTALL spatial;\")\n  dbExecute(conn, \"LOAD httpfs;\")\n  dbExecute(conn, \"LOAD spatial;\")\n  dbExecute(conn, sprintf(\"SET s3_region='%s';\", s3_region))\n  \n  # Create view and execute spatial query\n  read_parquet &lt;- sprintf(\"read_parquet('%s', filename=TRUE, hive_partitioning=1);\", remote_path)\n  dbExecute(conn, sprintf(\"CREATE OR REPLACE VIEW data_view AS SELECT * FROM %s\", read_parquet))\n  \n  query &lt;- sprintf(\"\n    SELECT data.*\n    FROM data_view AS data  \n    WHERE data.bbox.xmin &lt;= %f AND data.bbox.xmax &gt;= %f\n    AND data.bbox.ymin &lt;= %f AND data.bbox.ymax &gt;= %f\n  \", bbox[3], bbox[1], bbox[4], bbox[2])\n  \n  # Save results to Parquet file\n  file &lt;- normalizePath(dst_parquet, mustWork = FALSE)\n  dbExecute(conn, sprintf(\"COPY (%s) TO '%s' WITH (FORMAT 'parquet');\", query, file))\n  dbDisconnect(conn, shutdown = TRUE)\n}\n\n\n\n\ndef overture_data(bbox, overture_type, dst_parquet):\n    \"\"\"Query a subset of Overture's data and save it as a GeoParquet file.\n    \n    Parameters\n    ----------\n    bbox : tuple\n        A tuple of floats representing the bounding box (xmin, ymin, xmax, ymax) \n        in EPSG:4326 coordinate reference system.\n    overture_type : str\n        The type of Overture data to query\n    dst_parquet : str or Path\n        The path to the output GeoParquet file.\n    \"\"\"\n    if overture_type not in THEME_MAP:\n        raise ValueError(f\"Valid Overture types are: {list(THEME_MAP)}\")\n    \n    # Configure S3 connection\n    s3_region = \"us-west-2\"\n    base_url = f\"s3://overturemaps-{s3_region}/release\"\n    version = \"2024-04-16-beta.0\"\n    theme = THEME_MAP[overture_type]\n    remote_path = f\"{base_url}/{version}/theme={theme}/type={overture_type}/*\"\n    \n    # Setup DuckDB with spatial extensions\n    conn = duckdb.connect()\n    conn.execute(\"INSTALL httpfs;\")\n    conn.execute(\"INSTALL spatial;\")\n    conn.execute(\"LOAD httpfs;\")\n    conn.execute(\"LOAD spatial;\")\n    conn.execute(f\"SET s3_region='{s3_region}';\")\n    \n    # Execute spatial query\n    read_parquet = f\"read_parquet('{remote_path}', filename=true, hive_partitioning=1);\"\n    conn.execute(f\"CREATE OR REPLACE VIEW data_view AS SELECT * FROM {read_parquet}\")\n    \n    query = f\"\"\"\n    SELECT data.*\n    FROM data_view AS data\n    WHERE data.bbox.xmin &lt;= {bbox[2]} AND data.bbox.xmax &gt;= {bbox[0]}\n    AND data.bbox.ymin &lt;= {bbox[3]} AND data.bbox.ymax &gt;= {bbox[1]}\n    \"\"\"\n    \n    file = str(Path(dst_parquet).resolve())\n    conn.execute(f\"COPY ({query}) TO '{file}' WITH (FORMAT PARQUET);\")\n    conn.close()\n\n\n\n\n\nFor spatial analysis, you need to define a bounding box for your area of interest. This can come from existing boundary data or manual coordinates.\n\n\n R\n Python\n\n\n\n\n# Read existing boundary data (example: Albany, NY)\nalbany_boundary &lt;- read_sf(file.path(wd, project), layer = \"City_of_Albany\") |&gt;\n  st_transform(4326)\n\n# Extract bounding box coordinates (xmin, ymin, xmax, ymax)\nalbany_bbox &lt;- albany_boundary |&gt;\n  st_bbox() |&gt;\n  as.vector()\n\nprint(albany_bbox)\n\n\n\n\n# Define study area bounding box manually\n# Manhattan example (xmin, ymin, xmax, ymax) in EPSG:4326\nbbox_example = (-74.02169, 40.696423, -73.891338, 40.831263)\n\n# Alternative: extract from existing boundary data\n# boundary_gdf = gpd.read_file(\"your_boundary.shp\")\n# bbox_example = boundary_gdf.total_bounds\n\n\n\n\n\nNow we can download specific data types for our study area. The function handles all the cloud connectivity and spatial filtering automatically.\n\n\n R\n Python\n\n\n\n\n# Download places data for Albany\noverture_data(albany_bbox, \"place\", \"albany_places_subset.parquet\")\n\n# Download buildings data\noverture_data(albany_bbox, \"building\", \"albany_buildings_subset.parquet\")\n\n# Download transportation segments\noverture_data(albany_bbox, \"segment\", \"albany_roads_subset.parquet\")\n\n\n\n\n# Download buildings data for Manhattan\noverture_data(bbox_example, \"building\", \"nyc_buildings_subset.parquet\")\n\n# Download places data\noverture_data(bbox_example, \"place\", \"nyc_places_subset.parquet\")\n\n# Download transportation network\noverture_data(bbox_example, \"segment\", \"nyc_roads_subset.parquet\")\n\n\n\n\n\nAfter downloading, convert the Parquet files to spatial data formats for analysis and visualization.\n\n\n R\n Python\n\n\n\n\n# Read the downloaded Parquet file\nalbany_places &lt;- read_parquet(\"albany_places_subset.parquet\")\n\n# Convert to sf object for spatial operations\nalbany_places_sf &lt;- st_as_sf(\n  albany_places |&gt; select(-sources),\n  geometry = albany_places$geometry,\n  crs = 4326\n)\n\n# Basic data exploration\nprint(paste(\"Downloaded\", nrow(albany_places_sf), \"places\"))\nprint(colnames(albany_places_sf))\n\n\n\n\n# Read the downloaded data\nmanhattan = pd.read_parquet(\"nyc_buildings_subset.parquet\")\n\n# Convert to GeoDataFrame\nmanhattan_gdf = gpd.GeoDataFrame(\n    manhattan.drop(columns=\"geometry\"),\n    geometry=shapely.wkb.loads(manhattan[\"geometry\"]),\n    crs=4326,\n)\n\n# Basic exploration\nprint(f\"Downloaded {len(manhattan_gdf)} buildings\")\nprint(manhattan_gdf.columns.tolist())\n\n\n\n\n\nCreate quick visualizations to explore your downloaded data and verify the results.\n\n\n R\n Python\n\n\n\n\n# Interactive map using tmap (equivalent to folium)\nalbany_places_sf |&gt;\n  select(names$primary, categories$main, confidence) |&gt;\n  tm_shape() +\n  tm_dots(col = \"categories$main\", size = 0.5, alpha = 0.8) +\n  tm_view(view.legend.position = c(\"left\", \"bottom\"))\n\n# Simple quick visualization\nalbany_places_sf |&gt;\n  select(names$primary, categories$main, confidence) |&gt;\n  qtm(dots.col = \"categories$main\")\n\n\n\n\n# Static plot using GeoPandas\nmanhattan_gdf.plot(figsize=(10, 10), alpha=0.7, column='categories', legend=True)\nplt.title(\"Manhattan Buildings from Overture Maps\")\nplt.show()\n\n# Interactive map with folium (equivalent to tmap interactive)\nm = folium.Map(location=[40.7589, -73.9851], zoom_start=12)\nfolium.GeoJson(\n    manhattan_gdf.head(100),\n    popup=folium.GeoJsonPopup(fields=['names', 'categories'])\n).add_to(m)\nm\n\n\n\n\n\nOverture Maps provides the following data types organized by theme:\n\n\n\n\n\n\n\nTheme\nData Types\nDescription\n\n\n\nAdmins\n\nlocality, locality_area, administrative_boundary\n\nAdministrative boundaries and place hierarchies\n\n\nBuildings\n\nbuilding, building_part\n\nBuilding footprints and structural components\n\n\nPlaces\nplace\nPoints of interest, businesses, and landmarks\n\n\nTransportation\n\nsegment, connector\n\nRoad networks and transportation infrastructure\n\n\nBase\n\ninfrastructure, land, land_use, water\n\nBase map features and land cover\n\n\n\nThis approach is particularly valuable for transportation planning workflows where you need to integrate multiple data sources for comprehensive analysis. The standardized schema and efficient spatial querying make it ideal for network analysis, land use integration, and multi-modal planning across different jurisdictions and scales.\n\nThe complete code and examples are available in the Overture Data Download repository on GitHub.\nFor more information about Overture Maps:\n\nOfficial Documentation\nData Schema Reference\nCommunity Forum\n\n\nWant to contribute or suggest improvements? Visit the project repository at: https://github.com/ar-puuk/overture-data-download"
-  },
-  {
-    "objectID": "posts/overture-data-download/index.html#what-is-overture-maps",
-    "href": "posts/overture-data-download/index.html#what-is-overture-maps",
-    "title": "Overture Maps Data Download",
-    "section": "",
-    "text": "Overture Maps is an open-source mapping initiative that provides global-scale geospatial data across four main themes:\n\n\nBuildings: Footprints and building parts\n\nTransportation: Road segments and connectors\n\n\nPlaces: Points of interest and place data\n\nAdmins: Administrative boundaries and localities\n\nBase: Infrastructure, land use, land cover, and water features\n\nThe data is stored in cloud-optimized Parquet format on AWS S3, making it ideal for efficient querying and analysis."
-  },
-  {
-    "objectID": "posts/overture-data-download/index.html#prerequisites",
-    "href": "posts/overture-data-download/index.html#prerequisites",
-    "title": "Overture Maps Data Download",
-    "section": "",
-    "text": "Before diving into the code, ensure you have the following dependencies installed:\n\n\n R\n Python\n\n\n\n\n# Install required packages\ninstall.packages(c(\"tidyverse\", \"sf\", \"tmap\", \"DBI\", \"duckdb\", \"arrow\"))\n\n\n\n\n# Install required packages\npip install duckdb matplotlib geopandas pandas shapely folium pathlib"
-  },
-  {
-    "objectID": "posts/overture-data-download/index.html#setting-up-the-environment",
-    "href": "posts/overture-data-download/index.html#setting-up-the-environment",
-    "title": "Overture Maps Data Download",
-    "section": "",
-    "text": "First, we need to load our libraries and configure the environment for spatial data processing.\n\n\n R\n Python\n\n\n\n\n# Load required libraries\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(tmap)\nlibrary(DBI)\nlibrary(duckdb)\nlibrary(arrow)\n\n# Set global options\noptions(scipen = 999) # avoiding scientific notation\ntmap_mode(mode = \"view\")\n\n\n\n\nimport duckdb\nimport geopandas as gpd\nimport pandas as pd\nimport shapely.wkb\nimport matplotlib.pyplot as plt\nimport folium\nfrom pathlib import Path"
-  },
-  {
-    "objectID": "posts/overture-data-download/index.html#data-type-mapping",
-    "href": "posts/overture-data-download/index.html#data-type-mapping",
-    "title": "Overture Maps Data Download",
-    "section": "",
-    "text": "Overture data is organized by themes, and we need to map specific data types to their corresponding themes for proper S3 path construction.\n\n\n R\n Python\n\n\n\n\n# Define the theme map\nmap_themes &lt;- list(\n  \"locality\" = \"admins\",\n  \"locality_area\" = \"admins\",\n  \"administrative_boundary\" = \"admins\",\n  \"building\" = \"buildings\",\n  \"building_part\" = \"buildings\",\n  \"place\" = \"places\",\n  \"segment\" = \"transportation\",\n  \"connector\" = \"transportation\",\n  \"infrastructure\" = \"base\",\n  \"land\" = \"base\",\n  \"land_use\" = \"base\",\n  \"water\" = \"base\"\n)\n\n\n\n\n# Define theme mapping\nTHEME_MAP = {\n    \"locality\": \"admins\",\n    \"locality_area\": \"admins\",\n    \"administrative_boundary\": \"admins\",\n    \"building\": \"buildings\",\n    \"building_part\": \"buildings\",\n    \"place\": \"places\",\n    \"segment\": \"transportation\",\n    \"connector\": \"transportation\",\n    \"infrastructure\": \"base\",\n    \"land\": \"base\",\n    \"land_use\": \"base\",\n    \"water\": \"base\",\n}"
-  },
-  {
-    "objectID": "posts/overture-data-download/index.html#core-download-function",
-    "href": "posts/overture-data-download/index.html#core-download-function",
-    "title": "Overture Maps Data Download",
-    "section": "",
-    "text": "This function handles the DuckDB connection, S3 configuration, and spatial filtering to download only the data within your specified bounding box.\n\n\n R\n Python\n\n\n\n\noverture_data &lt;- function(bbox, overture_type, dst_parquet) {\n  \n  # Validate overture_type\n  if (!overture_type %in% names(map_themes)) {\n    stop(paste(\"Valid Overture types are:\", paste(names(map_themes), collapse = \", \")))\n  }\n  \n  # Configure S3 path\n  s3_region &lt;- \"us-west-2\"\n  base_url &lt;- sprintf(\"s3://overturemaps-%s/release\", s3_region)\n  version &lt;- \"2024-04-16-beta.0\"\n  theme &lt;- map_themes[[overture_type]]\n  remote_path &lt;- sprintf(\"%s/%s/theme=%s/type=%s/*\", base_url, version, theme, overture_type)\n  \n  # Connect to DuckDB and install extensions\n  conn &lt;- dbConnect(duckdb::duckdb())\n  dbExecute(conn, \"INSTALL httpfs;\")\n  dbExecute(conn, \"INSTALL spatial;\")\n  dbExecute(conn, \"LOAD httpfs;\")\n  dbExecute(conn, \"LOAD spatial;\")\n  dbExecute(conn, sprintf(\"SET s3_region='%s';\", s3_region))\n  \n  # Create view and execute spatial query\n  read_parquet &lt;- sprintf(\"read_parquet('%s', filename=TRUE, hive_partitioning=1);\", remote_path)\n  dbExecute(conn, sprintf(\"CREATE OR REPLACE VIEW data_view AS SELECT * FROM %s\", read_parquet))\n  \n  query &lt;- sprintf(\"\n    SELECT data.*\n    FROM data_view AS data  \n    WHERE data.bbox.xmin &lt;= %f AND data.bbox.xmax &gt;= %f\n    AND data.bbox.ymin &lt;= %f AND data.bbox.ymax &gt;= %f\n  \", bbox[3], bbox[1], bbox[4], bbox[2])\n  \n  # Save results to Parquet file\n  file &lt;- normalizePath(dst_parquet, mustWork = FALSE)\n  dbExecute(conn, sprintf(\"COPY (%s) TO '%s' WITH (FORMAT 'parquet');\", query, file))\n  dbDisconnect(conn, shutdown = TRUE)\n}\n\n\n\n\ndef overture_data(bbox, overture_type, dst_parquet):\n    \"\"\"Query a subset of Overture's data and save it as a GeoParquet file.\n    \n    Parameters\n    ----------\n    bbox : tuple\n        A tuple of floats representing the bounding box (xmin, ymin, xmax, ymax) \n        in EPSG:4326 coordinate reference system.\n    overture_type : str\n        The type of Overture data to query\n    dst_parquet : str or Path\n        The path to the output GeoParquet file.\n    \"\"\"\n    if overture_type not in THEME_MAP:\n        raise ValueError(f\"Valid Overture types are: {list(THEME_MAP)}\")\n    \n    # Configure S3 connection\n    s3_region = \"us-west-2\"\n    base_url = f\"s3://overturemaps-{s3_region}/release\"\n    version = \"2024-04-16-beta.0\"\n    theme = THEME_MAP[overture_type]\n    remote_path = f\"{base_url}/{version}/theme={theme}/type={overture_type}/*\"\n    \n    # Setup DuckDB with spatial extensions\n    conn = duckdb.connect()\n    conn.execute(\"INSTALL httpfs;\")\n    conn.execute(\"INSTALL spatial;\")\n    conn.execute(\"LOAD httpfs;\")\n    conn.execute(\"LOAD spatial;\")\n    conn.execute(f\"SET s3_region='{s3_region}';\")\n    \n    # Execute spatial query\n    read_parquet = f\"read_parquet('{remote_path}', filename=true, hive_partitioning=1);\"\n    conn.execute(f\"CREATE OR REPLACE VIEW data_view AS SELECT * FROM {read_parquet}\")\n    \n    query = f\"\"\"\n    SELECT data.*\n    FROM data_view AS data\n    WHERE data.bbox.xmin &lt;= {bbox[2]} AND data.bbox.xmax &gt;= {bbox[0]}\n    AND data.bbox.ymin &lt;= {bbox[3]} AND data.bbox.ymax &gt;= {bbox[1]}\n    \"\"\"\n    \n    file = str(Path(dst_parquet).resolve())\n    conn.execute(f\"COPY ({query}) TO '{file}' WITH (FORMAT PARQUET);\")\n    conn.close()"
-  },
-  {
-    "objectID": "posts/overture-data-download/index.html#defining-your-study-area",
-    "href": "posts/overture-data-download/index.html#defining-your-study-area",
-    "title": "Overture Maps Data Download",
-    "section": "",
-    "text": "For spatial analysis, you need to define a bounding box for your area of interest. This can come from existing boundary data or manual coordinates.\n\n\n R\n Python\n\n\n\n\n# Read existing boundary data (example: Albany, NY)\nalbany_boundary &lt;- read_sf(file.path(wd, project), layer = \"City_of_Albany\") |&gt;\n  st_transform(4326)\n\n# Extract bounding box coordinates (xmin, ymin, xmax, ymax)\nalbany_bbox &lt;- albany_boundary |&gt;\n  st_bbox() |&gt;\n  as.vector()\n\nprint(albany_bbox)\n\n\n\n\n# Define study area bounding box manually\n# Manhattan example (xmin, ymin, xmax, ymax) in EPSG:4326\nbbox_example = (-74.02169, 40.696423, -73.891338, 40.831263)\n\n# Alternative: extract from existing boundary data\n# boundary_gdf = gpd.read_file(\"your_boundary.shp\")\n# bbox_example = boundary_gdf.total_bounds"
-  },
-  {
-    "objectID": "posts/overture-data-download/index.html#downloading-the-data",
-    "href": "posts/overture-data-download/index.html#downloading-the-data",
-    "title": "Overture Maps Data Download",
-    "section": "",
-    "text": "Now we can download specific data types for our study area. The function handles all the cloud connectivity and spatial filtering automatically.\n\n\n R\n Python\n\n\n\n\n# Download places data for Albany\noverture_data(albany_bbox, \"place\", \"albany_places_subset.parquet\")\n\n# Download buildings data\noverture_data(albany_bbox, \"building\", \"albany_buildings_subset.parquet\")\n\n# Download transportation segments\noverture_data(albany_bbox, \"segment\", \"albany_roads_subset.parquet\")\n\n\n\n\n# Download buildings data for Manhattan\noverture_data(bbox_example, \"building\", \"nyc_buildings_subset.parquet\")\n\n# Download places data\noverture_data(bbox_example, \"place\", \"nyc_places_subset.parquet\")\n\n# Download transportation network\noverture_data(bbox_example, \"segment\", \"nyc_roads_subset.parquet\")"
-  },
-  {
-    "objectID": "posts/overture-data-download/index.html#processing-downloaded-data",
-    "href": "posts/overture-data-download/index.html#processing-downloaded-data",
-    "title": "Overture Maps Data Download",
-    "section": "",
-    "text": "After downloading, convert the Parquet files to spatial data formats for analysis and visualization.\n\n\n R\n Python\n\n\n\n\n# Read the downloaded Parquet file\nalbany_places &lt;- read_parquet(\"albany_places_subset.parquet\")\n\n# Convert to sf object for spatial operations\nalbany_places_sf &lt;- st_as_sf(\n  albany_places |&gt; select(-sources),\n  geometry = albany_places$geometry,\n  crs = 4326\n)\n\n# Basic data exploration\nprint(paste(\"Downloaded\", nrow(albany_places_sf), \"places\"))\nprint(colnames(albany_places_sf))\n\n\n\n\n# Read the downloaded data\nmanhattan = pd.read_parquet(\"nyc_buildings_subset.parquet\")\n\n# Convert to GeoDataFrame\nmanhattan_gdf = gpd.GeoDataFrame(\n    manhattan.drop(columns=\"geometry\"),\n    geometry=shapely.wkb.loads(manhattan[\"geometry\"]),\n    crs=4326,\n)\n\n# Basic exploration\nprint(f\"Downloaded {len(manhattan_gdf)} buildings\")\nprint(manhattan_gdf.columns.tolist())"
-  },
-  {
-    "objectID": "posts/overture-data-download/index.html#data-visualization",
-    "href": "posts/overture-data-download/index.html#data-visualization",
-    "title": "Overture Maps Data Download",
-    "section": "",
-    "text": "Create quick visualizations to explore your downloaded data and verify the results.\n\n\n R\n Python\n\n\n\n\n# Interactive map using tmap (equivalent to folium)\nalbany_places_sf |&gt;\n  select(names$primary, categories$main, confidence) |&gt;\n  tm_shape() +\n  tm_dots(col = \"categories$main\", size = 0.5, alpha = 0.8) +\n  tm_view(view.legend.position = c(\"left\", \"bottom\"))\n\n# Simple quick visualization\nalbany_places_sf |&gt;\n  select(names$primary, categories$main, confidence) |&gt;\n  qtm(dots.col = \"categories$main\")\n\n\n\n\n# Static plot using GeoPandas\nmanhattan_gdf.plot(figsize=(10, 10), alpha=0.7, column='categories', legend=True)\nplt.title(\"Manhattan Buildings from Overture Maps\")\nplt.show()\n\n# Interactive map with folium (equivalent to tmap interactive)\nm = folium.Map(location=[40.7589, -73.9851], zoom_start=12)\nfolium.GeoJson(\n    manhattan_gdf.head(100),\n    popup=folium.GeoJsonPopup(fields=['names', 'categories'])\n).add_to(m)\nm"
-  },
-  {
-    "objectID": "posts/overture-data-download/index.html#available-data-types",
-    "href": "posts/overture-data-download/index.html#available-data-types",
-    "title": "Overture Maps Data Download",
-    "section": "",
-    "text": "Overture Maps provides the following data types organized by theme:\n\n\n\n\n\n\n\nTheme\nData Types\nDescription\n\n\n\nAdmins\n\nlocality, locality_area, administrative_boundary\n\nAdministrative boundaries and place hierarchies\n\n\nBuildings\n\nbuilding, building_part\n\nBuilding footprints and structural components\n\n\nPlaces\nplace\nPoints of interest, businesses, and landmarks\n\n\nTransportation\n\nsegment, connector\n\nRoad networks and transportation infrastructure\n\n\nBase\n\ninfrastructure, land, land_use, water\n\nBase map features and land cover"
-  },
-  {
-    "objectID": "posts/overture-data-download/index.html#transportation-planning-applications",
-    "href": "posts/overture-data-download/index.html#transportation-planning-applications",
-    "title": "Overture Maps Data Download",
-    "section": "",
-    "text": "This approach is particularly valuable for transportation planning workflows where you need to integrate multiple data sources for comprehensive analysis. The standardized schema and efficient spatial querying make it ideal for network analysis, land use integration, and multi-modal planning across different jurisdictions and scales."
-  },
-  {
-    "objectID": "posts/overture-data-download/index.html#repository-and-additional-resources",
-    "href": "posts/overture-data-download/index.html#repository-and-additional-resources",
-    "title": "Overture Maps Data Download",
-    "section": "",
-    "text": "The complete code and examples are available in the Overture Data Download repository on GitHub.\nFor more information about Overture Maps:\n\nOfficial Documentation\nData Schema Reference\nCommunity Forum\n\n\nWant to contribute or suggest improvements? Visit the project repository at: https://github.com/ar-puuk/overture-data-download"
-  },
-  {
-    "objectID": "license.html",
-    "href": "license.html",
-    "title": "License",
-    "section": "",
-    "text": "The blog posts on this website are all released under a Creative Commons Attribution-ShareAlike 4.0 International License. Please feel free to use and share anything you find valuable in these posts, but please cite me too!"
-  },
-  {
-    "objectID": "contact.html",
-    "href": "contact.html",
-    "title": "Contact",
-    "section": "",
-    "text": "I’m always excited to connect with fellow transportation professionals, urban planners, data scientists, and anyone passionate about improving mobility through data-driven insights. Whether you want to discuss the latest developments in transportation modeling, share experiences with R and geospatial analysis, or debate the merits of different traffic flow algorithms, I’m here for it.\nIf you have questions about transportation planning methodologies, want to discuss R techniques for mobility data analysis, share interesting datasets, or just want to chat about anything related to transportation and data science, please use this contact form.\n\n\n\n\n\n\n\n\nFull Name \nEmail Address \nMessage\n\n\nSend message"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
+    "objectID": "research/index.html",
+    "href": "research/index.html",
     "title": "Pukar Bhandari",
     "section": "",
-    "text": "I am an aspiring Associate Transportation Planner with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning.\n\n\n\n\n\nAssociate Transportation Planner | Metro Analytics | June 2023 - Present\nGraduate Teaching & Research Assistant | University of Utah | August 2021 - May 2023\nGIS Data Analyst | Energy & Geoscience Institute | June 2022 - August 2022\nAssociate Architect | Prabal Thapa Architects | June 2020 - July 2021\nArchitect & Planner | Urban Park Nepal Pvt. Ltd. | January 2019 - June 2020\n\n\n\n\n\n\nMaster of City & Metropolitan Planning | University of Utah | August 2021 - May 2023\nBachelors Degree in Architecture | Tribhuvan University | October 2013 - August 2018"
+    "text": "My research focuses on transportation planning, data science, and geospatial analysis. I apply statistical methods and data visualization techniques to understand transportation systems, mobility patterns, and urban planning challenges."
   },
   {
-    "objectID": "about.html#professional-overview",
-    "href": "about.html#professional-overview",
+    "objectID": "research/index.html#published-articles",
+    "href": "research/index.html#published-articles",
+    "title": "Pukar Bhandari",
+    "section": "Published Articles",
+    "text": "Published Articles\n\n\n\n    \n        \n            \n                Faria Afrin Zinia, Pukar Bhandari, Justice Prosper Tuffour, and Andy Hong, \"Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, U.S.,\" Transportation Research Record, Vol. 2677, No. 12 (2023), pp. 806-814, doi: 10.1177/03611981231170005\n            \n\n            \n            \n                \n                    \n                            Transportation\n                        \n                    \n                    \n                            Accessibility\n                        \n                    \n                    \n                            Equity\n                        \n                    \n                    \n                            Data Analysis\n                        \n                    \n                    \n                            R\n                        \n                    \n                    \n                            Geospatial\n                        \n                    \n            \n            \n\n            \n            \n                This study examines social equity dimensions of accessibility to light rail transit stations in Salt Lake County using the Two-Step Floating Catchment Area method and spatial regression models, finding generally equitable access with higher accessibility for households without vehicles.\n            \n            \n            \n            \n                \n                    \n                        \n                             Full details »\n                        \n                    \n                    \n                        \n                    \n                        \n                        \n                        \n                             Published version\n                        \n                    \n                        \n                    \n                        \n                        \n                        \n                             Pre-print\n                        \n                    \n                        \n                    \n                        \n                        \n                        \n                             Code & Data\n                        \n                    \n                        \n                    \n                        \n                        \n                        \n                             Add to Zotero\n                        \n                    \n                        \n                    \n                \n            \n        \n        \n\n\nNo matching items"
+  },
+  {
+    "objectID": "research/index.html#working-papers",
+    "href": "research/index.html#working-papers",
+    "title": "Pukar Bhandari",
+    "section": "Working Papers",
+    "text": "Working Papers\n\n\n\n    \n\n\nNo matching items\n\nComing soon."
+  },
+  {
+    "objectID": "research/index.html#conference-presentations",
+    "href": "research/index.html#conference-presentations",
+    "title": "Pukar Bhandari",
+    "section": "Conference Presentations",
+    "text": "Conference Presentations\n\n\n\n    \n\n\nNo matching items\n\nComing soon."
+  },
+  {
+    "objectID": "projects.html",
+    "href": "projects.html",
     "title": "Pukar Bhandari",
     "section": "",
-    "text": "I am an aspiring Associate Transportation Planner with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning."
-  },
-  {
-    "objectID": "about.html#work-experience",
-    "href": "about.html#work-experience",
-    "title": "Pukar Bhandari",
-    "section": "",
-    "text": "Associate Transportation Planner | Metro Analytics | June 2023 - Present\nGraduate Teaching & Research Assistant | University of Utah | August 2021 - May 2023\nGIS Data Analyst | Energy & Geoscience Institute | June 2022 - August 2022\nAssociate Architect | Prabal Thapa Architects | June 2020 - July 2021\nArchitect & Planner | Urban Park Nepal Pvt. Ltd. | January 2019 - June 2020"
-  },
-  {
-    "objectID": "about.html#education",
-    "href": "about.html#education",
-    "title": "Pukar Bhandari",
-    "section": "",
-    "text": "Master of City & Metropolitan Planning | University of Utah | August 2021 - May 2023\nBachelors Degree in Architecture | Tribhuvan University | October 2013 - August 2018"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Hi! I am Pukar Bhandari",
-    "section": "",
-    "text": "I am an aspiring Transportation Planner with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning."
-  },
-  {
-    "objectID": "posts/nepal-population-density/index.html",
-    "href": "posts/nepal-population-density/index.html",
-    "title": "3D Population Density Mapping of Nepal",
-    "section": "",
-    "text": "This analysis demonstrates advanced geospatial visualization techniques using R’s rayshader package to create a stunning 3D population density map of Nepal. The project showcases the integration of high-resolution population data with topographic visualization methods, resulting in an interactive and informative representation of demographic patterns across Nepal’s diverse terrain.\nKey Technologies: R, rayshader, sf, stars, magickData Source: Kontur Population Dataset (400m H3 hexagon resolution)Projection: ESRI:102306 (Nepal Nagarkot TM)"
-  },
-  {
-    "objectID": "posts/nepal-population-density/index.html#project-overview",
-    "href": "posts/nepal-population-density/index.html#project-overview",
-    "title": "3D Population Density Mapping of Nepal",
-    "section": "",
-    "text": "This analysis demonstrates advanced geospatial visualization techniques using R’s rayshader package to create a stunning 3D population density map of Nepal. The project showcases the integration of high-resolution population data with topographic visualization methods, resulting in an interactive and informative representation of demographic patterns across Nepal’s diverse terrain.\nKey Technologies: R, rayshader, sf, stars, magickData Source: Kontur Population Dataset (400m H3 hexagon resolution)Projection: ESRI:102306 (Nepal Nagarkot TM)"
-  },
-  {
-    "objectID": "posts/nepal-population-density/index.html#environment-setup",
-    "href": "posts/nepal-population-density/index.html#environment-setup",
-    "title": "3D Population Density Mapping of Nepal",
-    "section": "\n2 Environment Setup",
-    "text": "2 Environment Setup\nPackage Installation and Loading\n\nPackage Installation (Run Once)# Core packages for geospatial analysis\ninstall.packages(c(\"tidyverse\", \"sf\", \"tmap\", \"ggplot2\", \"mapview\", \"stars\"))\n\n# Visualization packages\ninstall.packages(c(\"rayshader\", \"MetBrewer\", \"colorspace\", \"rayrender\", \"magick\"))\n\n# Font handling\ninstall.packages(\"extrafont\")\n\n\n\n# Load required libraries\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(tmap)\nlibrary(ggplot2)\nlibrary(mapview)\nlibrary(stars)\nlibrary(rayshader)\nlibrary(MetBrewer)\nlibrary(colorspace)\nlibrary(rayrender)\nlibrary(magick)\nlibrary(extrafont)\n\n\n# Configure 3D rendering\noptions(rgl.useNULL = FALSE)\n\nproject_crs &lt;- \"ESRI:102306\""
-  },
-  {
-    "objectID": "posts/nepal-population-density/index.html#data-acquisition-and-loading",
-    "href": "posts/nepal-population-density/index.html#data-acquisition-and-loading",
-    "title": "3D Population Density Mapping of Nepal",
-    "section": "\n3 Data Acquisition and Loading",
-    "text": "3 Data Acquisition and Loading\nPopulation Hexagon Data\nThe analysis utilizes high-resolution population data from Kontur, provided in H3 hexagonal grid format at 400-meter resolution. This dataset offers superior granularity compared to traditional administrative boundary-based population estimates.\n\n# Load population data (H3 hexagons at 400m resolution)\nnep_hex &lt;- sf::st_read(\n  paste0(\n    \"/vsizip/\",\n    \"data/kontur_population_NP_20220630.gpkg.gz/kontur_population_NP_20220630.gpkg\"\n  )\n) |&gt;\n  sf::st_transform(project_crs)\n\n# Load administrative boundaries\nnep_admin &lt;- sf::st_read(\n  paste0(\n    \"/vsizip/\",\n    \"data/kontur_boundaries_NP_20220407.gpkg.gz/kontur_boundaries_NP_20220407.gpkg\"\n  )\n) |&gt;\n  sf::st_transform(project_crs)\n\n# Create unified Nepal boundary\nnepal_boundary &lt;- nep_admin |&gt;\n  sf::st_geometry() |&gt;\n  sf::st_union() |&gt;\n  sf::st_sf() |&gt;\n  sf::st_make_valid()\n\n\n\n\n\n\n\nNote\n\n\n\nData Sources:\n- Population Data: Kontur Population Dataset\n- Administrative Boundaries: Kontur Boundaries Dataset\n- Coordinate Reference System: EPSG:6207 for accurate representation of Nepal’s geography"
-  },
-  {
-    "objectID": "posts/nepal-population-density/index.html#data-processing-and-visualization-setup",
-    "href": "posts/nepal-population-density/index.html#data-processing-and-visualization-setup",
-    "title": "3D Population Density Mapping of Nepal",
-    "section": "\n4 Data Processing and Visualization Setup",
-    "text": "4 Data Processing and Visualization Setup\nInitial Data Exploration\n\n# Preliminary visualization to verify data quality\nggplot(nep_hex) + \n  geom_sf(aes(fill = population), color = \"gray66\", linewidth = 0) +\n  geom_sf(data = nepal_boundary, fill = NA, color = \"black\", \n          linetype = \"dashed\", linewidth = 1) +\n  theme_minimal() +\n  labs(title = \"Nepal Population Distribution\",\n       fill = \"Population\")\n\nRaster Conversion and Matrix Preparation\nThe conversion from vector hexagon data to raster format is essential for rayshader’s 3D rendering capabilities. This process involves calculating optimal dimensions while preserving the geographic aspect ratio.\n\n# Calculate bounding box and aspect ratio\nbbox &lt;- st_bbox(nepal_boundary)\n\n# Define corner points for aspect ratio calculation\nbottom_left &lt;- st_point(c(bbox[[\"xmin\"]], bbox[[\"ymin\"]])) |&gt;\n  st_sfc(crs = 6207)\nbottom_right &lt;- st_point(c(bbox[[\"xmax\"]], bbox[[\"ymin\"]])) |&gt;\n  st_sfc(crs = 6207)\ntop_left &lt;- st_point(c(bbox[[\"xmin\"]], bbox[[\"ymax\"]])) |&gt;\n  st_sfc(crs = 6207)\n\n# Calculate dimensions\nwidth &lt;- st_distance(bottom_left, bottom_right)\nheight &lt;- st_distance(bottom_left, top_left)\n\n# Determine aspect ratios\nif(width &gt; height) {\n  w_ratio &lt;- 1\n  h_ratio &lt;- height / width\n} else {\n  h_ratio &lt;- 1\n  w_ratio &lt;- width / height\n}\n\n# Convert to raster with optimal resolution\nsize &lt;- 1000 * 2.5\n\npop_raster &lt;- st_rasterize(nep_hex,\n                          nx = floor(size * w_ratio),\n                          ny = floor(size * h_ratio))\n\n# Create matrix for 3D rendering\npop_matrix &lt;- matrix(pop_raster$population,\n                    nrow = floor(size * w_ratio),\n                    ncol = floor(size * h_ratio))"
-  },
-  {
-    "objectID": "posts/nepal-population-density/index.html#color-scheme-development",
-    "href": "posts/nepal-population-density/index.html#color-scheme-development",
-    "title": "3D Population Density Mapping of Nepal",
-    "section": "\n5 Color Scheme Development",
-    "text": "5 Color Scheme Development\nMetBrewer Color Palette Selection\nThe visualization employs the “OKeeffe2” palette from MetBrewer, chosen for its warm earth tones that effectively represent population density while maintaining visual appeal and accessibility.\n\n# Generate color palette\ncolor &lt;- met.brewer(\"OKeeffe2\")\n\n# Create texture gradient with bias toward higher values\ntexture &lt;- grDevices::colorRampPalette(color, bias = 3)(256)\n\n# Preview color scheme\nswatchplot(texture)"
-  },
-  {
-    "objectID": "posts/nepal-population-density/index.html#d-visualization-rendering",
-    "href": "posts/nepal-population-density/index.html#d-visualization-rendering",
-    "title": "3D Population Density Mapping of Nepal",
-    "section": "\n6 3D Visualization Rendering",
-    "text": "6 3D Visualization Rendering\nInteractive 3D Display\n\n# Close any existing RGL windows\nrgl::rgl.close()\n\n# Generate 3D visualization\npop_matrix |&gt;\n  height_shade(texture = texture) |&gt;\n  plot_3d(heightmap = pop_matrix,\n          zscale = 250 / 2.5,\n          solid = FALSE,\n          shadowdepth = 0)\n\n# Set optimal camera position\nrender_camera(theta = 0,\n              phi = 30,\n              zoom = 0.4,\n              fov = 90)\n\nHigh-Quality Rendering\nThe final rendering process utilizes rayshader’s advanced lighting system to create publication-ready visualizations with professional-grade quality and resolution.\n\noutfile &lt;- \"Plots/final_plot.png\"\n\n# Render high-quality image with timing\n{\n  start_time &lt;- Sys.time()\n  cat(crayon::cyan(\"Rendering started:\", start_time), \"\\n\")\n  \n  # Ensure output directory exists\n  if(!file.exists(outfile)) {\n    png::writePNG(matrix(1), target = outfile)\n  }\n\n  render_highquality(\n    filename = outfile,\n    interactive = FALSE,\n    lightdirection = 225,\n    lightaltitude = c(20, 80),\n    lightcolor = c(color[2], \"white\"),\n    lightintensity = c(600, 100),\n    width = 1980,\n    height = 1080,\n    samples = 300\n  )\n\n  end_time &lt;- Sys.time()\n  diff &lt;- end_time - start_time\n  cat(crayon::cyan(\"Rendering completed in:\", diff), \"\\n\")\n}"
-  },
-  {
-    "objectID": "posts/nepal-population-density/index.html#post-processing-and-annotation",
-    "href": "posts/nepal-population-density/index.html#post-processing-and-annotation",
-    "title": "3D Population Density Mapping of Nepal",
-    "section": "\n7 Post-Processing and Annotation",
-    "text": "7 Post-Processing and Annotation\nGeographic Labeling\nThe final step enhances the visualization with strategic city labels and professional annotation using the magick package for image manipulation.\n\n# Load rendered image\npop_raster &lt;- image_read(\"Plots/final_plot.png\")\n\n# Define text styling\ntext_color &lt;- darken(color[7], .5)\n\n# Add comprehensive annotations\npop_raster |&gt;\n  image_annotate(\"NEPAL\",\n                 gravity = \"northeast\",\n                 location = \"+50+50\",\n                 color = text_color,\n                 size = 150,\n                 font = \"Ananda Namaste\",\n                 weight = 700) |&gt;\n  image_annotate(\"POPULATION DENSITY MAP\",\n                 gravity = \"northeast\",\n                 location = \"+50+200\",\n                 color = text_color,\n                 size = 36.5,\n                 font = \"FuturaBT-Medium\",\n                 weight = 500) |&gt;\n  # Major urban centers\n  image_annotate(\"Kathmandu\",\n                 gravity = \"center\",\n                 location = \"+250-50\",\n                 color = alpha(text_color, .8),\n                 size = 30,\n                 font = \"FuturaBT-Medium\") |&gt;\n  image_annotate(\"Pokhara\",\n                 gravity = \"center\",\n                 location = \"-30+35\",\n                 color = alpha(text_color, .8),\n                 size = 25,\n                 font = \"FuturaBT-Medium\") |&gt;\n  image_annotate(\"Biratnagar\",\n                 gravity = \"east\",\n                 location = \"+125+100\",\n                 color = alpha(text_color, .8),\n                 size = 28,\n                 font = \"FuturaBT-Medium\") |&gt;\n  image_annotate(\"Birgunj\",\n                 gravity = \"center\",\n                 location = \"+130+100\",\n                 color = alpha(text_color, .8),\n                 size = 25,\n                 font = \"FuturaBT-Medium\") |&gt;\n  # Regional centers\n  image_annotate(\"Nepalgunj\",\n                 gravity = \"center\",\n                 location = \"-450+0\",\n                 color = alpha(text_color, .8),\n                 size = 24,\n                 font = \"FuturaBT-Medium\") |&gt;\n  image_annotate(\"Janakpur\",\n                 gravity = \"east\",\n                 location = \"+500+140\",\n                 color = alpha(text_color, .8),\n                 size = 22,\n                 font = \"FuturaBT-Medium\") |&gt;\n  # Additional urban areas\n  image_annotate(\"Itahari\\nSurkhet\\nTikapur\\nDhangadhi\\nBharatpur\\nButwal\\nGhorahi\\nTulsipur\",\n                 gravity = \"southwest\",\n                 location = \"+20+100\",\n                 color = alpha(text_color, .6),\n                 size = 16,\n                 font = \"FuturaBT-Medium\") |&gt;\n  # Professional attribution\n  image_annotate(\"Visualization by: [Your Name] with Rayshader(@tylermorganwall) | Data: Kontur Population (Released 2022-06-30)\",\n                 gravity = \"southwest\",\n                 location = \"+20+20\",\n                 color = alpha(text_color, .6),\n                 font = \"FuturaBT-Medium\",\n                 size = 20) |&gt;\n  image_write(\"Plots/final_plot_edited.png\", format = \"png\", quality = 100)"
-  },
-  {
-    "objectID": "posts/nepal-population-density/index.html#technical-methodology",
-    "href": "posts/nepal-population-density/index.html#technical-methodology",
-    "title": "3D Population Density Mapping of Nepal",
-    "section": "\n8 Technical Methodology",
-    "text": "8 Technical Methodology\nSpatial Data Processing Pipeline\n\n\nData Transformation: Vector hexagon data converted to standardized coordinate reference system (Nepal Nagarkot TM - ESRI:102306)\n\nRasterization: Optimal grid resolution calculated to balance detail with computational efficiency\n\nMatrix Conversion: Raster data transformed into height matrix for 3D rendering\n\nTexture Mapping: Population values mapped to color gradients using perceptually uniform color spaces\nRendering Specifications\n\n\nResolution: 1980×1080 pixels for high-definition output\n\nSampling: 300 samples for anti-aliasing and smooth gradients\n\nLighting: Dual-source lighting system (directional + ambient)\n\nZ-Scale: Optimized vertical exaggeration (250/2.5) for clear population peaks"
-  },
-  {
-    "objectID": "posts/nepal-population-density/index.html#results-and-applications",
-    "href": "posts/nepal-population-density/index.html#results-and-applications",
-    "title": "3D Population Density Mapping of Nepal",
-    "section": "\n9 Results and Applications",
-    "text": "9 Results and Applications\nThis methodology produces publication-quality 3D population density visualizations suitable for:\n\n\nUrban Planning: Identifying population clusters and growth patterns\n\nInfrastructure Development: Targeting high-density areas for transportation networks\n\nEmergency Response: Understanding population distribution for resource allocation\n\nAcademic Research: Visual communication of demographic data"
-  },
-  {
-    "objectID": "posts/nepal-population-density/index.html#environment-management",
-    "href": "posts/nepal-population-density/index.html#environment-management",
-    "title": "3D Population Density Mapping of Nepal",
-    "section": "\n10 Environment Management",
-    "text": "10 Environment Management\n\n# Save complete workspace for future analysis\nsave.image(file.path(path, \"nep_pop.RData\"))"
-  },
-  {
-    "objectID": "posts/nepal-population-density/index.html#conclusion",
-    "href": "posts/nepal-population-density/index.html#conclusion",
-    "title": "3D Population Density Mapping of Nepal",
-    "section": "\n11 Conclusion",
-    "text": "11 Conclusion\nThis workflow demonstrates the power of combining modern R packages for geospatial analysis with advanced 3D visualization techniques. The resulting maps provide intuitive understanding of Nepal’s population distribution patterns, highlighting the concentration of people in the Terai region and major urban centers while showcasing the relatively sparse population in mountainous areas.\nThe methodology is transferable to other geographic contexts and can be adapted for various demographic or infrastructure planning applications in transportation and urban development projects.\n\nWant to contribute or suggest improvements? Visit the project repository at: https://github.com/ar-puuk/Population-Density-Maps"
-  },
-  {
-    "objectID": "posts/population-pyramid-explorer/index.html",
-    "href": "posts/population-pyramid-explorer/index.html",
-    "title": "Building an Interactive Population Pyramid Explorer",
-    "section": "",
-    "text": "Population demographics are fundamental to transportation planning and urban analysis. Understanding age distributions helps inform infrastructure decisions, transit planning, and resource allocation. In this post, this blog will walk through building an interactive Shiny application that combines population pyramids with spatial visualization using {mapgl} package.\nThe app allows users to explore county-level demographic data across all US states, displaying both the geographic context through an interactive map and detailed age-sex distributions through population pyramids."
-  },
-  {
-    "objectID": "posts/population-pyramid-explorer/index.html#introduction",
-    "href": "posts/population-pyramid-explorer/index.html#introduction",
-    "title": "Building an Interactive Population Pyramid Explorer",
-    "section": "",
-    "text": "Population demographics are fundamental to transportation planning and urban analysis. Understanding age distributions helps inform infrastructure decisions, transit planning, and resource allocation. In this post, this blog will walk through building an interactive Shiny application that combines population pyramids with spatial visualization using {mapgl} package.\nThe app allows users to explore county-level demographic data across all US states, displaying both the geographic context through an interactive map and detailed age-sex distributions through population pyramids."
-  },
-  {
-    "objectID": "posts/population-pyramid-explorer/index.html#application-overview",
-    "href": "posts/population-pyramid-explorer/index.html#application-overview",
-    "title": "Building an Interactive Population Pyramid Explorer",
-    "section": "2 Application Overview",
-    "text": "2 Application Overview\nThe Population Pyramid Explorer features:\n\nInteractive state selection with smooth map transitions\nCounty-level demographic visualization using Census tract data for context\nDynamic population pyramids showing age-sex distributions\nResponsive design using MapLibre’s story map format\nReal-time data integration from the US Census Bureau"
-  },
-  {
-    "objectID": "posts/population-pyramid-explorer/index.html#repository-and-code-access",
-    "href": "posts/population-pyramid-explorer/index.html#repository-and-code-access",
-    "title": "Building an Interactive Population Pyramid Explorer",
-    "section": "3 Repository and Code Access",
-    "text": "3 Repository and Code Access\nThe complete source code for this application is available on GitHub: Population Pyramid Explorer Repository\nThe repository includes additional documentation, deployment instructions, and example usage scenarios."
-  },
-  {
-    "objectID": "posts/population-pyramid-explorer/index.html#key-dependencies-and-setup",
-    "href": "posts/population-pyramid-explorer/index.html#key-dependencies-and-setup",
-    "title": "Building an Interactive Population Pyramid Explorer",
-    "section": "4 Key Dependencies and Setup",
-    "text": "4 Key Dependencies and Setup\nThe application leverages several powerful R packages for data processing, spatial analysis, and visualization:\n# Custom function to load packages, installing them first if not already installed\nload_pkg &lt;- function(pkg) {\n  if (!require(pkg, character.only = TRUE)) {\n    install.packages(pkg)\n    library(pkg, character.only = TRUE)\n  } else {\n    library(pkg, character.only = TRUE)\n  }\n}\n\n# Data manipulation and visualization\nload_pkg(\"dplyr\")\nload_pkg(\"tidyr\") \nload_pkg(\"ggplot2\")\nload_pkg(\"scales\")\n\n# Spatial data and mapping\nload_pkg(\"sf\")\nload_pkg(\"mapgl\")\nload_pkg(\"tigris\")\n\n# Census data integration\nload_pkg(\"tidycensus\")\n\n# UI framework\nload_pkg(\"shiny\")\nThe load_pkg() function ensures packages are installed and loaded, making deployment more robust across different environments."
-  },
-  {
-    "objectID": "posts/population-pyramid-explorer/index.html#application-architecture",
-    "href": "posts/population-pyramid-explorer/index.html#application-architecture",
-    "title": "Building an Interactive Population Pyramid Explorer",
-    "section": "5 Application Architecture",
-    "text": "5 Application Architecture\n\nUser Interface Design\nThe UI implements {mapgl}’s story map concept, creating a scrollable narrative experience:\nmapgl::story_maplibre(\n  map_id = \"map\",\n  font_family = \"Poppins\",\n  sections = list(\n    \"intro\" = mapgl::story_section(...),\n    \"state_detail\" = mapgl::story_section(...)\n  )\n)\nThis approach provides intuitive navigation between the overview (state selection) and detailed analysis (county demographics).\n\n\nReactive Data Architecture\nThe server logic employs several reactive components that efficiently manage data flow:\nState Geometry: Loads and transforms state boundaries using the Web Mercator projection (EPSG:3857) for optimal web mapping performance.\nCensus Tract Data: Dynamically fetches median age data at the tract level, providing geographic context for county selection. The data pipeline includes coordinate reference system transformation and popup content preparation.\nPopulation Estimates: Retrieves detailed age-sex breakdowns from the Census Bureau’s Population Estimates API, specifically formatted for pyramid visualization."
-  },
-  {
-    "objectID": "posts/population-pyramid-explorer/index.html#data-processing-pipeline",
-    "href": "posts/population-pyramid-explorer/index.html#data-processing-pipeline",
-    "title": "Building an Interactive Population Pyramid Explorer",
-    "section": "6 Data Processing Pipeline",
-    "text": "6 Data Processing Pipeline\n\nGeographic Data Preparation\nThe application processes spatial data through several key transformations:\nstates_sf &lt;- tigris::states(cb = TRUE) |&gt;\n  sf::st_transform(crs = 3857) |&gt;\n  sf::st_zm(drop = TRUE, what = \"ZM\")\nUsing cartographic boundary files (cb = TRUE) provides simplified geometries that render faster while maintaining visual accuracy at the national scale.\n\n\nCensus Data Integration\nThe demographic data pipeline combines two Census Bureau APIs:\n\nAmerican Community Survey (ACS) for tract-level median age visualization\nPopulation Estimates Program for detailed county-level age-sex distributions\n\nThe tract-level data provides spatial context with median age choropleth mapping, while county estimates power the detailed population pyramids.\n\n\nData Transformation for Visualization\nPopulation pyramid data requires specific transformations:\ndplyr::mutate(\n  value = ifelse(SEX == \"Male\", -value, value),\n  age_min = ifelse(\n    stringr::str_detect(AGEGROUP, \"under\"), 0,\n    as.numeric(stringr::str_extract(AGEGROUP, \"\\\\d+\"))\n  )\n)\nMale populations receive negative values for the traditional pyramid layout, and age groups are parsed to enable proper ordering."
-  },
-  {
-    "objectID": "posts/population-pyramid-explorer/index.html#interactive-mapping-features",
-    "href": "posts/population-pyramid-explorer/index.html#interactive-mapping-features",
-    "title": "Building an Interactive Population Pyramid Explorer",
-    "section": "7 Interactive Mapping Features",
-    "text": "7 Interactive Mapping Features\n\nMap Initialization and Styling\nThe base map uses Carto’s Voyager style for clean, readable cartography:\nmapgl::maplibre(\n  mapgl::carto_style(\"voyager\"),\n  center = c(-98.5, 39.5),\n  zoom = 3,\n  scrollZoom = FALSE\n) |&gt;\nmapgl::set_projection(projection = \"globe\")\nThe globe projection adds visual appeal while the disabled scroll zoom prevents navigation conflicts with the story map interface.\n\n\nDynamic Layer Management\nMap layers update responsively based on user selections:\n\nState boundaries provide national context with selective highlighting\nCensus tract fills show median age patterns using a continuous color scale\nInteractive popups display detailed demographic information\n\nThe color scheme uses ColorBrewer’s spectral palette, providing intuitive age visualization from young (red) to old (purple).\n\n\nSmooth Transitions\nSection-based navigation triggers smooth map animations:\nmapgl::fly_to(\n  center = c(-98.5, 39.5),\n  zoom = 3,\n  bearing = 0,\n  pitch = 0,\n  duration = 1500\n)\nThese transitions maintain user orientation while providing engaging visual feedback."
-  },
-  {
-    "objectID": "posts/population-pyramid-explorer/index.html#population-pyramid-visualization",
-    "href": "posts/population-pyramid-explorer/index.html#population-pyramid-visualization",
-    "title": "Building an Interactive Population Pyramid Explorer",
-    "section": "8 Population Pyramid Visualization",
-    "text": "8 Population Pyramid Visualization\n\nChart Design Philosophy\nThe population pyramid uses a horizontal bar chart approach with careful attention to readability:\n\nDual-color scheme: Navy for males, dark red for females\nAbsolute value labeling: Clear population counts despite negative male values\nMinimal grid lines: Focus attention on data patterns\n\n\n\nAge Group Processing\nAge categories from the Census API require standardization for consistent display:\nscale_y_discrete(labels = ~ stringr::str_remove_all(.x, \"Age\\\\s|\\\\syears\"))\nThis removes redundant text while preserving essential age range information.\n\n\nDynamic Scaling\nThe x-axis automatically adjusts to population magnitudes using thousands formatting, ensuring readability across counties of varying sizes."
-  },
-  {
-    "objectID": "posts/population-pyramid-explorer/index.html#technical-implementation-notes",
-    "href": "posts/population-pyramid-explorer/index.html#technical-implementation-notes",
-    "title": "Building an Interactive Population Pyramid Explorer",
-    "section": "9 Technical Implementation Notes",
-    "text": "9 Technical Implementation Notes\n\nPerformance Optimization\nSeveral design decisions optimize application performance:\n\n{tigris} caching reduces repeated API calls for geographic data\nselectize server-side processing handles large county lists efficiently\n\nReactive dependency management prevents unnecessary data updates\n\n\n\nError Handling and Validation\nThe application includes robust input validation:\n\nshiny::req() ensures required inputs before processing\n{tidycensus} validation functions prevent invalid state/county combinations\nGraceful handling of missing or incomplete demographic data"
-  },
-  {
-    "objectID": "posts/population-pyramid-explorer/index.html#future-enhancements",
-    "href": "posts/population-pyramid-explorer/index.html#future-enhancements",
-    "title": "Building an Interactive Population Pyramid Explorer",
-    "section": "10 Future Enhancements",
-    "text": "10 Future Enhancements\nPotential extensions to this application include:\n\nMulti-county comparison capabilities\nTime series analysis showing demographic changes over years\n\nAdditional demographic variables (income, education, housing)\nExport functionality for charts and data\nIntegration with transportation metrics for comprehensive planning analysis"
-  },
-  {
-    "objectID": "posts/population-pyramid-explorer/index.html#conclusion",
-    "href": "posts/population-pyramid-explorer/index.html#conclusion",
-    "title": "Building an Interactive Population Pyramid Explorer",
-    "section": "11 Conclusion",
-    "text": "11 Conclusion\nThis Population Pyramid Explorer demonstrates the power of combining modern web mapping with demographic visualization. By leveraging R’s robust ecosystem for spatial data and statistical graphics, we can create compelling tools for understanding population patterns that inform transportation planning and policy decisions.\nThe modular architecture makes it straightforward to extend the application with additional demographic variables or geographic scales, while the story map format provides an intuitive user experience that encourages exploration and discovery.\nWhether you’re a transportation planner analyzing ridership demographics, an urban researcher studying neighborhood change, or a policy analyst examining service delivery patterns, this application framework provides a foundation for demographic-geographic analysis that can be adapted to various planning contexts.\n\nWant to contribute or suggest improvements? Visit the project repository at: https://github.com/ar-puuk/population-pyramid-explorer"
+    "text": "Order By\n      Default\n      \n        Title\n      \n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Author\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nBase Year SE Data Development\n\n\nLower Savannah Council of Governments (LSCOG) 2050 Long Range Transportation Plan\n\n\n\nR\n\nPython\n\nGIS\n\nData Science\n\nTransportation\n\n\n\n\n\n\n\n\n\nJul 5, 2025\n\n\nPukar Bhandari\n\n\n\n\n\n\n\n\n\n\n\n\nBuilding an Interactive Population Pyramid Explorer\n\n\nExploring demographic patterns across US counties through interactive visualization using {R-Shiny} and {mapgl}\n\n\n\nR\n\nShiny\n\nGIS\n\nCensus Data\n\nDashboard\n\n\n\nA deep dive into creating a story-driven Shiny application that combines interactive mapping with demographic visualizations using Census data.\n\n\n\n\n\nJun 25, 2025\n\n\nPukar Bhandari\n\n\n\n\n\n\n\n\n\n\n\n\nInteractive Robocopy GUI Tool\n\n\n\n\n\n\nTools\n\nUtilities\n\nWindows\n\n\n\nA web-based interface for generating Windows robocopy commands with ease\n\n\n\n\n\nJun 15, 2025\n\n\nPukar Bhandari\n\n\n\n\n\n\n\n\n\n\n\n\nOverture Maps Data Download\n\n\nApplying DuckDB in R and Python\n\n\n\nR\n\nPython\n\nGIS\n\nData Science\n\n\n\n\n\n\n\n\n\nMay 22, 2024\n\n\nPukar Bhandari\n\n\n\n\n\n\n\n\n\n\n\n\nBuilding a U.S. Census Data Explorer\n\n\nA Shiny Dashboard for ACS, Decennial Census, and LEHD Data\n\n\n\nR\n\nShiny\n\nGIS\n\nCensus Data\n\nDashboard\n\n\n\nLearn how to build an interactive Shiny dashboard for exploring U.S. Census data including ACS, Decennial Census, and LEHD datasets with integrated mapping capabilities.\n\n\n\n\n\nMay 11, 2024\n\n\nPukar Bhandari\n\n\n\n\n\n\n\n\n\n\n\n\n3D Population Density Mapping of Nepal\n\n\nUsing Rayshader for Advanced Geospatial Visualization\n\n\n\nR\n\nGIS\n\nData Science\n\n\n\n\n\n\n\n\n\nJan 3, 2023\n\n\nPukar Bhandari\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/socioeconomic-demo/index.html",
@@ -609,11 +217,480 @@
     "text": "8.3 Employment categories\nThe employment validation confirms that total employment equals the sum of all industry sector categories for each TAZ. This comprehensive check validates the LEHD data integration and ensures that no employment is lost or double-counted during the sectoral disaggregation process.RetryClaude can make mistakes. Please double-check responses.\n\n R Python\n\n\n\n# check the sum of employment by categories\nlscog_se_base |&gt;\n  dplyr::filter(\n    TOTAL_EMP !=\n      (AGR_FOR_FI +\n        MINING +\n        CONSTRUCTI +\n        MANUFACTUR +\n        TRANSP_COM +\n        WHOLESALE +\n        RETAIL +\n        FIRE +\n        SERVICES +\n        PUBLIC_ADM)\n  ) |&gt;\n  nrow()\n\n[1] 0\n\n\n\n\n\n# check the sum of employment by categories\nlscog_se_base[\n    lscog_se_base['TOTAL_EMP'] != (\n        lscog_se_base['AGR_FOR_FI'] +\n        lscog_se_base['MINING'] +\n        lscog_se_base['CONSTRUCTI'] +\n        lscog_se_base['MANUFACTUR'] +\n        lscog_se_base['TRANSP_COM'] +\n        lscog_se_base['WHOLESALE'] +\n        lscog_se_base['RETAIL'] +\n        lscog_se_base['FIRE'] +\n        lscog_se_base['SERVICES'] +\n        lscog_se_base['PUBLIC_ADM']\n    )\n].shape[0]\n\n0"
   },
   {
-    "objectID": "projects.html",
-    "href": "projects.html",
+    "objectID": "posts/population-pyramid-explorer/index.html",
+    "href": "posts/population-pyramid-explorer/index.html",
+    "title": "Building an Interactive Population Pyramid Explorer",
+    "section": "",
+    "text": "Population demographics are fundamental to transportation planning and urban analysis. Understanding age distributions helps inform infrastructure decisions, transit planning, and resource allocation. In this post, this blog will walk through building an interactive Shiny application that combines population pyramids with spatial visualization using {mapgl} package.\nThe app allows users to explore county-level demographic data across all US states, displaying both the geographic context through an interactive map and detailed age-sex distributions through population pyramids."
+  },
+  {
+    "objectID": "posts/population-pyramid-explorer/index.html#introduction",
+    "href": "posts/population-pyramid-explorer/index.html#introduction",
+    "title": "Building an Interactive Population Pyramid Explorer",
+    "section": "",
+    "text": "Population demographics are fundamental to transportation planning and urban analysis. Understanding age distributions helps inform infrastructure decisions, transit planning, and resource allocation. In this post, this blog will walk through building an interactive Shiny application that combines population pyramids with spatial visualization using {mapgl} package.\nThe app allows users to explore county-level demographic data across all US states, displaying both the geographic context through an interactive map and detailed age-sex distributions through population pyramids."
+  },
+  {
+    "objectID": "posts/population-pyramid-explorer/index.html#application-overview",
+    "href": "posts/population-pyramid-explorer/index.html#application-overview",
+    "title": "Building an Interactive Population Pyramid Explorer",
+    "section": "2 Application Overview",
+    "text": "2 Application Overview\nThe Population Pyramid Explorer features:\n\nInteractive state selection with smooth map transitions\nCounty-level demographic visualization using Census tract data for context\nDynamic population pyramids showing age-sex distributions\nResponsive design using MapLibre’s story map format\nReal-time data integration from the US Census Bureau"
+  },
+  {
+    "objectID": "posts/population-pyramid-explorer/index.html#repository-and-code-access",
+    "href": "posts/population-pyramid-explorer/index.html#repository-and-code-access",
+    "title": "Building an Interactive Population Pyramid Explorer",
+    "section": "3 Repository and Code Access",
+    "text": "3 Repository and Code Access\nThe complete source code for this application is available on GitHub: Population Pyramid Explorer Repository\nThe repository includes additional documentation, deployment instructions, and example usage scenarios."
+  },
+  {
+    "objectID": "posts/population-pyramid-explorer/index.html#key-dependencies-and-setup",
+    "href": "posts/population-pyramid-explorer/index.html#key-dependencies-and-setup",
+    "title": "Building an Interactive Population Pyramid Explorer",
+    "section": "4 Key Dependencies and Setup",
+    "text": "4 Key Dependencies and Setup\nThe application leverages several powerful R packages for data processing, spatial analysis, and visualization:\n# Custom function to load packages, installing them first if not already installed\nload_pkg &lt;- function(pkg) {\n  if (!require(pkg, character.only = TRUE)) {\n    install.packages(pkg)\n    library(pkg, character.only = TRUE)\n  } else {\n    library(pkg, character.only = TRUE)\n  }\n}\n\n# Data manipulation and visualization\nload_pkg(\"dplyr\")\nload_pkg(\"tidyr\") \nload_pkg(\"ggplot2\")\nload_pkg(\"scales\")\n\n# Spatial data and mapping\nload_pkg(\"sf\")\nload_pkg(\"mapgl\")\nload_pkg(\"tigris\")\n\n# Census data integration\nload_pkg(\"tidycensus\")\n\n# UI framework\nload_pkg(\"shiny\")\nThe load_pkg() function ensures packages are installed and loaded, making deployment more robust across different environments."
+  },
+  {
+    "objectID": "posts/population-pyramid-explorer/index.html#application-architecture",
+    "href": "posts/population-pyramid-explorer/index.html#application-architecture",
+    "title": "Building an Interactive Population Pyramid Explorer",
+    "section": "5 Application Architecture",
+    "text": "5 Application Architecture\n\nUser Interface Design\nThe UI implements {mapgl}’s story map concept, creating a scrollable narrative experience:\nmapgl::story_maplibre(\n  map_id = \"map\",\n  font_family = \"Poppins\",\n  sections = list(\n    \"intro\" = mapgl::story_section(...),\n    \"state_detail\" = mapgl::story_section(...)\n  )\n)\nThis approach provides intuitive navigation between the overview (state selection) and detailed analysis (county demographics).\n\n\nReactive Data Architecture\nThe server logic employs several reactive components that efficiently manage data flow:\nState Geometry: Loads and transforms state boundaries using the Web Mercator projection (EPSG:3857) for optimal web mapping performance.\nCensus Tract Data: Dynamically fetches median age data at the tract level, providing geographic context for county selection. The data pipeline includes coordinate reference system transformation and popup content preparation.\nPopulation Estimates: Retrieves detailed age-sex breakdowns from the Census Bureau’s Population Estimates API, specifically formatted for pyramid visualization."
+  },
+  {
+    "objectID": "posts/population-pyramid-explorer/index.html#data-processing-pipeline",
+    "href": "posts/population-pyramid-explorer/index.html#data-processing-pipeline",
+    "title": "Building an Interactive Population Pyramid Explorer",
+    "section": "6 Data Processing Pipeline",
+    "text": "6 Data Processing Pipeline\n\nGeographic Data Preparation\nThe application processes spatial data through several key transformations:\nstates_sf &lt;- tigris::states(cb = TRUE) |&gt;\n  sf::st_transform(crs = 3857) |&gt;\n  sf::st_zm(drop = TRUE, what = \"ZM\")\nUsing cartographic boundary files (cb = TRUE) provides simplified geometries that render faster while maintaining visual accuracy at the national scale.\n\n\nCensus Data Integration\nThe demographic data pipeline combines two Census Bureau APIs:\n\nAmerican Community Survey (ACS) for tract-level median age visualization\nPopulation Estimates Program for detailed county-level age-sex distributions\n\nThe tract-level data provides spatial context with median age choropleth mapping, while county estimates power the detailed population pyramids.\n\n\nData Transformation for Visualization\nPopulation pyramid data requires specific transformations:\ndplyr::mutate(\n  value = ifelse(SEX == \"Male\", -value, value),\n  age_min = ifelse(\n    stringr::str_detect(AGEGROUP, \"under\"), 0,\n    as.numeric(stringr::str_extract(AGEGROUP, \"\\\\d+\"))\n  )\n)\nMale populations receive negative values for the traditional pyramid layout, and age groups are parsed to enable proper ordering."
+  },
+  {
+    "objectID": "posts/population-pyramid-explorer/index.html#interactive-mapping-features",
+    "href": "posts/population-pyramid-explorer/index.html#interactive-mapping-features",
+    "title": "Building an Interactive Population Pyramid Explorer",
+    "section": "7 Interactive Mapping Features",
+    "text": "7 Interactive Mapping Features\n\nMap Initialization and Styling\nThe base map uses Carto’s Voyager style for clean, readable cartography:\nmapgl::maplibre(\n  mapgl::carto_style(\"voyager\"),\n  center = c(-98.5, 39.5),\n  zoom = 3,\n  scrollZoom = FALSE\n) |&gt;\nmapgl::set_projection(projection = \"globe\")\nThe globe projection adds visual appeal while the disabled scroll zoom prevents navigation conflicts with the story map interface.\n\n\nDynamic Layer Management\nMap layers update responsively based on user selections:\n\nState boundaries provide national context with selective highlighting\nCensus tract fills show median age patterns using a continuous color scale\nInteractive popups display detailed demographic information\n\nThe color scheme uses ColorBrewer’s spectral palette, providing intuitive age visualization from young (red) to old (purple).\n\n\nSmooth Transitions\nSection-based navigation triggers smooth map animations:\nmapgl::fly_to(\n  center = c(-98.5, 39.5),\n  zoom = 3,\n  bearing = 0,\n  pitch = 0,\n  duration = 1500\n)\nThese transitions maintain user orientation while providing engaging visual feedback."
+  },
+  {
+    "objectID": "posts/population-pyramid-explorer/index.html#population-pyramid-visualization",
+    "href": "posts/population-pyramid-explorer/index.html#population-pyramid-visualization",
+    "title": "Building an Interactive Population Pyramid Explorer",
+    "section": "8 Population Pyramid Visualization",
+    "text": "8 Population Pyramid Visualization\n\nChart Design Philosophy\nThe population pyramid uses a horizontal bar chart approach with careful attention to readability:\n\nDual-color scheme: Navy for males, dark red for females\nAbsolute value labeling: Clear population counts despite negative male values\nMinimal grid lines: Focus attention on data patterns\n\n\n\nAge Group Processing\nAge categories from the Census API require standardization for consistent display:\nscale_y_discrete(labels = ~ stringr::str_remove_all(.x, \"Age\\\\s|\\\\syears\"))\nThis removes redundant text while preserving essential age range information.\n\n\nDynamic Scaling\nThe x-axis automatically adjusts to population magnitudes using thousands formatting, ensuring readability across counties of varying sizes."
+  },
+  {
+    "objectID": "posts/population-pyramid-explorer/index.html#technical-implementation-notes",
+    "href": "posts/population-pyramid-explorer/index.html#technical-implementation-notes",
+    "title": "Building an Interactive Population Pyramid Explorer",
+    "section": "9 Technical Implementation Notes",
+    "text": "9 Technical Implementation Notes\n\nPerformance Optimization\nSeveral design decisions optimize application performance:\n\n{tigris} caching reduces repeated API calls for geographic data\nselectize server-side processing handles large county lists efficiently\n\nReactive dependency management prevents unnecessary data updates\n\n\n\nError Handling and Validation\nThe application includes robust input validation:\n\nshiny::req() ensures required inputs before processing\n{tidycensus} validation functions prevent invalid state/county combinations\nGraceful handling of missing or incomplete demographic data"
+  },
+  {
+    "objectID": "posts/population-pyramid-explorer/index.html#future-enhancements",
+    "href": "posts/population-pyramid-explorer/index.html#future-enhancements",
+    "title": "Building an Interactive Population Pyramid Explorer",
+    "section": "10 Future Enhancements",
+    "text": "10 Future Enhancements\nPotential extensions to this application include:\n\nMulti-county comparison capabilities\nTime series analysis showing demographic changes over years\n\nAdditional demographic variables (income, education, housing)\nExport functionality for charts and data\nIntegration with transportation metrics for comprehensive planning analysis"
+  },
+  {
+    "objectID": "posts/population-pyramid-explorer/index.html#conclusion",
+    "href": "posts/population-pyramid-explorer/index.html#conclusion",
+    "title": "Building an Interactive Population Pyramid Explorer",
+    "section": "11 Conclusion",
+    "text": "11 Conclusion\nThis Population Pyramid Explorer demonstrates the power of combining modern web mapping with demographic visualization. By leveraging R’s robust ecosystem for spatial data and statistical graphics, we can create compelling tools for understanding population patterns that inform transportation planning and policy decisions.\nThe modular architecture makes it straightforward to extend the application with additional demographic variables or geographic scales, while the story map format provides an intuitive user experience that encourages exploration and discovery.\nWhether you’re a transportation planner analyzing ridership demographics, an urban researcher studying neighborhood change, or a policy analyst examining service delivery patterns, this application framework provides a foundation for demographic-geographic analysis that can be adapted to various planning contexts.\n\nWant to contribute or suggest improvements? Visit the project repository at: https://github.com/ar-puuk/population-pyramid-explorer"
+  },
+  {
+    "objectID": "posts/nepal-population-density/index.html",
+    "href": "posts/nepal-population-density/index.html",
+    "title": "3D Population Density Mapping of Nepal",
+    "section": "",
+    "text": "This analysis demonstrates advanced geospatial visualization techniques using R’s rayshader package to create a stunning 3D population density map of Nepal. The project showcases the integration of high-resolution population data with topographic visualization methods, resulting in an interactive and informative representation of demographic patterns across Nepal’s diverse terrain.\nKey Technologies: R, rayshader, sf, stars, magickData Source: Kontur Population Dataset (400m H3 hexagon resolution)Projection: ESRI:102306 (Nepal Nagarkot TM)"
+  },
+  {
+    "objectID": "posts/nepal-population-density/index.html#project-overview",
+    "href": "posts/nepal-population-density/index.html#project-overview",
+    "title": "3D Population Density Mapping of Nepal",
+    "section": "",
+    "text": "This analysis demonstrates advanced geospatial visualization techniques using R’s rayshader package to create a stunning 3D population density map of Nepal. The project showcases the integration of high-resolution population data with topographic visualization methods, resulting in an interactive and informative representation of demographic patterns across Nepal’s diverse terrain.\nKey Technologies: R, rayshader, sf, stars, magickData Source: Kontur Population Dataset (400m H3 hexagon resolution)Projection: ESRI:102306 (Nepal Nagarkot TM)"
+  },
+  {
+    "objectID": "posts/nepal-population-density/index.html#environment-setup",
+    "href": "posts/nepal-population-density/index.html#environment-setup",
+    "title": "3D Population Density Mapping of Nepal",
+    "section": "\n2 Environment Setup",
+    "text": "2 Environment Setup\nPackage Installation and Loading\n\nPackage Installation (Run Once)# Core packages for geospatial analysis\ninstall.packages(c(\"tidyverse\", \"sf\", \"tmap\", \"ggplot2\", \"mapview\", \"stars\"))\n\n# Visualization packages\ninstall.packages(c(\"rayshader\", \"MetBrewer\", \"colorspace\", \"rayrender\", \"magick\"))\n\n# Font handling\ninstall.packages(\"extrafont\")\n\n\n\n# Load required libraries\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(tmap)\nlibrary(ggplot2)\nlibrary(mapview)\nlibrary(stars)\nlibrary(rayshader)\nlibrary(MetBrewer)\nlibrary(colorspace)\nlibrary(rayrender)\nlibrary(magick)\nlibrary(extrafont)\n\n\n# Configure 3D rendering\noptions(rgl.useNULL = FALSE)\n\nproject_crs &lt;- \"ESRI:102306\""
+  },
+  {
+    "objectID": "posts/nepal-population-density/index.html#data-acquisition-and-loading",
+    "href": "posts/nepal-population-density/index.html#data-acquisition-and-loading",
+    "title": "3D Population Density Mapping of Nepal",
+    "section": "\n3 Data Acquisition and Loading",
+    "text": "3 Data Acquisition and Loading\nPopulation Hexagon Data\nThe analysis utilizes high-resolution population data from Kontur, provided in H3 hexagonal grid format at 400-meter resolution. This dataset offers superior granularity compared to traditional administrative boundary-based population estimates.\n\n# Load population data (H3 hexagons at 400m resolution)\nnep_hex &lt;- sf::st_read(\n  paste0(\n    \"/vsizip/\",\n    \"data/kontur_population_NP_20220630.gpkg.gz/kontur_population_NP_20220630.gpkg\"\n  )\n) |&gt;\n  sf::st_transform(project_crs)\n\n# Load administrative boundaries\nnep_admin &lt;- sf::st_read(\n  paste0(\n    \"/vsizip/\",\n    \"data/kontur_boundaries_NP_20220407.gpkg.gz/kontur_boundaries_NP_20220407.gpkg\"\n  )\n) |&gt;\n  sf::st_transform(project_crs)\n\n# Create unified Nepal boundary\nnepal_boundary &lt;- nep_admin |&gt;\n  sf::st_geometry() |&gt;\n  sf::st_union() |&gt;\n  sf::st_sf() |&gt;\n  sf::st_make_valid()\n\n\n\n\n\n\n\nNote\n\n\n\nData Sources:\n- Population Data: Kontur Population Dataset\n- Administrative Boundaries: Kontur Boundaries Dataset\n- Coordinate Reference System: EPSG:6207 for accurate representation of Nepal’s geography"
+  },
+  {
+    "objectID": "posts/nepal-population-density/index.html#data-processing-and-visualization-setup",
+    "href": "posts/nepal-population-density/index.html#data-processing-and-visualization-setup",
+    "title": "3D Population Density Mapping of Nepal",
+    "section": "\n4 Data Processing and Visualization Setup",
+    "text": "4 Data Processing and Visualization Setup\nInitial Data Exploration\n\n# Preliminary visualization to verify data quality\nggplot(nep_hex) + \n  geom_sf(aes(fill = population), color = \"gray66\", linewidth = 0) +\n  geom_sf(data = nepal_boundary, fill = NA, color = \"black\", \n          linetype = \"dashed\", linewidth = 1) +\n  theme_minimal() +\n  labs(title = \"Nepal Population Distribution\",\n       fill = \"Population\")\n\nRaster Conversion and Matrix Preparation\nThe conversion from vector hexagon data to raster format is essential for rayshader’s 3D rendering capabilities. This process involves calculating optimal dimensions while preserving the geographic aspect ratio.\n\n# Calculate bounding box and aspect ratio\nbbox &lt;- st_bbox(nepal_boundary)\n\n# Define corner points for aspect ratio calculation\nbottom_left &lt;- st_point(c(bbox[[\"xmin\"]], bbox[[\"ymin\"]])) |&gt;\n  st_sfc(crs = 6207)\nbottom_right &lt;- st_point(c(bbox[[\"xmax\"]], bbox[[\"ymin\"]])) |&gt;\n  st_sfc(crs = 6207)\ntop_left &lt;- st_point(c(bbox[[\"xmin\"]], bbox[[\"ymax\"]])) |&gt;\n  st_sfc(crs = 6207)\n\n# Calculate dimensions\nwidth &lt;- st_distance(bottom_left, bottom_right)\nheight &lt;- st_distance(bottom_left, top_left)\n\n# Determine aspect ratios\nif(width &gt; height) {\n  w_ratio &lt;- 1\n  h_ratio &lt;- height / width\n} else {\n  h_ratio &lt;- 1\n  w_ratio &lt;- width / height\n}\n\n# Convert to raster with optimal resolution\nsize &lt;- 1000 * 2.5\n\npop_raster &lt;- st_rasterize(nep_hex,\n                          nx = floor(size * w_ratio),\n                          ny = floor(size * h_ratio))\n\n# Create matrix for 3D rendering\npop_matrix &lt;- matrix(pop_raster$population,\n                    nrow = floor(size * w_ratio),\n                    ncol = floor(size * h_ratio))"
+  },
+  {
+    "objectID": "posts/nepal-population-density/index.html#color-scheme-development",
+    "href": "posts/nepal-population-density/index.html#color-scheme-development",
+    "title": "3D Population Density Mapping of Nepal",
+    "section": "\n5 Color Scheme Development",
+    "text": "5 Color Scheme Development\nMetBrewer Color Palette Selection\nThe visualization employs the “OKeeffe2” palette from MetBrewer, chosen for its warm earth tones that effectively represent population density while maintaining visual appeal and accessibility.\n\n# Generate color palette\ncolor &lt;- met.brewer(\"OKeeffe2\")\n\n# Create texture gradient with bias toward higher values\ntexture &lt;- grDevices::colorRampPalette(color, bias = 3)(256)\n\n# Preview color scheme\nswatchplot(texture)"
+  },
+  {
+    "objectID": "posts/nepal-population-density/index.html#d-visualization-rendering",
+    "href": "posts/nepal-population-density/index.html#d-visualization-rendering",
+    "title": "3D Population Density Mapping of Nepal",
+    "section": "\n6 3D Visualization Rendering",
+    "text": "6 3D Visualization Rendering\nInteractive 3D Display\n\n# Close any existing RGL windows\nrgl::rgl.close()\n\n# Generate 3D visualization\npop_matrix |&gt;\n  height_shade(texture = texture) |&gt;\n  plot_3d(heightmap = pop_matrix,\n          zscale = 250 / 2.5,\n          solid = FALSE,\n          shadowdepth = 0)\n\n# Set optimal camera position\nrender_camera(theta = 0,\n              phi = 30,\n              zoom = 0.4,\n              fov = 90)\n\nHigh-Quality Rendering\nThe final rendering process utilizes rayshader’s advanced lighting system to create publication-ready visualizations with professional-grade quality and resolution.\n\noutfile &lt;- \"Plots/final_plot.png\"\n\n# Render high-quality image with timing\n{\n  start_time &lt;- Sys.time()\n  cat(crayon::cyan(\"Rendering started:\", start_time), \"\\n\")\n  \n  # Ensure output directory exists\n  if(!file.exists(outfile)) {\n    png::writePNG(matrix(1), target = outfile)\n  }\n\n  render_highquality(\n    filename = outfile,\n    interactive = FALSE,\n    lightdirection = 225,\n    lightaltitude = c(20, 80),\n    lightcolor = c(color[2], \"white\"),\n    lightintensity = c(600, 100),\n    width = 1980,\n    height = 1080,\n    samples = 300\n  )\n\n  end_time &lt;- Sys.time()\n  diff &lt;- end_time - start_time\n  cat(crayon::cyan(\"Rendering completed in:\", diff), \"\\n\")\n}"
+  },
+  {
+    "objectID": "posts/nepal-population-density/index.html#post-processing-and-annotation",
+    "href": "posts/nepal-population-density/index.html#post-processing-and-annotation",
+    "title": "3D Population Density Mapping of Nepal",
+    "section": "\n7 Post-Processing and Annotation",
+    "text": "7 Post-Processing and Annotation\nGeographic Labeling\nThe final step enhances the visualization with strategic city labels and professional annotation using the magick package for image manipulation.\n\n# Load rendered image\npop_raster &lt;- image_read(\"Plots/final_plot.png\")\n\n# Define text styling\ntext_color &lt;- darken(color[7], .5)\n\n# Add comprehensive annotations\npop_raster |&gt;\n  image_annotate(\"NEPAL\",\n                 gravity = \"northeast\",\n                 location = \"+50+50\",\n                 color = text_color,\n                 size = 150,\n                 font = \"Ananda Namaste\",\n                 weight = 700) |&gt;\n  image_annotate(\"POPULATION DENSITY MAP\",\n                 gravity = \"northeast\",\n                 location = \"+50+200\",\n                 color = text_color,\n                 size = 36.5,\n                 font = \"FuturaBT-Medium\",\n                 weight = 500) |&gt;\n  # Major urban centers\n  image_annotate(\"Kathmandu\",\n                 gravity = \"center\",\n                 location = \"+250-50\",\n                 color = alpha(text_color, .8),\n                 size = 30,\n                 font = \"FuturaBT-Medium\") |&gt;\n  image_annotate(\"Pokhara\",\n                 gravity = \"center\",\n                 location = \"-30+35\",\n                 color = alpha(text_color, .8),\n                 size = 25,\n                 font = \"FuturaBT-Medium\") |&gt;\n  image_annotate(\"Biratnagar\",\n                 gravity = \"east\",\n                 location = \"+125+100\",\n                 color = alpha(text_color, .8),\n                 size = 28,\n                 font = \"FuturaBT-Medium\") |&gt;\n  image_annotate(\"Birgunj\",\n                 gravity = \"center\",\n                 location = \"+130+100\",\n                 color = alpha(text_color, .8),\n                 size = 25,\n                 font = \"FuturaBT-Medium\") |&gt;\n  # Regional centers\n  image_annotate(\"Nepalgunj\",\n                 gravity = \"center\",\n                 location = \"-450+0\",\n                 color = alpha(text_color, .8),\n                 size = 24,\n                 font = \"FuturaBT-Medium\") |&gt;\n  image_annotate(\"Janakpur\",\n                 gravity = \"east\",\n                 location = \"+500+140\",\n                 color = alpha(text_color, .8),\n                 size = 22,\n                 font = \"FuturaBT-Medium\") |&gt;\n  # Additional urban areas\n  image_annotate(\"Itahari\\nSurkhet\\nTikapur\\nDhangadhi\\nBharatpur\\nButwal\\nGhorahi\\nTulsipur\",\n                 gravity = \"southwest\",\n                 location = \"+20+100\",\n                 color = alpha(text_color, .6),\n                 size = 16,\n                 font = \"FuturaBT-Medium\") |&gt;\n  # Professional attribution\n  image_annotate(\"Visualization by: [Your Name] with Rayshader(@tylermorganwall) | Data: Kontur Population (Released 2022-06-30)\",\n                 gravity = \"southwest\",\n                 location = \"+20+20\",\n                 color = alpha(text_color, .6),\n                 font = \"FuturaBT-Medium\",\n                 size = 20) |&gt;\n  image_write(\"Plots/final_plot_edited.png\", format = \"png\", quality = 100)"
+  },
+  {
+    "objectID": "posts/nepal-population-density/index.html#technical-methodology",
+    "href": "posts/nepal-population-density/index.html#technical-methodology",
+    "title": "3D Population Density Mapping of Nepal",
+    "section": "\n8 Technical Methodology",
+    "text": "8 Technical Methodology\nSpatial Data Processing Pipeline\n\n\nData Transformation: Vector hexagon data converted to standardized coordinate reference system (Nepal Nagarkot TM - ESRI:102306)\n\nRasterization: Optimal grid resolution calculated to balance detail with computational efficiency\n\nMatrix Conversion: Raster data transformed into height matrix for 3D rendering\n\nTexture Mapping: Population values mapped to color gradients using perceptually uniform color spaces\nRendering Specifications\n\n\nResolution: 1980×1080 pixels for high-definition output\n\nSampling: 300 samples for anti-aliasing and smooth gradients\n\nLighting: Dual-source lighting system (directional + ambient)\n\nZ-Scale: Optimized vertical exaggeration (250/2.5) for clear population peaks"
+  },
+  {
+    "objectID": "posts/nepal-population-density/index.html#results-and-applications",
+    "href": "posts/nepal-population-density/index.html#results-and-applications",
+    "title": "3D Population Density Mapping of Nepal",
+    "section": "\n9 Results and Applications",
+    "text": "9 Results and Applications\nThis methodology produces publication-quality 3D population density visualizations suitable for:\n\n\nUrban Planning: Identifying population clusters and growth patterns\n\nInfrastructure Development: Targeting high-density areas for transportation networks\n\nEmergency Response: Understanding population distribution for resource allocation\n\nAcademic Research: Visual communication of demographic data"
+  },
+  {
+    "objectID": "posts/nepal-population-density/index.html#environment-management",
+    "href": "posts/nepal-population-density/index.html#environment-management",
+    "title": "3D Population Density Mapping of Nepal",
+    "section": "\n10 Environment Management",
+    "text": "10 Environment Management\n\n# Save complete workspace for future analysis\nsave.image(file.path(path, \"nep_pop.RData\"))"
+  },
+  {
+    "objectID": "posts/nepal-population-density/index.html#conclusion",
+    "href": "posts/nepal-population-density/index.html#conclusion",
+    "title": "3D Population Density Mapping of Nepal",
+    "section": "\n11 Conclusion",
+    "text": "11 Conclusion\nThis workflow demonstrates the power of combining modern R packages for geospatial analysis with advanced 3D visualization techniques. The resulting maps provide intuitive understanding of Nepal’s population distribution patterns, highlighting the concentration of people in the Terai region and major urban centers while showcasing the relatively sparse population in mountainous areas.\nThe methodology is transferable to other geographic contexts and can be adapted for various demographic or infrastructure planning applications in transportation and urban development projects.\n\nWant to contribute or suggest improvements? Visit the project repository at: https://github.com/ar-puuk/Population-Density-Maps"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Hi! I am Pukar Bhandari",
+    "section": "",
+    "text": "I am an aspiring Transportation Planner with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
     "title": "Pukar Bhandari",
     "section": "",
-    "text": "Order By\n      Default\n      \n        Title\n      \n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Author\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nBase Year SE Data Development\n\n\nLower Savannah Council of Governments (LSCOG) 2050 Long Range Transportation Plan\n\n\n\nR\n\nPython\n\nGIS\n\nData Science\n\nTransportation\n\n\n\n\n\n\n\n\n\nJul 5, 2025\n\n\nPukar Bhandari\n\n\n\n\n\n\n\n\n\n\n\n\nBuilding an Interactive Population Pyramid Explorer\n\n\nExploring demographic patterns across US counties through interactive visualization using {R-Shiny} and {mapgl}\n\n\n\nR\n\nShiny\n\nGIS\n\nCensus Data\n\nDashboard\n\n\n\nA deep dive into creating a story-driven Shiny application that combines interactive mapping with demographic visualizations using Census data.\n\n\n\n\n\nJun 25, 2025\n\n\nPukar Bhandari\n\n\n\n\n\n\n\n\n\n\n\n\nInteractive Robocopy GUI Tool\n\n\n\n\n\n\nTools\n\nUtilities\n\nWindows\n\n\n\nA web-based interface for generating Windows robocopy commands with ease\n\n\n\n\n\nJun 15, 2025\n\n\nPukar Bhandari\n\n\n\n\n\n\n\n\n\n\n\n\nOverture Maps Data Download\n\n\nApplying DuckDB in R and Python\n\n\n\nR\n\nPython\n\nGIS\n\nData Science\n\n\n\n\n\n\n\n\n\nMay 22, 2024\n\n\nPukar Bhandari\n\n\n\n\n\n\n\n\n\n\n\n\nBuilding a U.S. Census Data Explorer\n\n\nA Shiny Dashboard for ACS, Decennial Census, and LEHD Data\n\n\n\nR\n\nShiny\n\nGIS\n\nCensus Data\n\nDashboard\n\n\n\nLearn how to build an interactive Shiny dashboard for exploring U.S. Census data including ACS, Decennial Census, and LEHD datasets with integrated mapping capabilities.\n\n\n\n\n\nMay 11, 2024\n\n\nPukar Bhandari\n\n\n\n\n\n\n\n\n\n\n\n\n3D Population Density Mapping of Nepal\n\n\nUsing Rayshader for Advanced Geospatial Visualization\n\n\n\nR\n\nGIS\n\nData Science\n\n\n\n\n\n\n\n\n\nJan 3, 2023\n\n\nPukar Bhandari\n\n\n\n\n\nNo matching items"
+    "text": "I am an aspiring Associate Transportation Planner with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning.\n\n\n\n\n\nAssociate Transportation Planner | Metro Analytics | June 2023 - Present\nGraduate Teaching & Research Assistant | University of Utah | August 2021 - May 2023\nGIS Data Analyst | Energy & Geoscience Institute | June 2022 - August 2022\nAssociate Architect | Prabal Thapa Architects | June 2020 - July 2021\nArchitect & Planner | Urban Park Nepal Pvt. Ltd. | January 2019 - June 2020\n\n\n\n\n\n\nMaster of City & Metropolitan Planning | University of Utah | August 2021 - May 2023\nBachelors Degree in Architecture | Tribhuvan University | October 2013 - August 2018"
+  },
+  {
+    "objectID": "about.html#professional-overview",
+    "href": "about.html#professional-overview",
+    "title": "Pukar Bhandari",
+    "section": "",
+    "text": "I am an aspiring Associate Transportation Planner with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning."
+  },
+  {
+    "objectID": "about.html#work-experience",
+    "href": "about.html#work-experience",
+    "title": "Pukar Bhandari",
+    "section": "",
+    "text": "Associate Transportation Planner | Metro Analytics | June 2023 - Present\nGraduate Teaching & Research Assistant | University of Utah | August 2021 - May 2023\nGIS Data Analyst | Energy & Geoscience Institute | June 2022 - August 2022\nAssociate Architect | Prabal Thapa Architects | June 2020 - July 2021\nArchitect & Planner | Urban Park Nepal Pvt. Ltd. | January 2019 - June 2020"
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "Pukar Bhandari",
+    "section": "",
+    "text": "Master of City & Metropolitan Planning | University of Utah | August 2021 - May 2023\nBachelors Degree in Architecture | Tribhuvan University | October 2013 - August 2018"
+  },
+  {
+    "objectID": "contact.html",
+    "href": "contact.html",
+    "title": "Contact",
+    "section": "",
+    "text": "I’m always excited to connect with fellow transportation professionals, urban planners, data scientists, and anyone passionate about improving mobility through data-driven insights. Whether you want to discuss the latest developments in transportation modeling, share experiences with R and geospatial analysis, or debate the merits of different traffic flow algorithms, I’m here for it.\nIf you have questions about transportation planning methodologies, want to discuss R techniques for mobility data analysis, share interesting datasets, or just want to chat about anything related to transportation and data science, please use this contact form.\n\n\n\n\n\n\n\n\nFull Name \nEmail Address \nMessage\n\n\nSend message"
+  },
+  {
+    "objectID": "license.html",
+    "href": "license.html",
+    "title": "License",
+    "section": "",
+    "text": "The blog posts on this website are all released under a Creative Commons Attribution-ShareAlike 4.0 International License. Please feel free to use and share anything you find valuable in these posts, but please cite me too!"
+  },
+  {
+    "objectID": "posts/overture-data-download/index.html",
+    "href": "posts/overture-data-download/index.html",
+    "title": "Overture Maps Data Download",
+    "section": "",
+    "text": "Overture Maps Foundation provides a collaborative, open-source initiative to create the world’s most comprehensive and interoperable geospatial dataset. As transportation planners and data analysts, we often need access to high-quality geospatial data for buildings, transportation networks, places, and administrative boundaries. This post demonstrates how to efficiently download Overture Maps data using both R and Python with DuckDB’s powerful spatial capabilities.\n\nOverture Maps is an open-source mapping initiative that provides global-scale geospatial data across four main themes:\n\n\nBuildings: Footprints and building parts\n\nTransportation: Road segments and connectors\n\n\nPlaces: Points of interest and place data\n\nAdmins: Administrative boundaries and localities\n\nBase: Infrastructure, land use, land cover, and water features\n\nThe data is stored in cloud-optimized Parquet format on AWS S3, making it ideal for efficient querying and analysis.\n\nBefore diving into the code, ensure you have the following dependencies installed:\n\n\n R\n Python\n\n\n\n\n# Install required packages\ninstall.packages(c(\"tidyverse\", \"sf\", \"tmap\", \"DBI\", \"duckdb\", \"arrow\"))\n\n\n\n\n# Install required packages\npip install duckdb matplotlib geopandas pandas shapely folium pathlib\n\n\n\n\n\nFirst, we need to load our libraries and configure the environment for spatial data processing.\n\n\n R\n Python\n\n\n\n\n# Load required libraries\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(tmap)\nlibrary(DBI)\nlibrary(duckdb)\nlibrary(arrow)\n\n# Set global options\noptions(scipen = 999) # avoiding scientific notation\ntmap_mode(mode = \"view\")\n\n\n\n\nimport duckdb\nimport geopandas as gpd\nimport pandas as pd\nimport shapely.wkb\nimport matplotlib.pyplot as plt\nimport folium\nfrom pathlib import Path\n\n\n\n\n\nOverture data is organized by themes, and we need to map specific data types to their corresponding themes for proper S3 path construction.\n\n\n R\n Python\n\n\n\n\n# Define the theme map\nmap_themes &lt;- list(\n  \"locality\" = \"admins\",\n  \"locality_area\" = \"admins\",\n  \"administrative_boundary\" = \"admins\",\n  \"building\" = \"buildings\",\n  \"building_part\" = \"buildings\",\n  \"place\" = \"places\",\n  \"segment\" = \"transportation\",\n  \"connector\" = \"transportation\",\n  \"infrastructure\" = \"base\",\n  \"land\" = \"base\",\n  \"land_use\" = \"base\",\n  \"water\" = \"base\"\n)\n\n\n\n\n# Define theme mapping\nTHEME_MAP = {\n    \"locality\": \"admins\",\n    \"locality_area\": \"admins\",\n    \"administrative_boundary\": \"admins\",\n    \"building\": \"buildings\",\n    \"building_part\": \"buildings\",\n    \"place\": \"places\",\n    \"segment\": \"transportation\",\n    \"connector\": \"transportation\",\n    \"infrastructure\": \"base\",\n    \"land\": \"base\",\n    \"land_use\": \"base\",\n    \"water\": \"base\",\n}\n\n\n\n\n\nThis function handles the DuckDB connection, S3 configuration, and spatial filtering to download only the data within your specified bounding box.\n\n\n R\n Python\n\n\n\n\noverture_data &lt;- function(bbox, overture_type, dst_parquet) {\n  \n  # Validate overture_type\n  if (!overture_type %in% names(map_themes)) {\n    stop(paste(\"Valid Overture types are:\", paste(names(map_themes), collapse = \", \")))\n  }\n  \n  # Configure S3 path\n  s3_region &lt;- \"us-west-2\"\n  base_url &lt;- sprintf(\"s3://overturemaps-%s/release\", s3_region)\n  version &lt;- \"2024-04-16-beta.0\"\n  theme &lt;- map_themes[[overture_type]]\n  remote_path &lt;- sprintf(\"%s/%s/theme=%s/type=%s/*\", base_url, version, theme, overture_type)\n  \n  # Connect to DuckDB and install extensions\n  conn &lt;- dbConnect(duckdb::duckdb())\n  dbExecute(conn, \"INSTALL httpfs;\")\n  dbExecute(conn, \"INSTALL spatial;\")\n  dbExecute(conn, \"LOAD httpfs;\")\n  dbExecute(conn, \"LOAD spatial;\")\n  dbExecute(conn, sprintf(\"SET s3_region='%s';\", s3_region))\n  \n  # Create view and execute spatial query\n  read_parquet &lt;- sprintf(\"read_parquet('%s', filename=TRUE, hive_partitioning=1);\", remote_path)\n  dbExecute(conn, sprintf(\"CREATE OR REPLACE VIEW data_view AS SELECT * FROM %s\", read_parquet))\n  \n  query &lt;- sprintf(\"\n    SELECT data.*\n    FROM data_view AS data  \n    WHERE data.bbox.xmin &lt;= %f AND data.bbox.xmax &gt;= %f\n    AND data.bbox.ymin &lt;= %f AND data.bbox.ymax &gt;= %f\n  \", bbox[3], bbox[1], bbox[4], bbox[2])\n  \n  # Save results to Parquet file\n  file &lt;- normalizePath(dst_parquet, mustWork = FALSE)\n  dbExecute(conn, sprintf(\"COPY (%s) TO '%s' WITH (FORMAT 'parquet');\", query, file))\n  dbDisconnect(conn, shutdown = TRUE)\n}\n\n\n\n\ndef overture_data(bbox, overture_type, dst_parquet):\n    \"\"\"Query a subset of Overture's data and save it as a GeoParquet file.\n    \n    Parameters\n    ----------\n    bbox : tuple\n        A tuple of floats representing the bounding box (xmin, ymin, xmax, ymax) \n        in EPSG:4326 coordinate reference system.\n    overture_type : str\n        The type of Overture data to query\n    dst_parquet : str or Path\n        The path to the output GeoParquet file.\n    \"\"\"\n    if overture_type not in THEME_MAP:\n        raise ValueError(f\"Valid Overture types are: {list(THEME_MAP)}\")\n    \n    # Configure S3 connection\n    s3_region = \"us-west-2\"\n    base_url = f\"s3://overturemaps-{s3_region}/release\"\n    version = \"2024-04-16-beta.0\"\n    theme = THEME_MAP[overture_type]\n    remote_path = f\"{base_url}/{version}/theme={theme}/type={overture_type}/*\"\n    \n    # Setup DuckDB with spatial extensions\n    conn = duckdb.connect()\n    conn.execute(\"INSTALL httpfs;\")\n    conn.execute(\"INSTALL spatial;\")\n    conn.execute(\"LOAD httpfs;\")\n    conn.execute(\"LOAD spatial;\")\n    conn.execute(f\"SET s3_region='{s3_region}';\")\n    \n    # Execute spatial query\n    read_parquet = f\"read_parquet('{remote_path}', filename=true, hive_partitioning=1);\"\n    conn.execute(f\"CREATE OR REPLACE VIEW data_view AS SELECT * FROM {read_parquet}\")\n    \n    query = f\"\"\"\n    SELECT data.*\n    FROM data_view AS data\n    WHERE data.bbox.xmin &lt;= {bbox[2]} AND data.bbox.xmax &gt;= {bbox[0]}\n    AND data.bbox.ymin &lt;= {bbox[3]} AND data.bbox.ymax &gt;= {bbox[1]}\n    \"\"\"\n    \n    file = str(Path(dst_parquet).resolve())\n    conn.execute(f\"COPY ({query}) TO '{file}' WITH (FORMAT PARQUET);\")\n    conn.close()\n\n\n\n\n\nFor spatial analysis, you need to define a bounding box for your area of interest. This can come from existing boundary data or manual coordinates.\n\n\n R\n Python\n\n\n\n\n# Read existing boundary data (example: Albany, NY)\nalbany_boundary &lt;- read_sf(file.path(wd, project), layer = \"City_of_Albany\") |&gt;\n  st_transform(4326)\n\n# Extract bounding box coordinates (xmin, ymin, xmax, ymax)\nalbany_bbox &lt;- albany_boundary |&gt;\n  st_bbox() |&gt;\n  as.vector()\n\nprint(albany_bbox)\n\n\n\n\n# Define study area bounding box manually\n# Manhattan example (xmin, ymin, xmax, ymax) in EPSG:4326\nbbox_example = (-74.02169, 40.696423, -73.891338, 40.831263)\n\n# Alternative: extract from existing boundary data\n# boundary_gdf = gpd.read_file(\"your_boundary.shp\")\n# bbox_example = boundary_gdf.total_bounds\n\n\n\n\n\nNow we can download specific data types for our study area. The function handles all the cloud connectivity and spatial filtering automatically.\n\n\n R\n Python\n\n\n\n\n# Download places data for Albany\noverture_data(albany_bbox, \"place\", \"albany_places_subset.parquet\")\n\n# Download buildings data\noverture_data(albany_bbox, \"building\", \"albany_buildings_subset.parquet\")\n\n# Download transportation segments\noverture_data(albany_bbox, \"segment\", \"albany_roads_subset.parquet\")\n\n\n\n\n# Download buildings data for Manhattan\noverture_data(bbox_example, \"building\", \"nyc_buildings_subset.parquet\")\n\n# Download places data\noverture_data(bbox_example, \"place\", \"nyc_places_subset.parquet\")\n\n# Download transportation network\noverture_data(bbox_example, \"segment\", \"nyc_roads_subset.parquet\")\n\n\n\n\n\nAfter downloading, convert the Parquet files to spatial data formats for analysis and visualization.\n\n\n R\n Python\n\n\n\n\n# Read the downloaded Parquet file\nalbany_places &lt;- read_parquet(\"albany_places_subset.parquet\")\n\n# Convert to sf object for spatial operations\nalbany_places_sf &lt;- st_as_sf(\n  albany_places |&gt; select(-sources),\n  geometry = albany_places$geometry,\n  crs = 4326\n)\n\n# Basic data exploration\nprint(paste(\"Downloaded\", nrow(albany_places_sf), \"places\"))\nprint(colnames(albany_places_sf))\n\n\n\n\n# Read the downloaded data\nmanhattan = pd.read_parquet(\"nyc_buildings_subset.parquet\")\n\n# Convert to GeoDataFrame\nmanhattan_gdf = gpd.GeoDataFrame(\n    manhattan.drop(columns=\"geometry\"),\n    geometry=shapely.wkb.loads(manhattan[\"geometry\"]),\n    crs=4326,\n)\n\n# Basic exploration\nprint(f\"Downloaded {len(manhattan_gdf)} buildings\")\nprint(manhattan_gdf.columns.tolist())\n\n\n\n\n\nCreate quick visualizations to explore your downloaded data and verify the results.\n\n\n R\n Python\n\n\n\n\n# Interactive map using tmap (equivalent to folium)\nalbany_places_sf |&gt;\n  select(names$primary, categories$main, confidence) |&gt;\n  tm_shape() +\n  tm_dots(col = \"categories$main\", size = 0.5, alpha = 0.8) +\n  tm_view(view.legend.position = c(\"left\", \"bottom\"))\n\n# Simple quick visualization\nalbany_places_sf |&gt;\n  select(names$primary, categories$main, confidence) |&gt;\n  qtm(dots.col = \"categories$main\")\n\n\n\n\n# Static plot using GeoPandas\nmanhattan_gdf.plot(figsize=(10, 10), alpha=0.7, column='categories', legend=True)\nplt.title(\"Manhattan Buildings from Overture Maps\")\nplt.show()\n\n# Interactive map with folium (equivalent to tmap interactive)\nm = folium.Map(location=[40.7589, -73.9851], zoom_start=12)\nfolium.GeoJson(\n    manhattan_gdf.head(100),\n    popup=folium.GeoJsonPopup(fields=['names', 'categories'])\n).add_to(m)\nm\n\n\n\n\n\nOverture Maps provides the following data types organized by theme:\n\n\n\n\n\n\n\nTheme\nData Types\nDescription\n\n\n\nAdmins\n\nlocality, locality_area, administrative_boundary\n\nAdministrative boundaries and place hierarchies\n\n\nBuildings\n\nbuilding, building_part\n\nBuilding footprints and structural components\n\n\nPlaces\nplace\nPoints of interest, businesses, and landmarks\n\n\nTransportation\n\nsegment, connector\n\nRoad networks and transportation infrastructure\n\n\nBase\n\ninfrastructure, land, land_use, water\n\nBase map features and land cover\n\n\n\nThis approach is particularly valuable for transportation planning workflows where you need to integrate multiple data sources for comprehensive analysis. The standardized schema and efficient spatial querying make it ideal for network analysis, land use integration, and multi-modal planning across different jurisdictions and scales.\n\nThe complete code and examples are available in the Overture Data Download repository on GitHub.\nFor more information about Overture Maps:\n\nOfficial Documentation\nData Schema Reference\nCommunity Forum\n\n\nWant to contribute or suggest improvements? Visit the project repository at: https://github.com/ar-puuk/overture-data-download"
+  },
+  {
+    "objectID": "posts/overture-data-download/index.html#what-is-overture-maps",
+    "href": "posts/overture-data-download/index.html#what-is-overture-maps",
+    "title": "Overture Maps Data Download",
+    "section": "",
+    "text": "Overture Maps is an open-source mapping initiative that provides global-scale geospatial data across four main themes:\n\n\nBuildings: Footprints and building parts\n\nTransportation: Road segments and connectors\n\n\nPlaces: Points of interest and place data\n\nAdmins: Administrative boundaries and localities\n\nBase: Infrastructure, land use, land cover, and water features\n\nThe data is stored in cloud-optimized Parquet format on AWS S3, making it ideal for efficient querying and analysis."
+  },
+  {
+    "objectID": "posts/overture-data-download/index.html#prerequisites",
+    "href": "posts/overture-data-download/index.html#prerequisites",
+    "title": "Overture Maps Data Download",
+    "section": "",
+    "text": "Before diving into the code, ensure you have the following dependencies installed:\n\n\n R\n Python\n\n\n\n\n# Install required packages\ninstall.packages(c(\"tidyverse\", \"sf\", \"tmap\", \"DBI\", \"duckdb\", \"arrow\"))\n\n\n\n\n# Install required packages\npip install duckdb matplotlib geopandas pandas shapely folium pathlib"
+  },
+  {
+    "objectID": "posts/overture-data-download/index.html#setting-up-the-environment",
+    "href": "posts/overture-data-download/index.html#setting-up-the-environment",
+    "title": "Overture Maps Data Download",
+    "section": "",
+    "text": "First, we need to load our libraries and configure the environment for spatial data processing.\n\n\n R\n Python\n\n\n\n\n# Load required libraries\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(tmap)\nlibrary(DBI)\nlibrary(duckdb)\nlibrary(arrow)\n\n# Set global options\noptions(scipen = 999) # avoiding scientific notation\ntmap_mode(mode = \"view\")\n\n\n\n\nimport duckdb\nimport geopandas as gpd\nimport pandas as pd\nimport shapely.wkb\nimport matplotlib.pyplot as plt\nimport folium\nfrom pathlib import Path"
+  },
+  {
+    "objectID": "posts/overture-data-download/index.html#data-type-mapping",
+    "href": "posts/overture-data-download/index.html#data-type-mapping",
+    "title": "Overture Maps Data Download",
+    "section": "",
+    "text": "Overture data is organized by themes, and we need to map specific data types to their corresponding themes for proper S3 path construction.\n\n\n R\n Python\n\n\n\n\n# Define the theme map\nmap_themes &lt;- list(\n  \"locality\" = \"admins\",\n  \"locality_area\" = \"admins\",\n  \"administrative_boundary\" = \"admins\",\n  \"building\" = \"buildings\",\n  \"building_part\" = \"buildings\",\n  \"place\" = \"places\",\n  \"segment\" = \"transportation\",\n  \"connector\" = \"transportation\",\n  \"infrastructure\" = \"base\",\n  \"land\" = \"base\",\n  \"land_use\" = \"base\",\n  \"water\" = \"base\"\n)\n\n\n\n\n# Define theme mapping\nTHEME_MAP = {\n    \"locality\": \"admins\",\n    \"locality_area\": \"admins\",\n    \"administrative_boundary\": \"admins\",\n    \"building\": \"buildings\",\n    \"building_part\": \"buildings\",\n    \"place\": \"places\",\n    \"segment\": \"transportation\",\n    \"connector\": \"transportation\",\n    \"infrastructure\": \"base\",\n    \"land\": \"base\",\n    \"land_use\": \"base\",\n    \"water\": \"base\",\n}"
+  },
+  {
+    "objectID": "posts/overture-data-download/index.html#core-download-function",
+    "href": "posts/overture-data-download/index.html#core-download-function",
+    "title": "Overture Maps Data Download",
+    "section": "",
+    "text": "This function handles the DuckDB connection, S3 configuration, and spatial filtering to download only the data within your specified bounding box.\n\n\n R\n Python\n\n\n\n\noverture_data &lt;- function(bbox, overture_type, dst_parquet) {\n  \n  # Validate overture_type\n  if (!overture_type %in% names(map_themes)) {\n    stop(paste(\"Valid Overture types are:\", paste(names(map_themes), collapse = \", \")))\n  }\n  \n  # Configure S3 path\n  s3_region &lt;- \"us-west-2\"\n  base_url &lt;- sprintf(\"s3://overturemaps-%s/release\", s3_region)\n  version &lt;- \"2024-04-16-beta.0\"\n  theme &lt;- map_themes[[overture_type]]\n  remote_path &lt;- sprintf(\"%s/%s/theme=%s/type=%s/*\", base_url, version, theme, overture_type)\n  \n  # Connect to DuckDB and install extensions\n  conn &lt;- dbConnect(duckdb::duckdb())\n  dbExecute(conn, \"INSTALL httpfs;\")\n  dbExecute(conn, \"INSTALL spatial;\")\n  dbExecute(conn, \"LOAD httpfs;\")\n  dbExecute(conn, \"LOAD spatial;\")\n  dbExecute(conn, sprintf(\"SET s3_region='%s';\", s3_region))\n  \n  # Create view and execute spatial query\n  read_parquet &lt;- sprintf(\"read_parquet('%s', filename=TRUE, hive_partitioning=1);\", remote_path)\n  dbExecute(conn, sprintf(\"CREATE OR REPLACE VIEW data_view AS SELECT * FROM %s\", read_parquet))\n  \n  query &lt;- sprintf(\"\n    SELECT data.*\n    FROM data_view AS data  \n    WHERE data.bbox.xmin &lt;= %f AND data.bbox.xmax &gt;= %f\n    AND data.bbox.ymin &lt;= %f AND data.bbox.ymax &gt;= %f\n  \", bbox[3], bbox[1], bbox[4], bbox[2])\n  \n  # Save results to Parquet file\n  file &lt;- normalizePath(dst_parquet, mustWork = FALSE)\n  dbExecute(conn, sprintf(\"COPY (%s) TO '%s' WITH (FORMAT 'parquet');\", query, file))\n  dbDisconnect(conn, shutdown = TRUE)\n}\n\n\n\n\ndef overture_data(bbox, overture_type, dst_parquet):\n    \"\"\"Query a subset of Overture's data and save it as a GeoParquet file.\n    \n    Parameters\n    ----------\n    bbox : tuple\n        A tuple of floats representing the bounding box (xmin, ymin, xmax, ymax) \n        in EPSG:4326 coordinate reference system.\n    overture_type : str\n        The type of Overture data to query\n    dst_parquet : str or Path\n        The path to the output GeoParquet file.\n    \"\"\"\n    if overture_type not in THEME_MAP:\n        raise ValueError(f\"Valid Overture types are: {list(THEME_MAP)}\")\n    \n    # Configure S3 connection\n    s3_region = \"us-west-2\"\n    base_url = f\"s3://overturemaps-{s3_region}/release\"\n    version = \"2024-04-16-beta.0\"\n    theme = THEME_MAP[overture_type]\n    remote_path = f\"{base_url}/{version}/theme={theme}/type={overture_type}/*\"\n    \n    # Setup DuckDB with spatial extensions\n    conn = duckdb.connect()\n    conn.execute(\"INSTALL httpfs;\")\n    conn.execute(\"INSTALL spatial;\")\n    conn.execute(\"LOAD httpfs;\")\n    conn.execute(\"LOAD spatial;\")\n    conn.execute(f\"SET s3_region='{s3_region}';\")\n    \n    # Execute spatial query\n    read_parquet = f\"read_parquet('{remote_path}', filename=true, hive_partitioning=1);\"\n    conn.execute(f\"CREATE OR REPLACE VIEW data_view AS SELECT * FROM {read_parquet}\")\n    \n    query = f\"\"\"\n    SELECT data.*\n    FROM data_view AS data\n    WHERE data.bbox.xmin &lt;= {bbox[2]} AND data.bbox.xmax &gt;= {bbox[0]}\n    AND data.bbox.ymin &lt;= {bbox[3]} AND data.bbox.ymax &gt;= {bbox[1]}\n    \"\"\"\n    \n    file = str(Path(dst_parquet).resolve())\n    conn.execute(f\"COPY ({query}) TO '{file}' WITH (FORMAT PARQUET);\")\n    conn.close()"
+  },
+  {
+    "objectID": "posts/overture-data-download/index.html#defining-your-study-area",
+    "href": "posts/overture-data-download/index.html#defining-your-study-area",
+    "title": "Overture Maps Data Download",
+    "section": "",
+    "text": "For spatial analysis, you need to define a bounding box for your area of interest. This can come from existing boundary data or manual coordinates.\n\n\n R\n Python\n\n\n\n\n# Read existing boundary data (example: Albany, NY)\nalbany_boundary &lt;- read_sf(file.path(wd, project), layer = \"City_of_Albany\") |&gt;\n  st_transform(4326)\n\n# Extract bounding box coordinates (xmin, ymin, xmax, ymax)\nalbany_bbox &lt;- albany_boundary |&gt;\n  st_bbox() |&gt;\n  as.vector()\n\nprint(albany_bbox)\n\n\n\n\n# Define study area bounding box manually\n# Manhattan example (xmin, ymin, xmax, ymax) in EPSG:4326\nbbox_example = (-74.02169, 40.696423, -73.891338, 40.831263)\n\n# Alternative: extract from existing boundary data\n# boundary_gdf = gpd.read_file(\"your_boundary.shp\")\n# bbox_example = boundary_gdf.total_bounds"
+  },
+  {
+    "objectID": "posts/overture-data-download/index.html#downloading-the-data",
+    "href": "posts/overture-data-download/index.html#downloading-the-data",
+    "title": "Overture Maps Data Download",
+    "section": "",
+    "text": "Now we can download specific data types for our study area. The function handles all the cloud connectivity and spatial filtering automatically.\n\n\n R\n Python\n\n\n\n\n# Download places data for Albany\noverture_data(albany_bbox, \"place\", \"albany_places_subset.parquet\")\n\n# Download buildings data\noverture_data(albany_bbox, \"building\", \"albany_buildings_subset.parquet\")\n\n# Download transportation segments\noverture_data(albany_bbox, \"segment\", \"albany_roads_subset.parquet\")\n\n\n\n\n# Download buildings data for Manhattan\noverture_data(bbox_example, \"building\", \"nyc_buildings_subset.parquet\")\n\n# Download places data\noverture_data(bbox_example, \"place\", \"nyc_places_subset.parquet\")\n\n# Download transportation network\noverture_data(bbox_example, \"segment\", \"nyc_roads_subset.parquet\")"
+  },
+  {
+    "objectID": "posts/overture-data-download/index.html#processing-downloaded-data",
+    "href": "posts/overture-data-download/index.html#processing-downloaded-data",
+    "title": "Overture Maps Data Download",
+    "section": "",
+    "text": "After downloading, convert the Parquet files to spatial data formats for analysis and visualization.\n\n\n R\n Python\n\n\n\n\n# Read the downloaded Parquet file\nalbany_places &lt;- read_parquet(\"albany_places_subset.parquet\")\n\n# Convert to sf object for spatial operations\nalbany_places_sf &lt;- st_as_sf(\n  albany_places |&gt; select(-sources),\n  geometry = albany_places$geometry,\n  crs = 4326\n)\n\n# Basic data exploration\nprint(paste(\"Downloaded\", nrow(albany_places_sf), \"places\"))\nprint(colnames(albany_places_sf))\n\n\n\n\n# Read the downloaded data\nmanhattan = pd.read_parquet(\"nyc_buildings_subset.parquet\")\n\n# Convert to GeoDataFrame\nmanhattan_gdf = gpd.GeoDataFrame(\n    manhattan.drop(columns=\"geometry\"),\n    geometry=shapely.wkb.loads(manhattan[\"geometry\"]),\n    crs=4326,\n)\n\n# Basic exploration\nprint(f\"Downloaded {len(manhattan_gdf)} buildings\")\nprint(manhattan_gdf.columns.tolist())"
+  },
+  {
+    "objectID": "posts/overture-data-download/index.html#data-visualization",
+    "href": "posts/overture-data-download/index.html#data-visualization",
+    "title": "Overture Maps Data Download",
+    "section": "",
+    "text": "Create quick visualizations to explore your downloaded data and verify the results.\n\n\n R\n Python\n\n\n\n\n# Interactive map using tmap (equivalent to folium)\nalbany_places_sf |&gt;\n  select(names$primary, categories$main, confidence) |&gt;\n  tm_shape() +\n  tm_dots(col = \"categories$main\", size = 0.5, alpha = 0.8) +\n  tm_view(view.legend.position = c(\"left\", \"bottom\"))\n\n# Simple quick visualization\nalbany_places_sf |&gt;\n  select(names$primary, categories$main, confidence) |&gt;\n  qtm(dots.col = \"categories$main\")\n\n\n\n\n# Static plot using GeoPandas\nmanhattan_gdf.plot(figsize=(10, 10), alpha=0.7, column='categories', legend=True)\nplt.title(\"Manhattan Buildings from Overture Maps\")\nplt.show()\n\n# Interactive map with folium (equivalent to tmap interactive)\nm = folium.Map(location=[40.7589, -73.9851], zoom_start=12)\nfolium.GeoJson(\n    manhattan_gdf.head(100),\n    popup=folium.GeoJsonPopup(fields=['names', 'categories'])\n).add_to(m)\nm"
+  },
+  {
+    "objectID": "posts/overture-data-download/index.html#available-data-types",
+    "href": "posts/overture-data-download/index.html#available-data-types",
+    "title": "Overture Maps Data Download",
+    "section": "",
+    "text": "Overture Maps provides the following data types organized by theme:\n\n\n\n\n\n\n\nTheme\nData Types\nDescription\n\n\n\nAdmins\n\nlocality, locality_area, administrative_boundary\n\nAdministrative boundaries and place hierarchies\n\n\nBuildings\n\nbuilding, building_part\n\nBuilding footprints and structural components\n\n\nPlaces\nplace\nPoints of interest, businesses, and landmarks\n\n\nTransportation\n\nsegment, connector\n\nRoad networks and transportation infrastructure\n\n\nBase\n\ninfrastructure, land, land_use, water\n\nBase map features and land cover"
+  },
+  {
+    "objectID": "posts/overture-data-download/index.html#transportation-planning-applications",
+    "href": "posts/overture-data-download/index.html#transportation-planning-applications",
+    "title": "Overture Maps Data Download",
+    "section": "",
+    "text": "This approach is particularly valuable for transportation planning workflows where you need to integrate multiple data sources for comprehensive analysis. The standardized schema and efficient spatial querying make it ideal for network analysis, land use integration, and multi-modal planning across different jurisdictions and scales."
+  },
+  {
+    "objectID": "posts/overture-data-download/index.html#repository-and-additional-resources",
+    "href": "posts/overture-data-download/index.html#repository-and-additional-resources",
+    "title": "Overture Maps Data Download",
+    "section": "",
+    "text": "The complete code and examples are available in the Overture Data Download repository on GitHub.\nFor more information about Overture Maps:\n\nOfficial Documentation\nData Schema Reference\nCommunity Forum\n\n\nWant to contribute or suggest improvements? Visit the project repository at: https://github.com/ar-puuk/overture-data-download"
+  },
+  {
+    "objectID": "posts/robocopy-gui/index.html",
+    "href": "posts/robocopy-gui/index.html",
+    "title": "Interactive Robocopy GUI Tool",
+    "section": "",
+    "text": "I’ve developed an interactive web-based tool that simplifies creating robocopy commands through a user-friendly graphical interface. Instead of memorizing complex command-line syntax, users can simply select options and generate commands visually.\n\n\n\nOpen in New Tab View Source Code"
+  },
+  {
+    "objectID": "posts/robocopy-gui/index.html#robocopy-command-generator",
+    "href": "posts/robocopy-gui/index.html#robocopy-command-generator",
+    "title": "Interactive Robocopy GUI Tool",
+    "section": "",
+    "text": "I’ve developed an interactive web-based tool that simplifies creating robocopy commands through a user-friendly graphical interface. Instead of memorizing complex command-line syntax, users can simply select options and generate commands visually.\n\n\n\nOpen in New Tab View Source Code"
+  },
+  {
+    "objectID": "posts/robocopy-gui/index.html#features",
+    "href": "posts/robocopy-gui/index.html#features",
+    "title": "Interactive Robocopy GUI Tool",
+    "section": "2 Features",
+    "text": "2 Features\nThe tool provides an intuitive interface for:\n\nSource and Destination Selection: Easy path input with validation\nCopy Options: Checkboxes for common robocopy parameters like /E, /MIR, /R:n, etc.\nReal-time Preview: See your robocopy command as you build it\nCopy to Clipboard: One-click copying of the generated command\nParameter Explanations: Tooltips and descriptions for each option"
+  },
+  {
+    "objectID": "posts/robocopy-gui/index.html#technical-details",
+    "href": "posts/robocopy-gui/index.html#technical-details",
+    "title": "Interactive Robocopy GUI Tool",
+    "section": "3 Technical Details",
+    "text": "3 Technical Details\nThis tool is built with vanilla HTML, CSS, and JavaScript, making it lightweight and fast. It’s hosted on GitHub Pages, which means it automatically updates whenever I push changes to the source repository.\nThe interface translates user selections into proper robocopy syntax, helping both beginners learn the command structure and experienced users save time on complex operations."
+  },
+  {
+    "objectID": "posts/robocopy-gui/index.html#use-cases",
+    "href": "posts/robocopy-gui/index.html#use-cases",
+    "title": "Interactive Robocopy GUI Tool",
+    "section": "4 Use Cases",
+    "text": "4 Use Cases\nThis tool is particularly useful for:\n\nSystem administrators managing file synchronization\nIT professionals setting up backup routines\n\nAnyone needing to copy large directory structures with specific parameters\nLearning robocopy syntax through visual exploration\n\n\nWant to contribute or suggest improvements? Visit the project repository at: https://github.com/ar-puuk/robocopy-gui"
+  },
+  {
+    "objectID": "posts/uscensus-dashboard/index.html",
+    "href": "posts/uscensus-dashboard/index.html",
+    "title": "Building a U.S. Census Data Explorer",
+    "section": "",
+    "text": "As a transportation planner, accessing and visualizing demographic and employment data is crucial for informed decision-making. The U.S. Census Bureau provides a wealth of information through various datasets, but navigating multiple APIs and data formats can be challenging. To streamline this process, I developed an interactive R Shiny dashboard that provides unified access to three major Census data sources:\n\nAmerican Community Survey (ACS) - Detailed demographic and socioeconomic estimates\nDecennial Census - Complete population counts every 10 years\n\nLongitudinal Employer-Household Dynamics (LEHD) - Employment and commuting patterns\n\nThis post walks through the development process, key technical decisions, and lessons learned while building this data exploration tool."
+  },
+  {
+    "objectID": "posts/uscensus-dashboard/index.html#introduction",
+    "href": "posts/uscensus-dashboard/index.html#introduction",
+    "title": "Building a U.S. Census Data Explorer",
+    "section": "",
+    "text": "As a transportation planner, accessing and visualizing demographic and employment data is crucial for informed decision-making. The U.S. Census Bureau provides a wealth of information through various datasets, but navigating multiple APIs and data formats can be challenging. To streamline this process, I developed an interactive R Shiny dashboard that provides unified access to three major Census data sources:\n\nAmerican Community Survey (ACS) - Detailed demographic and socioeconomic estimates\nDecennial Census - Complete population counts every 10 years\n\nLongitudinal Employer-Household Dynamics (LEHD) - Employment and commuting patterns\n\nThis post walks through the development process, key technical decisions, and lessons learned while building this data exploration tool."
+  },
+  {
+    "objectID": "posts/uscensus-dashboard/index.html#project-overview",
+    "href": "posts/uscensus-dashboard/index.html#project-overview",
+    "title": "Building a U.S. Census Data Explorer",
+    "section": "2 Project Overview",
+    "text": "2 Project Overview\nThe dashboard serves as a one-stop interface for Census data retrieval, featuring:\n\nInteractive geographic selection (state/county level)\nVariable selection through searchable tables\nReal-time data visualization on interactive maps\nExport capabilities for both tabular and geospatial data\nResponsive design optimized for different screen sizes\n\n🔗 Repository: You can find the complete source code and documentation at: https://github.com/ar-puuk/uscensus-dashboard/"
+  },
+  {
+    "objectID": "posts/uscensus-dashboard/index.html#technical-architecture",
+    "href": "posts/uscensus-dashboard/index.html#technical-architecture",
+    "title": "Building a U.S. Census Data Explorer",
+    "section": "3 Technical Architecture",
+    "text": "3 Technical Architecture\n\nCore Dependencies\nThe application leverages several specialized R packages for Census data access and geospatial processing:\n# Census data access\nlibrary(tidycensus)   # ACS and Decennial Census API\nlibrary(lehdr)        # LEHD Origin-Destination data\nlibrary(tigris)       # Geographic boundaries\n\n# Geospatial processing  \nlibrary(sf)           # Simple features for spatial data\nlibrary(leaflet)      # Interactive mapping\n\n# Shiny ecosystem\nlibrary(shiny)\nlibrary(shinydashboard)\nlibrary(shinyWidgets)\nlibrary(DT)          # Interactive data tables\n\n\nApplication Structure\nThe app follows a modular design pattern with separate UI and server components for each data source. This approach enhances maintainability and allows for independent feature development.\n# Modular UI components\nacsUI &lt;- fluidPage(...)      # American Community Survey interface\ncensusUI &lt;- fluidPage(...)   # Decennial Census interface  \nlehdUI &lt;- fluidPage(...)     # LEHD interface\n\n# Unified navigation\nui &lt;- navbarPage(...)"
+  },
+  {
+    "objectID": "posts/uscensus-dashboard/index.html#data-source-integration",
+    "href": "posts/uscensus-dashboard/index.html#data-source-integration",
+    "title": "Building a U.S. Census Data Explorer",
+    "section": "4 Data Source Integration",
+    "text": "4 Data Source Integration\n\nAmerican Community Survey (ACS)\nThe ACS module provides access to detailed demographic estimates from 2009-2022. Key implementation features:\nDynamic Variable Loading: Variables are loaded based on the selected year and geographic level, ensuring users only see relevant options.\nvariables_acs &lt;- reactive({\n  if (!is.null(input$year_acs)) {\n    variables &lt;- load_variables(year = as.numeric(input$year_acs), \n                               dataset = \"acs5\", cache = TRUE)\n    # Filter variables based on geographic level\n    if (input$level_acs == \"tract\") {\n      variables &lt;- variables |&gt;\n        filter(geography %in% c(\"tract\", \"block group\"))\n    }\n    return(variables)\n  }\n})\nGeographic Hierarchy: The interface maintains proper geographic relationships, with county options updating based on state selection.\n\n\nDecennial Census\nThe Decennial Census module focuses on the 2000, 2010, and 2020 complete counts, using the PL 94-171 dataset optimized for redistricting data.\nStreamlined Variable Selection: Since Decennial Census has fewer variables than ACS, the interface emphasizes ease of use while maintaining the same interaction patterns.\n\n\nLongitudinal Employer-Household Dynamics (LEHD)\nThe LEHD module provides employment statistics and origin-destination flows, crucial for transportation planning applications.\nVersion Management: Different LODES versions cover different time periods, requiring dynamic year filtering:\nobserve({\n  version &lt;- if (!is.null(input$version_lehd)) input$version_lehd else \"default\"\n  \n  options &lt;- if (version == \"LODES5\") {\n    2002:2009\n  } else if (version == \"LODES7\") {\n    2002:2019  \n  } else {\n    2002:2021\n  }\n  \n  updateSelectInput(session, \"year_lehd\", choices = options, selected = max(options))\n})"
+  },
+  {
+    "objectID": "posts/uscensus-dashboard/index.html#interactive-mapping",
+    "href": "posts/uscensus-dashboard/index.html#interactive-mapping",
+    "title": "Building a U.S. Census Data Explorer",
+    "section": "5 Interactive Mapping",
+    "text": "5 Interactive Mapping\n\nBase Map Configuration\nThe application uses Leaflet for interactive mapping, with a carefully chosen base layer that balances aesthetics and functionality:\ndefault_map &lt;- leaflet(options = leafletOptions(crs = leafletCRS())) |&gt;\n  addProviderTiles(\"CartoDB.Voyager\") |&gt;\n  addPolygons(data = sf_states, color = \"#222222\", weight = 1, fillOpacity = 0.15)\nCartoDB.Voyager was selected for its clean design and good contrast with overlay data, though the code structure allows for easy switching between provider tiles.\n\n\nDynamic Geographic Focus\nMaps automatically adjust to show selected geographic areas, providing contextual awareness:\noutput$map_acs &lt;- renderLeaflet({\n  if (!is.null(input$state_acs) && input$state_acs != \"\") {\n    selected_state_acs &lt;- sf_states[sf_states$NAME == input$state_acs, ]\n    selected_bbox_acs &lt;- sf::st_bbox(selected_state_acs)\n    \n    default_map |&gt;\n      addPolygons(data = selected_state_acs, color = \"#222222\", weight = 4) |&gt;\n      fitBounds(selected_bbox_acs[[1]], selected_bbox_acs[[2]], \n               selected_bbox_acs[[3]], selected_bbox_acs[[4]])\n  }\n})"
+  },
+  {
+    "objectID": "posts/uscensus-dashboard/index.html#data-export-functionality",
+    "href": "posts/uscensus-dashboard/index.html#data-export-functionality",
+    "title": "Building a U.S. Census Data Explorer",
+    "section": "6 Data Export Functionality",
+    "text": "6 Data Export Functionality\n\nFlexible Format Support\nUsers can export data in multiple formats depending on their needs:\n\nCSV files for tabular analysis\nShapefiles (zipped) for GIS applications\n\noutput$download_acs &lt;- downloadHandler(\n  filename = function() {\n    if (input$geometry_acs) {\n      paste0(\"acs_data_\", input$state_acs, \"_\", input$year_acs, \".zip\")\n    } else {\n      paste0(\"acs_data_\", input$state_acs, \"_\", input$year_acs, \".csv\")\n    }\n  },\n  content = function(file) {\n    if (input$geometry_acs) {\n      write_sf_zip(data_acs(), file, overwrite = TRUE)\n    } else {\n      readr::write_csv(data_acs() |&gt; st_drop_geometry(), file)\n    }\n  }\n)\n\n\nCustom Shapefile Export\nSince R’s sf package doesn’t directly export zipped shapefiles, I implemented a custom function to handle the complete shapefile format:\nwrite_sf_zip &lt;- function(obj, zipfile, overwrite = FALSE) {\n  # Create temporary directory for shapefile components\n  tmp &lt;- tempfile()\n  dir.create(tmp)\n  on.exit(unlink(tmp, recursive = TRUE, force = TRUE))\n  \n  # Write shapefile and zip all components\n  sf::write_sf(obj, file.path(tmp, shp_name), delete_layer = TRUE)\n  withr::with_dir(tmp, zip(tmp_zip, list.files()))\n  \n  file.copy(file.path(tmp, tmp_zip), zipfile, overwrite = overwrite)\n}"
+  },
+  {
+    "objectID": "posts/uscensus-dashboard/index.html#user-experience-considerations",
+    "href": "posts/uscensus-dashboard/index.html#user-experience-considerations",
+    "title": "Building a U.S. Census Data Explorer",
+    "section": "7 User Experience Considerations",
+    "text": "7 User Experience Considerations\n\nVariable Selection Interface\nOne of the biggest UX challenges was making Census variable selection intuitive. The solution uses modal dialogs with searchable data tables:\nvar_modal_acs &lt;- modalDialog(\n  title = h4(\"Select Variable(s) from the List\"),\n  DTOutput(\"var_table_acs\"),\n  size = \"l\",\n  easyClose = TRUE,\n  footer = actionButton(\"selectVarButton_acs\", \"Select Variable(s)\")\n)\nThis approach allows users to browse thousands of variables efficiently while maintaining a clean main interface.\n\n\nResponsive Geographic Selection\nThe cascading geographic selection (State → County → Geographic Level) follows familiar patterns while enforcing data availability constraints.\n\n\nProgress Feedback\nAPI calls can take several seconds, so the interface provides clear feedback through action buttons and conditional panels that appear after data is loaded."
+  },
+  {
+    "objectID": "posts/uscensus-dashboard/index.html#performance-optimizations",
+    "href": "posts/uscensus-dashboard/index.html#performance-optimizations",
+    "title": "Building a U.S. Census Data Explorer",
+    "section": "8 Performance Optimizations",
+    "text": "8 Performance Optimizations\n\nCaching Strategy\noptions(tigris_use_cache = TRUE)  # Geographic boundaries\nload_variables(..., cache = TRUE) # Variable metadata\nCaching is enabled for static data like geographic boundaries and variable definitions, significantly reducing load times for repeat users.\n\n\nData Processing Efficiency\nFor ACS data, margin of error columns are automatically removed to focus on estimates:\nresult_acs &lt;- result_acs |&gt;\n  select(-matches(\"M$\")) |&gt;    # Remove margin columns\n  rename_all(~ sub(\"E$\", \"\", .)) # Clean estimate column names"
+  },
+  {
+    "objectID": "posts/uscensus-dashboard/index.html#deployment-considerations",
+    "href": "posts/uscensus-dashboard/index.html#deployment-considerations",
+    "title": "Building a U.S. Census Data Explorer",
+    "section": "9 Deployment Considerations",
+    "text": "9 Deployment Considerations\n\nAPI Key Management\nThe application requires Census API keys but handles them securely through user input rather than hardcoding. This approach ensures:\n\nNo sensitive credentials in source code\nUsers maintain control over their API usage\nEasy deployment across different environments\n\n\n\nError Handling\nRobust error handling prevents crashes when API calls fail or users make invalid selections:\nreq(input$api_key_acs, input$year_acs, input$state_acs, input$county_acs, input$level_acs)\nThe req() function ensures all required inputs are available before processing."
+  },
+  {
+    "objectID": "posts/uscensus-dashboard/index.html#future-enhancements",
+    "href": "posts/uscensus-dashboard/index.html#future-enhancements",
+    "title": "Building a U.S. Census Data Explorer",
+    "section": "10 Future Enhancements",
+    "text": "10 Future Enhancements\nSeveral features are planned for future releases:\n\nData Visualization: Built-in charts and maps with Census data overlays\nComparison Tools: Side-by-side analysis across years or geographies\n\nCustom Geography: Support for user-uploaded boundary files\nBatch Processing: Multiple state/year combinations in single requests\nAPI Integration: Direct connection to external GIS platforms"
+  },
+  {
+    "objectID": "posts/uscensus-dashboard/index.html#conclusion",
+    "href": "posts/uscensus-dashboard/index.html#conclusion",
+    "title": "Building a U.S. Census Data Explorer",
+    "section": "11 Conclusion",
+    "text": "11 Conclusion\nThis Census data explorer demonstrates the power of R Shiny for creating specialized data access tools. By combining multiple Census APIs into a single interface, it significantly reduces the technical barrier for accessing demographic and employment data.\nThe modular architecture and attention to user experience make it a valuable tool for researchers, planners, and analysts who regularly work with Census data. The open-source approach ensures continued development and community contributions.\nFor transportation planners specifically, having easy access to demographic characteristics, employment patterns, and commuting flows in a single application streamlines the data gathering phase of project development, allowing more time for analysis and decision-making.\n\nWant to contribute or suggest improvements? Visit the project repository at: https://github.com/ar-puuk/uscensus-dashboard"
+  },
+  {
+    "objectID": "research/articles/salt-lake-transit-equity-2023/index.html",
+    "href": "research/articles/salt-lake-transit-equity-2023/index.html",
+    "title": "Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, U.S.",
+    "section": "",
+    "text": "Addressing social equity in public transportation remains a key challenge for many cities and planning organizations. In this study, we examined social equity dimensions of accessibility to light rail transit (LRT) stations in Salt Lake County, U.S., by employing two novel methods. First, we used the two-step floating catchment area (2SFCA) method to examine the interactions between the demand and supply of the public transit service. Second, we developed geospatial models to account for spatial bias in transit equity analysis. Results showed little evidence of inequitable access to LRT stations in Salt Lake County. The accessibility to LRT stations appeared to be generally higher in the downtown and transit catchment areas with a higher concentration of low-income and ethnic minority populations. Furthermore, we found statistically significant associations between higher transit accessibility and households which are not homeowners, and/or do not own a private motor vehicle. Our findings suggest that transit investments in Salt Lake County could leverage substantial transportation accessibility opportunities to achieve an equitable and sustainable future."
+  },
+  {
+    "objectID": "research/articles/salt-lake-transit-equity-2023/index.html#abstract",
+    "href": "research/articles/salt-lake-transit-equity-2023/index.html#abstract",
+    "title": "Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, U.S.",
+    "section": "",
+    "text": "Addressing social equity in public transportation remains a key challenge for many cities and planning organizations. In this study, we examined social equity dimensions of accessibility to light rail transit (LRT) stations in Salt Lake County, U.S., by employing two novel methods. First, we used the two-step floating catchment area (2SFCA) method to examine the interactions between the demand and supply of the public transit service. Second, we developed geospatial models to account for spatial bias in transit equity analysis. Results showed little evidence of inequitable access to LRT stations in Salt Lake County. The accessibility to LRT stations appeared to be generally higher in the downtown and transit catchment areas with a higher concentration of low-income and ethnic minority populations. Furthermore, we found statistically significant associations between higher transit accessibility and households which are not homeowners, and/or do not own a private motor vehicle. Our findings suggest that transit investments in Salt Lake County could leverage substantial transportation accessibility opportunities to achieve an equitable and sustainable future."
+  },
+  {
+    "objectID": "research/articles/salt-lake-transit-equity-2023/index.html#key-findings",
+    "href": "research/articles/salt-lake-transit-equity-2023/index.html#key-findings",
+    "title": "Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, U.S.",
+    "section": "Key Findings",
+    "text": "Key Findings\n\nEquitable Transit Access: Found little evidence of inequitable access to light rail stations in Salt Lake County, with accessibility generally higher in areas with higher concentrations of low-income and ethnic minority populations\nVehicle Ownership Correlation: Discovered statistically significant positive associations between higher transit accessibility and households without private motor vehicles, suggesting the system serves those most dependent on public transit\nSpatial Clustering: Identified spatial clustering of accessibility around downtown Salt Lake City, University of Utah area, and southbound towards Murray and Sandy areas\nMethodological Innovation: Successfully applied the 2SFCA method and spatial regression models to transportation equity analysis, providing a more comprehensive approach than traditional methods"
+  },
+  {
+    "objectID": "research/articles/salt-lake-transit-equity-2023/index.html#research-context",
+    "href": "research/articles/salt-lake-transit-equity-2023/index.html#research-context",
+    "title": "Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, U.S.",
+    "section": "Research Context",
+    "text": "Research Context\nThis study addresses a critical gap in transit equity research by examining the UTA TRAX light rail system in Salt Lake County. With 12% of renter households and 2% of owner-occupied households having no car access, understanding the equitable distribution of transit infrastructure is crucial for transportation planning in the region."
+  },
+  {
+    "objectID": "research/articles/salt-lake-transit-equity-2023/index.html#methods-and-data",
+    "href": "research/articles/salt-lake-transit-equity-2023/index.html#methods-and-data",
+    "title": "Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, U.S.",
+    "section": "Methods and Data",
+    "text": "Methods and Data\nAnalytical Approach:\n\nTwo-Step Floating Catchment Area (2SFCA): Novel application to transportation planning to capture both supply and demand sides of accessibility\nSpatial Regression Models: Used Spatial Lag and Spatial Error models to account for spatial autocorrelation, addressing limitations of traditional OLS regression\n15-minute Walking Catchments: Defined service areas using network-based buffers around TRAX stations\n\nData Sources:\n\n2019 5-year American Community Survey (demographic data)\nUTA General Transit Feed Specification (GTFS) for service frequency\nUtah Geospatial Research Center for spatial transit data\nOpenRouteServices API for isochron buffer creation\n\nSocial Equity Indicators:\nEight comprehensive indicators including household income, race, ethnicity, age, employment, education, vehicle ownership, and homeownership status.\nTools Used:\n\nR (v4.2.1) with packages including tidyverse, tidycensus, and spatial analysis libraries\nQGIS (3.22.2) for geospatial analysis"
+  },
+  {
+    "objectID": "research/articles/salt-lake-transit-equity-2023/index.html#policy-implications",
+    "href": "research/articles/salt-lake-transit-equity-2023/index.html#policy-implications",
+    "title": "Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, U.S.",
+    "section": "Policy Implications",
+    "text": "Policy Implications\nThe findings suggest that Salt Lake County’s transit investments have achieved a relatively equitable distribution compared to similar studies in Chicago, Brisbane, Perth, and Auckland. This may be attributed to the long history of coordination among government agencies and the influence of historical streetcar networks on development patterns.\nThe research provides evidence that can inform future transit planning decisions and demonstrates the importance of using robust spatial analytical methods for equity assessments."
+  },
+  {
+    "objectID": "research/articles/salt-lake-transit-equity-2023/index.html#citation",
+    "href": "research/articles/salt-lake-transit-equity-2023/index.html#citation",
+    "title": "Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, U.S.",
+    "section": "Citation",
+    "text": "Citation\n@article{Zinia2023TransitEquity,\n    title = {Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, U.S.},\n    author = {Faria Afrin Zinia and Pukar Bhandari and Justice Prosper Tuffour and Andy Hong},\n    journal = {Transportation Research Record},\n    volume = {2677},\n    number = {12},\n    pages = {806--814},\n    year = {2023},\n    doi = {10.1177/03611981231170005},\n    url = {https://doi.org/10.1177/03611981231170005},\n    abstract = {Addressing social equity in public transportation remains a key challenge for many cities and planning organizations. In this study, we examined social equity dimensions of accessibility to light rail transit (LRT) stations in Salt Lake County, U.S., by employing two novel methods. First, we used the two-step floating catchment area (2SFCA) method to examine the interactions between the demand and supply of the public transit service. Second, we developed geospatial models to account for spatial bias in transit equity analysis. Results showed little evidence of inequitable access to LRT stations in Salt Lake County. The accessibility to LRT stations appeared to be generally higher in the downtown and transit catchment areas with a higher concentration of low-income and ethnic minority populations. Furthermore, we found statistically significant associations between higher transit accessibility and households which are not homeowners, and/or do not own a private motor vehicle. Our findings suggest that transit investments in Salt Lake County could leverage substantial transportation accessibility opportunities to achieve an equitable and sustainable future.}\n}"
   },
   {
     "objectID": "resume.html",

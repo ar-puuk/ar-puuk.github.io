@@ -174,3 +174,12 @@ details > summary {
 .tok-comment {
   color: $body-secondary !important;  // Uses your existing grey color
 }
+
+// Research page title visibility in dark mode
+.research .listing-pub-info p {
+  color: $pb-text-dark !important;  // Ensure cream text in dark mode
+}
+
+.research .project-description {
+  color: $body-secondary !important;  // Better muted color for dark mode
+}

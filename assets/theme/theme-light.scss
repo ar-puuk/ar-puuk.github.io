@@ -127,3 +127,8 @@ div.sourceCode {
     color: $pb-text-dark !important;  // Light text
   }
 }
+
+// Research page title visibility in light mode
+.research .listing-pub-info p {
+  color: $pb-text-light !important;  // Ensure dark text in light mode
+}

@@ -1,0 +1,111 @@
+---
+title: "Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, U.S."
+date: 2023-05-22
+author:
+  - name: Faria Afrin Zinia
+    email: faria.afrin.zinia@utah.edu
+    orcid: 0000-0001-6525-1968
+    affiliation: Department of City and Metropolitan Planning, University of Utah, Salt Lake City, UT
+  - name: Pukar Bhandari
+    email: pukar.bhandari@utah.edu
+    orcid: 0000-0002-1043-2937
+    affiliation: Department of City and Metropolitan Planning, University of Utah, Salt Lake City, UT
+  - name: Justice Prosper Tuffour
+    email: justice.tuffour@utah.edu
+    orcid: 0000-0001-8672-6854
+    affiliation: Department of City and Metropolitan Planning, University of Utah, Salt Lake City, UT
+  - name: Andy Hong
+    email: a.hong@utah.edu
+    orcid: 0000-0002-1295-1431
+    affiliation:
+      - Department of City and Metropolitan Planning, University of Utah, Salt Lake City, UT
+      - Healthy Aging and Resilient Places Lab, College of Architecture and Planning, University of Utah, Salt Lake City, UT
+categories:
+  - Transportation
+  - Accessibility
+  - Equity
+  - Data Analysis
+  - R
+  - Geospatial
+description: "This study examines social equity dimensions of accessibility to light rail transit stations in Salt Lake County using the Two-Step Floating Catchment Area method and spatial regression models, finding generally equitable access with higher accessibility for households without vehicles."
+pub-info:
+  reference: >-
+    Faria Afrin Zinia, <strong>Pukar Bhandari</strong>, Justice Prosper Tuffour, and Andy Hong, "Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, U.S.," <em>Transportation Research Record</em>, Vol. 2677, No. 12 (2023), pp. 806-814, doi: <a href="https://doi.org/10.1177/03611981231170005"><code>10.1177/03611981231170005</code></a>
+  links:
+    - name: Published version
+      url: https://doi.org/10.1177/03611981231170005
+      icon: fa-solid fa-scroll
+    - name: Pre-print
+      url: Zinia2023TransitEquity.pdf
+      icon: fa-solid fa-file-pdf
+      local: true
+    - name: Code & Data
+      url: https://github.com/ar-puuk/SLCo-Transit-Equity
+      icon: fa-brands fa-github
+    - name: Add to Zotero
+      url: https://www.zotero.org/save?type=doi&q=10.1177/03611981231170005
+      icon: ai ai-zotero
+doi: 10.1177/03611981231170005
+---
+
+## Abstract
+
+Addressing social equity in public transportation remains a key challenge for many cities and planning organizations. In this study, we examined social equity dimensions of accessibility to light rail transit (LRT) stations in Salt Lake County, U.S., by employing two novel methods. First, we used the two-step floating catchment area (2SFCA) method to examine the interactions between the demand and supply of the public transit service. Second, we developed geospatial models to account for spatial bias in transit equity analysis. Results showed little evidence of inequitable access to LRT stations in Salt Lake County. The accessibility to LRT stations appeared to be generally higher in the downtown and transit catchment areas with a higher concentration of low-income and ethnic minority populations. Furthermore, we found statistically significant associations between higher transit accessibility and households which are not homeowners, and/or do not own a private motor vehicle. Our findings suggest that transit investments in Salt Lake County could leverage substantial transportation accessibility opportunities to achieve an equitable and sustainable future.
+
+## Key Findings
+
+- **Equitable Transit Access**: Found little evidence of inequitable access to light rail stations in Salt Lake County, with accessibility generally higher in areas with higher concentrations of low-income and ethnic minority populations
+- **Vehicle Ownership Correlation**: Discovered statistically significant positive associations between higher transit accessibility and households without private motor vehicles, suggesting the system serves those most dependent on public transit
+- **Spatial Clustering**: Identified spatial clustering of accessibility around downtown Salt Lake City, University of Utah area, and southbound towards Murray and Sandy areas
+- **Methodological Innovation**: Successfully applied the 2SFCA method and spatial regression models to transportation equity analysis, providing a more comprehensive approach than traditional methods
+
+## Research Context
+
+This study addresses a critical gap in transit equity research by examining the UTA TRAX light rail system in Salt Lake County. With 12% of renter households and 2% of owner-occupied households having no car access, understanding the equitable distribution of transit infrastructure is crucial for transportation planning in the region.
+
+## Methods and Data
+
+**Analytical Approach:**
+
+- **Two-Step Floating Catchment Area (2SFCA)**: Novel application to transportation planning to capture both supply and demand sides of accessibility
+- **Spatial Regression Models**: Used Spatial Lag and Spatial Error models to account for spatial autocorrelation, addressing limitations of traditional OLS regression
+- **15-minute Walking Catchments**: Defined service areas using network-based buffers around TRAX stations
+
+**Data Sources:**
+
+- 2019 5-year American Community Survey (demographic data)
+- UTA General Transit Feed Specification (GTFS) for service frequency
+- Utah Geospatial Research Center for spatial transit data
+- OpenRouteServices API for isochron buffer creation
+
+**Social Equity Indicators:**
+
+Eight comprehensive indicators including household income, race, ethnicity, age, employment, education, vehicle ownership, and homeownership status.
+
+**Tools Used:**
+
+- R (v4.2.1) with packages including tidyverse, tidycensus, and spatial analysis libraries
+- QGIS (3.22.2) for geospatial analysis
+
+## Policy Implications
+
+The findings suggest that Salt Lake County's transit investments have achieved a relatively equitable distribution compared to similar studies in Chicago, Brisbane, Perth, and Auckland. This may be attributed to the long history of coordination among government agencies and the influence of historical streetcar networks on development patterns.
+
+The research provides evidence that can inform future transit planning decisions and demonstrates the importance of using robust spatial analytical methods for equity assessments.
+
+## Citation
+
+```bibtex
+@article{Zinia2023TransitEquity,
+    title = {Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, U.S.},
+    author = {Faria Afrin Zinia and Pukar Bhandari and Justice Prosper Tuffour and Andy Hong},
+    journal = {Transportation Research Record},
+    volume = {2677},
+    number = {12},
+    pages = {806--814},
+    year = {2023},
+    doi = {10.1177/03611981231170005},
+    url = {https://doi.org/10.1177/03611981231170005},
+    abstract = {Addressing social equity in public transportation remains a key challenge for many cities and planning organizations. In this study, we examined social equity dimensions of accessibility to light rail transit (LRT) stations in Salt Lake County, U.S., by employing two novel methods. First, we used the two-step floating catchment area (2SFCA) method to examine the interactions between the demand and supply of the public transit service. Second, we developed geospatial models to account for spatial bias in transit equity analysis. Results showed little evidence of inequitable access to LRT stations in Salt Lake County. The accessibility to LRT stations appeared to be generally higher in the downtown and transit catchment areas with a higher concentration of low-income and ethnic minority populations. Furthermore, we found statistically significant associations between higher transit accessibility and households which are not homeowners, and/or do not own a private motor vehicle. Our findings suggest that transit investments in Salt Lake County could leverage substantial transportation accessibility opportunities to achieve an equitable and sustainable future.}
+}
+```

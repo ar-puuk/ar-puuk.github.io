@@ -1,0 +1,45 @@
+---
+pagetitle: Research
+description: |
+  These are my research publications along with their accompanying materials.
+listing:
+  - id: articles
+    contents: "articles/*/index.qmd"
+    sort: "date desc"
+    template: ../assets/html/research-listing.ejs
+    categories: true
+  - id: working-papers
+    contents: "working-papers/*/index.qmd"
+    sort: "date desc"
+    template: ../assets/html/research-listing.ejs
+  - id: conference-presentations
+    contents: "presentations/*/index.qmd"
+    sort: "date desc"
+    template: ../assets/html/research-listing.ejs
+format:
+  html:
+    css: ../assets/css/research.css
+---
+
+My research focuses on transportation planning, data science, and geospatial analysis. I apply statistical methods and data visualization techniques to understand transportation systems, mobility patterns, and urban planning challenges.
+
+
+## Published Articles
+
+:::{#articles}
+:::
+
+
+## Working Papers
+
+:::{#working-papers}
+:::
+
+Coming soon.
+
+## Conference Presentations
+
+:::{#conference-presentations}
+:::
+
+Coming soon.

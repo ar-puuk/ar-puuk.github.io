@@ -44,7 +44,7 @@ website:
       - href: projects.qmd
         # icon: link-45deg
         text: Projects
-      - href: research.qmd
+      - href: research/index.qmd
         # icon: flask-fill
         text: Research
       - text: Socials
