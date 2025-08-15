@@ -51,7 +51,7 @@ The data is stored in cloud-optimized Parquet format on AWS S3, making it ideal 
 
 Before diving into the code, ensure you have the following dependencies installed:
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
 #### {{< fa brands r-project >}} R
 
@@ -75,7 +75,7 @@ pip install duckdb matplotlib geopandas pandas shapely folium pathlib
 
 First, we need to load our libraries and configure the environment for spatial data processing.
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
 #### {{< fa brands r-project >}} R
 
@@ -111,7 +111,7 @@ from pathlib import Path
 
 Overture data is organized by themes, and we need to map specific data types to their corresponding themes for proper S3 path construction.
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
 #### {{< fa brands r-project >}} R
 
@@ -159,7 +159,7 @@ THEME_MAP = {
 
 This function handles the DuckDB connection, S3 configuration, and spatial filtering to download only the data within your specified bounding box.
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
 #### {{< fa brands r-project >}} R
 
@@ -260,7 +260,7 @@ def overture_data(bbox, overture_type, dst_parquet):
 
 For spatial analysis, you need to define a bounding box for your area of interest. This can come from existing boundary data or manual coordinates.
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
 #### {{< fa brands r-project >}} R
 
@@ -295,7 +295,7 @@ bbox_example = (-74.02169, 40.696423, -73.891338, 40.831263)
 
 Now we can download specific data types for our study area. The function handles all the cloud connectivity and spatial filtering automatically.
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
 #### {{< fa brands r-project >}} R
 
@@ -329,7 +329,7 @@ overture_data(bbox_example, "segment", "nyc_roads_subset.parquet")
 
 After downloading, convert the Parquet files to spatial data formats for analysis and visualization.
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
 #### {{< fa brands r-project >}} R
 
@@ -373,7 +373,7 @@ print(manhattan_gdf.columns.tolist())
 
 Create quick visualizations to explore your downloaded data and verify the results.
 
-::: {.panel-tabset}
+::: {.panel-tabset group="language"}
 
 #### {{< fa brands r-project >}} R
 

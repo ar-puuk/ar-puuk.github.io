@@ -437,12 +437,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="prerequisites" class="level2" data-number="1.2"><h2 data-number="1.2" class="anchored" data-anchor-id="prerequisites">
 <span class="header-section-number">1.2</span> Prerequisites</h2>
 <p>Before diving into the code, ensure you have the following dependencies installed:</p>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true"><i class="fa-brands fa-r-project" aria-label="r-project"></i> R</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false"><i class="fa-brands fa-python" aria-label="python"></i> Python</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content" data-group="language">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Install required packages</span></span>
@@ -460,12 +460,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="setting-up-the-environment" class="level2" data-number="1.3"><h2 data-number="1.3" class="anchored" data-anchor-id="setting-up-the-environment">
 <span class="header-section-number">1.3</span> Setting Up the Environment</h2>
 <p>First, we need to load our libraries and configure the environment for spatial data processing.</p>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true"><i class="fa-brands fa-r-project" aria-label="r-project"></i> R</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false"><i class="fa-brands fa-python" aria-label="python"></i> Python</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content" data-group="language">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load required libraries</span></span>
@@ -497,12 +497,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="data-type-mapping" class="level2" data-number="1.4"><h2 data-number="1.4" class="anchored" data-anchor-id="data-type-mapping">
 <span class="header-section-number">1.4</span> Data Type Mapping</h2>
 <p>Overture data is organized by themes, and we need to map specific data types to their corresponding themes for proper S3 path construction.</p>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true"><i class="fa-brands fa-r-project" aria-label="r-project"></i> R</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false"><i class="fa-brands fa-python" aria-label="python"></i> Python</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content" data-group="language">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <div class="cell">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Define the theme map</span></span>
@@ -546,12 +546,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="core-download-function" class="level2" data-number="1.5"><h2 data-number="1.5" class="anchored" data-anchor-id="core-download-function">
 <span class="header-section-number">1.5</span> Core Download Function</h2>
 <p>This function handles the DuckDB connection, S3 configuration, and spatial filtering to download only the data within your specified bounding box.</p>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true"><i class="fa-brands fa-r-project" aria-label="r-project"></i> R</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false"><i class="fa-brands fa-python" aria-label="python"></i> Python</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content" data-group="language">
 <div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
 <div class="cell">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">overture_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">bbox</span>, <span class="va">overture_type</span>, <span class="va">dst_parquet</span><span class="op">)</span> <span class="op">{</span></span>
@@ -648,12 +648,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="defining-your-study-area" class="level2" data-number="1.6"><h2 data-number="1.6" class="anchored" data-anchor-id="defining-your-study-area">
 <span class="header-section-number">1.6</span> Defining Your Study Area</h2>
 <p>For spatial analysis, you need to define a bounding box for your area of interest. This can come from existing boundary data or manual coordinates.</p>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true"><i class="fa-brands fa-r-project" aria-label="r-project"></i> R</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false"><i class="fa-brands fa-python" aria-label="python"></i> Python</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content" data-group="language">
 <div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
 <div class="cell">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Read existing boundary data (example: Albany, NY)</span></span>
@@ -684,12 +684,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="downloading-the-data" class="level2" data-number="1.7"><h2 data-number="1.7" class="anchored" data-anchor-id="downloading-the-data">
 <span class="header-section-number">1.7</span> Downloading the Data</h2>
 <p>Now we can download specific data types for our study area. The function handles all the cloud connectivity and spatial filtering automatically.</p>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true"><i class="fa-brands fa-r-project" aria-label="r-project"></i> R</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false"><i class="fa-brands fa-python" aria-label="python"></i> Python</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content" data-group="language">
 <div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
 <div class="cell">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Download places data for Albany</span></span>
@@ -719,12 +719,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="processing-downloaded-data" class="level2" data-number="1.8"><h2 data-number="1.8" class="anchored" data-anchor-id="processing-downloaded-data">
 <span class="header-section-number">1.8</span> Processing Downloaded Data</h2>
 <p>After downloading, convert the Parquet files to spatial data formats for analysis and visualization.</p>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true"><i class="fa-brands fa-r-project" aria-label="r-project"></i> R</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false"><i class="fa-brands fa-python" aria-label="python"></i> Python</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content" data-group="language">
 <div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
 <div class="cell">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Read the downloaded Parquet file</span></span>
@@ -764,12 +764,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="data-visualization" class="level2" data-number="1.9"><h2 data-number="1.9" class="anchored" data-anchor-id="data-visualization">
 <span class="header-section-number">1.9</span> Data Visualization</h2>
 <p>Create quick visualizations to explore your downloaded data and verify the results.</p>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true"><i class="fa-brands fa-r-project" aria-label="r-project"></i> R</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false"><i class="fa-brands fa-python" aria-label="python"></i> Python</a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content" data-group="language">
 <div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
 <div class="cell">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Interactive map using tmap (equivalent to folium)</span></span>
@@ -1386,7 +1386,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a>Before diving into the code, ensure you have the following dependencies installed:</span>
 <span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset group="language"}</span>
 <span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-56"><a href="#cb17-56" aria-hidden="true" tabindex="-1"></a><span class="fu">#### {{&lt; fa brands r-project &gt;}} R</span></span>
 <span id="cb17-57"><a href="#cb17-57" aria-hidden="true" tabindex="-1"></a></span>
@@ -1410,7 +1410,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-79"><a href="#cb17-79" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-80"><a href="#cb17-80" aria-hidden="true" tabindex="-1"></a>First, we need to load our libraries and configure the environment for spatial data processing.</span>
 <span id="cb17-81"><a href="#cb17-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-82"><a href="#cb17-82" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb17-82"><a href="#cb17-82" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset group="language"}</span>
 <span id="cb17-83"><a href="#cb17-83" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-84"><a href="#cb17-84" aria-hidden="true" tabindex="-1"></a><span class="fu">#### {{&lt; fa brands r-project &gt;}} R</span></span>
 <span id="cb17-85"><a href="#cb17-85" aria-hidden="true" tabindex="-1"></a></span>
@@ -1446,7 +1446,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-119"><a href="#cb17-119" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-120"><a href="#cb17-120" aria-hidden="true" tabindex="-1"></a>Overture data is organized by themes, and we need to map specific data types to their corresponding themes for proper S3 path construction.</span>
 <span id="cb17-121"><a href="#cb17-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-122"><a href="#cb17-122" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb17-122"><a href="#cb17-122" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset group="language"}</span>
 <span id="cb17-123"><a href="#cb17-123" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-124"><a href="#cb17-124" aria-hidden="true" tabindex="-1"></a><span class="fu">#### {{&lt; fa brands r-project &gt;}} R</span></span>
 <span id="cb17-125"><a href="#cb17-125" aria-hidden="true" tabindex="-1"></a></span>
@@ -1494,7 +1494,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-171"><a href="#cb17-171" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-172"><a href="#cb17-172" aria-hidden="true" tabindex="-1"></a>This function handles the DuckDB connection, S3 configuration, and spatial filtering to download only the data within your specified bounding box.</span>
 <span id="cb17-173"><a href="#cb17-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-174"><a href="#cb17-174" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb17-174"><a href="#cb17-174" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset group="language"}</span>
 <span id="cb17-175"><a href="#cb17-175" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-176"><a href="#cb17-176" aria-hidden="true" tabindex="-1"></a><span class="fu">#### {{&lt; fa brands r-project &gt;}} R</span></span>
 <span id="cb17-177"><a href="#cb17-177" aria-hidden="true" tabindex="-1"></a></span>
@@ -1595,7 +1595,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-276"><a href="#cb17-276" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-277"><a href="#cb17-277" aria-hidden="true" tabindex="-1"></a>For spatial analysis, you need to define a bounding box for your area of interest. This can come from existing boundary data or manual coordinates.</span>
 <span id="cb17-278"><a href="#cb17-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-279"><a href="#cb17-279" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb17-279"><a href="#cb17-279" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset group="language"}</span>
 <span id="cb17-280"><a href="#cb17-280" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-281"><a href="#cb17-281" aria-hidden="true" tabindex="-1"></a><span class="fu">#### {{&lt; fa brands r-project &gt;}} R</span></span>
 <span id="cb17-282"><a href="#cb17-282" aria-hidden="true" tabindex="-1"></a></span>
@@ -1630,7 +1630,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-315"><a href="#cb17-315" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-316"><a href="#cb17-316" aria-hidden="true" tabindex="-1"></a>Now we can download specific data types for our study area. The function handles all the cloud connectivity and spatial filtering automatically.</span>
 <span id="cb17-317"><a href="#cb17-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-318"><a href="#cb17-318" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb17-318"><a href="#cb17-318" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset group="language"}</span>
 <span id="cb17-319"><a href="#cb17-319" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-320"><a href="#cb17-320" aria-hidden="true" tabindex="-1"></a><span class="fu">#### {{&lt; fa brands r-project &gt;}} R</span></span>
 <span id="cb17-321"><a href="#cb17-321" aria-hidden="true" tabindex="-1"></a></span>
@@ -1664,7 +1664,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-353"><a href="#cb17-353" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-354"><a href="#cb17-354" aria-hidden="true" tabindex="-1"></a>After downloading, convert the Parquet files to spatial data formats for analysis and visualization.</span>
 <span id="cb17-355"><a href="#cb17-355" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-356"><a href="#cb17-356" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb17-356"><a href="#cb17-356" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset group="language"}</span>
 <span id="cb17-357"><a href="#cb17-357" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-358"><a href="#cb17-358" aria-hidden="true" tabindex="-1"></a><span class="fu">#### {{&lt; fa brands r-project &gt;}} R</span></span>
 <span id="cb17-359"><a href="#cb17-359" aria-hidden="true" tabindex="-1"></a></span>
@@ -1708,7 +1708,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-401"><a href="#cb17-401" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-402"><a href="#cb17-402" aria-hidden="true" tabindex="-1"></a>Create quick visualizations to explore your downloaded data and verify the results.</span>
 <span id="cb17-403"><a href="#cb17-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-404"><a href="#cb17-404" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb17-404"><a href="#cb17-404" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset group="language"}</span>
 <span id="cb17-405"><a href="#cb17-405" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-406"><a href="#cb17-406" aria-hidden="true" tabindex="-1"></a><span class="fu">#### {{&lt; fa brands r-project &gt;}} R</span></span>
 <span id="cb17-407"><a href="#cb17-407" aria-hidden="true" tabindex="-1"></a></span>
