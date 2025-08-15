@@ -425,8 +425,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>
 <strong>Buildings</strong>: Footprints and building parts</li>
 <li>
-<strong>Transportation</strong>: Road segments and connectors<br>
-</li>
+<strong>Transportation</strong>: Road segments and connectors</li>
 <li>
 <strong>Places</strong>: Points of interest and place data</li>
 <li>
@@ -556,19 +555,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
 <div class="cell">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">overture_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">bbox</span>, <span class="va">overture_type</span>, <span class="va">dst_parquet</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  </span>
+<span></span>
 <span>  <span class="co"># Validate overture_type</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="va">overture_type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">map_themes</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Valid Overture types are:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">map_themes</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">", "</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
-<span>  </span>
+<span></span>
 <span>  <span class="co"># Configure S3 path</span></span>
 <span>  <span class="va">s3_region</span> <span class="op">&lt;-</span> <span class="st">"us-west-2"</span></span>
 <span>  <span class="va">base_url</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"s3://overturemaps-%s/release"</span>, <span class="va">s3_region</span><span class="op">)</span></span>
 <span>  <span class="va">version</span> <span class="op">&lt;-</span> <span class="st">"2024-04-16-beta.0"</span></span>
 <span>  <span class="va">theme</span> <span class="op">&lt;-</span> <span class="va">map_themes</span><span class="op">[[</span><span class="va">overture_type</span><span class="op">]</span><span class="op">]</span></span>
 <span>  <span class="va">remote_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"%s/%s/theme=%s/type=%s/*"</span>, <span class="va">base_url</span>, <span class="va">version</span>, <span class="va">theme</span>, <span class="va">overture_type</span><span class="op">)</span></span>
-<span>  </span>
+<span></span>
 <span>  <span class="co"># Connect to DuckDB and install extensions</span></span>
 <span>  <span class="va">conn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html">duckdb</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbExecute.html">dbExecute</a></span><span class="op">(</span><span class="va">conn</span>, <span class="st">"INSTALL httpfs;"</span><span class="op">)</span></span>
@@ -576,18 +575,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbExecute.html">dbExecute</a></span><span class="op">(</span><span class="va">conn</span>, <span class="st">"LOAD httpfs;"</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbExecute.html">dbExecute</a></span><span class="op">(</span><span class="va">conn</span>, <span class="st">"LOAD spatial;"</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbExecute.html">dbExecute</a></span><span class="op">(</span><span class="va">conn</span>, <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"SET s3_region='%s';"</span>, <span class="va">s3_region</span><span class="op">)</span><span class="op">)</span></span>
-<span>  </span>
+<span></span>
 <span>  <span class="co"># Create view and execute spatial query</span></span>
 <span>  <span class="va">read_parquet</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"read_parquet('%s', filename=TRUE, hive_partitioning=1);"</span>, <span class="va">remote_path</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbExecute.html">dbExecute</a></span><span class="op">(</span><span class="va">conn</span>, <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"CREATE OR REPLACE VIEW data_view AS SELECT * FROM %s"</span>, <span class="va">read_parquet</span><span class="op">)</span><span class="op">)</span></span>
-<span>  </span>
+<span></span>
 <span>  <span class="va">query</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"</span></span>
 <span><span class="st">    SELECT data.*</span></span>
-<span><span class="st">    FROM data_view AS data  </span></span>
+<span><span class="st">    FROM data_view AS data</span></span>
 <span><span class="st">    WHERE data.bbox.xmin &lt;= %f AND data.bbox.xmax &gt;= %f</span></span>
 <span><span class="st">    AND data.bbox.ymin &lt;= %f AND data.bbox.ymax &gt;= %f</span></span>
 <span><span class="st">  "</span>, <span class="va">bbox</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>, <span class="va">bbox</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
-<span>  </span>
+<span></span>
 <span>  <span class="co"># Save results to Parquet file</span></span>
 <span>  <span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span><span class="op">(</span><span class="va">dst_parquet</span>, mustWork <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbExecute.html">dbExecute</a></span><span class="op">(</span><span class="va">conn</span>, <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"COPY (%s) TO '%s' WITH (FORMAT 'parquet');"</span>, <span class="va">query</span>, <span class="va">file</span><span class="op">)</span><span class="op">)</span></span>
@@ -599,11 +598,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> overture_data(bbox, overture_type, dst_parquet):</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Query a subset of Overture's data and save it as a GeoParquet file.</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">    bbox : tuple</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">        A tuple of floats representing the bounding box (xmin, ymin, xmax, ymax) </span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">        A tuple of floats representing the bounding box (xmin, ymin, xmax, ymax)</span></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">        in EPSG:4326 coordinate reference system.</span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">    overture_type : str</span></span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">        The type of Overture data to query</span></span>
@@ -612,14 +611,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> overture_type <span class="kw">not</span> <span class="kw">in</span> THEME_MAP:</span>
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"Valid Overture types are: </span><span class="sc">{</span><span class="bu">list</span>(THEME_MAP)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Configure S3 connection</span></span>
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    s3_region <span class="op">=</span> <span class="st">"us-west-2"</span></span>
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    base_url <span class="op">=</span> <span class="ss">f"s3://overturemaps-</span><span class="sc">{</span>s3_region<span class="sc">}</span><span class="ss">/release"</span></span>
 <span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    version <span class="op">=</span> <span class="st">"2024-04-16-beta.0"</span></span>
 <span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    theme <span class="op">=</span> THEME_MAP[overture_type]</span>
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    remote_path <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>base_url<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>version<span class="sc">}</span><span class="ss">/theme=</span><span class="sc">{</span>theme<span class="sc">}</span><span class="ss">/type=</span><span class="sc">{</span>overture_type<span class="sc">}</span><span class="ss">/*"</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Setup DuckDB with spatial extensions</span></span>
 <span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    conn <span class="op">=</span> duckdb.<span class="ex">connect</span>()</span>
 <span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    conn.execute(<span class="st">"INSTALL httpfs;"</span>)</span>
@@ -627,18 +626,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    conn.execute(<span class="st">"LOAD httpfs;"</span>)</span>
 <span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    conn.execute(<span class="st">"LOAD spatial;"</span>)</span>
 <span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    conn.execute(<span class="ss">f"SET s3_region='</span><span class="sc">{</span>s3_region<span class="sc">}</span><span class="ss">';"</span>)</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Execute spatial query</span></span>
 <span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    read_parquet <span class="op">=</span> <span class="ss">f"read_parquet('</span><span class="sc">{</span>remote_path<span class="sc">}</span><span class="ss">', filename=true, hive_partitioning=1);"</span></span>
 <span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    conn.execute(<span class="ss">f"CREATE OR REPLACE VIEW data_view AS SELECT * FROM </span><span class="sc">{</span>read_parquet<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>    query <span class="op">=</span> <span class="ss">f"""</span></span>
 <span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="ss">    SELECT data.*</span></span>
 <span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="ss">    FROM data_view AS data</span></span>
 <span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a><span class="ss">    WHERE data.bbox.xmin &lt;= </span><span class="sc">{</span>bbox[<span class="dv">2</span>]<span class="sc">}</span><span class="ss"> AND data.bbox.xmax &gt;= </span><span class="sc">{</span>bbox[<span class="dv">0</span>]<span class="sc">}</span></span>
 <span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a><span class="ss">    AND data.bbox.ymin &lt;= </span><span class="sc">{</span>bbox[<span class="dv">3</span>]<span class="sc">}</span><span class="ss"> AND data.bbox.ymax &gt;= </span><span class="sc">{</span>bbox[<span class="dv">1</span>]<span class="sc">}</span></span>
 <span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="ss">    """</span></span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">file</span> <span class="op">=</span> <span class="bu">str</span>(Path(dst_parquet).resolve())</span>
 <span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>    conn.execute(<span class="ss">f"COPY (</span><span class="sc">{</span>query<span class="sc">}</span><span class="ss">) TO '</span><span class="sc">{</span><span class="bu">file</span><span class="sc">}</span><span class="ss">' WITH (FORMAT PARQUET);"</span>)</span>
 <span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    conn.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1376,7 +1375,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>Overture Maps is an open-source mapping initiative that provides global-scale geospatial data across four main themes:</span>
 <span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Buildings**: Footprints and building parts</span>
-<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Transportation**: Road segments and connectors  </span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Transportation**: Road segments and connectors</span>
 <span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Places**: Points of interest and place data</span>
 <span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Admins**: Administrative boundaries and localities</span>
 <span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Base**: Infrastructure, land use, land cover, and water features</span>
@@ -1501,19 +1500,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-177"><a href="#cb17-177" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-180"><a href="#cb17-180" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb17-181"><a href="#cb17-181" aria-hidden="true" tabindex="-1"></a>overture_data <span class="ot">&lt;-</span> <span class="cf">function</span>(bbox, overture_type, dst_parquet) {</span>
-<span id="cb17-182"><a href="#cb17-182" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-182"><a href="#cb17-182" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-183"><a href="#cb17-183" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Validate overture_type</span></span>
 <span id="cb17-184"><a href="#cb17-184" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span>overture_type <span class="sc">%in%</span> <span class="fu">names</span>(map_themes)) {</span>
 <span id="cb17-185"><a href="#cb17-185" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="fu">paste</span>(<span class="st">"Valid Overture types are:"</span>, <span class="fu">paste</span>(<span class="fu">names</span>(map_themes), <span class="at">collapse =</span> <span class="st">", "</span>)))</span>
 <span id="cb17-186"><a href="#cb17-186" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb17-187"><a href="#cb17-187" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-187"><a href="#cb17-187" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-188"><a href="#cb17-188" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Configure S3 path</span></span>
 <span id="cb17-189"><a href="#cb17-189" aria-hidden="true" tabindex="-1"></a>  s3_region <span class="ot">&lt;-</span> <span class="st">"us-west-2"</span></span>
 <span id="cb17-190"><a href="#cb17-190" aria-hidden="true" tabindex="-1"></a>  base_url <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"s3://overturemaps-%s/release"</span>, s3_region)</span>
 <span id="cb17-191"><a href="#cb17-191" aria-hidden="true" tabindex="-1"></a>  version <span class="ot">&lt;-</span> <span class="st">"2024-04-16-beta.0"</span></span>
 <span id="cb17-192"><a href="#cb17-192" aria-hidden="true" tabindex="-1"></a>  theme <span class="ot">&lt;-</span> map_themes[[overture_type]]</span>
 <span id="cb17-193"><a href="#cb17-193" aria-hidden="true" tabindex="-1"></a>  remote_path <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"%s/%s/theme=%s/type=%s/*"</span>, base_url, version, theme, overture_type)</span>
-<span id="cb17-194"><a href="#cb17-194" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-194"><a href="#cb17-194" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-195"><a href="#cb17-195" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Connect to DuckDB and install extensions</span></span>
 <span id="cb17-196"><a href="#cb17-196" aria-hidden="true" tabindex="-1"></a>  conn <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(duckdb<span class="sc">::</span><span class="fu">duckdb</span>())</span>
 <span id="cb17-197"><a href="#cb17-197" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dbExecute</span>(conn, <span class="st">"INSTALL httpfs;"</span>)</span>
@@ -1521,18 +1520,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-199"><a href="#cb17-199" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dbExecute</span>(conn, <span class="st">"LOAD httpfs;"</span>)</span>
 <span id="cb17-200"><a href="#cb17-200" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dbExecute</span>(conn, <span class="st">"LOAD spatial;"</span>)</span>
 <span id="cb17-201"><a href="#cb17-201" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dbExecute</span>(conn, <span class="fu">sprintf</span>(<span class="st">"SET s3_region='%s';"</span>, s3_region))</span>
-<span id="cb17-202"><a href="#cb17-202" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-202"><a href="#cb17-202" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-203"><a href="#cb17-203" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create view and execute spatial query</span></span>
 <span id="cb17-204"><a href="#cb17-204" aria-hidden="true" tabindex="-1"></a>  read_parquet <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"read_parquet('%s', filename=TRUE, hive_partitioning=1);"</span>, remote_path)</span>
 <span id="cb17-205"><a href="#cb17-205" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dbExecute</span>(conn, <span class="fu">sprintf</span>(<span class="st">"CREATE OR REPLACE VIEW data_view AS SELECT * FROM %s"</span>, read_parquet))</span>
-<span id="cb17-206"><a href="#cb17-206" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-206"><a href="#cb17-206" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-207"><a href="#cb17-207" aria-hidden="true" tabindex="-1"></a>  query <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"</span></span>
 <span id="cb17-208"><a href="#cb17-208" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT data.*</span></span>
-<span id="cb17-209"><a href="#cb17-209" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM data_view AS data  </span></span>
+<span id="cb17-209"><a href="#cb17-209" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM data_view AS data</span></span>
 <span id="cb17-210"><a href="#cb17-210" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE data.bbox.xmin &lt;= %f AND data.bbox.xmax &gt;= %f</span></span>
 <span id="cb17-211"><a href="#cb17-211" aria-hidden="true" tabindex="-1"></a><span class="st">    AND data.bbox.ymin &lt;= %f AND data.bbox.ymax &gt;= %f</span></span>
 <span id="cb17-212"><a href="#cb17-212" aria-hidden="true" tabindex="-1"></a><span class="st">  "</span>, bbox[<span class="dv">3</span>], bbox[<span class="dv">1</span>], bbox[<span class="dv">4</span>], bbox[<span class="dv">2</span>])</span>
-<span id="cb17-213"><a href="#cb17-213" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-213"><a href="#cb17-213" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-214"><a href="#cb17-214" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Save results to Parquet file</span></span>
 <span id="cb17-215"><a href="#cb17-215" aria-hidden="true" tabindex="-1"></a>  file <span class="ot">&lt;-</span> <span class="fu">normalizePath</span>(dst_parquet, <span class="at">mustWork =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb17-216"><a href="#cb17-216" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dbExecute</span>(conn, <span class="fu">sprintf</span>(<span class="st">"COPY (%s) TO '%s' WITH (FORMAT 'parquet');"</span>, query, file))</span>
@@ -1545,11 +1544,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-225"><a href="#cb17-225" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
 <span id="cb17-226"><a href="#cb17-226" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> overture_data(bbox, overture_type, dst_parquet):</span>
 <span id="cb17-227"><a href="#cb17-227" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Query a subset of Overture's data and save it as a GeoParquet file.</span></span>
-<span id="cb17-228"><a href="#cb17-228" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb17-228"><a href="#cb17-228" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-229"><a href="#cb17-229" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
 <span id="cb17-230"><a href="#cb17-230" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
 <span id="cb17-231"><a href="#cb17-231" aria-hidden="true" tabindex="-1"></a><span class="co">    bbox : tuple</span></span>
-<span id="cb17-232"><a href="#cb17-232" aria-hidden="true" tabindex="-1"></a><span class="co">        A tuple of floats representing the bounding box (xmin, ymin, xmax, ymax) </span></span>
+<span id="cb17-232"><a href="#cb17-232" aria-hidden="true" tabindex="-1"></a><span class="co">        A tuple of floats representing the bounding box (xmin, ymin, xmax, ymax)</span></span>
 <span id="cb17-233"><a href="#cb17-233" aria-hidden="true" tabindex="-1"></a><span class="co">        in EPSG:4326 coordinate reference system.</span></span>
 <span id="cb17-234"><a href="#cb17-234" aria-hidden="true" tabindex="-1"></a><span class="co">    overture_type : str</span></span>
 <span id="cb17-235"><a href="#cb17-235" aria-hidden="true" tabindex="-1"></a><span class="co">        The type of Overture data to query</span></span>
@@ -1558,14 +1557,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-238"><a href="#cb17-238" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
 <span id="cb17-239"><a href="#cb17-239" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> overture_type <span class="kw">not</span> <span class="kw">in</span> THEME_MAP:</span>
 <span id="cb17-240"><a href="#cb17-240" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"Valid Overture types are: </span><span class="sc">{</span><span class="bu">list</span>(THEME_MAP)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb17-241"><a href="#cb17-241" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-241"><a href="#cb17-241" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-242"><a href="#cb17-242" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Configure S3 connection</span></span>
 <span id="cb17-243"><a href="#cb17-243" aria-hidden="true" tabindex="-1"></a>    s3_region <span class="op">=</span> <span class="st">"us-west-2"</span></span>
 <span id="cb17-244"><a href="#cb17-244" aria-hidden="true" tabindex="-1"></a>    base_url <span class="op">=</span> <span class="ss">f"s3://overturemaps-</span><span class="sc">{</span>s3_region<span class="sc">}</span><span class="ss">/release"</span></span>
 <span id="cb17-245"><a href="#cb17-245" aria-hidden="true" tabindex="-1"></a>    version <span class="op">=</span> <span class="st">"2024-04-16-beta.0"</span></span>
 <span id="cb17-246"><a href="#cb17-246" aria-hidden="true" tabindex="-1"></a>    theme <span class="op">=</span> THEME_MAP[overture_type]</span>
 <span id="cb17-247"><a href="#cb17-247" aria-hidden="true" tabindex="-1"></a>    remote_path <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>base_url<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>version<span class="sc">}</span><span class="ss">/theme=</span><span class="sc">{</span>theme<span class="sc">}</span><span class="ss">/type=</span><span class="sc">{</span>overture_type<span class="sc">}</span><span class="ss">/*"</span></span>
-<span id="cb17-248"><a href="#cb17-248" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-248"><a href="#cb17-248" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-249"><a href="#cb17-249" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Setup DuckDB with spatial extensions</span></span>
 <span id="cb17-250"><a href="#cb17-250" aria-hidden="true" tabindex="-1"></a>    conn <span class="op">=</span> duckdb.<span class="ex">connect</span>()</span>
 <span id="cb17-251"><a href="#cb17-251" aria-hidden="true" tabindex="-1"></a>    conn.execute(<span class="st">"INSTALL httpfs;"</span>)</span>
@@ -1573,18 +1572,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-253"><a href="#cb17-253" aria-hidden="true" tabindex="-1"></a>    conn.execute(<span class="st">"LOAD httpfs;"</span>)</span>
 <span id="cb17-254"><a href="#cb17-254" aria-hidden="true" tabindex="-1"></a>    conn.execute(<span class="st">"LOAD spatial;"</span>)</span>
 <span id="cb17-255"><a href="#cb17-255" aria-hidden="true" tabindex="-1"></a>    conn.execute(<span class="ss">f"SET s3_region='</span><span class="sc">{</span>s3_region<span class="sc">}</span><span class="ss">';"</span>)</span>
-<span id="cb17-256"><a href="#cb17-256" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-256"><a href="#cb17-256" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-257"><a href="#cb17-257" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Execute spatial query</span></span>
 <span id="cb17-258"><a href="#cb17-258" aria-hidden="true" tabindex="-1"></a>    read_parquet <span class="op">=</span> <span class="ss">f"read_parquet('</span><span class="sc">{</span>remote_path<span class="sc">}</span><span class="ss">', filename=true, hive_partitioning=1);"</span></span>
 <span id="cb17-259"><a href="#cb17-259" aria-hidden="true" tabindex="-1"></a>    conn.execute(<span class="ss">f"CREATE OR REPLACE VIEW data_view AS SELECT * FROM </span><span class="sc">{</span>read_parquet<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb17-260"><a href="#cb17-260" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-260"><a href="#cb17-260" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-261"><a href="#cb17-261" aria-hidden="true" tabindex="-1"></a>    query <span class="op">=</span> <span class="ss">f"""</span></span>
 <span id="cb17-262"><a href="#cb17-262" aria-hidden="true" tabindex="-1"></a><span class="ss">    SELECT data.*</span></span>
 <span id="cb17-263"><a href="#cb17-263" aria-hidden="true" tabindex="-1"></a><span class="ss">    FROM data_view AS data</span></span>
 <span id="cb17-264"><a href="#cb17-264" aria-hidden="true" tabindex="-1"></a><span class="ss">    WHERE data.bbox.xmin &lt;= </span><span class="sc">{</span>bbox[<span class="dv">2</span>]<span class="sc">}</span><span class="ss"> AND data.bbox.xmax &gt;= </span><span class="sc">{</span>bbox[<span class="dv">0</span>]<span class="sc">}</span></span>
 <span id="cb17-265"><a href="#cb17-265" aria-hidden="true" tabindex="-1"></a><span class="ss">    AND data.bbox.ymin &lt;= </span><span class="sc">{</span>bbox[<span class="dv">3</span>]<span class="sc">}</span><span class="ss"> AND data.bbox.ymax &gt;= </span><span class="sc">{</span>bbox[<span class="dv">1</span>]<span class="sc">}</span></span>
 <span id="cb17-266"><a href="#cb17-266" aria-hidden="true" tabindex="-1"></a><span class="ss">    """</span></span>
-<span id="cb17-267"><a href="#cb17-267" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb17-267"><a href="#cb17-267" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-268"><a href="#cb17-268" aria-hidden="true" tabindex="-1"></a>    <span class="bu">file</span> <span class="op">=</span> <span class="bu">str</span>(Path(dst_parquet).resolve())</span>
 <span id="cb17-269"><a href="#cb17-269" aria-hidden="true" tabindex="-1"></a>    conn.execute(<span class="ss">f"COPY (</span><span class="sc">{</span>query<span class="sc">}</span><span class="ss">) TO '</span><span class="sc">{</span><span class="bu">file</span><span class="sc">}</span><span class="ss">' WITH (FORMAT PARQUET);"</span>)</span>
 <span id="cb17-270"><a href="#cb17-270" aria-hidden="true" tabindex="-1"></a>    conn.close()</span>

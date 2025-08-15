@@ -30,7 +30,7 @@ monofont: "Fira Code"
 css: assets/css/index.css
 include-in-header:
   - _includes/preload-fonts.html
-draft: true
+draft: false
 ---
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}

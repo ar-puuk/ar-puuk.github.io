@@ -40,7 +40,7 @@ Overture Maps Foundation provides a collaborative, open-source initiative to cre
 Overture Maps is an open-source mapping initiative that provides global-scale geospatial data across four main themes:
 
 - **Buildings**: Footprints and building parts
-- **Transportation**: Road segments and connectors  
+- **Transportation**: Road segments and connectors
 - **Places**: Points of interest and place data
 - **Admins**: Administrative boundaries and localities
 - **Base**: Infrastructure, land use, land cover, and water features
@@ -165,19 +165,19 @@ This function handles the DuckDB connection, S3 configuration, and spatial filte
 
 ```{r}
 overture_data <- function(bbox, overture_type, dst_parquet) {
-  
+
   # Validate overture_type
   if (!overture_type %in% names(map_themes)) {
     stop(paste("Valid Overture types are:", paste(names(map_themes), collapse = ", ")))
   }
-  
+
   # Configure S3 path
   s3_region <- "us-west-2"
   base_url <- sprintf("s3://overturemaps-%s/release", s3_region)
   version <- "2024-04-16-beta.0"
   theme <- map_themes[[overture_type]]
   remote_path <- sprintf("%s/%s/theme=%s/type=%s/*", base_url, version, theme, overture_type)
-  
+
   # Connect to DuckDB and install extensions
   conn <- dbConnect(duckdb::duckdb())
   dbExecute(conn, "INSTALL httpfs;")
@@ -185,18 +185,18 @@ overture_data <- function(bbox, overture_type, dst_parquet) {
   dbExecute(conn, "LOAD httpfs;")
   dbExecute(conn, "LOAD spatial;")
   dbExecute(conn, sprintf("SET s3_region='%s';", s3_region))
-  
+
   # Create view and execute spatial query
   read_parquet <- sprintf("read_parquet('%s', filename=TRUE, hive_partitioning=1);", remote_path)
   dbExecute(conn, sprintf("CREATE OR REPLACE VIEW data_view AS SELECT * FROM %s", read_parquet))
-  
+
   query <- sprintf("
     SELECT data.*
-    FROM data_view AS data  
+    FROM data_view AS data
     WHERE data.bbox.xmin <= %f AND data.bbox.xmax >= %f
     AND data.bbox.ymin <= %f AND data.bbox.ymax >= %f
   ", bbox[3], bbox[1], bbox[4], bbox[2])
-  
+
   # Save results to Parquet file
   file <- normalizePath(dst_parquet, mustWork = FALSE)
   dbExecute(conn, sprintf("COPY (%s) TO '%s' WITH (FORMAT 'parquet');", query, file))
@@ -209,11 +209,11 @@ overture_data <- function(bbox, overture_type, dst_parquet) {
 ```{python}
 def overture_data(bbox, overture_type, dst_parquet):
     """Query a subset of Overture's data and save it as a GeoParquet file.
-    
+
     Parameters
     ----------
     bbox : tuple
-        A tuple of floats representing the bounding box (xmin, ymin, xmax, ymax) 
+        A tuple of floats representing the bounding box (xmin, ymin, xmax, ymax)
         in EPSG:4326 coordinate reference system.
     overture_type : str
         The type of Overture data to query
@@ -222,14 +222,14 @@ def overture_data(bbox, overture_type, dst_parquet):
     """
     if overture_type not in THEME_MAP:
         raise ValueError(f"Valid Overture types are: {list(THEME_MAP)}")
-    
+
     # Configure S3 connection
     s3_region = "us-west-2"
     base_url = f"s3://overturemaps-{s3_region}/release"
     version = "2024-04-16-beta.0"
     theme = THEME_MAP[overture_type]
     remote_path = f"{base_url}/{version}/theme={theme}/type={overture_type}/*"
-    
+
     # Setup DuckDB with spatial extensions
     conn = duckdb.connect()
     conn.execute("INSTALL httpfs;")
@@ -237,18 +237,18 @@ def overture_data(bbox, overture_type, dst_parquet):
     conn.execute("LOAD httpfs;")
     conn.execute("LOAD spatial;")
     conn.execute(f"SET s3_region='{s3_region}';")
-    
+
     # Execute spatial query
     read_parquet = f"read_parquet('{remote_path}', filename=true, hive_partitioning=1);"
     conn.execute(f"CREATE OR REPLACE VIEW data_view AS SELECT * FROM {read_parquet}")
-    
+
     query = f"""
     SELECT data.*
     FROM data_view AS data
     WHERE data.bbox.xmin <= {bbox[2]} AND data.bbox.xmax >= {bbox[0]}
     AND data.bbox.ymin <= {bbox[3]} AND data.bbox.ymax >= {bbox[1]}
     """
-    
+
     file = str(Path(dst_parquet).resolve())
     conn.execute(f"COPY ({query}) TO '{file}' WITH (FORMAT PARQUET);")
     conn.close()
