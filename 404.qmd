@@ -39,7 +39,9 @@ include-in-header:
 
 # {{< fa road-barrier >}}  Under Construction!  {{< fa road-barrier >}}
 
-**Uh-oh — the page you are looking for didn’t survive the latest round of funding cuts.** Try using the {{< fa magnifying-glass >}} **search button** at the top of the page or <a href="https://www.google.com/search?q=site%3ar-puuk.github.io" target="_blank">searching on Google.</a>
+**Uh-oh — the page you are looking for didn’t survive the latest round of funding cuts.** Try using the <a href="#" onclick="document.querySelector('#quarto-search .aa-DetachedSearchButton').click(); return false;">
+ {{< fa magnifying-glass >}}
+</a> **search button** at the top of the page or <a href="https://www.google.com/search?q=site%3Aar-puuk.github.io" target="_blank">searching on Google.</a>
 
 **While we wait for the public comment period, why not test your Transportation & Data Science smarts?** It’s more fun than hitting the <a href="javascript:history.back()">back</a> button. Probably.
 
