@@ -49,3 +49,4 @@ knitr:
 
 citation: true
 page-navigation: true
+margin-header: ../subscribe.html
