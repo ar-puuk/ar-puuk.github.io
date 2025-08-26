@@ -120,6 +120,11 @@ pre code {
   }
 }
 
+// Navbar background
+.navbar {
+  background-color: $pb-bg-0-dark !important;  // #0E171E (dark navy background)
+}
+
 // Listing cards
 .card {
   background: $pb-bg-1-dark !important;

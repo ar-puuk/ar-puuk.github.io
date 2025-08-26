@@ -44,8 +44,20 @@
 }
 
 // Navbar (common styling)
+// .navbar {
+//   background: transparent;
+// }
+//
+// Navigation positioning
+// .fixed-top {
+//   position: absolute;
+// }
+
 .navbar {
-  background: transparent;
+  // Use page background color instead of transparent
+  background-color: var(--bs-body-bg) !important;
+  // Ensure it stays on top
+  z-index: 1030;
 }
 
 .navbar-nav .nav-link {
@@ -102,10 +114,7 @@
   box-shadow: inset 0 0 0 1000px rgba(0,38,66,0.75);
 }
 
-// Navigation positioning
-.fixed-top {
-  position: absolute;
-}
+
 
 .aa-DetachedOverlay {
   position: absolute;

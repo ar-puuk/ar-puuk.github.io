@@ -1,6 +1,7 @@
 ---
 title: "Base Year SE Data Development"
 subtitle: Lower Savannah Council of Governments (LSCOG) 2050 Long Range Transportation Plan
+image: "lscog_taz.png"
 author:
   - name: Pukar Bhandari
     email: pbhandari@metroanalytics.com
