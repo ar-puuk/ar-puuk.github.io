@@ -12,7 +12,7 @@ website:
   repo-actions: [source, issue]
 
   # page-navigation: false
-  back-to-top-navigation: false
+  # back-to-top-navigation: false
   # margin-header: subscribe.html
 
   # announcement:
