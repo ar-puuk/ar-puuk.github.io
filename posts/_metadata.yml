@@ -49,4 +49,8 @@ knitr:
 
 citation: true
 page-navigation: true
-margin-header: ../subscribe.html
+
+website:
+  repo-url: "https://github.com/ar-puuk/ar-puuk.github.io/docs"
+  repo-actions: [source, issue]
+  margin-header: ../subscribe.html
