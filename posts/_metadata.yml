@@ -46,3 +46,6 @@ engine: knitr
 knitr:
   opts_chunk:
     dev: ragg_png
+
+citation: true
+page-navigation: true
