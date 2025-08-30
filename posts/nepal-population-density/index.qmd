@@ -434,11 +434,3 @@ The methodology is transferable to other geographic contexts and can be adapted 
 ------------------------------------------------------------------------
 
 *Want to contribute or suggest improvements? Visit the project repository at:* <https://github.com/ar-puuk/Population-Density-Maps>
-
-```{r}
-grid::grid.text(
-  "Nepal",
-  gp = grid::gpar(fontfamily = "Ananda Namaste", fontsize = 30)
-)
-```
-
