@@ -117,3 +117,7 @@ format:
     css: assets/css/index.css
     include-in-header:
       - _includes/preload-fonts.html
+
+# freeze computational output
+# (see https://quarto.org/docs/projects/code-execution.html#freeze)
+freeze: auto

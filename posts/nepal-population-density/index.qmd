@@ -9,7 +9,8 @@ date: "2023-01-03"
 categories: [R, GIS, Data Science]
 draft: false
 execute:
-  eval: false
+  eval: true
+  # root.dir: !expr here::here("posts", "nepal-population-density")
 ---
 
 ## Project Overview
@@ -30,7 +31,7 @@ This analysis demonstrates advanced geospatial visualization techniques using R'
 #| code-summary: "Package Installation (Run Once)"
 
 # Core packages for geospatial analysis
-install.packages(c("tidyverse", "sf", "tmap", "ggplot2", "mapview", "stars"))
+install.packages(c("tidyverse", "here", "sf", "tmap", "ggplot2", "mapview", "stars"))
 
 # Visualization packages
 install.packages(c("rayshader", "MetBrewer", "colorspace", "rayrender", "magick"))
@@ -40,12 +41,12 @@ install.packages("extrafont")
 ```
 
 ```{r libraries}
-#| eval: false
 #| message: false
 #| warning: false
 
 # Load required libraries
 library(tidyverse)
+library(here)
 library(sf)
 library(tmap)
 library(ggplot2)
@@ -60,12 +61,10 @@ library(extrafont)
 ```
 
 ```{r global-options}
-#| eval: false
-
 # Configure 3D rendering
 options(rgl.useNULL = FALSE)
 
-project_crs <- "ESRI:102306"
+project_crs <- "EPSG:6207"
 ```
 
 ## Data Acquisition and Loading
@@ -74,27 +73,29 @@ project_crs <- "ESRI:102306"
 
 The analysis utilizes high-resolution population data from Kontur, provided in H3 hexagonal grid format at 400-meter resolution. This dataset offers superior granularity compared to traditional administrative boundary-based population estimates.
 
-```{r load-data}
-#| eval: false
-
+```{r load-population-data}
 # Load population data (H3 hexagons at 400m resolution)
 nep_hex <- sf::st_read(
   paste0(
-    "/vsizip/",
-    "data/kontur_population_NP_20220630.gpkg.gz/kontur_population_NP_20220630.gpkg"
+    "/vsigzip/",
+    here::here("posts/nepal-population-density/data/kontur_population_NP_20220630.gpkg.gz")
   )
 ) |>
   sf::st_transform(project_crs)
+```
 
+```{r load-boundary-data}
 # Load administrative boundaries
 nep_admin <- sf::st_read(
   paste0(
-    "/vsizip/",
-    "data/kontur_boundaries_NP_20220407.gpkg.gz/kontur_boundaries_NP_20220407.gpkg"
+    "/vsigzip/",
+    here::here("posts/nepal-population-density/data/kontur_boundaries_NP_20220407.gpkg.gz")
   )
 ) |>
   sf::st_transform(project_crs)
+```
 
+```{r national-boundary}
 # Create unified Nepal boundary
 nepal_boundary <- nep_admin |>
   sf::st_geometry() |>
@@ -115,15 +116,14 @@ nepal_boundary <- nep_admin |>
 ### Initial Data Exploration
 
 ```{r data-exploration}
-#| eval: false
 
 # Preliminary visualization to verify data quality
-ggplot(nep_hex) + 
-  geom_sf(aes(fill = population), color = "gray66", linewidth = 0) +
-  geom_sf(data = nepal_boundary, fill = NA, color = "black", 
+ggplot2::ggplot(nep_hex) +
+  ggplot2::geom_sf(ggplot2::aes(fill = population), color = "gray66", linewidth = 0) +
+  ggplot2::geom_sf(data = nepal_boundary, fill = NA, color = "black",
           linetype = "dashed", linewidth = 1) +
-  theme_minimal() +
-  labs(title = "Nepal Population Distribution",
+  ggplot2::theme_minimal() +
+  ggplot2::labs(title = "Nepal Population Distribution",
        fill = "Population")
 ```
 
@@ -132,22 +132,20 @@ ggplot(nep_hex) +
 The conversion from vector hexagon data to raster format is essential for rayshader's 3D rendering capabilities. This process involves calculating optimal dimensions while preserving the geographic aspect ratio.
 
 ```{r raster-conversion}
-#| eval: false
-
 # Calculate bounding box and aspect ratio
-bbox <- st_bbox(nepal_boundary)
+bbox <- sf::st_bbox(nepal_boundary)
 
 # Define corner points for aspect ratio calculation
-bottom_left <- st_point(c(bbox[["xmin"]], bbox[["ymin"]])) |>
-  st_sfc(crs = 6207)
-bottom_right <- st_point(c(bbox[["xmax"]], bbox[["ymin"]])) |>
-  st_sfc(crs = 6207)
-top_left <- st_point(c(bbox[["xmin"]], bbox[["ymax"]])) |>
-  st_sfc(crs = 6207)
+bottom_left <- sf::st_point(c(bbox[["xmin"]], bbox[["ymin"]])) |>
+  sf::st_sfc(crs = project_crs)
+bottom_right <- sf::st_point(c(bbox[["xmax"]], bbox[["ymin"]])) |>
+  sf::st_sfc(crs = project_crs)
+top_left <- sf::st_point(c(bbox[["xmin"]], bbox[["ymax"]])) |>
+  sf::st_sfc(crs = project_crs)
 
 # Calculate dimensions
-width <- st_distance(bottom_left, bottom_right)
-height <- st_distance(bottom_left, top_left)
+width <- sf::st_distance(bottom_left, bottom_right)
+height <- sf::st_distance(bottom_left, top_left)
 
 # Determine aspect ratios
 if(width > height) {
@@ -161,7 +159,7 @@ if(width > height) {
 # Convert to raster with optimal resolution
 size <- 1000 * 2.5
 
-pop_raster <- st_rasterize(nep_hex,
+pop_raster <- stars::st_rasterize(nep_hex,
                           nx = floor(size * w_ratio),
                           ny = floor(size * h_ratio))
 
@@ -178,16 +176,14 @@ pop_matrix <- matrix(pop_raster$population,
 The visualization employs the "OKeeffe2" palette from MetBrewer, chosen for its warm earth tones that effectively represent population density while maintaining visual appeal and accessibility.
 
 ```{r color-palette}
-#| eval: false
-
 # Generate color palette
-color <- met.brewer("OKeeffe2")
+color <- MetBrewer::met.brewer("OKeeffe2")
 
 # Create texture gradient with bias toward higher values
 texture <- grDevices::colorRampPalette(color, bias = 3)(256)
 
 # Preview color scheme
-swatchplot(texture)
+colorspace::swatchplot(texture)
 ```
 
 ## 3D Visualization Rendering
@@ -195,24 +191,26 @@ swatchplot(texture)
 ### Interactive 3D Display
 
 ```{r 3d-visualization}
-#| eval: false
-
 # Close any existing RGL windows
-rgl::rgl.close()
+rgl::close3d()
 
 # Generate 3D visualization
 pop_matrix |>
-  height_shade(texture = texture) |>
-  plot_3d(heightmap = pop_matrix,
-          zscale = 250 / 2.5,
-          solid = FALSE,
-          shadowdepth = 0)
+  rayshader::height_shade(texture = texture) |>
+  rayshader::plot_3d(
+    heightmap = pop_matrix,
+    zscale = 250 / 2.5,
+    solid = FALSE,
+    shadowdepth = 0
+  )
 
 # Set optimal camera position
-render_camera(theta = 0,
-              phi = 30,
-              zoom = 0.4,
-              fov = 90)
+rayshader::render_camera(
+  theta = 0,
+  phi = 30,
+  zoom = 0.4,
+  fov = 90
+)
 ```
 
 ### High-Quality Rendering
@@ -220,21 +218,19 @@ render_camera(theta = 0,
 The final rendering process utilizes rayshader's advanced lighting system to create publication-ready visualizations with professional-grade quality and resolution.
 
 ```{r high-quality-render}
-#| eval: false
-
-outfile <- "Plots/final_plot.png"
+outfile <- here::here("posts/nepal-population-density/plots/final_plot.png")
 
 # Render high-quality image with timing
 {
   start_time <- Sys.time()
   cat(crayon::cyan("Rendering started:", start_time), "\n")
-  
+
   # Ensure output directory exists
   if(!file.exists(outfile)) {
     png::writePNG(matrix(1), target = outfile)
   }
 
-  render_highquality(
+  rayshader::render_highquality(
     filename = outfile,
     interactive = FALSE,
     lightdirection = 225,
@@ -256,86 +252,152 @@ outfile <- "Plots/final_plot.png"
 
 ### Geographic Labeling
 
-The final step enhances the visualization with strategic city labels and professional annotation using the magick package for image manipulation.
+The final step enhances the visualization with strategic city labels and professional annotation using the {magick} package for image manipulation.
 
 ```{r image-annotation}
-#| eval: false
-
 # Load rendered image
-pop_raster <- image_read("Plots/final_plot.png")
+pop_raster <- magick::image_read(
+  here::here("posts/nepal-population-density/plots/final_plot.png")
+)
 
 # Define text styling
-text_color <- darken(color[7], .5)
+text_color <- colorspace::darken(color[7], .5)
+colorspace::swatchplot(text_color)
+```
 
+```{r font-setup}
+# Import and load fonts
+extrafont::font_import(
+  paths = here::here("posts/nepal-population-density/font"), prompt = FALSE
+)
+
+extrafont::loadfonts(quiet = TRUE)
+```
+
+```{r annotated-render}
 # Add comprehensive annotations
 pop_raster |>
-  image_annotate("NEPAL",
+  # magick::image_crop(gravity = "center", geometry = "") |> 
+  magick::image_annotate("NEPAL",
                  gravity = "northeast",
                  location = "+50+50",
                  color = text_color,
                  size = 150,
+                 # degrees = 0,
                  font = "Ananda Namaste",
                  weight = 700) |>
-  image_annotate("POPULATION DENSITY MAP",
+  magick::image_annotate("POPULATION DENSITY MAP",
                  gravity = "northeast",
                  location = "+50+200",
                  color = text_color,
                  size = 36.5,
+                 # degrees = 0,
                  font = "FuturaBT-Medium",
                  weight = 500) |>
   # Major urban centers
-  image_annotate("Kathmandu",
+  magick::image_annotate("Kathmandu",
                  gravity = "center",
                  location = "+250-50",
-                 color = alpha(text_color, .8),
+                 color = scales::alpha(text_color, .8),
                  size = 30,
+                 # degrees = -85,
                  font = "FuturaBT-Medium") |>
-  image_annotate("Pokhara",
+  magick::image_annotate("Pokhara",
                  gravity = "center",
                  location = "-30+35",
-                 color = alpha(text_color, .8),
+                 color = scales::alpha(text_color, .8),
                  size = 25,
+                 # degrees = -75,
                  font = "FuturaBT-Medium") |>
-  image_annotate("Biratnagar",
+  magick::image_annotate("Biratnagar",
                  gravity = "east",
                  location = "+125+100",
-                 color = alpha(text_color, .8),
+                 color = scales::alpha(text_color, .8),
                  size = 28,
-                 font = "FuturaBT-Medium") |>
-  image_annotate("Birgunj",
-                 gravity = "center",
-                 location = "+130+100",
-                 color = alpha(text_color, .8),
-                 size = 25,
+                 # degrees = -75,
                  font = "FuturaBT-Medium") |>
   # Regional centers
-  image_annotate("Nepalgunj",
+  magick::image_annotate("Birgunj",
+                 gravity = "center",
+                 location = "+130+100",
+                 color = scales::alpha(text_color, .8),
+                 size = 25,
+                 font = "FuturaBT-Medium") |>
+  magick::image_annotate("Nepalgunj",
                  gravity = "center",
                  location = "-450+0",
-                 color = alpha(text_color, .8),
+                 color = scales::alpha(text_color, .8),
                  size = 24,
                  font = "FuturaBT-Medium") |>
-  image_annotate("Janakpur",
+  magick::image_annotate("Janakpur",
                  gravity = "east",
                  location = "+500+140",
-                 color = alpha(text_color, .8),
+                 color = scales::alpha(text_color, .8),
                  size = 22,
                  font = "FuturaBT-Medium") |>
   # Additional urban areas
-  image_annotate("Itahari\nSurkhet\nTikapur\nDhangadhi\nBharatpur\nButwal\nGhorahi\nTulsipur",
-                 gravity = "southwest",
-                 location = "+20+100",
-                 color = alpha(text_color, .6),
-                 size = 16,
+  magick::image_annotate("Itahari",
+                 gravity = "east",
+                 location = "+230+150",
+                 color = scales::alpha(text_color, .8),
+                 size = 24,
+                 # degrees = -75,
+                 font = "FuturaBT-Medium") |> 
+  magick::image_annotate("Surkhet",
+                 gravity = "center",
+                 location = "-450-75",
+                 color = scales::alpha(text_color, .8),
+                 size = 20,
+                 # degrees = -75,
+                 font = "FuturaBT-Medium") |> 
+  magick::image_annotate("Tikapur",
+                 gravity = "west",
+                 location = "+400-125",
+                 color = scales::alpha(text_color, .8),
+                 size = 22,
+                 # degrees = -75,
+                 font = "FuturaBT-Medium") |> 
+  magick::image_annotate("Dhangadhi",
+                 gravity = "west",
+                 location = "+275-135",
+                 color = scales::alpha(text_color, .8),
+                 size = 18,
+                 # degrees = -75,
+                 font = "FuturaBT-Medium") |> 
+  magick::image_annotate("Bharatpur",
+                 gravity = "center",
+                 location = "+60+0",
+                 color = scales::alpha(text_color, .8),
+                 size = 20,
+                 # degrees = -75,
+                 font = "FuturaBT-Medium") |> 
+  magick::image_annotate("Butwal",
+                 gravity = "center",
+                 location = "-125+5",
+                 color = scales::alpha(text_color, .8),
+                 size = 20,
+                 # degrees = -75,
                  font = "FuturaBT-Medium") |>
+  magick::image_annotate("Ghorahi\nTulsipur",
+                 gravity = "center",
+                 location = "-350-100",
+                 color = scales::alpha(text_color, .8),
+                 size = 22,
+                 # degrees = -75,
+                 font = "FuturaBT-Medium") |> 
   # Professional attribution
-  image_annotate("Visualization by: [Your Name] with Rayshader(@tylermorganwall) | Data: Kontur Population (Released 2022-06-30)",
+  magick::image_annotate("Visualization by: Pukar Bhandari with Rayshader(@tylermorganwall) | Data: Kontur Population (Released 2022-06-30)",
                  gravity = "southwest",
                  location = "+20+20",
-                 color = alpha(text_color, .6),
+                 color = scales::alpha(text_color, .6),
+                 # degrees = 0,
                  font = "FuturaBT-Medium",
                  size = 20) |>
-  image_write("Plots/final_plot_edited.png", format = "png", quality = 100)
+  magick::image_write(
+    here::here("posts/nepal-population-density/nepal_population_density.png"),
+    format = "png",
+    quality = 100
+  )
 ```
 
 ## Technical Methodology
@@ -363,15 +425,6 @@ This methodology produces publication-quality 3D population density visualizatio
 -   **Emergency Response**: Understanding population distribution for resource allocation
 -   **Academic Research**: Visual communication of demographic data
 
-## Environment Management
-
-```{r save-environment}
-#| eval: false
-
-# Save complete workspace for future analysis
-save.image(file.path(path, "nep_pop.RData"))
-```
-
 ## Conclusion
 
 This workflow demonstrates the power of combining modern R packages for geospatial analysis with advanced 3D visualization techniques. The resulting maps provide intuitive understanding of Nepal's population distribution patterns, highlighting the concentration of people in the Terai region and major urban centers while showcasing the relatively sparse population in mountainous areas.
@@ -381,3 +434,11 @@ The methodology is transferable to other geographic contexts and can be adapted 
 ------------------------------------------------------------------------
 
 *Want to contribute or suggest improvements? Visit the project repository at:* <https://github.com/ar-puuk/Population-Density-Maps>
+
+```{r}
+grid::grid.text(
+  "Nepal",
+  gp = grid::gpar(fontfamily = "Ananda Namaste", fontsize = 30)
+)
+```
+
