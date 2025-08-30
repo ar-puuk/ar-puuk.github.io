@@ -400,6 +400,8 @@ pop_raster |>
   )
 ```
 
+![Population Density of Nepal](nepal_population_density.png){.lightbox}
+
 ## Technical Methodology
 
 ### Spatial Data Processing Pipeline

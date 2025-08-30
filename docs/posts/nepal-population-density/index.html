@@ -81,7 +81,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
-<link href="../../site_libs/quarto-contrib/academicons-1.9.4/size.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/quarto-contrib/academicons-1.9.4/size.css" rel="stylesheet">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -696,10 +699,10 @@ Note
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu">crayon</span><span class="fu">::</span><span class="fu"><a href="http://r-lib.github.io/crayon/reference/crayon.html">cyan</a></span><span class="op">(</span><span class="st">"Rendering completed in:"</span>, <span class="va">diff</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Rendering started: 2025-08-30 10:51:40.292334 </code></pre>
+<pre><code>Rendering started: 2025-08-30 12:03:55.108657 </code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Rendering completed in: 6.64802188078562 </code></pre>
+<pre><code>Rendering completed in: 4.59031536976496 </code></pre>
 </div>
 </div>
 </section></section><section id="post-processing-and-annotation" class="level2" data-number="7"><h2 data-number="7" class="anchored" data-anchor-id="post-processing-and-annotation">
@@ -854,6 +857,10 @@ Note
 <span>    format <span class="op">=</span> <span class="st">"png"</span>,</span>
 <span>    quality <span class="op">=</span> <span class="fl">100</span></span>
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><a href="nepal_population_density.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Population Density of Nepal"><img src="nepal_population_density.png" class="img-fluid figure-img" alt="Population Density of Nepal"></a></p>
+<figcaption>Population Density of Nepal</figcaption></figure>
 </div>
 </section></section><section id="technical-methodology" class="level2" data-number="8"><h2 data-number="8" class="anchored" data-anchor-id="technical-methodology">
 <span class="header-section-number">8</span> Technical Methodology</h2>
@@ -1774,40 +1781,42 @@ Nepal.”</span> January 3, 2023. <a href="https://ar-puuk.github.io/posts/nepal
 <span id="cb19-400"><a href="#cb19-400" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb19-401"><a href="#cb19-401" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb19-402"><a href="#cb19-402" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-403"><a href="#cb19-403" aria-hidden="true" tabindex="-1"></a><span class="fu">## Technical Methodology</span></span>
+<span id="cb19-403"><a href="#cb19-403" aria-hidden="true" tabindex="-1"></a><span class="al">![Population Density of Nepal](nepal_population_density.png)</span>{.lightbox}</span>
 <span id="cb19-404"><a href="#cb19-404" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-405"><a href="#cb19-405" aria-hidden="true" tabindex="-1"></a><span class="fu">### Spatial Data Processing Pipeline</span></span>
+<span id="cb19-405"><a href="#cb19-405" aria-hidden="true" tabindex="-1"></a><span class="fu">## Technical Methodology</span></span>
 <span id="cb19-406"><a href="#cb19-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-407"><a href="#cb19-407" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Data Transformation**: Vector hexagon data converted to standardized coordinate reference system (Nepal Nagarkot TM - ESRI:102306)</span>
-<span id="cb19-408"><a href="#cb19-408" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Rasterization**: Optimal grid resolution calculated to balance detail with computational efficiency</span>
-<span id="cb19-409"><a href="#cb19-409" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**Matrix Conversion**: Raster data transformed into height matrix for 3D rendering</span>
-<span id="cb19-410"><a href="#cb19-410" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**Texture Mapping**: Population values mapped to color gradients using perceptually uniform color spaces</span>
-<span id="cb19-411"><a href="#cb19-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-412"><a href="#cb19-412" aria-hidden="true" tabindex="-1"></a><span class="fu">### Rendering Specifications</span></span>
+<span id="cb19-407"><a href="#cb19-407" aria-hidden="true" tabindex="-1"></a><span class="fu">### Spatial Data Processing Pipeline</span></span>
+<span id="cb19-408"><a href="#cb19-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-409"><a href="#cb19-409" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Data Transformation**: Vector hexagon data converted to standardized coordinate reference system (Nepal Nagarkot TM - ESRI:102306)</span>
+<span id="cb19-410"><a href="#cb19-410" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Rasterization**: Optimal grid resolution calculated to balance detail with computational efficiency</span>
+<span id="cb19-411"><a href="#cb19-411" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**Matrix Conversion**: Raster data transformed into height matrix for 3D rendering</span>
+<span id="cb19-412"><a href="#cb19-412" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**Texture Mapping**: Population values mapped to color gradients using perceptually uniform color spaces</span>
 <span id="cb19-413"><a href="#cb19-413" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-414"><a href="#cb19-414" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Resolution**: 1980×1080 pixels for high-definition output</span>
-<span id="cb19-415"><a href="#cb19-415" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Sampling**: 300 samples for anti-aliasing and smooth gradients</span>
-<span id="cb19-416"><a href="#cb19-416" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Lighting**: Dual-source lighting system (directional + ambient)</span>
-<span id="cb19-417"><a href="#cb19-417" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Z-Scale**: Optimized vertical exaggeration (250/2.5) for clear population peaks</span>
-<span id="cb19-418"><a href="#cb19-418" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-419"><a href="#cb19-419" aria-hidden="true" tabindex="-1"></a><span class="fu">## Results and Applications</span></span>
+<span id="cb19-414"><a href="#cb19-414" aria-hidden="true" tabindex="-1"></a><span class="fu">### Rendering Specifications</span></span>
+<span id="cb19-415"><a href="#cb19-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-416"><a href="#cb19-416" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Resolution**: 1980×1080 pixels for high-definition output</span>
+<span id="cb19-417"><a href="#cb19-417" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Sampling**: 300 samples for anti-aliasing and smooth gradients</span>
+<span id="cb19-418"><a href="#cb19-418" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Lighting**: Dual-source lighting system (directional + ambient)</span>
+<span id="cb19-419"><a href="#cb19-419" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Z-Scale**: Optimized vertical exaggeration (250/2.5) for clear population peaks</span>
 <span id="cb19-420"><a href="#cb19-420" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-421"><a href="#cb19-421" aria-hidden="true" tabindex="-1"></a>This methodology produces publication-quality 3D population density visualizations suitable for:</span>
+<span id="cb19-421"><a href="#cb19-421" aria-hidden="true" tabindex="-1"></a><span class="fu">## Results and Applications</span></span>
 <span id="cb19-422"><a href="#cb19-422" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-423"><a href="#cb19-423" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Urban Planning**: Identifying population clusters and growth patterns</span>
-<span id="cb19-424"><a href="#cb19-424" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Infrastructure Development**: Targeting high-density areas for transportation networks</span>
-<span id="cb19-425"><a href="#cb19-425" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Emergency Response**: Understanding population distribution for resource allocation</span>
-<span id="cb19-426"><a href="#cb19-426" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Academic Research**: Visual communication of demographic data</span>
-<span id="cb19-427"><a href="#cb19-427" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-428"><a href="#cb19-428" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conclusion</span></span>
+<span id="cb19-423"><a href="#cb19-423" aria-hidden="true" tabindex="-1"></a>This methodology produces publication-quality 3D population density visualizations suitable for:</span>
+<span id="cb19-424"><a href="#cb19-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-425"><a href="#cb19-425" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Urban Planning**: Identifying population clusters and growth patterns</span>
+<span id="cb19-426"><a href="#cb19-426" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Infrastructure Development**: Targeting high-density areas for transportation networks</span>
+<span id="cb19-427"><a href="#cb19-427" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Emergency Response**: Understanding population distribution for resource allocation</span>
+<span id="cb19-428"><a href="#cb19-428" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Academic Research**: Visual communication of demographic data</span>
 <span id="cb19-429"><a href="#cb19-429" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-430"><a href="#cb19-430" aria-hidden="true" tabindex="-1"></a>This workflow demonstrates the power of combining modern R packages for geospatial analysis with advanced 3D visualization techniques. The resulting maps provide intuitive understanding of Nepal's population distribution patterns, highlighting the concentration of people in the Terai region and major urban centers while showcasing the relatively sparse population in mountainous areas.</span>
+<span id="cb19-430"><a href="#cb19-430" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conclusion</span></span>
 <span id="cb19-431"><a href="#cb19-431" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-432"><a href="#cb19-432" aria-hidden="true" tabindex="-1"></a>The methodology is transferable to other geographic contexts and can be adapted for various demographic or infrastructure planning applications in transportation and urban development projects.</span>
+<span id="cb19-432"><a href="#cb19-432" aria-hidden="true" tabindex="-1"></a>This workflow demonstrates the power of combining modern R packages for geospatial analysis with advanced 3D visualization techniques. The resulting maps provide intuitive understanding of Nepal's population distribution patterns, highlighting the concentration of people in the Terai region and major urban centers while showcasing the relatively sparse population in mountainous areas.</span>
 <span id="cb19-433"><a href="#cb19-433" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-434"><a href="#cb19-434" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb19-434"><a href="#cb19-434" aria-hidden="true" tabindex="-1"></a>The methodology is transferable to other geographic contexts and can be adapted for various demographic or infrastructure planning applications in transportation and urban development projects.</span>
 <span id="cb19-435"><a href="#cb19-435" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-436"><a href="#cb19-436" aria-hidden="true" tabindex="-1"></a>*Want to contribute or suggest improvements? Visit the project repository at:* <span class="ot">&lt;https://github.com/ar-puuk/Population-Density-Maps&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb19-436"><a href="#cb19-436" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb19-437"><a href="#cb19-437" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-438"><a href="#cb19-438" aria-hidden="true" tabindex="-1"></a>*Want to contribute or suggest improvements? Visit the project repository at:* <span class="ot">&lt;https://github.com/ar-puuk/Population-Density-Maps&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
@@ -1832,7 +1841,38 @@ Nepal.”</span> January 3, 2023. <a href="https://ar-puuk.github.io/posts/nepal
 </ul>
 </div>
   </div>
-</footer>
+</footer><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 </body></html>
