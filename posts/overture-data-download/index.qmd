@@ -390,7 +390,6 @@ slco_places_sf |>
 #### {{< fa brands python >}} Python
 
 ```{python eval = knitr::is_html_output()}
-#| eval: false
 
 # Simple quick visualization using GeoPandas
 slco_places_gdf \
@@ -401,8 +400,6 @@ slco_places_gdf \
     }) \
     [['names_primary', 'categories_main', 'confidence', 'geometry']] \
     .explore()
-    
-# TODO! This does NOT work yet.
 ```
 
 :::
