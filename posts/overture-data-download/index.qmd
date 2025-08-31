@@ -56,7 +56,7 @@ Before diving into the code, ensure you have the following dependencies installe
 ```{r}
 #| eval: false
 # Install required packages
-install.packages(c("tidyverse", "sf", "tmap", "DBI", "duckdb", "arrow"))
+install.packages(c("tidyverse", "sf", "mapview", "DBI", "duckdb", "arrow"))
 ```
 
 #### {{< fa brands python >}} Python
@@ -81,14 +81,13 @@ First, we need to load our libraries and configure the environment for spatial d
 # Load required libraries
 library(tidyverse)
 library(sf)
-library(tmap)
+library(mapview)
 library(DBI)
 library(duckdb)
 library(arrow)
 
 # Set global options
 options(scipen = 999) # avoiding scientific notation
-tmap::tmap_mode(mode = "view")
 ```
 
 #### {{< fa brands python >}} Python
@@ -373,7 +372,7 @@ Create quick visualizations to explore your downloaded data and verify the resul
 #### {{< fa brands r-project >}} R
 
 ```{r eval = knitr::is_html_output()}
-# Simple quick visualization using tmap
+# Simple quick visualization using mapview
 set.seed(123)
 
 slco_places_sf |>
@@ -384,7 +383,7 @@ slco_places_sf |>
     categories_main = "main", 
     confidence
   ) |>
-  tmap::qtm()
+  mapview::mapview(map.types = "CartoDB.Voyager")
 ```
 
 #### {{< fa brands python >}} Python
@@ -399,7 +398,7 @@ slco_places_gdf \
         "categories.main": "categories_main"
     }) \
     [['names_primary', 'categories_main', 'confidence', 'geometry']] \
-    .explore()
+    .explore(tiles="CartoDB.Voyager", zoom_start=9)
 ```
 
 :::

@@ -401,32 +401,6 @@
       "License_is_FOSS": "yes",
       "Repository": "CRAN"
     },
-    "XML": {
-      "Package": "XML",
-      "Version": "3.99-0.19",
-      "Source": "Repository",
-      "Authors@R": "c(person(\"CRAN Team\", role = c('ctb', 'cre'), email = \"CRAN@r-project.org\", comment = \"de facto maintainer since 2013\"), person(\"Duncan\", \"Temple Lang\", role = c(\"aut\"), email = \"duncan@r-project.org\", comment = c(ORCID = \"0000-0003-0159-1546\")), person(\"Tomas\", \"Kalibera\", role = \"ctb\"), person(\"Ivan\", \"Krylov\", role = \"ctb\"))",
-      "Title": "Tools for Parsing and Generating XML Within R and S-Plus",
-      "Depends": [
-        "R (>= 4.0.0)",
-        "methods",
-        "utils"
-      ],
-      "Suggests": [
-        "bitops",
-        "RCurl"
-      ],
-      "SystemRequirements": "libxml2 (>= 2.6.3)",
-      "Description": "Many approaches for both reading and creating XML (and HTML) documents (including DTDs), both local and accessible via HTTP or FTP.  Also offers access to an 'XPath' \"interpreter\".",
-      "URL": "https://www.omegahat.net/RSXML/",
-      "License": "BSD_3_clause + file LICENSE",
-      "Collate": "AAA.R DTD.R DTDClasses.R DTDRef.R SAXMethods.R XMLClasses.R applyDOM.R assignChild.R catalog.R createNode.R dynSupports.R error.R flatTree.R nodeAccessors.R parseDTD.R schema.R summary.R tangle.R toString.R tree.R version.R xmlErrorEnums.R xmlEventHandler.R xmlEventParse.R xmlHandler.R xmlInternalSource.R xmlOutputDOM.R xmlNodes.R xmlOutputBuffer.R xmlTree.R xmlTreeParse.R htmlParse.R hashTree.R zzz.R supports.R parser.R libxmlFeatures.R xmlString.R saveXML.R namespaces.R readHTMLTable.R reflection.R xmlToDataFrame.R bitList.R compare.R encoding.R fixNS.R xmlRoot.R serialize.R xmlMemoryMgmt.R keyValueDB.R solrDocs.R XMLRErrorInfo.R xincludes.R namespaceHandlers.R tangle1.R htmlLinks.R htmlLists.R getDependencies.R getRelativeURL.R xmlIncludes.R simplifyPath.R",
-      "NeedsCompilation": "yes",
-      "Author": "CRAN Team [ctb, cre] (de facto maintainer since 2013), Duncan Temple Lang [aut] (ORCID: <https://orcid.org/0000-0003-0159-1546>), Tomas Kalibera [ctb], Ivan Krylov [ctb]",
-      "Maintainer": "CRAN Team <CRAN@r-project.org>",
-      "Repository": "CRAN",
-      "Encoding": "UTF-8"
-    },
     "abind": {
       "Package": "abind",
       "Version": "1.4-8",
@@ -1351,51 +1325,6 @@
       "NeedsCompilation": "yes",
       "Author": "Ross Ihaka [aut], Paul Murrell [aut] (<https://orcid.org/0000-0002-3224-8858>), Kurt Hornik [aut] (<https://orcid.org/0000-0003-4198-9911>), Jason C. Fisher [aut] (<https://orcid.org/0000-0001-9032-8912>), Reto Stauffer [aut] (<https://orcid.org/0000-0002-3798-5507>), Claus O. Wilke [aut] (<https://orcid.org/0000-0002-7470-9261>), Claire D. McWhite [aut] (<https://orcid.org/0000-0001-7346-3047>), Achim Zeileis [aut, cre] (<https://orcid.org/0000-0003-0918-3766>)",
       "Maintainer": "Achim Zeileis <Achim.Zeileis@R-project.org>",
-      "Repository": "CRAN"
-    },
-    "cols4all": {
-      "Package": "cols4all",
-      "Version": "0.9",
-      "Source": "Repository",
-      "License": "GPL-3",
-      "Title": "Colors for all",
-      "Type": "Package",
-      "LazyLoad": "yes",
-      "Authors@R": "c( person(\"Martijn\", \"Tennekes\", email = \"mtennekes@gmail.com\", role = c(\"aut\", \"cre\")), person(\"Marco\", \"Puts\", email = \"mputs@acm.org\", role = \"ctb\"), person(\"Achim\", \"Zeileis\", email = \"Achim.Zeileis@R-project.org\", role = \"ctb\"), person(\"Jakub\", \"Nowosad\", email = \"nowosad.jakub@gmail.com\", role = \"ctb\"), person(\"Robin\", \"Lovelace\", email = \"rob00x@gmail.com\", role = \"ctb\"), person(\"Helgasoft\", email = \"contact@helgasoft.com\", role = \"ctb\"), person(\"Matthew\", \"Petroff\", email = \"matthew@mpetroff.net\", role = \"ctb\"), person(\"Olivier\", \"Roy\", role = \"ctb\") )",
-      "Description": "Color palettes for all people, including those with color vision deficiency. Popular color palette series have been organized by type and have been scored on several properties such as color-blind-friendliness and fairness (i.e. do colors stand out equally?). Own palettes can also be loaded and analysed. Besides the common palette types (categorical, sequential, and diverging) it also includes cyclic and bivariate color palettes. Furthermore, a color for missing values is assigned to each palette.",
-      "Encoding": "UTF-8",
-      "Depends": [
-        "R (>= 4.1.0)"
-      ],
-      "Imports": [
-        "methods",
-        "grDevices",
-        "stats",
-        "abind",
-        "png",
-        "stringdist",
-        "colorspace (>= 2.1)",
-        "spacesXYZ"
-      ],
-      "Suggests": [
-        "colorblindcheck",
-        "kableExtra",
-        "knitr",
-        "shiny",
-        "shinyjs",
-        "ggplot2",
-        "scales",
-        "rmarkdown",
-        "bookdown",
-        "bibtex",
-        "plotly"
-      ],
-      "URL": "https://cols4all.github.io/cols4all-R/, https://github.com/cols4all/cols4all-R",
-      "BugReports": "https://github.com/cols4all/cols4all-R/issues",
-      "RoxygenNote": "7.3.2",
-      "NeedsCompilation": "no",
-      "Author": "Martijn Tennekes [aut, cre], Marco Puts [ctb], Achim Zeileis [ctb], Jakub Nowosad [ctb], Robin Lovelace [ctb], Helgasoft [ctb], Matthew Petroff [ctb], Olivier Roy [ctb]",
-      "Maintainer": "Martijn Tennekes <mtennekes@gmail.com>",
       "Repository": "CRAN"
     },
     "conflicted": {
@@ -3551,69 +3480,6 @@
       "Author": "Tim Appelhans [cre, aut], Christoph Reudenbach [ctb], Kenton Russell [ctb], Jochen Darley [ctb], Daniel Montague [ctb, cph] (Leaflet.EasyButton plugin), Lorenzo Busetto [ctb], Luigi Ranghetti [ctb], Miles McBain [ctb], Sebastian Gatscha [ctb], Björn Harrtell [ctb, cph] (FlatGeobuf plugin), Daniel Dufour [ctb, cph] (georaster-layer-for-leaflet), Yeedle Neuwirth [ctb], Derek Friend [ctb], Kevin Cazelles [ctb] (ORCID: <https://orcid.org/0000-0001-6619-9874>)",
       "Repository": "CRAN"
     },
-    "leafgl": {
-      "Package": "leafgl",
-      "Version": "0.2.2",
-      "Source": "Repository",
-      "Title": "High-Performance 'WebGl' Rendering for Package 'leaflet'",
-      "Authors@R": "c(person(given = \"Tim\", family = \"Appelhans\", role = c(\"cre\", \"aut\", \"cph\"), email = \"tim.appelhans@gmail.com\"), person(given = \"Colin\", family = \"Fay\", role = \"ctb\", email = \"colin@thinkr.fr\", comment = structure(\"0000-0001-7343-1846\", .Names = \"ORCID\")), person(given = \"Robert\", family = \"Plummer\", role = \"ctb\", comment = \"Leaflet.glify plugin\"), person(given = \"Kent\", family = \"Johnson\", role = \"ctb\", email = \"kjohnson@akoyabio.com\"), person(given = \"Sebastian\", family = \"Gatscha\", role = \"ctb\", email = \"sebastian_gatscha@gmx.at\"), person(given = \"Olivier\",  family = \"Roy\",  role = \"ctb\"))",
-      "Description": "Provides bindings to the 'Leaflet.glify' JavaScript library which extends the 'leaflet' JavaScript library to render large data in the browser using 'WebGl'.",
-      "License": "MIT + file LICENSE",
-      "Encoding": "UTF-8",
-      "RoxygenNote": "7.3.2",
-      "Imports": [
-        "geojsonsf",
-        "htmltools",
-        "jsonify",
-        "leaflet",
-        "sf",
-        "grDevices"
-      ],
-      "Suggests": [
-        "colourvalues",
-        "shiny",
-        "testthat (>= 2.1.0)"
-      ],
-      "URL": "https://github.com/r-spatial/leafgl, https://r-spatial.github.io/leafgl/",
-      "BugReports": "https://github.com/r-spatial/leafgl/issues",
-      "NeedsCompilation": "no",
-      "Author": "Tim Appelhans [cre, aut, cph], Colin Fay [ctb] (<https://orcid.org/0000-0001-7343-1846>), Robert Plummer [ctb] (Leaflet.glify plugin), Kent Johnson [ctb], Sebastian Gatscha [ctb], Olivier Roy [ctb]",
-      "Maintainer": "Tim Appelhans <tim.appelhans@gmail.com>",
-      "Repository": "CRAN"
-    },
-    "leaflegend": {
-      "Package": "leaflegend",
-      "Version": "1.2.1",
-      "Source": "Repository",
-      "Type": "Package",
-      "Title": "Add Custom Legends to 'leaflet' Maps",
-      "Authors@R": "c( person(\"Thomas\", \"Roh\", email = \"thomas@roh.engineering\", role = c(\"aut\", \"cre\")), person(\"Ricardo Rodrigo\", \"Basa\", email = \"radbasa@gmail.com\", role = c(\"ctb\")))",
-      "Description": "Provides extensions to the 'leaflet' package to  customize legends with images, text styling, orientation, sizing, and symbology and functions to create symbols to plot on maps.",
-      "License": "MIT + file LICENSE",
-      "Encoding": "UTF-8",
-      "Depends": [
-        "R (>= 3.3.0)"
-      ],
-      "Imports": [
-        "leaflet",
-        "htmltools",
-        "stats",
-        "base64enc",
-        "htmlwidgets"
-      ],
-      "RoxygenNote": "7.2.3",
-      "URL": "https://leaflegend.delveds.com, https://github.com/tomroh/leaflegend",
-      "BugReports": "https://github.com/tomroh/leaflegend/issues",
-      "Suggests": [
-        "covr",
-        "testthat (>= 3.0.0)"
-      ],
-      "Config/testthat/edition": "3",
-      "NeedsCompilation": "no",
-      "Author": "Thomas Roh [aut, cre], Ricardo Rodrigo Basa [ctb]",
-      "Maintainer": "Thomas Roh <thomas@roh.engineering>",
-      "Repository": "CRAN"
-    },
     "leaflet": {
       "Package": "leaflet",
       "Version": "2.2.2",
@@ -3734,34 +3600,6 @@
       "Author": "Tim Appelhans [cre, aut], Florian Detsch [aut]",
       "Repository": "CRAN"
     },
-    "leafsync": {
-      "Package": "leafsync",
-      "Version": "0.1.0",
-      "Source": "Repository",
-      "Type": "Package",
-      "Title": "Small Multiples for Leaflet Web Maps",
-      "Authors@R": "c( person(\"Tim\", \"Appelhans\", role = c(\"aut\", \"cre\"), email = \"tim.appelhans@gmail.com\"), person(\"Kenton\", \"Russell\", role = c(\"aut\")), person(\"Jan Pieter\", \"Wagmeester\", role = c(\"ctb\"), comment = \"Leaflet.Sync plugin\") )",
-      "Maintainer": "Tim Appelhans <tim.appelhans@gmail.com>",
-      "Description": "Create small multiples of several leaflet web maps with (optional)  synchronised panning and zooming control. When syncing is enabled all maps  respond to mouse actions on one map. This allows side-by-side comparisons of different attributes of the same geometries. Syncing can be adjusted so that any combination of maps can be synchronised.",
-      "License": "MIT + file LICENSE",
-      "URL": "https://github.com/r-spatial/leafsync",
-      "BugReports": "https://github.com/r-spatial/leafsync/issues",
-      "Depends": [
-        "R (>= 3.1.0)",
-        "methods"
-      ],
-      "Imports": [
-        "htmltools (>= 0.3)",
-        "htmlwidgets",
-        "leaflet (>= 2.0.1)"
-      ],
-      "Encoding": "UTF-8",
-      "LazyData": "true",
-      "RoxygenNote": "6.1.0",
-      "NeedsCompilation": "no",
-      "Author": "Tim Appelhans [aut, cre], Kenton Russell [aut], Jan Pieter Wagmeester [ctb] (Leaflet.Sync plugin)",
-      "Repository": "CRAN"
-    },
     "lehdr": {
       "Package": "lehdr",
       "Version": "1.1.4",
@@ -3842,62 +3680,6 @@
       "Maintainer": "Lionel Henry <lionel@posit.co>",
       "Repository": "CRAN"
     },
-    "logger": {
-      "Package": "logger",
-      "Version": "0.4.0",
-      "Source": "Repository",
-      "Type": "Package",
-      "Title": "A Lightweight, Modern and Flexible Logging Utility",
-      "Date": "2024-10-19",
-      "Authors@R": "c( person(\"Gergely\", \"Daróczi\", , \"daroczig@rapporter.net\", role = c(\"aut\", \"cre\"), comment = c(ORCID = \"0000-0003-3149-8537\")), person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = \"aut\", comment = c(ORCID = \"0000-0003-4757-117X\")), person(\"System1\", role = \"fnd\") )",
-      "Description": "Inspired by the the 'futile.logger' R package and 'logging' Python module, this utility provides a flexible and extensible way of formatting and delivering log messages with low overhead.",
-      "License": "MIT + file LICENSE",
-      "URL": "https://daroczig.github.io/logger/",
-      "BugReports": "https://github.com/daroczig/logger/issues",
-      "Depends": [
-        "R (>= 4.0.0)"
-      ],
-      "Imports": [
-        "utils"
-      ],
-      "Suggests": [
-        "botor",
-        "covr",
-        "crayon",
-        "devtools",
-        "glue",
-        "jsonlite",
-        "knitr",
-        "mirai (>= 1.3.0)",
-        "pander",
-        "parallel",
-        "R.utils",
-        "rmarkdown",
-        "roxygen2",
-        "RPushbullet",
-        "rsyslog",
-        "shiny",
-        "slackr (>= 1.4.1)",
-        "syslognet",
-        "telegram",
-        "testthat (>= 3.0.0)",
-        "withr"
-      ],
-      "Enhances": [
-        "futile.logger",
-        "log4r",
-        "logging"
-      ],
-      "VignetteBuilder": "knitr",
-      "Config/testthat/edition": "3",
-      "Config/testthat/parallel": "TRUE",
-      "Encoding": "UTF-8",
-      "RoxygenNote": "7.3.2",
-      "NeedsCompilation": "no",
-      "Author": "Gergely Daróczi [aut, cre] (<https://orcid.org/0000-0003-3149-8537>), Hadley Wickham [aut] (<https://orcid.org/0000-0003-4757-117X>), System1 [fnd]",
-      "Maintainer": "Gergely Daróczi <daroczig@rapporter.net>",
-      "Repository": "CRAN"
-    },
     "lubridate": {
       "Package": "lubridate",
       "Version": "1.9.4",
@@ -3942,44 +3724,6 @@
       "Collate": "'Dates.r' 'POSIXt.r' 'util.r' 'parse.r' 'timespans.r' 'intervals.r' 'difftimes.r' 'durations.r' 'periods.r' 'accessors-date.R' 'accessors-day.r' 'accessors-dst.r' 'accessors-hour.r' 'accessors-minute.r' 'accessors-month.r' 'accessors-quarter.r' 'accessors-second.r' 'accessors-tz.r' 'accessors-week.r' 'accessors-year.r' 'am-pm.r' 'time-zones.r' 'numeric.r' 'coercion.r' 'constants.r' 'cyclic_encoding.r' 'data.r' 'decimal-dates.r' 'deprecated.r' 'format_ISO8601.r' 'guess.r' 'hidden.r' 'instants.r' 'leap-years.r' 'ops-addition.r' 'ops-compare.r' 'ops-division.r' 'ops-integer-division.r' 'ops-m+.r' 'ops-modulo.r' 'ops-multiplication.r' 'ops-subtraction.r' 'package.r' 'pretty.r' 'round.r' 'stamp.r' 'tzdir.R' 'update.r' 'vctrs.R' 'zzz.R'",
       "NeedsCompilation": "yes",
       "Author": "Vitalie Spinu [aut, cre], Garrett Grolemund [aut], Hadley Wickham [aut], Davis Vaughan [ctb], Ian Lyttle [ctb], Imanuel Costigan [ctb], Jason Law [ctb], Doug Mitarotonda [ctb], Joseph Larmarange [ctb], Jonathan Boiser [ctb], Chel Hee Lee [ctb]",
-      "Repository": "CRAN"
-    },
-    "lwgeom": {
-      "Package": "lwgeom",
-      "Version": "0.2-14",
-      "Source": "Repository",
-      "Title": "Bindings to Selected 'liblwgeom' Functions for Simple Features",
-      "Description": "Access to selected functions found in 'liblwgeom' <https://github.com/postgis/postgis/tree/master/liblwgeom>, the light-weight geometry library used by 'PostGIS' <http://postgis.net/>.",
-      "Authors@R": "c(person(\"Edzer\", \"Pebesma\", role = c(\"aut\", \"cre\"), email = \"edzer.pebesma@uni-muenster.de\", comment = c(ORCID = \"0000-0001-8049-7069\")), person(\"Colin\", \"Rundel\", role = \"ctb\"), person(\"Andy\", \"Teucher\", role = \"ctb\"), person(\"liblwgeom developers\", role = \"cph\"))",
-      "Depends": [
-        "R (>= 3.3.0)"
-      ],
-      "Imports": [
-        "Rcpp",
-        "units",
-        "sf (>= 1.0-15)"
-      ],
-      "Suggests": [
-        "covr",
-        "sp",
-        "geosphere",
-        "testthat"
-      ],
-      "LinkingTo": [
-        "Rcpp",
-        "sf (>= 0.6-0)"
-      ],
-      "SystemRequirements": "GEOS (>= 3.5.0), PROJ (>= 4.8.0), sqlite3",
-      "License": "GPL-2",
-      "Copyright": "file COPYRIGHTS",
-      "Encoding": "UTF-8",
-      "URL": "https://r-spatial.github.io/lwgeom/, https://github.com/r-spatial/lwgeom",
-      "BugReports": "https://github.com/r-spatial/lwgeom/issues",
-      "Collate": "init.R RcppExports.R geohash.R split.R subdivide.R valid.R transform.R bounding_circle.R bearing.R snap_to_grid.R startpoint.R twkb.R perimeter.R clockwise.R geod.R wkt.R wrap_x.R",
-      "RoxygenNote": "7.3.1",
-      "NeedsCompilation": "yes",
-      "Author": "Edzer Pebesma [aut, cre] (<https://orcid.org/0000-0001-8049-7069>), Colin Rundel [ctb], Andy Teucher [ctb], liblwgeom developers [cph]",
-      "Maintainer": "Edzer Pebesma <edzer.pebesma@uni-muenster.de>",
       "Repository": "CRAN"
     },
     "magick": {
@@ -4059,42 +3803,6 @@
       "NeedsCompilation": "yes",
       "Author": "Stefan Milton Bache [aut, cph] (Original author and creator of magrittr), Hadley Wickham [aut], Lionel Henry [cre], RStudio [cph, fnd]",
       "Maintainer": "Lionel Henry <lionel@rstudio.com>",
-      "Repository": "CRAN"
-    },
-    "maptiles": {
-      "Package": "maptiles",
-      "Version": "0.10.0",
-      "Source": "Repository",
-      "Title": "Download and Display Map Tiles",
-      "Authors@R": "c(person(given = \"Timothée\",  family = \"Giraud\", email = \"timothee.giraud@cnrs.fr\",  role = c(\"cre\",\"aut\"),  comment = c(ORCID = \"0000-0002-1932-3323\")),  person(given = \"Diego\", family = \"Hernangómez\", role = c(\"ctb\"), comment = c(ORCID = \"0000-0001-8457-4658\")),  person(given = \"Robert J.\",  family = \"Hijmans\",  role = c(\"ctb\"),  comment = c(ORCID = \"0000-0001-5872-2872\")),  person(given = \"Hugh A.\",  family = \"Graham\",  role = c(\"ctb\")))",
-      "Description": "To create maps from tiles, 'maptiles' downloads, composes and displays tiles from a large number of providers (e.g. 'OpenStreetMap', 'Stadia', 'Esri', 'CARTO', or 'Thunderforest').",
-      "URL": "https://github.com/riatelab/maptiles/",
-      "BugReports": "https://github.com/riatelab/maptiles/issues/",
-      "License": "GPL-3",
-      "Depends": [
-        "R (>= 3.5.0)"
-      ],
-      "Imports": [
-        "sf",
-        "curl",
-        "digest",
-        "graphics",
-        "grDevices",
-        "png",
-        "terra (>= 1.8-21)",
-        "tools",
-        "slippymath",
-        "utils"
-      ],
-      "Suggests": [
-        "covr",
-        "tinytest"
-      ],
-      "Encoding": "UTF-8",
-      "RoxygenNote": "7.3.2",
-      "NeedsCompilation": "no",
-      "Author": "Timothée Giraud [cre, aut] (ORCID: <https://orcid.org/0000-0002-1932-3323>), Diego Hernangómez [ctb] (ORCID: <https://orcid.org/0000-0001-8457-4658>), Robert J. Hijmans [ctb] (ORCID: <https://orcid.org/0000-0001-5872-2872>), Hugh A. Graham [ctb]",
-      "Maintainer": "Timothée Giraud <timothee.giraud@cnrs.fr>",
       "Repository": "CRAN"
     },
     "mapview": {
@@ -6113,39 +5821,6 @@
       "Maintainer": "David Cooley <david.cooley.au@gmail.com>",
       "Repository": "CRAN"
     },
-    "slippymath": {
-      "Package": "slippymath",
-      "Version": "0.3.1",
-      "Source": "Repository",
-      "Title": "Slippy Map Tile Tools",
-      "Authors@R": "c( person(\"Miles\", \"McBain\", email = \"miles.mcbain@gmail.com\", role = c(\"aut\", \"cre\"),  comment = c(ORCID = \"0000-0003-2865-2548\")), person(\"Michael\",\"Sumner\", email = \"mdsumner@gmail.com\", role = c(\"aut\")))",
-      "Description": "Provides functions for performing common tasks when working with slippy map tile service APIs e.g. Google maps, Open Street Map, Mapbox, Stamen, among others. Functionality includes converting from latitude and longitude to tile numbers, determining tile bounding boxes, and compositing tiles to a georeferenced raster image.",
-      "Depends": [
-        "R (>= 3.5.0)"
-      ],
-      "License": "MIT + file LICENSE",
-      "URL": "https://www.github.com/milesmcbain/slippymath",
-      "BugReports": "https://www.github.com/milesmcbain/slippymath/issues",
-      "Encoding": "UTF-8",
-      "LazyData": "true",
-      "Imports": [
-        "raster",
-        "purrr",
-        "stats",
-        "png"
-      ],
-      "Suggests": [
-        "testthat",
-        "knitr",
-        "rmarkdown"
-      ],
-      "RoxygenNote": "6.1.1",
-      "VignetteBuilder": "knitr",
-      "NeedsCompilation": "no",
-      "Author": "Miles McBain [aut, cre] (<https://orcid.org/0000-0003-2865-2548>), Michael Sumner [aut]",
-      "Maintainer": "Miles McBain <miles.mcbain@gmail.com>",
-      "Repository": "CRAN"
-    },
     "snakecase": {
       "Package": "snakecase",
       "Version": "0.11.1",
@@ -6249,40 +5924,6 @@
       "Author": "Tyler Morgan-Wall [aut, cph, cre] (<https://orcid.org/0000-0002-3131-3814>), Andrew Helmer [ctb, cph], Leonhard Grünschloß [ctb, cph], Eric Heitz [ctb, cph]",
       "Repository": "CRAN"
     },
-    "spacesXYZ": {
-      "Package": "spacesXYZ",
-      "Version": "1.6-0",
-      "Source": "Repository",
-      "Type": "Package",
-      "Title": "CIE XYZ and some of Its Derived Color Spaces",
-      "Encoding": "UTF-8",
-      "Date": "2025-06-06",
-      "Authors@R": "person(\"Glenn\", \"Davis\", role=c(\"aut\", \"cre\"), email=\"gdavis@gluonics.com\")",
-      "Maintainer": "Glenn Davis <gdavis@gluonics.com>",
-      "Description": "Functions for converting among CIE XYZ, xyY, Lab, and Luv. Calculate Correlated Color Temperature (CCT) and the Planckian and daylight loci.   The XYZs of some standard illuminants and some standard linear chromatic adaptation transforms (CATs) are included. Three standard color difference metrics are included, plus the forward direction of the 'CIECAM02' color appearance model.",
-      "License": "GPL (>= 3)",
-      "LazyLoad": "yes",
-      "LazyData": "yes",
-      "Depends": [
-        "R (>= 4.0.0)"
-      ],
-      "Imports": [
-        "logger"
-      ],
-      "Suggests": [
-        "knitr",
-        "rmarkdown",
-        "microbenchmark"
-      ],
-      "Enhances": [
-        "colorSpec"
-      ],
-      "Repository": "CRAN",
-      "VignetteBuilder": "knitr",
-      "BuildVignettes": "yes",
-      "NeedsCompilation": "no",
-      "Author": "Glenn Davis [aut, cre]"
-    },
     "stars": {
       "Package": "stars",
       "Version": "0.6-8",
@@ -6359,34 +6000,6 @@
       "NeedsCompilation": "no",
       "Author": "Edzer Pebesma [aut, cre] (<https://orcid.org/0000-0001-8049-7069>), Michael Sumner [ctb] (<https://orcid.org/0000-0002-2471-7511>), Etienne Racine [ctb], Adriano Fantini [ctb], David Blodgett [ctb], Krzysztof Dyba [ctb] (<https://orcid.org/0000-0002-8614-3816>)",
       "Maintainer": "Edzer Pebesma <edzer.pebesma@uni-muenster.de>",
-      "Repository": "CRAN"
-    },
-    "stringdist": {
-      "Package": "stringdist",
-      "Version": "0.9.15",
-      "Source": "Repository",
-      "Maintainer": "Mark van der Loo <mark.vanderloo@gmail.com>",
-      "License": "GPL-3",
-      "Title": "Approximate String Matching, Fuzzy Text Search, and String Distance Functions",
-      "Type": "Package",
-      "LazyLoad": "yes",
-      "Authors@R": "c( person(\"Mark\", \"van der Loo\", role=c(\"aut\",\"cre\") , email=\"mark.vanderloo@gmail.com\" , comment= c(ORCID=\"0000-0002-9807-4686\")) , person(\"Jan\", \"van der Laan\", role=\"ctb\") , person(\"R Core Team\",\"\"     , role=\"ctb\") , person(\"Nick\",\"Logan\"       , role=\"ctb\") , person(\"Chris\",\"Muir\"       , role=\"ctb\") , person(\"Johannes\", \"Gruber\" , role=\"ctb\") , person(\"Brian\",\"Ripley\"     , role=\"ctb\"))",
-      "Description": "Implements an approximate string matching version of R's native 'match' function. Also offers fuzzy text search based on various string distance measures. Can calculate various string distances based on edits (Damerau-Levenshtein, Hamming, Levenshtein, optimal sting alignment), qgrams (q- gram, cosine, jaccard distance) or heuristic metrics (Jaro, Jaro-Winkler). An implementation of soundex is provided as well. Distances can be computed between character vectors while taking proper care of encoding or between integer vectors representing generic sequences. This package is built for speed and runs in parallel by using 'openMP'. An API for C or C++ is exposed as well. Reference: MPJ van der Loo (2014) <doi:10.32614/RJ-2014-011>.",
-      "Depends": [
-        "R (>= 2.15.3)"
-      ],
-      "URL": "https://github.com/markvanderloo/stringdist",
-      "BugReports": "https://github.com/markvanderloo/stringdist/issues",
-      "Suggests": [
-        "tinytest"
-      ],
-      "Imports": [
-        "parallel"
-      ],
-      "Encoding": "UTF-8",
-      "RoxygenNote": "7.3.2",
-      "NeedsCompilation": "yes",
-      "Author": "Mark van der Loo [aut, cre] (<https://orcid.org/0000-0002-9807-4686>), Jan van der Laan [ctb], R Core Team [ctb], Nick Logan [ctb], Chris Muir [ctb], Johannes Gruber [ctb], Brian Ripley [ctb]",
       "Repository": "CRAN"
     },
     "stringi": {
@@ -7131,109 +6744,6 @@
       "NeedsCompilation": "no",
       "Author": "Yihui Xie [aut, cre, cph] (<https://orcid.org/0000-0003-0645-5666>), Posit Software, PBC [cph, fnd], Christophe Dervieux [ctb] (<https://orcid.org/0000-0003-4474-2498>), Devon Ryan [ctb] (<https://orcid.org/0000-0002-8549-0971>), Ethan Heinzen [ctb], Fernando Cagua [ctb]",
       "Maintainer": "Yihui Xie <xie@yihui.name>",
-      "Repository": "CRAN"
-    },
-    "tmap": {
-      "Package": "tmap",
-      "Version": "4.1",
-      "Source": "Repository",
-      "Title": "Thematic Maps",
-      "Authors@R": "c( person(\"Martijn\", \"Tennekes\", , \"mtennekes@gmail.com\", role = c(\"aut\", \"cre\")), person(\"Jakub\", \"Nowosad\", , \"nowosad.jakub@gmail.com\", role = \"ctb\"), person(\"Joel\", \"Gombin\", , \"joel.gombin@gmail.com\", role = \"ctb\"), person(\"Sebastian\", \"Jeworutzki\", , \"Sebastian.Jeworutzki@rub.de\", role = \"ctb\"), person(\"Kent\", \"Russell\", , \"kent.russell@timelyportfolio.com\", role = \"ctb\"), person(\"Richard\", \"Zijdeman\", , \"richard.zijdeman@iisg.nl\", role = \"ctb\"), person(\"John\", \"Clouse\", , \"johnaclouse@gmail.com\", role = \"ctb\"), person(\"Robin\", \"Lovelace\", , \"rob00x@gmail.com\", role = \"ctb\"), person(\"Jannes\", \"Muenchow\", , \"jannes.muenchow@uni-jena.de\", role = \"ctb\"), person(\"Olivier\", \"Roy\", role = \"ctb\"), person(\"Edzer\", \"Pebesma\", , \"edzer.pebesma@uni-muenster.de\", role = \"ctb\"), person(\"Hugh\", \"Graham\", , \"hugh.a.graham@gmail.com\", role = \"ctb\"), person(\"Michael D.\", \"Sumner\", , \"mdsumner@gmail.com\", role = \"ctb\"), person(\"Tim\", \"Appelhans\", , \"tim.appelhans@gmail.com\", role = \"ctb\"), person(\"Nick\", \"Bearman\", , \"nick@nickbearman.com\", role = \"ctb\"), person(\"Pukar\", \"Bhandari\", , \"pukar.bhandari@outlook.com\", role = \"ctb\"), person(\"Stéphane\", \"Guillou\", , \"stephane.guillou@member.fsf.org\", role = \"ctb\"), person(\"Monika Anna\", \"Tomaszewska\", , \"monika.anna.tomaszewska@gmail.com\", role = \"ctb\"), person(\"Ajoke\", \"Onojeghuo\", , \"a.onojeghuo@gmail.com\", role = \"ctb\"), person(\"Jerome\", \"Guelat\", , \"jerome.guelat@vogelwarte.ch\", role = \"ctb\"))",
-      "Description": "Thematic maps are geographical maps in which spatial data distributions are visualized. This package offers a flexible, layer-based, and easy to use approach to create thematic maps, such as choropleths and bubble maps.",
-      "License": "GPL-3",
-      "URL": "https://github.com/r-tmap/tmap, https://r-tmap.github.io/tmap/",
-      "BugReports": "https://github.com/r-tmap/tmap/issues",
-      "Depends": [
-        "R (>= 4.1)"
-      ],
-      "Imports": [
-        "classInt (>= 0.4-3)",
-        "cli",
-        "cols4all (>= 0.8)",
-        "data.table",
-        "grid",
-        "htmltools",
-        "htmlwidgets",
-        "base64enc",
-        "leafem (>= 0.2.4)",
-        "leafgl",
-        "leaflegend",
-        "leaflet (>= 2.0.2)",
-        "leafsync",
-        "maptiles",
-        "methods",
-        "rlang",
-        "sf (>= 0.9-3)",
-        "stars (>= 0.4-2)",
-        "stats",
-        "s2",
-        "tmaptools (>= 3.1)",
-        "units (>= 0.6-1)",
-        "servr"
-      ],
-      "Suggests": [
-        "av",
-        "transformr",
-        "colorspace",
-        "ggplot2",
-        "gifski",
-        "knitr",
-        "shiny",
-        "terra",
-        "testthat (>= 3.2.0)",
-        "widgetframe",
-        "lobstr",
-        "rsvg",
-        "rstudioapi"
-      ],
-      "Config/Needs/check": "Nowosad/spDataLarge, lwgeom, r-tmap/tmap",
-      "Config/Needs/coverage": "Nowosad/spDataLarge, lwgeom, r-tmap/tmap",
-      "Config/Needs/website": "bookdown, rmarkdown, r-tmap/tmap, sfnetworks",
-      "Config/testthat/edition": "3",
-      "Encoding": "UTF-8",
-      "LazyData": "true",
-      "RoxygenNote": "7.3.2",
-      "NeedsCompilation": "no",
-      "Author": "Martijn Tennekes [aut, cre], Jakub Nowosad [ctb], Joel Gombin [ctb], Sebastian Jeworutzki [ctb], Kent Russell [ctb], Richard Zijdeman [ctb], John Clouse [ctb], Robin Lovelace [ctb], Jannes Muenchow [ctb], Olivier Roy [ctb], Edzer Pebesma [ctb], Hugh Graham [ctb], Michael D. Sumner [ctb], Tim Appelhans [ctb], Nick Bearman [ctb], Pukar Bhandari [ctb], Stéphane Guillou [ctb], Monika Anna Tomaszewska [ctb], Ajoke Onojeghuo [ctb], Jerome Guelat [ctb]",
-      "Maintainer": "Martijn Tennekes <mtennekes@gmail.com>",
-      "Repository": "CRAN"
-    },
-    "tmaptools": {
-      "Package": "tmaptools",
-      "Version": "3.3",
-      "Source": "Repository",
-      "Type": "Package",
-      "Title": "Thematic Map Tools",
-      "Authors@R": "person(\"Martijn\", \"Tennekes\", email = \"mtennekes@gmail.com\", role = c(\"aut\", \"cre\"))",
-      "Description": "Set of tools for reading and processing spatial data. The aim is to supply the workflow to create thematic maps. This package also facilitates 'tmap', the package for visualizing thematic maps.",
-      "License": "GPL-3",
-      "Encoding": "UTF-8",
-      "Depends": [
-        "R (>= 3.5)",
-        "methods"
-      ],
-      "Imports": [
-        "sf (>= 0.9.2)",
-        "lwgeom (>= 0.1-4)",
-        "stars (>= 0.4-1)",
-        "units (>= 0.6-1)",
-        "stats",
-        "XML"
-      ],
-      "Suggests": [
-        "tmap",
-        "cols4all",
-        "rmapshaper",
-        "osmdata",
-        "OpenStreetMap",
-        "raster"
-      ],
-      "URL": "https://github.com/r-tmap/tmaptools, https://r-tmap.github.io/tmaptools/",
-      "BugReports": "https://github.com/r-tmap/tmaptools/issues",
-      "RoxygenNote": "7.3.2",
-      "NeedsCompilation": "no",
-      "Author": "Martijn Tennekes [aut, cre]",
-      "Maintainer": "Martijn Tennekes <mtennekes@gmail.com>",
       "Repository": "CRAN"
     },
     "tzdb": {
