@@ -279,10 +279,8 @@ print(slco_bbox)
 
 ```{python}
 # Read existing boundary data (example: Salt Lake County, UT)
-slco_boundary = (
-    gpd.read_file("data/SaltLakeCounty_Boundary.geojson")
+slco_boundary = gpd.read_file("data/SaltLakeCounty_Boundary.geojson") \
     .to_crs("EPSG:4326")
-)
 
 # Extract bounding box coordinates (xmin, ymin, xmax, ymax)
 slco_bbox = slco_boundary.total_bounds
