@@ -85,9 +85,6 @@ library(mapview)
 library(DBI)
 library(duckdb)
 library(arrow)
-
-# Set global options
-options(scipen = 999) # avoiding scientific notation
 ```
 
 #### {{< fa brands python >}} Python
@@ -383,7 +380,7 @@ slco_places_sf |>
     categories_main = "main", 
     confidence
   ) |>
-  mapview::mapview(map.types = "CartoDB.Voyager")
+  mapview::mapview(map.types = "CartoDB.Voyager", legend = FALSE)
 ```
 
 #### {{< fa brands python >}} Python
