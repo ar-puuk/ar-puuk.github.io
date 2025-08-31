@@ -1,6 +1,7 @@
 ---
 title: "Overture Maps Data Download"
 subtitle: "Applying DuckDB in R and Python"
+image: "overture_data_download.png"
 author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com
