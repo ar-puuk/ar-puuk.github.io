@@ -23,7 +23,7 @@ reticulate::use_condaenv("metro", required = TRUE)
 
 # # Install python packages
 # reticulate::py_install(
-#   packages = c("duckdb", "matplotlib", "pandas", "geopandas", "shapely", "folium", "pathlib", "folium", "pyarrow", "fastparquet"),
+#   packages = c("duckdb", "matplotlib", "pandas", "geopandas", "shapely", "folium", "pathlib", "folium", "fastparquet"),
 #   envname = "metro",
 #   method = "conda",
 #   pip = TRUE
@@ -65,7 +65,7 @@ install.packages(c("tidyverse", "sf", "mapview", "DBI", "duckdb", "arrow"))
 ```{python}
 #| eval: false
 # Install required packages
-pip install duckdb matplotlib geopandas pandas shapely folium pathlib pyarrow fastparquet
+pip install duckdb matplotlib geopandas pandas shapely folium pathlib fastparquet
 ```
 
 :::
