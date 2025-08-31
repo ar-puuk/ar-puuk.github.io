@@ -36,8 +36,6 @@ format-links:
     icon: file-pdf
   - docx
 
-
-prefer-html: true
 engine: knitr
 knitr:
   opts_chunk:

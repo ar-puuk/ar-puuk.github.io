@@ -10,6 +10,7 @@ author:
         url: "https://www.metroanalytics.com/"
 date: "2025-07-05"
 categories: [R, Python, GIS, Data Science, Transportation]
+prefer-html: true
 ---
 
 ```{r reticulate}
@@ -30,6 +31,17 @@ reticulate::use_condaenv("metro", required = TRUE)
 #   method = "conda",
 #   pip = TRUE
 # )
+```
+```{r}
+# Add this to your reticulate setup section
+library(reticulate)
+reticulate::use_condaenv("metro", required = TRUE)
+
+# Check which Python is being used
+reticulate::py_config()
+
+# Test if packages can be imported
+reticulate::py_run_string("import folium, matplotlib, mapclassify; print('All packages imported successfully')")
 ```
 
 # Set up the environment

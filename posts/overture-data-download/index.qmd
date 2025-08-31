@@ -6,9 +6,7 @@ author:
     email: pukar.bhandari@outlook.com
 date: "2024-05-22"
 categories: [R, Python, GIS, Data Science]
-draft: false
-execute:
-  eval: false
+prefer-html: true
 ---
 
 ```{r reticulate}
@@ -24,7 +22,7 @@ reticulate::use_condaenv("metro", required = TRUE)
 
 # # Install python packages
 # reticulate::py_install(
-#   packages = c("duckdb", "matplotlib", "pandas", "geopandas", "shapely", "folium", "pathlib", "folium"),
+#   packages = c("duckdb", "matplotlib", "pandas", "geopandas", "shapely", "folium", "pathlib", "folium", "pyarrow", "fastparquet"),
 #   envname = "metro",
 #   method = "conda",
 #   pip = TRUE
@@ -66,7 +64,7 @@ install.packages(c("tidyverse", "sf", "tmap", "DBI", "duckdb", "arrow"))
 ```{python}
 #| eval: false
 # Install required packages
-pip install duckdb matplotlib geopandas pandas shapely folium pathlib
+pip install duckdb matplotlib geopandas pandas shapely folium pathlib pyarrow fastparquet
 ```
 
 :::
@@ -90,7 +88,7 @@ library(arrow)
 
 # Set global options
 options(scipen = 999) # avoiding scientific notation
-tmap_mode(mode = "view")
+tmap::tmap_mode(mode = "view")
 ```
 
 #### {{< fa brands python >}} Python
@@ -102,6 +100,7 @@ import pandas as pd
 import shapely.wkb
 import matplotlib.pyplot as plt
 import folium
+import os
 from pathlib import Path
 ```
 
@@ -137,7 +136,7 @@ map_themes <- list(
 
 ```{python}
 # Define theme mapping
-THEME_MAP = {
+map_themes = {
     "locality": "admins",
     "locality_area": "admins",
     "administrative_boundary": "admins",
@@ -179,16 +178,16 @@ overture_data <- function(bbox, overture_type, dst_parquet) {
   remote_path <- sprintf("%s/%s/theme=%s/type=%s/*", base_url, version, theme, overture_type)
 
   # Connect to DuckDB and install extensions
-  conn <- dbConnect(duckdb::duckdb())
-  dbExecute(conn, "INSTALL httpfs;")
-  dbExecute(conn, "INSTALL spatial;")
-  dbExecute(conn, "LOAD httpfs;")
-  dbExecute(conn, "LOAD spatial;")
-  dbExecute(conn, sprintf("SET s3_region='%s';", s3_region))
+  conn <- DBI::dbConnect(duckdb::duckdb())
+  DBI::dbExecute(conn, "INSTALL httpfs;")
+  DBI::dbExecute(conn, "INSTALL spatial;")
+  DBI::dbExecute(conn, "LOAD httpfs;")
+  DBI::dbExecute(conn, "LOAD spatial;")
+  DBI::dbExecute(conn, sprintf("SET s3_region='%s';", s3_region))
 
   # Create view and execute spatial query
   read_parquet <- sprintf("read_parquet('%s', filename=TRUE, hive_partitioning=1);", remote_path)
-  dbExecute(conn, sprintf("CREATE OR REPLACE VIEW data_view AS SELECT * FROM %s", read_parquet))
+  DBI::dbExecute(conn, sprintf("CREATE OR REPLACE VIEW data_view AS SELECT * FROM %s", read_parquet))
 
   query <- sprintf("
     SELECT data.*
@@ -199,8 +198,8 @@ overture_data <- function(bbox, overture_type, dst_parquet) {
 
   # Save results to Parquet file
   file <- normalizePath(dst_parquet, mustWork = FALSE)
-  dbExecute(conn, sprintf("COPY (%s) TO '%s' WITH (FORMAT 'parquet');", query, file))
-  dbDisconnect(conn, shutdown = TRUE)
+  DBI::dbExecute(conn, sprintf("COPY (%s) TO '%s' WITH (FORMAT 'parquet');", query, file))
+  DBI::dbDisconnect(conn, shutdown = TRUE)
 }
 ```
 
@@ -220,14 +219,14 @@ def overture_data(bbox, overture_type, dst_parquet):
     dst_parquet : str or Path
         The path to the output GeoParquet file.
     """
-    if overture_type not in THEME_MAP:
-        raise ValueError(f"Valid Overture types are: {list(THEME_MAP)}")
+    if overture_type not in map_themes:
+        raise ValueError(f"Valid Overture types are: {list(map_themes)}")
 
     # Configure S3 connection
     s3_region = "us-west-2"
     base_url = f"s3://overturemaps-{s3_region}/release"
     version = "2024-04-16-beta.0"
-    theme = THEME_MAP[overture_type]
+    theme = map_themes[overture_type]
     remote_path = f"{base_url}/{version}/theme={theme}/type={overture_type}/*"
 
     # Setup DuckDB with spatial extensions
@@ -265,28 +264,33 @@ For spatial analysis, you need to define a bounding box for your area of interes
 #### {{< fa brands r-project >}} R
 
 ```{r}
-# Read existing boundary data (example: Albany, NY)
-albany_boundary <- read_sf(file.path(wd, project), layer = "City_of_Albany") |>
-  st_transform(4326)
+# Read existing boundary data (example: Salt Lake County, UT)
+slco_boundary <- sf::read_sf(
+  "data/SaltLakeCounty_Boundary.geojson"
+) |>
+  sf::st_transform("EPSG:4326")
 
 # Extract bounding box coordinates (xmin, ymin, xmax, ymax)
-albany_bbox <- albany_boundary |>
-  st_bbox() |>
+slco_bbox <- slco_boundary |>
+  sf::st_bbox() |>
   as.vector()
 
-print(albany_bbox)
+print(slco_bbox)
 ```
 
 #### {{< fa brands python >}} Python
 
 ```{python}
-# Define study area bounding box manually
-# Manhattan example (xmin, ymin, xmax, ymax) in EPSG:4326
-bbox_example = (-74.02169, 40.696423, -73.891338, 40.831263)
+# Read existing boundary data (example: Salt Lake County, UT)
+slco_boundary = (
+    gpd.read_file("data/SaltLakeCounty_Boundary.geojson")
+    .to_crs("EPSG:4326")
+)
 
-# Alternative: extract from existing boundary data
-# boundary_gdf = gpd.read_file("your_boundary.shp")
-# bbox_example = boundary_gdf.total_bounds
+# Extract bounding box coordinates (xmin, ymin, xmax, ymax)
+slco_bbox = slco_boundary.total_bounds
+
+print(slco_bbox)
 ```
 
 :::
@@ -300,27 +304,18 @@ Now we can download specific data types for our study area. The function handles
 #### {{< fa brands r-project >}} R
 
 ```{r}
-# Download places data for Albany
-overture_data(albany_bbox, "place", "albany_places_subset.parquet")
-
-# Download buildings data
-overture_data(albany_bbox, "building", "albany_buildings_subset.parquet")
-
-# Download transportation segments
-overture_data(albany_bbox, "segment", "albany_roads_subset.parquet")
+# Download places data for Salt Lake County
+if (!file.exists("output/slco_places_r.parquet")) {
+  overture_data(slco_bbox, "place", "output/slco_places_r.parquet")
+}
 ```
 
 #### {{< fa brands python >}} Python
 
 ```{python}
-# Download buildings data for Manhattan
-overture_data(bbox_example, "building", "nyc_buildings_subset.parquet")
-
-# Download places data
-overture_data(bbox_example, "place", "nyc_places_subset.parquet")
-
-# Download transportation network
-overture_data(bbox_example, "segment", "nyc_roads_subset.parquet")
+# Download places data for Salt Lake County
+if not os.path.exists("output/slco_places_py.parquet"):
+    overture_data(slco_bbox, "place", "output/slco_places_py.parquet")
 ```
 
 :::
@@ -335,36 +330,36 @@ After downloading, convert the Parquet files to spatial data formats for analysi
 
 ```{r}
 # Read the downloaded Parquet file
-albany_places <- read_parquet("albany_places_subset.parquet")
+slco_places <- arrow::read_parquet("output/slco_places_r.parquet")
 
 # Convert to sf object for spatial operations
-albany_places_sf <- st_as_sf(
-  albany_places |> select(-sources),
-  geometry = albany_places$geometry,
-  crs = 4326
+slco_places_sf <- sf::st_as_sf(
+  slco_places |> dplyr::select(-sources),
+  geometry = slco_places$geometry,
+  crs = "EPSG:4326"
 )
 
 # Basic data exploration
-print(paste("Downloaded", nrow(albany_places_sf), "places"))
-print(colnames(albany_places_sf))
+print(paste("Downloaded", nrow(slco_places_sf), "places"))
+print(colnames(slco_places_sf))
 ```
 
 #### {{< fa brands python >}} Python
 
 ```{python}
 # Read the downloaded data
-manhattan = pd.read_parquet("nyc_buildings_subset.parquet")
+slco_places = pd.read_parquet("output/slco_places_py.parquet")
 
 # Convert to GeoDataFrame
-manhattan_gdf = gpd.GeoDataFrame(
-    manhattan.drop(columns="geometry"),
-    geometry=shapely.wkb.loads(manhattan["geometry"]),
+slco_places_gdf = gpd.GeoDataFrame(
+    slco_places.drop(columns="geometry"),
+    geometry=shapely.wkb.loads(slco_places["geometry"]),
     crs=4326,
 )
 
 # Basic exploration
-print(f"Downloaded {len(manhattan_gdf)} buildings")
-print(manhattan_gdf.columns.tolist())
+print(f"Downloaded {len(slco_places_gdf)} places")
+print(slco_places_gdf.columns.tolist())
 ```
 
 :::
@@ -377,35 +372,37 @@ Create quick visualizations to explore your downloaded data and verify the resul
 
 #### {{< fa brands r-project >}} R
 
-```{r}
-# Interactive map using tmap (equivalent to folium)
-albany_places_sf |>
-  select(names$primary, categories$main, confidence) |>
-  tm_shape() +
-  tm_dots(col = "categories$main", size = 0.5, alpha = 0.8) +
-  tm_view(view.legend.position = c("left", "bottom"))
+```{r eval = knitr::is_html_output()}
+# Simple quick visualization using tmap
+set.seed(123)
 
-# Simple quick visualization
-albany_places_sf |>
-  select(names$primary, categories$main, confidence) |>
-  qtm(dots.col = "categories$main")
+slco_places_sf |>
+  dplyr::sample_n(1000) |> 
+  tidyr::unnest(cols = c("names", "categories")) |> 
+  dplyr::select(
+    names_primary = "primary", 
+    categories_main = "main", 
+    confidence
+  ) |>
+  tmap::qtm()
 ```
 
 #### {{< fa brands python >}} Python
 
-```{python}
-# Static plot using GeoPandas
-manhattan_gdf.plot(figsize=(10, 10), alpha=0.7, column='categories', legend=True)
-plt.title("Manhattan Buildings from Overture Maps")
-plt.show()
+```{python eval = knitr::is_html_output()}
+#| eval: false
 
-# Interactive map with folium (equivalent to tmap interactive)
-m = folium.Map(location=[40.7589, -73.9851], zoom_start=12)
-folium.GeoJson(
-    manhattan_gdf.head(100),
-    popup=folium.GeoJsonPopup(fields=['names', 'categories'])
-).add_to(m)
-m
+# Simple quick visualization using GeoPandas
+slco_places_gdf \
+    .sample(n=1000, random_state=123) \
+    .rename(columns={
+        "names.primary": "names_primary",
+        "categories.main": "categories_main"
+    }) \
+    [['names_primary', 'categories_main', 'confidence', 'geometry']] \
+    .explore()
+    
+# TODO! This does NOT work yet.
 ```
 
 :::

@@ -7,10 +7,7 @@ author:
 image: "nepal_population_density.png"
 date: "2023-01-03"
 categories: [R, GIS, Data Science]
-draft: false
-execute:
-  eval: true
-  # root.dir: !expr here::here("posts", "nepal-population-density")
+prefer-html: true
 ---
 
 ## Project Overview
@@ -48,9 +45,6 @@ install.packages("extrafont")
 library(tidyverse)
 library(here)
 library(sf)
-library(tmap)
-library(ggplot2)
-library(mapview)
 library(stars)
 library(rayshader)
 library(MetBrewer)

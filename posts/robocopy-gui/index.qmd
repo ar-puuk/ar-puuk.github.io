@@ -7,6 +7,7 @@ author:
 image: "robocopy_gui.png"
 date: "2025-06-15"
 categories: [Tools, Utilities, Windows]
+prefer-html: true
 ---
 
 ## Robocopy Command Generator

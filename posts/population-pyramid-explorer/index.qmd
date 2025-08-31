@@ -9,9 +9,7 @@ author:
     email: pukar.bhandari@outlook.com
 date: "2025-06-25"
 categories: [R, Shiny, GIS, Census Data, Dashboard]
-draft: false
-execute:
-  eval: false
+prefer-html: true
 ---
 
 ## Introduction
