@@ -32,17 +32,6 @@ reticulate::use_condaenv("metro", required = TRUE)
 #   pip = TRUE
 # )
 ```
-```{r}
-# Add this to your reticulate setup section
-library(reticulate)
-reticulate::use_condaenv("metro", required = TRUE)
-
-# Check which Python is being used
-reticulate::py_config()
-
-# Test if packages can be imported
-reticulate::py_run_string("import folium, matplotlib, mapclassify; print('All packages imported successfully')")
-```
 
 # Set up the environment
 
