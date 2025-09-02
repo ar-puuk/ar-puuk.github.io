@@ -5,7 +5,7 @@ project:
 website:
   title: "Pukar Bhandari"
   description: Pukar Bhandari is a Transportation Planner and Data Scientist working at the intersection of Transportation Modeling, Economic Impact Analysis, and Data Science.
-  favicon: "assets/images/Headshot_PukarBhandari_July2025.png"
+  favicon: "assets/images/pb-logo.svg"
   site-url: "https://ar-puuk.github.io"
 
   # repo-url: "https://github.com/ar-puuk/ar-puuk.github.io"
@@ -26,7 +26,12 @@ website:
     creator: "@arpuuk"
     site: "@arpuuk"
     card-style: summary_large_image
+
+  open-graph: true
+  cookie-consent: false
+
   navbar:
+    logo: assets/images/pb-logo.svg
     # left:
     #   - href: about.qmd
     #     # icon: person-circle
