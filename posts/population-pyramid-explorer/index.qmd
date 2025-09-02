@@ -43,10 +43,8 @@ The application leverages several powerful R packages for data processing, spati
 load_pkg <- function(pkg) {
   if (!require(pkg, character.only = TRUE)) {
     install.packages(pkg)
-    library(pkg, character.only = TRUE)
-  } else {
-    library(pkg, character.only = TRUE)
   }
+  library(pkg, character.only = TRUE)
 }
 
 # Data manipulation and visualization
