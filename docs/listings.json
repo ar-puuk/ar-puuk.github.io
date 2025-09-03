@@ -8,6 +8,7 @@
   {
     "listing": "/projects.html",
     "items": [
+      "/posts/storymap_my_journey/index.html",
       "/posts/socioeconomic-demo/index.html",
       "/posts/population-pyramid-explorer/index.html",
       "/posts/robocopy-gui/index.html",
