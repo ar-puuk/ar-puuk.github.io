@@ -52,6 +52,7 @@ The storymap application follows a typical Shiny structure with some specialized
 ```{r filename="app.R"}
 #| eval: false
 #| code-line-numbers: true
+#| code-overflow: wrap
 
 library(shiny) # <1>
 library(mapgl) # <2>
@@ -268,46 +269,6 @@ mapgl::on_section("map", "birth_place", { # <1>
 5. **Detail Zoom**: High zoom level to show local context and landmarks
 6. **Viewing Angle**: Tilted perspective provides better spatial understanding
 7. **Map Rotation**: Oriented to show the location from the most informative angle
-
-## Best Practices for Transportation Data Storymaps
-
-Based on my experience as a transportation planner, here are key considerations when creating storymaps for professional use:
-
-### Data Preparation
-- **Coordinate Accuracy**: Verify coordinates using reliable sources (Google Maps, OpenStreetMap)
-- **Projection Considerations**: Understand how different projections affect your data representation
-- **Performance Optimization**: For large datasets, consider data aggregation and level-of-detail strategies
-
-### Visual Design
-- **Consistent Styling**: Maintain uniform zoom levels, pitch, and bearing for similar content types
-- **Smooth Transitions**: Use appropriate transition speeds (typically 1-3 seconds)
-- **Color Schemes**: Choose colors that work well with your base map style
-- **Typography**: Select readable fonts that complement your organization's branding
-
-### User Experience
-- **Logical Flow**: Organize sections in a meaningful sequence (chronological, thematic, etc.)
-- **Clear Navigation**: Provide obvious cues for how users should interact with the storymap
-- **Performance**: Test on different devices and internet speeds
-- **Accessibility**: Ensure content is accessible to users with disabilities
-
-## Loading External App Files
-
-To load the complete application from an external `app.R` file (which is cleaner for larger applications), you can modify the {shinylive} block:
-
-```{{shinylive-r}}
-#| standalone: true
-#| viewerHeight: 600
-#| components: [editor, viewer]
-
-# Load the complete application
-source("app.R")
-```
-
-This approach allows you to:
-- Maintain cleaner separation between documentation and code
-- Enable collaborative development on the application
-- Version control your application code separately
-- Reuse the application in different contexts
 
 ## Conclusion
 
