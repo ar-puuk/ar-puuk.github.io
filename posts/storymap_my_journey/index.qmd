@@ -10,8 +10,10 @@ author:
 date: "2025-09-03"
 categories: [R, Shiny, Storymap]
 prefer-html: true
+embed-resources: false
 filters:
   - shinylive
+code-annotations: select
 ---
 
 ## Introduction
@@ -45,16 +47,7 @@ source("app.R")
 
 The storymap application follows a typical Shiny structure with some specialized {mapgl} components. Following is the source code for this dashboard (Please click on the numbers on the far right for additional explanation of syntax and mechanics):
 
-```{r}
-#| echo: false
-readLines("app.R")
-```
-
-```{r filename="app.R"}
-#| eval: false
-#| code-line-numbers: true
-#| code-annotation: select
-
+```r
 library(shiny) # <1>
 library(mapgl) # <2>
 
@@ -237,3 +230,164 @@ shiny::shinyApp(ui, server) # <11>
 9. Set up 3D globe projection for better geographic context
 10. Handle section transitions - when user reaches each story step
 11. Launch the Shiny application combining UI and server components
+
+### Setting Up the User Interface
+
+```{r}
+#| eval: false
+#| code-line-numbers: true
+
+library(shiny) # <1>
+library(mapgl) # <2>
+
+ui <- shiny::fluidPage(
+  tags$link( # <3>
+    href = "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap",
+    rel="stylesheet"
+  ),
+  mapgl::story_map( # <4>
+    map_id = "map",
+    font_family = "Poppins", # <5>
+    sections = list( # <6>
+      "intro" = mapgl::story_section(
+        title = "Introduction",
+        content = "Hello I am Pukar Bhandari; and this is my life journey."
+      ),
+      "birth_place" = mapgl::story_section(
+        title = "Birth Place",
+        content = "This is where I was born."
+      ),
+      # Additional sections...
+    ),
+    map_type = "maplibre" # <7>
+  )
+)
+```
+
+1. **Shiny Framework**: Essential for creating reactive web applications
+2. **MapGL Package**: Provides the storymap functionality and MapLibre integration
+3. **Custom Fonts**: Loading Google Fonts for better typography (important for professional presentations)
+4. **Story Map Container**: The main wrapper that coordinates the sidebar content with map interactions
+5. **Typography**: Consistent font family improves readability and professional appearance
+6. **Section Definitions**: Each section corresponds to a step in the story with associated map behaviors
+7. **Map Engine**: Using MapLibre GL JS for performant vector tile rendering
+
+### Configuring the Map
+
+```{r}
+#| eval: false
+#| code-line-numbers: true
+
+server <- function(input, output, session) {
+  output$map <- mapgl::renderMaplibre({ # <1>
+    mapgl::maplibre(
+      style = "https://tiles.openfreemap.org/styles/liberty", # <2>
+      center = c(0, 0), # <3>
+      zoom = 2.75, # <4>
+      scrollZoom = FALSE # <5>
+    ) |>
+      mapgl::set_projection(projection = "globe") |> # <6>
+      mapgl::add_globe_control() |> # <7>
+      mapgl::add_navigation_control(visualize_pitch = TRUE) |> # <8>
+      mapgl::add_globe_minimap(position = "bottom-left") # <9>
+  })
+}
+```
+
+1. **Render Function**: Creates the reactive map output that responds to user interactions
+2. **Open Map Style**: Using OpenFreeMap's Liberty style (free, no API key required)
+3. **Initial Center**: Starting at global view (longitude 0, latitude 0)
+4. **Zoom Level**: Appropriate for showing global context initially
+5. **Scroll Control**: Disabled to prevent interference with story navigation
+6. **Globe Projection**: Creates a 3D globe effect for better geographical context
+7. **Globe Controls**: Adds rotation controls for the 3D globe
+8. **Navigation Tools**: Zoom and rotation controls with pitch visualization
+9. **Minimap**: Provides geographic context when zoomed in on specific locations
+
+### Implementing Section Behaviors
+
+```{r}
+#| eval: false
+#| code-line-numbers: true
+
+# Example section handler
+mapgl::on_section("map", "birth_place", { # <1>
+  mapgl::maplibre_proxy("map") |> # <2>
+    mapgl::fly_to( # <3>
+      center = c(87.99371750247397, 26.646533355308083), # <4>
+      zoom = 16, # <5>
+      pitch = 49, # <6>
+      bearing = 12.8 # <7>
+    )
+})
+```
+
+1. **Section Trigger**: Responds when user navigates to the "birth_place" section
+2. **Map Proxy**: Allows server-side control of the existing map instance
+3. **Smooth Transition**: `fly_to()` creates animated transitions between locations
+4. **Coordinates**: Precise longitude/latitude coordinates for the specific location
+5. **Detail Zoom**: High zoom level to show local context and landmarks
+6. **Viewing Angle**: Tilted perspective provides better spatial understanding
+7. **Map Rotation**: Oriented to show the location from the most informative angle
+
+## Best Practices for Transportation Data Storymaps
+
+Based on my experience as a transportation planner, here are key considerations when creating storymaps for professional use:
+
+### Data Preparation
+- **Coordinate Accuracy**: Verify coordinates using reliable sources (Google Maps, OpenStreetMap)
+- **Projection Considerations**: Understand how different projections affect your data representation
+- **Performance Optimization**: For large datasets, consider data aggregation and level-of-detail strategies
+
+### Visual Design
+- **Consistent Styling**: Maintain uniform zoom levels, pitch, and bearing for similar content types
+- **Smooth Transitions**: Use appropriate transition speeds (typically 1-3 seconds)
+- **Color Schemes**: Choose colors that work well with your base map style
+- **Typography**: Select readable fonts that complement your organization's branding
+
+### User Experience
+- **Logical Flow**: Organize sections in a meaningful sequence (chronological, thematic, etc.)
+- **Clear Navigation**: Provide obvious cues for how users should interact with the storymap
+- **Performance**: Test on different devices and internet speeds
+- **Accessibility**: Ensure content is accessible to users with disabilities
+
+## Loading External App Files
+
+To load the complete application from an external `app.R` file (which is cleaner for larger applications), you can modify the {shinylive} block:
+
+````r
+#| eval: false
+
+# In your index.qmd file
+```{{shinylive-r}}
+#| standalone: true
+#| viewerHeight: 600
+#| components: [editor, viewer]
+
+# Load the complete application
+source("app.R")
+```
+````
+
+This approach allows you to:
+- Maintain cleaner separation between documentation and code
+- Enable collaborative development on the application
+- Version control your application code separately
+- Reuse the application in different contexts
+
+## Conclusion
+
+The {mapgl} package provides a powerful platform for creating engaging, interactive storymaps that can effectively communicate spatial narratives. Whether you're documenting personal journeys, presenting planning scenarios, or analyzing transportation patterns, this approach offers the flexibility and performance needed for professional applications.
+
+The combination of R's data processing capabilities with modern web mapping technology creates opportunities for innovative visualization approaches that can enhance public engagement and decision-making processes in transportation planning and urban analytics.
+
+## Additional Resources
+
+- [{mapgl} package documentation](https://walker-data.com/mapgl/)
+- [MapLibre GL JS documentation](https://maplibre.org/maplibre-gl-js-docs/)
+- [OpenFreeMap styles](https://openfreemap.org/)
+- [Quarto documentation](https://quarto.org/)
+
+---
+
+*This post demonstrates practical applications of open-source geospatial tools for transportation planning and data visualization. All code is available for adaptation to your own projects and use cases.*
