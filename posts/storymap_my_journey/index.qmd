@@ -37,7 +37,7 @@ The {mapgl} package offers several advantages for transportation planners and da
 Below is the complete interactive storymap. You can scroll through the different sections to see how the map smoothly transitions between locations, each representing a significant milestone in my journey.
 
 :::{.lightbox}
-```{shinylive-r eval = knitr::is_html_output()}
+```{shinylive-r}
 #| standalone: true
 #| viewerHeight: 600
 
