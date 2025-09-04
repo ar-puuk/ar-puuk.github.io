@@ -67,45 +67,25 @@ ui <- shiny::fluidPage( # <3>
         title = "Introduction",
         content = "Hello I am Pukar Bhandari; and this is my life journey."
       ),
-      "birth_place" = mapgl::story_section(
-        title = "Birth Place",
-        content = "This is where I was born."
-      ),
-      "lower_primary" = mapgl::story_section(
-        title = "Kankai Education Foundation",
-        content = "This is where I studied Nursery to Grade 3."
-      ),
-      "upper_primary" = mapgl::story_section(
-        title = "Laligurans English School",
-        content = "This is where I studied Grade 4 & Grade 5."
-      ),
-      "middle_school" = mapgl::story_section(
-        title = "Birat Jyoti English Secondary School",
-        content = "This is where I studied Grade 6 & Grade 7."
-      ),
-      "secondary_school" = mapgl::story_section(
-        title = "Little Flowers' English School",
-        content = "This is where I studied Grade 8 to Grade 10."
-      ),
-      "higher_secondary" = mapgl::story_section(
-        title = "Kanchanjunga English Higher Secondary School",
-        content = "This is where I studied Higher Secondary (Plus 2)."
+      "childhood" = mapgl::story_section(
+        title = "Birtamode, Jhapa",
+        content = "This is where I was born and spent the early part of my life until 2013."
       ),
       "bachelors" = mapgl::story_section(
-        title = "Institute of Engineering Pulchowk Campus",
-        content = "This is where I obtained my Bachelor's Degree in Architecture."
+        title = "Pulchowk, Lalitpur",
+        content = "I then moved to Pulchowk in the pursuit of higher education. I obtained my Bachelor's Degree in Architecture from Institute of Engineering Pulchowk Campus in 2018."
       ),
       "masters" = mapgl::story_section(
-        title = "University of Utah",
-        content = "This is where I obtained my Master of City & Metropolitan Planning degree."
+        title = "Salt Lake City, UT",
+        content = "In pursuit of even higher education, I moved to Salt Lake City, UT where I obtained my Master of City & Metropolitan Planning degree from the University of Utah in May 2023."
       ),
-      "work_1" = mapgl::story_section(
-        title = "Metro Analytics",
-        content = "This is where I lived and worked between 2023-2025."
+      "metro_analytics" = mapgl::story_section(
+        title = "Atlanta, GA",
+        content = "I then moved to Altanta in June 2023 to work as a transportation planner & analyst at Metro Analytics until September 2025."
       ),
-      "work_2" = mapgl::story_section(
-        title = "Wasatch Front Regional Council",
-        content = "This is where I live and work currently."
+      "wfrc_ut" = mapgl::story_section(
+        title = "Back to Salt Lake City, UT",
+        content = "After gaining entry-level experience in transportation planning, travel demand modeling, and data analytics, I moved back to Salt Lake City - a place I am personally and professionally attached to - in order to join the awesome analytics team at the Wasatch Front Regional Council."
       )
     ),
     map_type = "maplibre"
@@ -137,57 +117,9 @@ server <- function(input, output, session) { # <6>
       )
   })
 
-  mapgl::on_section("map", "birth_place", {
+  mapgl::on_section("map", "childhood", {
     mapgl::maplibre_proxy("map") |>
       mapgl::fly_to(center = c(87.99371750247397, 26.646533355308083),
-             zoom = 16,
-             pitch = 49,
-             bearing = 12.8)
-  })
-
-  mapgl::on_section("map", "lower_primary", {
-    mapgl::maplibre_proxy("map") |>
-      mapgl::fly_to(center = c(87.99734666704784, 26.646179601882675),
-             zoom = 16,
-             pitch = 49,
-             bearing = 12.8)
-  })
-
-  mapgl::on_section("map", "upper_primary", {
-    mapgl::maplibre_proxy("map") |>
-      mapgl::fly_to(center = c(88.01116125198942, 26.608294715049524),
-             zoom = 16,
-             pitch = 49,
-             bearing = 12.8)
-  })
-
-  mapgl::on_section("map", "middle_school", {
-    mapgl::maplibre_proxy("map") |>
-      mapgl::fly_to(center = c(87.99218594227516, 26.620735015314324),
-             zoom = 16,
-             pitch = 49,
-             bearing = 12.8)
-  })
-
-  mapgl::on_section("map", "secondary_school", {
-    mapgl::maplibre_proxy("map") |>
-      mapgl::fly_to(center = c(87.99006631463702, 26.63185913816036),
-             zoom = 16,
-             pitch = 49,
-             bearing = 12.8)
-  })
-
-  mapgl::on_section("map", "higher_secondary", {
-    mapgl::maplibre_proxy("map") |>
-      mapgl::fly_to(center = c(87.99921328178023, 26.633744364809765),
-             zoom = 16,
-             pitch = 49,
-             bearing = 12.8)
-  })
-
-  mapgl::on_section("map", "bachelors", {
-    mapgl::maplibre_proxy("map") |>
-      mapgl::fly_to(center = c(85.31840215760691, 27.681136558618093),
              zoom = 16,
              pitch = 49,
              bearing = 12.8)
@@ -201,7 +133,7 @@ server <- function(input, output, session) { # <6>
              bearing = 12.8)
   })
 
-  mapgl::on_section("map", "work_1", {
+  mapgl::on_section("map", "metro_analytics", {
     mapgl::maplibre_proxy("map") |>
       mapgl::fly_to(center = c(-84.3938999520061, 33.76728402587881),
              zoom = 16,
@@ -209,7 +141,7 @@ server <- function(input, output, session) { # <6>
              bearing = 12.8)
   })
 
-  mapgl::on_section("map", "work_2", {
+  mapgl::on_section("map", "wfrc_ut", {
     mapgl::maplibre_proxy("map") |>
       mapgl::fly_to(center = c(-111.90422445885304, 40.76973849954712),
              zoom = 16,
@@ -360,10 +292,6 @@ Based on my experience as a transportation planner, here are key considerations 
 
 To load the complete application from an external `app.R` file (which is cleaner for larger applications), you can modify the {shinylive} block:
 
-````{r}
-#| eval: false
-
-# In your index.qmd file
 ```{{shinylive-r}}
 #| standalone: true
 #| viewerHeight: 600
@@ -372,7 +300,6 @@ To load the complete application from an external `app.R` file (which is cleaner
 # Load the complete application
 source("app.R")
 ```
-````
 
 This approach allows you to:
 - Maintain cleaner separation between documentation and code
