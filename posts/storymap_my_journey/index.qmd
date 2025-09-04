@@ -36,14 +36,12 @@ The {mapgl} package offers several advantages for transportation planners and da
 
 Below is the complete interactive storymap. You can scroll through the different sections to see how the map smoothly transitions between locations, each representing a significant milestone in my journey.
 
-:::{.lightbox}
 ```{shinylive-r}
 #| standalone: true
 #| viewerHeight: 600
 
 source("app.R")
 ```
-:::
 
 ## Source Code
 
@@ -52,7 +50,6 @@ The storymap application follows a typical Shiny structure with some specialized
 ```{r filename="app.R"}
 #| eval: false
 #| code-line-numbers: true
-#| code-overflow: wrap
 
 library(shiny) # <1>
 library(mapgl) # <2>
