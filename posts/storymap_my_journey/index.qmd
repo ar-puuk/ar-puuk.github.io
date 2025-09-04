@@ -9,11 +9,11 @@ author:
     email: pukar.bhandari@outlook.com
 date: "2025-09-03"
 categories: [R, Shiny, Storymap]
-prefer-html: true
-embed-resources: false
 filters:
   - shinylive
 code-annotations: select
+prefer-html: true
+embed-resources: false
 ---
 
 ## Introduction
@@ -36,12 +36,14 @@ The {mapgl} package offers several advantages for transportation planners and da
 
 Below is the complete interactive storymap. You can scroll through the different sections to see how the map smoothly transitions between locations, each representing a significant milestone in my journey.
 
-```{shinylive-r}
+:::{.lightbox}
+```{shinylive-r eval = knitr::is_html_output()}
 #| standalone: true
 #| viewerHeight: 600
 
 source("app.R")
 ```
+:::
 
 ## Source Code
 
