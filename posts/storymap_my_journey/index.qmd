@@ -43,11 +43,14 @@ Below is the complete interactive storymap. You can scroll through the different
 source("app.R")
 ```
 
-## Understanding the Code Structure
+## Source Code
 
 The storymap application follows a typical Shiny structure with some specialized {mapgl} components. Following is the source code for this dashboard (Please click on the numbers on the far right for additional explanation of syntax and mechanics):
 
-```r
+```{r filename="app.R"}
+#| eval: false
+#| code-line-numbers: true
+
 library(shiny) # <1>
 library(mapgl) # <2>
 
@@ -231,6 +234,8 @@ shiny::shinyApp(ui, server) # <11>
 10. Handle section transitions - when user reaches each story step
 11. Launch the Shiny application combining UI and server components
 
+## Understanding the App Structure
+
 ### Setting Up the User Interface
 
 ```{r}
@@ -355,7 +360,7 @@ Based on my experience as a transportation planner, here are key considerations 
 
 To load the complete application from an external `app.R` file (which is cleaner for larger applications), you can modify the {shinylive} block:
 
-````r
+````{r}
 #| eval: false
 
 # In your index.qmd file

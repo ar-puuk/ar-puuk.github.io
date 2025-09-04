@@ -424,8 +424,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
   <li><a href="#why-mapgl-for-storymaps" id="toc-why-mapgl-for-storymaps" class="nav-link" data-scroll-target="#why-mapgl-for-storymaps"><span class="header-section-number">2</span> Why {mapgl} for Storymaps?</a></li>
   <li><a href="#interactive-storymap-demo" id="toc-interactive-storymap-demo" class="nav-link" data-scroll-target="#interactive-storymap-demo"><span class="header-section-number">3</span> Interactive Storymap Demo</a></li>
+  <li><a href="#source-code" id="toc-source-code" class="nav-link" data-scroll-target="#source-code"><span class="header-section-number">4</span> Source Code</a></li>
   <li>
-<a href="#understanding-the-code-structure" id="toc-understanding-the-code-structure" class="nav-link" data-scroll-target="#understanding-the-code-structure"><span class="header-section-number">4</span> Understanding the Code Structure</a>
+<a href="#understanding-the-app-structure" id="toc-understanding-the-app-structure" class="nav-link" data-scroll-target="#understanding-the-app-structure"><span class="header-section-number">5</span> Understanding the App Structure</a>
   <ul class="collapse">
 <li><a href="#setting-up-the-user-interface" id="toc-setting-up-the-user-interface" class="nav-link" data-scroll-target="#setting-up-the-user-interface">Setting Up the User Interface</a></li>
   <li><a href="#configuring-the-map" id="toc-configuring-the-map" class="nav-link" data-scroll-target="#configuring-the-map">Configuring the Map</a></li>
@@ -433,16 +434,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul>
 </li>
   <li>
-<a href="#best-practices-for-transportation-data-storymaps" id="toc-best-practices-for-transportation-data-storymaps" class="nav-link" data-scroll-target="#best-practices-for-transportation-data-storymaps"><span class="header-section-number">5</span> Best Practices for Transportation Data Storymaps</a>
+<a href="#best-practices-for-transportation-data-storymaps" id="toc-best-practices-for-transportation-data-storymaps" class="nav-link" data-scroll-target="#best-practices-for-transportation-data-storymaps"><span class="header-section-number">6</span> Best Practices for Transportation Data Storymaps</a>
   <ul class="collapse">
 <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data Preparation</a></li>
   <li><a href="#visual-design" id="toc-visual-design" class="nav-link" data-scroll-target="#visual-design">Visual Design</a></li>
   <li><a href="#user-experience" id="toc-user-experience" class="nav-link" data-scroll-target="#user-experience">User Experience</a></li>
   </ul>
 </li>
-  <li><a href="#loading-external-app-files" id="toc-loading-external-app-files" class="nav-link" data-scroll-target="#loading-external-app-files"><span class="header-section-number">6</span> Loading External App Files</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">7</span> Conclusion</a></li>
-  <li><a href="#additional-resources" id="toc-additional-resources" class="nav-link" data-scroll-target="#additional-resources"><span class="header-section-number">8</span> Additional Resources</a></li>
+  <li><a href="#loading-external-app-files" id="toc-loading-external-app-files" class="nav-link" data-scroll-target="#loading-external-app-files"><span class="header-section-number">7</span> Loading External App Files</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">8</span> Conclusion</a></li>
+  <li><a href="#additional-resources" id="toc-additional-resources" class="nav-link" data-scroll-target="#additional-resources"><span class="header-section-number">9</span> Additional Resources</a></li>
   </ul><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -474,178 +475,185 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #| viewerHeight: 600
 
 source("app.R")</code></pre>
-</section><section id="understanding-the-code-structure" class="level2" data-number="4"><h2 data-number="4" class="anchored" data-anchor-id="understanding-the-code-structure">
-<span class="header-section-number">4</span> Understanding the Code Structure</h2>
+</section><section id="source-code" class="level2" data-number="4"><h2 data-number="4" class="anchored" data-anchor-id="source-code">
+<span class="header-section-number">4</span> Source Code</h2>
 <p>The storymap application follows a typical Shiny structure with some specialized {mapgl} components. Following is the source code for this dashboard (Please click on the numbers on the far right for additional explanation of syntax and mechanics):</p>
-<div class="sourceCode" id="annotated-cell-2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://walker-data.com/mapgl/">mapgl</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
-<span>  <span class="va">tags</span><span class="op">$</span><span class="fu">link</span><span class="op">(</span></span>
-<span>    href <span class="op">=</span> <span class="st">"https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&amp;display=swap"</span>,</span>
-<span>    rel<span class="op">=</span><span class="st">"stylesheet"</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/story_map.html">story_map</a></span><span class="op">(</span></span>
-<span>    map_id <span class="op">=</span> <span class="st">"map"</span>,</span>
-<span>    font_family <span class="op">=</span> <span class="st">"Poppins"</span>,</span>
-<span>    sections <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>      <span class="st">"intro"</span> <span class="op">=</span> <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/story_section.html">story_section</a></span><span class="op">(</span></span>
-<span>        title <span class="op">=</span> <span class="st">"Introduction"</span>,</span>
-<span>        content <span class="op">=</span> <span class="st">"Hello I am Pukar Bhandari; and this is my life journey."</span></span>
-<span>      <span class="op">)</span>,</span>
-<span>      <span class="st">"birth_place"</span> <span class="op">=</span> <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/story_section.html">story_section</a></span><span class="op">(</span></span>
-<span>        title <span class="op">=</span> <span class="st">"Birth Place"</span>,</span>
-<span>        content <span class="op">=</span> <span class="st">"This is where I was born."</span></span>
-<span>      <span class="op">)</span>,</span>
-<span>      <span class="st">"lower_primary"</span> <span class="op">=</span> <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/story_section.html">story_section</a></span><span class="op">(</span></span>
-<span>        title <span class="op">=</span> <span class="st">"Kankai Education Foundation"</span>,</span>
-<span>        content <span class="op">=</span> <span class="st">"This is where I studied Nursery to Grade 3."</span></span>
-<span>      <span class="op">)</span>,</span>
-<span>      <span class="st">"upper_primary"</span> <span class="op">=</span> <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/story_section.html">story_section</a></span><span class="op">(</span></span>
-<span>        title <span class="op">=</span> <span class="st">"Laligurans English School"</span>,</span>
-<span>        content <span class="op">=</span> <span class="st">"This is where I studied Grade 4 &amp; Grade 5."</span></span>
-<span>      <span class="op">)</span>,</span>
-<span>      <span class="st">"middle_school"</span> <span class="op">=</span> <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/story_section.html">story_section</a></span><span class="op">(</span></span>
-<span>        title <span class="op">=</span> <span class="st">"Birat Jyoti English Secondary School"</span>,</span>
-<span>        content <span class="op">=</span> <span class="st">"This is where I studied Grade 6 &amp; Grade 7."</span></span>
-<span>      <span class="op">)</span>,</span>
-<span>      <span class="st">"secondary_school"</span> <span class="op">=</span> <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/story_section.html">story_section</a></span><span class="op">(</span></span>
-<span>        title <span class="op">=</span> <span class="st">"Little Flowers' English School"</span>,</span>
-<span>        content <span class="op">=</span> <span class="st">"This is where I studied Grade 8 to Grade 10."</span></span>
-<span>      <span class="op">)</span>,</span>
-<span>      <span class="st">"higher_secondary"</span> <span class="op">=</span> <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/story_section.html">story_section</a></span><span class="op">(</span></span>
-<span>        title <span class="op">=</span> <span class="st">"Kanchanjunga English Higher Secondary School"</span>,</span>
-<span>        content <span class="op">=</span> <span class="st">"This is where I studied Higher Secondary (Plus 2)."</span></span>
-<span>      <span class="op">)</span>,</span>
-<span>      <span class="st">"bachelors"</span> <span class="op">=</span> <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/story_section.html">story_section</a></span><span class="op">(</span></span>
-<span>        title <span class="op">=</span> <span class="st">"Institute of Engineering Pulchowk Campus"</span>,</span>
-<span>        content <span class="op">=</span> <span class="st">"This is where I obtained my Bachelor's Degree in Architecture."</span></span>
-<span>      <span class="op">)</span>,</span>
-<span>      <span class="st">"masters"</span> <span class="op">=</span> <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/story_section.html">story_section</a></span><span class="op">(</span></span>
-<span>        title <span class="op">=</span> <span class="st">"University of Utah"</span>,</span>
-<span>        content <span class="op">=</span> <span class="st">"This is where I obtained my Master of City &amp; Metropolitan Planning degree."</span></span>
-<span>      <span class="op">)</span>,</span>
-<span>      <span class="st">"work_1"</span> <span class="op">=</span> <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/story_section.html">story_section</a></span><span class="op">(</span></span>
-<span>        title <span class="op">=</span> <span class="st">"Metro Analytics"</span>,</span>
-<span>        content <span class="op">=</span> <span class="st">"This is where I lived and worked between 2023-2025."</span></span>
-<span>      <span class="op">)</span>,</span>
-<span>      <span class="st">"work_2"</span> <span class="op">=</span> <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/story_section.html">story_section</a></span><span class="op">(</span></span>
-<span>        title <span class="op">=</span> <span class="st">"Wasatch Front Regional Council"</span>,</span>
-<span>        content <span class="op">=</span> <span class="st">"This is where I live and work currently."</span></span>
-<span>      <span class="op">)</span></span>
-<span>    <span class="op">)</span>,</span>
-<span>    map_type <span class="op">=</span> <span class="st">"maplibre"</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">output</span><span class="op">$</span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/renderMaplibre.html">renderMaplibre</a></span><span class="op">(</span><span class="op">{</span></span>
-<span>    <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/maplibre.html">maplibre</a></span><span class="op">(</span></span>
-<span>      style <span class="op">=</span> <span class="st">"https://tiles.openfreemap.org/styles/liberty"</span>,</span>
-<span>      center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
-<span>      zoom <span class="op">=</span> <span class="fl">2.75</span>,</span>
-<span>      scrollZoom <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/set_projection.html">set_projection</a></span><span class="op">(</span>projection <span class="op">=</span> <span class="st">"globe"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/add_globe_control.html">add_globe_control</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/add_navigation_control.html">add_navigation_control</a></span><span class="op">(</span>visualize_pitch <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/add_globe_minimap.html">add_globe_minimap</a></span><span class="op">(</span>position <span class="op">=</span> <span class="st">"bottom-left"</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/on_section.html">on_section</a></span><span class="op">(</span><span class="st">"map"</span>, <span class="st">"intro"</span>, <span class="op">{</span></span>
-<span>    <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/maplibre_proxy.html">maplibre_proxy</a></span><span class="op">(</span><span class="st">"map"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/clear_markers.html">clear_markers</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/fly_to.html">fly_to</a></span><span class="op">(</span></span>
-<span>        center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
-<span>        zoom <span class="op">=</span> <span class="fl">2.75</span>,</span>
-<span>        pitch <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>        bearing <span class="op">=</span> <span class="fl">0</span></span>
-<span>      <span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/on_section.html">on_section</a></span><span class="op">(</span><span class="st">"map"</span>, <span class="st">"birth_place"</span>, <span class="op">{</span></span>
-<span>    <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/maplibre_proxy.html">maplibre_proxy</a></span><span class="op">(</span><span class="st">"map"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/fly_to.html">fly_to</a></span><span class="op">(</span>center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">87.99371750247397</span>, <span class="fl">26.646533355308083</span><span class="op">)</span>,</span>
-<span>             zoom <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>             pitch <span class="op">=</span> <span class="fl">49</span>,</span>
-<span>             bearing <span class="op">=</span> <span class="fl">12.8</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/on_section.html">on_section</a></span><span class="op">(</span><span class="st">"map"</span>, <span class="st">"lower_primary"</span>, <span class="op">{</span></span>
-<span>    <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/maplibre_proxy.html">maplibre_proxy</a></span><span class="op">(</span><span class="st">"map"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/fly_to.html">fly_to</a></span><span class="op">(</span>center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">87.99734666704784</span>, <span class="fl">26.646179601882675</span><span class="op">)</span>,</span>
-<span>             zoom <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>             pitch <span class="op">=</span> <span class="fl">49</span>,</span>
-<span>             bearing <span class="op">=</span> <span class="fl">12.8</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/on_section.html">on_section</a></span><span class="op">(</span><span class="st">"map"</span>, <span class="st">"upper_primary"</span>, <span class="op">{</span></span>
-<span>    <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/maplibre_proxy.html">maplibre_proxy</a></span><span class="op">(</span><span class="st">"map"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/fly_to.html">fly_to</a></span><span class="op">(</span>center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">88.01116125198942</span>, <span class="fl">26.608294715049524</span><span class="op">)</span>,</span>
-<span>             zoom <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>             pitch <span class="op">=</span> <span class="fl">49</span>,</span>
-<span>             bearing <span class="op">=</span> <span class="fl">12.8</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/on_section.html">on_section</a></span><span class="op">(</span><span class="st">"map"</span>, <span class="st">"middle_school"</span>, <span class="op">{</span></span>
-<span>    <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/maplibre_proxy.html">maplibre_proxy</a></span><span class="op">(</span><span class="st">"map"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/fly_to.html">fly_to</a></span><span class="op">(</span>center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">87.99218594227516</span>, <span class="fl">26.620735015314324</span><span class="op">)</span>,</span>
-<span>             zoom <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>             pitch <span class="op">=</span> <span class="fl">49</span>,</span>
-<span>             bearing <span class="op">=</span> <span class="fl">12.8</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/on_section.html">on_section</a></span><span class="op">(</span><span class="st">"map"</span>, <span class="st">"secondary_school"</span>, <span class="op">{</span></span>
-<span>    <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/maplibre_proxy.html">maplibre_proxy</a></span><span class="op">(</span><span class="st">"map"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/fly_to.html">fly_to</a></span><span class="op">(</span>center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">87.99006631463702</span>, <span class="fl">26.63185913816036</span><span class="op">)</span>,</span>
-<span>             zoom <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>             pitch <span class="op">=</span> <span class="fl">49</span>,</span>
-<span>             bearing <span class="op">=</span> <span class="fl">12.8</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/on_section.html">on_section</a></span><span class="op">(</span><span class="st">"map"</span>, <span class="st">"higher_secondary"</span>, <span class="op">{</span></span>
-<span>    <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/maplibre_proxy.html">maplibre_proxy</a></span><span class="op">(</span><span class="st">"map"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/fly_to.html">fly_to</a></span><span class="op">(</span>center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">87.99921328178023</span>, <span class="fl">26.633744364809765</span><span class="op">)</span>,</span>
-<span>             zoom <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>             pitch <span class="op">=</span> <span class="fl">49</span>,</span>
-<span>             bearing <span class="op">=</span> <span class="fl">12.8</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/on_section.html">on_section</a></span><span class="op">(</span><span class="st">"map"</span>, <span class="st">"bachelors"</span>, <span class="op">{</span></span>
-<span>    <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/maplibre_proxy.html">maplibre_proxy</a></span><span class="op">(</span><span class="st">"map"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/fly_to.html">fly_to</a></span><span class="op">(</span>center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">85.31840215760691</span>, <span class="fl">27.681136558618093</span><span class="op">)</span>,</span>
-<span>             zoom <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>             pitch <span class="op">=</span> <span class="fl">49</span>,</span>
-<span>             bearing <span class="op">=</span> <span class="fl">12.8</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/on_section.html">on_section</a></span><span class="op">(</span><span class="st">"map"</span>, <span class="st">"masters"</span>, <span class="op">{</span></span>
-<span>    <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/maplibre_proxy.html">maplibre_proxy</a></span><span class="op">(</span><span class="st">"map"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/fly_to.html">fly_to</a></span><span class="op">(</span>center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">111.84448004883544</span>, <span class="fl">40.76106105996334</span><span class="op">)</span>,</span>
-<span>             zoom <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>             pitch <span class="op">=</span> <span class="fl">49</span>,</span>
-<span>             bearing <span class="op">=</span> <span class="fl">12.8</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/on_section.html">on_section</a></span><span class="op">(</span><span class="st">"map"</span>, <span class="st">"work_1"</span>, <span class="op">{</span></span>
-<span>    <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/maplibre_proxy.html">maplibre_proxy</a></span><span class="op">(</span><span class="st">"map"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/fly_to.html">fly_to</a></span><span class="op">(</span>center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">84.3938999520061</span>, <span class="fl">33.76728402587881</span><span class="op">)</span>,</span>
-<span>             zoom <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>             pitch <span class="op">=</span> <span class="fl">49</span>,</span>
-<span>             bearing <span class="op">=</span> <span class="fl">12.8</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/on_section.html">on_section</a></span><span class="op">(</span><span class="st">"map"</span>, <span class="st">"work_2"</span>, <span class="op">{</span></span>
-<span>    <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/maplibre_proxy.html">maplibre_proxy</a></span><span class="op">(</span><span class="st">"map"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">mapgl</span><span class="fu">::</span><span class="fu"><a href="https://walker-data.com/mapgl/reference/fly_to.html">fly_to</a></span><span class="op">(</span>center <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">111.90422445885304</span>, <span class="fl">40.76973849954712</span><span class="op">)</span>,</span>
-<span>             zoom <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>             pitch <span class="op">=</span> <span class="fl">49</span>,</span>
-<span>             bearing <span class="op">=</span> <span class="fl">12.8</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<dl>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>app.R</strong></pre>
+</div>
+<div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1">1</button><span id="annotated-cell-2-1" class="code-annotation-target"><a href="#annotated-cell-2-1"></a><span class="fu">library</span>(shiny)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2">2</button><span id="annotated-cell-2-2" class="code-annotation-target"><a href="#annotated-cell-2-2"></a><span class="fu">library</span>(mapgl)</span>
+<span id="annotated-cell-2-3"><a href="#annotated-cell-2-3"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="3">3</button><span id="annotated-cell-2-4" class="code-annotation-target"><a href="#annotated-cell-2-4"></a>ui <span class="ot">&lt;-</span> shiny<span class="sc">::</span><span class="fu">fluidPage</span>(</span>
+<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5"></a>  tags<span class="sc">$</span><span class="fu">link</span>(</span>
+<span id="annotated-cell-2-6"><a href="#annotated-cell-2-6"></a>    <span class="at">href =</span> <span class="st">"https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&amp;display=swap"</span>,</span>
+<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7"></a>    <span class="at">rel=</span><span class="st">"stylesheet"</span></span>
+<span id="annotated-cell-2-8"><a href="#annotated-cell-2-8"></a>  ),</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="4">4</button><span id="annotated-cell-2-9" class="code-annotation-target"><a href="#annotated-cell-2-9"></a>  mapgl<span class="sc">::</span><span class="fu">story_map</span>(</span>
+<span id="annotated-cell-2-10"><a href="#annotated-cell-2-10"></a>    <span class="at">map_id =</span> <span class="st">"map"</span>,</span>
+<span id="annotated-cell-2-11"><a href="#annotated-cell-2-11"></a>    <span class="at">font_family =</span> <span class="st">"Poppins"</span>,</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="5">5</button><span id="annotated-cell-2-12" class="code-annotation-target"><a href="#annotated-cell-2-12"></a>    <span class="at">sections =</span> <span class="fu">list</span>(</span>
+<span id="annotated-cell-2-13"><a href="#annotated-cell-2-13"></a>      <span class="st">"intro"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-2-14"><a href="#annotated-cell-2-14"></a>        <span class="at">title =</span> <span class="st">"Introduction"</span>,</span>
+<span id="annotated-cell-2-15"><a href="#annotated-cell-2-15"></a>        <span class="at">content =</span> <span class="st">"Hello I am Pukar Bhandari; and this is my life journey."</span></span>
+<span id="annotated-cell-2-16"><a href="#annotated-cell-2-16"></a>      ),</span>
+<span id="annotated-cell-2-17"><a href="#annotated-cell-2-17"></a>      <span class="st">"birth_place"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-2-18"><a href="#annotated-cell-2-18"></a>        <span class="at">title =</span> <span class="st">"Birth Place"</span>,</span>
+<span id="annotated-cell-2-19"><a href="#annotated-cell-2-19"></a>        <span class="at">content =</span> <span class="st">"This is where I was born."</span></span>
+<span id="annotated-cell-2-20"><a href="#annotated-cell-2-20"></a>      ),</span>
+<span id="annotated-cell-2-21"><a href="#annotated-cell-2-21"></a>      <span class="st">"lower_primary"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-2-22"><a href="#annotated-cell-2-22"></a>        <span class="at">title =</span> <span class="st">"Kankai Education Foundation"</span>,</span>
+<span id="annotated-cell-2-23"><a href="#annotated-cell-2-23"></a>        <span class="at">content =</span> <span class="st">"This is where I studied Nursery to Grade 3."</span></span>
+<span id="annotated-cell-2-24"><a href="#annotated-cell-2-24"></a>      ),</span>
+<span id="annotated-cell-2-25"><a href="#annotated-cell-2-25"></a>      <span class="st">"upper_primary"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-2-26"><a href="#annotated-cell-2-26"></a>        <span class="at">title =</span> <span class="st">"Laligurans English School"</span>,</span>
+<span id="annotated-cell-2-27"><a href="#annotated-cell-2-27"></a>        <span class="at">content =</span> <span class="st">"This is where I studied Grade 4 &amp; Grade 5."</span></span>
+<span id="annotated-cell-2-28"><a href="#annotated-cell-2-28"></a>      ),</span>
+<span id="annotated-cell-2-29"><a href="#annotated-cell-2-29"></a>      <span class="st">"middle_school"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-2-30"><a href="#annotated-cell-2-30"></a>        <span class="at">title =</span> <span class="st">"Birat Jyoti English Secondary School"</span>,</span>
+<span id="annotated-cell-2-31"><a href="#annotated-cell-2-31"></a>        <span class="at">content =</span> <span class="st">"This is where I studied Grade 6 &amp; Grade 7."</span></span>
+<span id="annotated-cell-2-32"><a href="#annotated-cell-2-32"></a>      ),</span>
+<span id="annotated-cell-2-33"><a href="#annotated-cell-2-33"></a>      <span class="st">"secondary_school"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-2-34"><a href="#annotated-cell-2-34"></a>        <span class="at">title =</span> <span class="st">"Little Flowers' English School"</span>,</span>
+<span id="annotated-cell-2-35"><a href="#annotated-cell-2-35"></a>        <span class="at">content =</span> <span class="st">"This is where I studied Grade 8 to Grade 10."</span></span>
+<span id="annotated-cell-2-36"><a href="#annotated-cell-2-36"></a>      ),</span>
+<span id="annotated-cell-2-37"><a href="#annotated-cell-2-37"></a>      <span class="st">"higher_secondary"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-2-38"><a href="#annotated-cell-2-38"></a>        <span class="at">title =</span> <span class="st">"Kanchanjunga English Higher Secondary School"</span>,</span>
+<span id="annotated-cell-2-39"><a href="#annotated-cell-2-39"></a>        <span class="at">content =</span> <span class="st">"This is where I studied Higher Secondary (Plus 2)."</span></span>
+<span id="annotated-cell-2-40"><a href="#annotated-cell-2-40"></a>      ),</span>
+<span id="annotated-cell-2-41"><a href="#annotated-cell-2-41"></a>      <span class="st">"bachelors"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-2-42"><a href="#annotated-cell-2-42"></a>        <span class="at">title =</span> <span class="st">"Institute of Engineering Pulchowk Campus"</span>,</span>
+<span id="annotated-cell-2-43"><a href="#annotated-cell-2-43"></a>        <span class="at">content =</span> <span class="st">"This is where I obtained my Bachelor's Degree in Architecture."</span></span>
+<span id="annotated-cell-2-44"><a href="#annotated-cell-2-44"></a>      ),</span>
+<span id="annotated-cell-2-45"><a href="#annotated-cell-2-45"></a>      <span class="st">"masters"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-2-46"><a href="#annotated-cell-2-46"></a>        <span class="at">title =</span> <span class="st">"University of Utah"</span>,</span>
+<span id="annotated-cell-2-47"><a href="#annotated-cell-2-47"></a>        <span class="at">content =</span> <span class="st">"This is where I obtained my Master of City &amp; Metropolitan Planning degree."</span></span>
+<span id="annotated-cell-2-48"><a href="#annotated-cell-2-48"></a>      ),</span>
+<span id="annotated-cell-2-49"><a href="#annotated-cell-2-49"></a>      <span class="st">"work_1"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-2-50"><a href="#annotated-cell-2-50"></a>        <span class="at">title =</span> <span class="st">"Metro Analytics"</span>,</span>
+<span id="annotated-cell-2-51"><a href="#annotated-cell-2-51"></a>        <span class="at">content =</span> <span class="st">"This is where I lived and worked between 2023-2025."</span></span>
+<span id="annotated-cell-2-52"><a href="#annotated-cell-2-52"></a>      ),</span>
+<span id="annotated-cell-2-53"><a href="#annotated-cell-2-53"></a>      <span class="st">"work_2"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-2-54"><a href="#annotated-cell-2-54"></a>        <span class="at">title =</span> <span class="st">"Wasatch Front Regional Council"</span>,</span>
+<span id="annotated-cell-2-55"><a href="#annotated-cell-2-55"></a>        <span class="at">content =</span> <span class="st">"This is where I live and work currently."</span></span>
+<span id="annotated-cell-2-56"><a href="#annotated-cell-2-56"></a>      )</span>
+<span id="annotated-cell-2-57"><a href="#annotated-cell-2-57"></a>    ),</span>
+<span id="annotated-cell-2-58"><a href="#annotated-cell-2-58"></a>    <span class="at">map_type =</span> <span class="st">"maplibre"</span></span>
+<span id="annotated-cell-2-59"><a href="#annotated-cell-2-59"></a>  )</span>
+<span id="annotated-cell-2-60"><a href="#annotated-cell-2-60"></a>)</span>
+<span id="annotated-cell-2-61"><a href="#annotated-cell-2-61"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="6">6</button><span id="annotated-cell-2-62" class="code-annotation-target"><a href="#annotated-cell-2-62"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="7">7</button><span id="annotated-cell-2-63" class="code-annotation-target"><a href="#annotated-cell-2-63"></a>  output<span class="sc">$</span>map <span class="ot">&lt;-</span> mapgl<span class="sc">::</span><span class="fu">renderMaplibre</span>({</span>
+<span id="annotated-cell-2-64"><a href="#annotated-cell-2-64"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre</span>(</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="8">8</button><span id="annotated-cell-2-65" class="code-annotation-target"><a href="#annotated-cell-2-65"></a>      <span class="at">style =</span> <span class="st">"https://tiles.openfreemap.org/styles/liberty"</span>,</span>
+<span id="annotated-cell-2-66"><a href="#annotated-cell-2-66"></a>      <span class="at">center =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="annotated-cell-2-67"><a href="#annotated-cell-2-67"></a>      <span class="at">zoom =</span> <span class="fl">2.75</span>,</span>
+<span id="annotated-cell-2-68"><a href="#annotated-cell-2-68"></a>      <span class="at">scrollZoom =</span> <span class="cn">FALSE</span></span>
+<span id="annotated-cell-2-69"><a href="#annotated-cell-2-69"></a>    ) <span class="sc">|&gt;</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="9">9</button><span id="annotated-cell-2-70" class="code-annotation-target"><a href="#annotated-cell-2-70"></a>      mapgl<span class="sc">::</span><span class="fu">set_projection</span>(<span class="at">projection =</span> <span class="st">"globe"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-71"><a href="#annotated-cell-2-71"></a>      mapgl<span class="sc">::</span><span class="fu">add_globe_control</span>() <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-72"><a href="#annotated-cell-2-72"></a>      mapgl<span class="sc">::</span><span class="fu">add_navigation_control</span>(<span class="at">visualize_pitch =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-73"><a href="#annotated-cell-2-73"></a>      mapgl<span class="sc">::</span><span class="fu">add_globe_minimap</span>(<span class="at">position =</span> <span class="st">"bottom-left"</span>)</span>
+<span id="annotated-cell-2-74"><a href="#annotated-cell-2-74"></a>  })</span>
+<span id="annotated-cell-2-75"><a href="#annotated-cell-2-75"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="10">10</button><span id="annotated-cell-2-76" class="code-annotation-target"><a href="#annotated-cell-2-76"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"intro"</span>, {</span>
+<span id="annotated-cell-2-77"><a href="#annotated-cell-2-77"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-78"><a href="#annotated-cell-2-78"></a>      mapgl<span class="sc">::</span><span class="fu">clear_markers</span>() <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-79"><a href="#annotated-cell-2-79"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(</span>
+<span id="annotated-cell-2-80"><a href="#annotated-cell-2-80"></a>        <span class="at">center =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="annotated-cell-2-81"><a href="#annotated-cell-2-81"></a>        <span class="at">zoom =</span> <span class="fl">2.75</span>,</span>
+<span id="annotated-cell-2-82"><a href="#annotated-cell-2-82"></a>        <span class="at">pitch =</span> <span class="dv">0</span>,</span>
+<span id="annotated-cell-2-83"><a href="#annotated-cell-2-83"></a>        <span class="at">bearing =</span> <span class="dv">0</span></span>
+<span id="annotated-cell-2-84"><a href="#annotated-cell-2-84"></a>      )</span>
+<span id="annotated-cell-2-85"><a href="#annotated-cell-2-85"></a>  })</span>
+<span id="annotated-cell-2-86"><a href="#annotated-cell-2-86"></a></span>
+<span id="annotated-cell-2-87"><a href="#annotated-cell-2-87"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"birth_place"</span>, {</span>
+<span id="annotated-cell-2-88"><a href="#annotated-cell-2-88"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-89"><a href="#annotated-cell-2-89"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99371750247397</span>, <span class="fl">26.646533355308083</span>),</span>
+<span id="annotated-cell-2-90"><a href="#annotated-cell-2-90"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="annotated-cell-2-91"><a href="#annotated-cell-2-91"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="annotated-cell-2-92"><a href="#annotated-cell-2-92"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="annotated-cell-2-93"><a href="#annotated-cell-2-93"></a>  })</span>
+<span id="annotated-cell-2-94"><a href="#annotated-cell-2-94"></a></span>
+<span id="annotated-cell-2-95"><a href="#annotated-cell-2-95"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"lower_primary"</span>, {</span>
+<span id="annotated-cell-2-96"><a href="#annotated-cell-2-96"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-97"><a href="#annotated-cell-2-97"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99734666704784</span>, <span class="fl">26.646179601882675</span>),</span>
+<span id="annotated-cell-2-98"><a href="#annotated-cell-2-98"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="annotated-cell-2-99"><a href="#annotated-cell-2-99"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="annotated-cell-2-100"><a href="#annotated-cell-2-100"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="annotated-cell-2-101"><a href="#annotated-cell-2-101"></a>  })</span>
+<span id="annotated-cell-2-102"><a href="#annotated-cell-2-102"></a></span>
+<span id="annotated-cell-2-103"><a href="#annotated-cell-2-103"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"upper_primary"</span>, {</span>
+<span id="annotated-cell-2-104"><a href="#annotated-cell-2-104"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-105"><a href="#annotated-cell-2-105"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">88.01116125198942</span>, <span class="fl">26.608294715049524</span>),</span>
+<span id="annotated-cell-2-106"><a href="#annotated-cell-2-106"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="annotated-cell-2-107"><a href="#annotated-cell-2-107"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="annotated-cell-2-108"><a href="#annotated-cell-2-108"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="annotated-cell-2-109"><a href="#annotated-cell-2-109"></a>  })</span>
+<span id="annotated-cell-2-110"><a href="#annotated-cell-2-110"></a></span>
+<span id="annotated-cell-2-111"><a href="#annotated-cell-2-111"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"middle_school"</span>, {</span>
+<span id="annotated-cell-2-112"><a href="#annotated-cell-2-112"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-113"><a href="#annotated-cell-2-113"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99218594227516</span>, <span class="fl">26.620735015314324</span>),</span>
+<span id="annotated-cell-2-114"><a href="#annotated-cell-2-114"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="annotated-cell-2-115"><a href="#annotated-cell-2-115"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="annotated-cell-2-116"><a href="#annotated-cell-2-116"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="annotated-cell-2-117"><a href="#annotated-cell-2-117"></a>  })</span>
+<span id="annotated-cell-2-118"><a href="#annotated-cell-2-118"></a></span>
+<span id="annotated-cell-2-119"><a href="#annotated-cell-2-119"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"secondary_school"</span>, {</span>
+<span id="annotated-cell-2-120"><a href="#annotated-cell-2-120"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-121"><a href="#annotated-cell-2-121"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99006631463702</span>, <span class="fl">26.63185913816036</span>),</span>
+<span id="annotated-cell-2-122"><a href="#annotated-cell-2-122"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="annotated-cell-2-123"><a href="#annotated-cell-2-123"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="annotated-cell-2-124"><a href="#annotated-cell-2-124"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="annotated-cell-2-125"><a href="#annotated-cell-2-125"></a>  })</span>
+<span id="annotated-cell-2-126"><a href="#annotated-cell-2-126"></a></span>
+<span id="annotated-cell-2-127"><a href="#annotated-cell-2-127"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"higher_secondary"</span>, {</span>
+<span id="annotated-cell-2-128"><a href="#annotated-cell-2-128"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-129"><a href="#annotated-cell-2-129"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99921328178023</span>, <span class="fl">26.633744364809765</span>),</span>
+<span id="annotated-cell-2-130"><a href="#annotated-cell-2-130"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="annotated-cell-2-131"><a href="#annotated-cell-2-131"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="annotated-cell-2-132"><a href="#annotated-cell-2-132"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="annotated-cell-2-133"><a href="#annotated-cell-2-133"></a>  })</span>
+<span id="annotated-cell-2-134"><a href="#annotated-cell-2-134"></a></span>
+<span id="annotated-cell-2-135"><a href="#annotated-cell-2-135"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"bachelors"</span>, {</span>
+<span id="annotated-cell-2-136"><a href="#annotated-cell-2-136"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-137"><a href="#annotated-cell-2-137"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">85.31840215760691</span>, <span class="fl">27.681136558618093</span>),</span>
+<span id="annotated-cell-2-138"><a href="#annotated-cell-2-138"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="annotated-cell-2-139"><a href="#annotated-cell-2-139"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="annotated-cell-2-140"><a href="#annotated-cell-2-140"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="annotated-cell-2-141"><a href="#annotated-cell-2-141"></a>  })</span>
+<span id="annotated-cell-2-142"><a href="#annotated-cell-2-142"></a></span>
+<span id="annotated-cell-2-143"><a href="#annotated-cell-2-143"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"masters"</span>, {</span>
+<span id="annotated-cell-2-144"><a href="#annotated-cell-2-144"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-145"><a href="#annotated-cell-2-145"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">111.84448004883544</span>, <span class="fl">40.76106105996334</span>),</span>
+<span id="annotated-cell-2-146"><a href="#annotated-cell-2-146"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="annotated-cell-2-147"><a href="#annotated-cell-2-147"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="annotated-cell-2-148"><a href="#annotated-cell-2-148"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="annotated-cell-2-149"><a href="#annotated-cell-2-149"></a>  })</span>
+<span id="annotated-cell-2-150"><a href="#annotated-cell-2-150"></a></span>
+<span id="annotated-cell-2-151"><a href="#annotated-cell-2-151"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"work_1"</span>, {</span>
+<span id="annotated-cell-2-152"><a href="#annotated-cell-2-152"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-153"><a href="#annotated-cell-2-153"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">84.3938999520061</span>, <span class="fl">33.76728402587881</span>),</span>
+<span id="annotated-cell-2-154"><a href="#annotated-cell-2-154"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="annotated-cell-2-155"><a href="#annotated-cell-2-155"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="annotated-cell-2-156"><a href="#annotated-cell-2-156"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="annotated-cell-2-157"><a href="#annotated-cell-2-157"></a>  })</span>
+<span id="annotated-cell-2-158"><a href="#annotated-cell-2-158"></a></span>
+<span id="annotated-cell-2-159"><a href="#annotated-cell-2-159"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"work_2"</span>, {</span>
+<span id="annotated-cell-2-160"><a href="#annotated-cell-2-160"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-161"><a href="#annotated-cell-2-161"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">111.90422445885304</span>, <span class="fl">40.76973849954712</span>),</span>
+<span id="annotated-cell-2-162"><a href="#annotated-cell-2-162"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="annotated-cell-2-163"><a href="#annotated-cell-2-163"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="annotated-cell-2-164"><a href="#annotated-cell-2-164"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="annotated-cell-2-165"><a href="#annotated-cell-2-165"></a>  })</span>
+<span id="annotated-cell-2-166"><a href="#annotated-cell-2-166"></a>}</span>
+<span id="annotated-cell-2-167"><a href="#annotated-cell-2-167"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="11">11</button><span id="annotated-cell-2-168" class="code-annotation-target"><a href="#annotated-cell-2-168"></a>shiny<span class="sc">::</span><span class="fu">shinyApp</span>(ui, server)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
 <dd>
 <span data-code-cell="annotated-cell-2" data-code-lines="1" data-code-annotation="1">Load {shiny} package for building reactive web applications</span>
@@ -691,6 +699,10 @@ source("app.R")</code></pre>
 <span data-code-cell="annotated-cell-2" data-code-lines="168" data-code-annotation="11">Launch the Shiny application combining UI and server components</span>
 </dd>
 </dl>
+</div>
+</div>
+</section><section id="understanding-the-app-structure" class="level2" data-number="5"><h2 data-number="5" class="anchored" data-anchor-id="understanding-the-app-structure">
+<span class="header-section-number">5</span> Understanding the App Structure</h2>
 <section id="setting-up-the-user-interface" class="level3"><h3 class="anchored" data-anchor-id="setting-up-the-user-interface">Setting Up the User Interface</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-1" class="code-annotation-target"><a href="#annotated-cell-3-1"></a><span class="fu">library</span>(shiny)</span>
@@ -832,7 +844,7 @@ source("app.R")</code></pre>
 </dd>
 <dt data-target-cell="annotated-cell-5" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-5" data-code-lines="4" data-code-annotation="3"><strong>Smooth Transition</strong>: <code><a href="https://walker-data.com/mapgl/reference/fly_to.html">fly_to()</a></code> creates animated transitions between locations</span>
+<span data-code-cell="annotated-cell-5" data-code-lines="4" data-code-annotation="3"><strong>Smooth Transition</strong>: <code>fly_to()</code> creates animated transitions between locations</span>
 </dd>
 <dt data-target-cell="annotated-cell-5" data-target-annotation="4">4</dt>
 <dd>
@@ -853,8 +865,8 @@ source("app.R")</code></pre>
 </dl>
 </div>
 </div>
-</section></section><section id="best-practices-for-transportation-data-storymaps" class="level2" data-number="5"><h2 data-number="5" class="anchored" data-anchor-id="best-practices-for-transportation-data-storymaps">
-<span class="header-section-number">5</span> Best Practices for Transportation Data Storymaps</h2>
+</section></section><section id="best-practices-for-transportation-data-storymaps" class="level2" data-number="6"><h2 data-number="6" class="anchored" data-anchor-id="best-practices-for-transportation-data-storymaps">
+<span class="header-section-number">6</span> Best Practices for Transportation Data Storymaps</h2>
 <p>Based on my experience as a transportation planner, here are key considerations when creating storymaps for professional use:</p>
 <section id="data-preparation" class="level3"><h3 class="anchored" data-anchor-id="data-preparation">Data Preparation</h3>
 <ul>
@@ -884,27 +896,27 @@ source("app.R")</code></pre>
 <strong>Performance</strong>: Test on different devices and internet speeds</li>
 <li>
 <strong>Accessibility</strong>: Ensure content is accessible to users with disabilities</li>
-</ul></section></section><section id="loading-external-app-files" class="level2" data-number="6"><h2 data-number="6" class="anchored" data-anchor-id="loading-external-app-files">
-<span class="header-section-number">6</span> Loading External App Files</h2>
+</ul></section></section><section id="loading-external-app-files" class="level2" data-number="7"><h2 data-number="7" class="anchored" data-anchor-id="loading-external-app-files">
+<span class="header-section-number">7</span> Loading External App Files</h2>
 <p>To load the complete application from an external <code>app.R</code> file (which is cleaner for larger applications), you can modify the {shinylive} block:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># In your index.qmd file</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">```</span><span class="at">{shinylive-r}</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="at">#| standalone: true</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="at">#| viewerHeight: 600</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="at">#| components: [editor, viewer]</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="at"># Load the complete application</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="at">source("app.R")</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In your index.qmd file</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="st">```</span><span class="at">{shinylive-r}</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">#| standalone: true</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">#| viewerHeight: 600</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="at">#| components: [editor, viewer]</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="at"># Load the complete application</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="at">source("app.R")</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>This approach allows you to: - Maintain cleaner separation between documentation and code - Enable collaborative development on the application - Version control your application code separately - Reuse the application in different contexts</p>
-</section><section id="conclusion" class="level2" data-number="7"><h2 data-number="7" class="anchored" data-anchor-id="conclusion">
-<span class="header-section-number">7</span> Conclusion</h2>
+</section><section id="conclusion" class="level2" data-number="8"><h2 data-number="8" class="anchored" data-anchor-id="conclusion">
+<span class="header-section-number">8</span> Conclusion</h2>
 <p>The {mapgl} package provides a powerful platform for creating engaging, interactive storymaps that can effectively communicate spatial narratives. Whether you’re documenting personal journeys, presenting planning scenarios, or analyzing transportation patterns, this approach offers the flexibility and performance needed for professional applications.</p>
 <p>The combination of R’s data processing capabilities with modern web mapping technology creates opportunities for innovative visualization approaches that can enhance public engagement and decision-making processes in transportation planning and urban analytics.</p>
-</section><section id="additional-resources" class="level2" data-number="8"><h2 data-number="8" class="anchored" data-anchor-id="additional-resources">
-<span class="header-section-number">8</span> Additional Resources</h2>
+</section><section id="additional-resources" class="level2" data-number="9"><h2 data-number="9" class="anchored" data-anchor-id="additional-resources">
+<span class="header-section-number">9</span> Additional Resources</h2>
 <ul>
 <li><a href="https://walker-data.com/mapgl/">{mapgl} package documentation</a></li>
 <li><a href="https://maplibre.org/maplibre-gl-js-docs/">MapLibre GL JS documentation</a></li>
@@ -1476,354 +1488,359 @@ Bhandari, Pukar. 2025. <span>“Building an Interactive Storymap Using
 <span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span><span class="er">(</span><span class="st">"app.R"</span><span class="kw">)</span></span>
 <span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## Understanding the Code Structure</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## Source Code</span></span>
 <span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>The storymap application follows a typical Shiny structure with some specialized {mapgl} components. Following is the source code for this dashboard (Please click on the numbers on the far right for additional explanation of syntax and mechanics):</span>
 <span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny) <span class="co"># &lt;1&gt;</span></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapgl) <span class="co"># &lt;2&gt;</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="in">```{r filename="app.R"}</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-line-numbers: true</span></span>
 <span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> shiny<span class="sc">::</span><span class="fu">fluidPage</span>( <span class="co"># &lt;3&gt;</span></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>  tags<span class="sc">$</span><span class="fu">link</span>(</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">href =</span> <span class="st">"https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&amp;display=swap"</span>,</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">rel=</span><span class="st">"stylesheet"</span></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">story_map</span>( <span class="co"># &lt;4&gt;</span></span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">map_id =</span> <span class="st">"map"</span>,</span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">font_family =</span> <span class="st">"Poppins"</span>,</span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">sections =</span> <span class="fu">list</span>( <span class="co"># &lt;5&gt;</span></span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>      <span class="st">"intro"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Introduction"</span>,</span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"Hello I am Pukar Bhandari; and this is my life journey."</span></span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>      <span class="st">"birth_place"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Birth Place"</span>,</span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I was born."</span></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>      <span class="st">"lower_primary"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Kankai Education Foundation"</span>,</span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I studied Nursery to Grade 3."</span></span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>      <span class="st">"upper_primary"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Laligurans English School"</span>,</span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I studied Grade 4 &amp; Grade 5."</span></span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>      <span class="st">"middle_school"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Birat Jyoti English Secondary School"</span>,</span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I studied Grade 6 &amp; Grade 7."</span></span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>      <span class="st">"secondary_school"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
-<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Little Flowers' English School"</span>,</span>
-<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I studied Grade 8 to Grade 10."</span></span>
-<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>      <span class="st">"higher_secondary"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
-<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Kanchanjunga English Higher Secondary School"</span>,</span>
-<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I studied Higher Secondary (Plus 2)."</span></span>
-<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>      <span class="st">"bachelors"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
-<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Institute of Engineering Pulchowk Campus"</span>,</span>
-<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I obtained my Bachelor's Degree in Architecture."</span></span>
-<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>      <span class="st">"masters"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"University of Utah"</span>,</span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I obtained my Master of City &amp; Metropolitan Planning degree."</span></span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>      <span class="st">"work_1"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
-<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Metro Analytics"</span>,</span>
-<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I lived and worked between 2023-2025."</span></span>
-<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>      <span class="st">"work_2"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
-<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Wasatch Front Regional Council"</span>,</span>
-<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I live and work currently."</span></span>
-<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>    <span class="at">map_type =</span> <span class="st">"maplibre"</span></span>
-<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) { <span class="co"># &lt;6&gt;</span></span>
-<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>map <span class="ot">&lt;-</span> mapgl<span class="sc">::</span><span class="fu">renderMaplibre</span>({ <span class="co"># &lt;7&gt;</span></span>
-<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre</span>(</span>
-<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> <span class="st">"https://tiles.openfreemap.org/styles/liberty"</span>, <span class="co"># &lt;8&gt;</span></span>
-<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a>      <span class="at">center =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
-<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>      <span class="at">zoom =</span> <span class="fl">2.75</span>,</span>
-<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a>      <span class="at">scrollZoom =</span> <span class="cn">FALSE</span></span>
-<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">set_projection</span>(<span class="at">projection =</span> <span class="st">"globe"</span>) <span class="sc">|&gt;</span> <span class="co"># &lt;9&gt;</span></span>
-<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">add_globe_control</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">add_navigation_control</span>(<span class="at">visualize_pitch =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">add_globe_minimap</span>(<span class="at">position =</span> <span class="st">"bottom-left"</span>)</span>
-<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"intro"</span>, { <span class="co"># &lt;10&gt;</span></span>
-<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">clear_markers</span>() <span class="sc">|&gt;</span></span>
-<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(</span>
-<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>        <span class="at">center =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
-<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>        <span class="at">zoom =</span> <span class="fl">2.75</span>,</span>
-<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>        <span class="at">pitch =</span> <span class="dv">0</span>,</span>
-<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a>        <span class="at">bearing =</span> <span class="dv">0</span></span>
-<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"birth_place"</span>, {</span>
-<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99371750247397</span>, <span class="fl">26.646533355308083</span>),</span>
-<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
-<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
-<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
-<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-145"><a href="#cb3-145" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"lower_primary"</span>, {</span>
-<span id="cb3-146"><a href="#cb3-146" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99734666704784</span>, <span class="fl">26.646179601882675</span>),</span>
-<span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
-<span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
-<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
-<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"upper_primary"</span>, {</span>
-<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">88.01116125198942</span>, <span class="fl">26.608294715049524</span>),</span>
-<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
-<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
-<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
-<span id="cb3-159"><a href="#cb3-159" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-160"><a href="#cb3-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-161"><a href="#cb3-161" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"middle_school"</span>, {</span>
-<span id="cb3-162"><a href="#cb3-162" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-163"><a href="#cb3-163" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99218594227516</span>, <span class="fl">26.620735015314324</span>),</span>
-<span id="cb3-164"><a href="#cb3-164" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
-<span id="cb3-165"><a href="#cb3-165" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
-<span id="cb3-166"><a href="#cb3-166" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
-<span id="cb3-167"><a href="#cb3-167" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-168"><a href="#cb3-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-169"><a href="#cb3-169" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"secondary_school"</span>, {</span>
-<span id="cb3-170"><a href="#cb3-170" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-171"><a href="#cb3-171" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99006631463702</span>, <span class="fl">26.63185913816036</span>),</span>
-<span id="cb3-172"><a href="#cb3-172" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
-<span id="cb3-173"><a href="#cb3-173" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
-<span id="cb3-174"><a href="#cb3-174" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
-<span id="cb3-175"><a href="#cb3-175" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-176"><a href="#cb3-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-177"><a href="#cb3-177" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"higher_secondary"</span>, {</span>
-<span id="cb3-178"><a href="#cb3-178" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-179"><a href="#cb3-179" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99921328178023</span>, <span class="fl">26.633744364809765</span>),</span>
-<span id="cb3-180"><a href="#cb3-180" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
-<span id="cb3-181"><a href="#cb3-181" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
-<span id="cb3-182"><a href="#cb3-182" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
-<span id="cb3-183"><a href="#cb3-183" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-184"><a href="#cb3-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-185"><a href="#cb3-185" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"bachelors"</span>, {</span>
-<span id="cb3-186"><a href="#cb3-186" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-187"><a href="#cb3-187" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">85.31840215760691</span>, <span class="fl">27.681136558618093</span>),</span>
-<span id="cb3-188"><a href="#cb3-188" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
-<span id="cb3-189"><a href="#cb3-189" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
-<span id="cb3-190"><a href="#cb3-190" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
-<span id="cb3-191"><a href="#cb3-191" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-192"><a href="#cb3-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-193"><a href="#cb3-193" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"masters"</span>, {</span>
-<span id="cb3-194"><a href="#cb3-194" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-195"><a href="#cb3-195" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">111.84448004883544</span>, <span class="fl">40.76106105996334</span>),</span>
-<span id="cb3-196"><a href="#cb3-196" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
-<span id="cb3-197"><a href="#cb3-197" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
-<span id="cb3-198"><a href="#cb3-198" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
-<span id="cb3-199"><a href="#cb3-199" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-200"><a href="#cb3-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-201"><a href="#cb3-201" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"work_1"</span>, {</span>
-<span id="cb3-202"><a href="#cb3-202" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-203"><a href="#cb3-203" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">84.3938999520061</span>, <span class="fl">33.76728402587881</span>),</span>
-<span id="cb3-204"><a href="#cb3-204" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
-<span id="cb3-205"><a href="#cb3-205" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
-<span id="cb3-206"><a href="#cb3-206" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
-<span id="cb3-207"><a href="#cb3-207" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-208"><a href="#cb3-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-209"><a href="#cb3-209" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"work_2"</span>, {</span>
-<span id="cb3-210"><a href="#cb3-210" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-211"><a href="#cb3-211" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">111.90422445885304</span>, <span class="fl">40.76973849954712</span>),</span>
-<span id="cb3-212"><a href="#cb3-212" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
-<span id="cb3-213"><a href="#cb3-213" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
-<span id="cb3-214"><a href="#cb3-214" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
-<span id="cb3-215"><a href="#cb3-215" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-216"><a href="#cb3-216" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-217"><a href="#cb3-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-218"><a href="#cb3-218" aria-hidden="true" tabindex="-1"></a>shiny<span class="sc">::</span><span class="fu">shinyApp</span>(ui, server) <span class="co"># &lt;11&gt;</span></span>
-<span id="cb3-219"><a href="#cb3-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-220"><a href="#cb3-220" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-221"><a href="#cb3-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-222"><a href="#cb3-222" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Load {shiny} package for building reactive web applications</span>
-<span id="cb3-223"><a href="#cb3-223" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Load {mapgl} package for interactive mapping and storymap functionality  </span>
-<span id="cb3-224"><a href="#cb3-224" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Define the user interface - what users see and interact with</span>
-<span id="cb3-225"><a href="#cb3-225" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Create the main storymap interface with sidebar and map coordination</span>
-<span id="cb3-226"><a href="#cb3-226" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Define each story section with title and descriptive content</span>
-<span id="cb3-227"><a href="#cb3-227" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Define the server function - handles user interactions and updates</span>
-<span id="cb3-228"><a href="#cb3-228" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Render the interactive MapLibre map with styling and controls</span>
-<span id="cb3-229"><a href="#cb3-229" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>Use free OpenFreeMap tiles (no API key required)</span>
-<span id="cb3-230"><a href="#cb3-230" aria-hidden="true" tabindex="-1"></a><span class="ss">9. </span>Set up 3D globe projection for better geographic context</span>
-<span id="cb3-231"><a href="#cb3-231" aria-hidden="true" tabindex="-1"></a><span class="ss">10. </span>Handle section transitions - when user reaches each story step</span>
-<span id="cb3-232"><a href="#cb3-232" aria-hidden="true" tabindex="-1"></a><span class="ss">11. </span>Launch the Shiny application combining UI and server components</span>
-<span id="cb3-233"><a href="#cb3-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-234"><a href="#cb3-234" aria-hidden="true" tabindex="-1"></a><span class="fu">### Setting Up the User Interface</span></span>
-<span id="cb3-235"><a href="#cb3-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-238"><a href="#cb3-238" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb3-239"><a href="#cb3-239" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb3-240"><a href="#cb3-240" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-line-numbers: true</span></span>
-<span id="cb3-241"><a href="#cb3-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-242"><a href="#cb3-242" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny) <span class="co"># &lt;1&gt;</span></span>
-<span id="cb3-243"><a href="#cb3-243" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapgl) <span class="co"># &lt;2&gt;</span></span>
-<span id="cb3-244"><a href="#cb3-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-245"><a href="#cb3-245" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> shiny<span class="sc">::</span><span class="fu">fluidPage</span>(</span>
-<span id="cb3-246"><a href="#cb3-246" aria-hidden="true" tabindex="-1"></a>  tags<span class="sc">$</span><span class="fu">link</span>( <span class="co"># &lt;3&gt;</span></span>
-<span id="cb3-247"><a href="#cb3-247" aria-hidden="true" tabindex="-1"></a>    <span class="at">href =</span> <span class="st">"https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&amp;display=swap"</span>,</span>
-<span id="cb3-248"><a href="#cb3-248" aria-hidden="true" tabindex="-1"></a>    <span class="at">rel=</span><span class="st">"stylesheet"</span></span>
-<span id="cb3-249"><a href="#cb3-249" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb3-250"><a href="#cb3-250" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">story_map</span>( <span class="co"># &lt;4&gt;</span></span>
-<span id="cb3-251"><a href="#cb3-251" aria-hidden="true" tabindex="-1"></a>    <span class="at">map_id =</span> <span class="st">"map"</span>,</span>
-<span id="cb3-252"><a href="#cb3-252" aria-hidden="true" tabindex="-1"></a>    <span class="at">font_family =</span> <span class="st">"Poppins"</span>, <span class="co"># &lt;5&gt;</span></span>
-<span id="cb3-253"><a href="#cb3-253" aria-hidden="true" tabindex="-1"></a>    <span class="at">sections =</span> <span class="fu">list</span>( <span class="co"># &lt;6&gt;</span></span>
-<span id="cb3-254"><a href="#cb3-254" aria-hidden="true" tabindex="-1"></a>      <span class="st">"intro"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
-<span id="cb3-255"><a href="#cb3-255" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Introduction"</span>,</span>
-<span id="cb3-256"><a href="#cb3-256" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"Hello I am Pukar Bhandari; and this is my life journey."</span></span>
-<span id="cb3-257"><a href="#cb3-257" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb3-258"><a href="#cb3-258" aria-hidden="true" tabindex="-1"></a>      <span class="st">"birth_place"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
-<span id="cb3-259"><a href="#cb3-259" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Birth Place"</span>,</span>
-<span id="cb3-260"><a href="#cb3-260" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I was born."</span></span>
-<span id="cb3-261"><a href="#cb3-261" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb3-262"><a href="#cb3-262" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Additional sections...</span></span>
-<span id="cb3-263"><a href="#cb3-263" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb3-264"><a href="#cb3-264" aria-hidden="true" tabindex="-1"></a>    <span class="at">map_type =</span> <span class="st">"maplibre"</span> <span class="co"># &lt;7&gt;</span></span>
-<span id="cb3-265"><a href="#cb3-265" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb3-266"><a href="#cb3-266" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-267"><a href="#cb3-267" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-268"><a href="#cb3-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-269"><a href="#cb3-269" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Shiny Framework**: Essential for creating reactive web applications</span>
-<span id="cb3-270"><a href="#cb3-270" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**MapGL Package**: Provides the storymap functionality and MapLibre integration</span>
-<span id="cb3-271"><a href="#cb3-271" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Custom Fonts**: Loading Google Fonts for better typography (important for professional presentations)</span>
-<span id="cb3-272"><a href="#cb3-272" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Story Map Container**: The main wrapper that coordinates the sidebar content with map interactions</span>
-<span id="cb3-273"><a href="#cb3-273" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Typography**: Consistent font family improves readability and professional appearance</span>
-<span id="cb3-274"><a href="#cb3-274" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**Section Definitions**: Each section corresponds to a step in the story with associated map behaviors</span>
-<span id="cb3-275"><a href="#cb3-275" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>**Map Engine**: Using MapLibre GL JS for performant vector tile rendering</span>
-<span id="cb3-276"><a href="#cb3-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-277"><a href="#cb3-277" aria-hidden="true" tabindex="-1"></a><span class="fu">### Configuring the Map</span></span>
-<span id="cb3-278"><a href="#cb3-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-281"><a href="#cb3-281" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb3-282"><a href="#cb3-282" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb3-283"><a href="#cb3-283" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-line-numbers: true</span></span>
-<span id="cb3-284"><a href="#cb3-284" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-285"><a href="#cb3-285" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
-<span id="cb3-286"><a href="#cb3-286" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>map <span class="ot">&lt;-</span> mapgl<span class="sc">::</span><span class="fu">renderMaplibre</span>({ <span class="co"># &lt;1&gt;</span></span>
-<span id="cb3-287"><a href="#cb3-287" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre</span>(</span>
-<span id="cb3-288"><a href="#cb3-288" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> <span class="st">"https://tiles.openfreemap.org/styles/liberty"</span>, <span class="co"># &lt;2&gt;</span></span>
-<span id="cb3-289"><a href="#cb3-289" aria-hidden="true" tabindex="-1"></a>      <span class="at">center =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="co"># &lt;3&gt;</span></span>
-<span id="cb3-290"><a href="#cb3-290" aria-hidden="true" tabindex="-1"></a>      <span class="at">zoom =</span> <span class="fl">2.75</span>, <span class="co"># &lt;4&gt;</span></span>
-<span id="cb3-291"><a href="#cb3-291" aria-hidden="true" tabindex="-1"></a>      <span class="at">scrollZoom =</span> <span class="cn">FALSE</span> <span class="co"># &lt;5&gt;</span></span>
-<span id="cb3-292"><a href="#cb3-292" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb3-293"><a href="#cb3-293" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">set_projection</span>(<span class="at">projection =</span> <span class="st">"globe"</span>) <span class="sc">|&gt;</span> <span class="co"># &lt;6&gt;</span></span>
-<span id="cb3-294"><a href="#cb3-294" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">add_globe_control</span>() <span class="sc">|&gt;</span> <span class="co"># &lt;7&gt;</span></span>
-<span id="cb3-295"><a href="#cb3-295" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">add_navigation_control</span>(<span class="at">visualize_pitch =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="co"># &lt;8&gt;</span></span>
-<span id="cb3-296"><a href="#cb3-296" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">add_globe_minimap</span>(<span class="at">position =</span> <span class="st">"bottom-left"</span>) <span class="co"># &lt;9&gt;</span></span>
-<span id="cb3-297"><a href="#cb3-297" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb3-298"><a href="#cb3-298" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-299"><a href="#cb3-299" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-300"><a href="#cb3-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-301"><a href="#cb3-301" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Render Function**: Creates the reactive map output that responds to user interactions</span>
-<span id="cb3-302"><a href="#cb3-302" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Open Map Style**: Using OpenFreeMap's Liberty style (free, no API key required)</span>
-<span id="cb3-303"><a href="#cb3-303" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Initial Center**: Starting at global view (longitude 0, latitude 0)</span>
-<span id="cb3-304"><a href="#cb3-304" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Zoom Level**: Appropriate for showing global context initially</span>
-<span id="cb3-305"><a href="#cb3-305" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Scroll Control**: Disabled to prevent interference with story navigation</span>
-<span id="cb3-306"><a href="#cb3-306" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**Globe Projection**: Creates a 3D globe effect for better geographical context</span>
-<span id="cb3-307"><a href="#cb3-307" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>**Globe Controls**: Adds rotation controls for the 3D globe</span>
-<span id="cb3-308"><a href="#cb3-308" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>**Navigation Tools**: Zoom and rotation controls with pitch visualization</span>
-<span id="cb3-309"><a href="#cb3-309" aria-hidden="true" tabindex="-1"></a><span class="ss">9. </span>**Minimap**: Provides geographic context when zoomed in on specific locations</span>
-<span id="cb3-310"><a href="#cb3-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-311"><a href="#cb3-311" aria-hidden="true" tabindex="-1"></a><span class="fu">### Implementing Section Behaviors</span></span>
-<span id="cb3-312"><a href="#cb3-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-315"><a href="#cb3-315" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb3-316"><a href="#cb3-316" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb3-317"><a href="#cb3-317" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-line-numbers: true</span></span>
-<span id="cb3-318"><a href="#cb3-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-319"><a href="#cb3-319" aria-hidden="true" tabindex="-1"></a><span class="co"># Example section handler</span></span>
-<span id="cb3-320"><a href="#cb3-320" aria-hidden="true" tabindex="-1"></a>mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"birth_place"</span>, { <span class="co"># &lt;1&gt;</span></span>
-<span id="cb3-321"><a href="#cb3-321" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span> <span class="co"># &lt;2&gt;</span></span>
-<span id="cb3-322"><a href="#cb3-322" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">fly_to</span>( <span class="co"># &lt;3&gt;</span></span>
-<span id="cb3-323"><a href="#cb3-323" aria-hidden="true" tabindex="-1"></a>      <span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99371750247397</span>, <span class="fl">26.646533355308083</span>), <span class="co"># &lt;4&gt;</span></span>
-<span id="cb3-324"><a href="#cb3-324" aria-hidden="true" tabindex="-1"></a>      <span class="at">zoom =</span> <span class="dv">16</span>, <span class="co"># &lt;5&gt;</span></span>
-<span id="cb3-325"><a href="#cb3-325" aria-hidden="true" tabindex="-1"></a>      <span class="at">pitch =</span> <span class="dv">49</span>, <span class="co"># &lt;6&gt;</span></span>
-<span id="cb3-326"><a href="#cb3-326" aria-hidden="true" tabindex="-1"></a>      <span class="at">bearing =</span> <span class="fl">12.8</span> <span class="co"># &lt;7&gt;</span></span>
-<span id="cb3-327"><a href="#cb3-327" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb3-328"><a href="#cb3-328" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb3-329"><a href="#cb3-329" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-330"><a href="#cb3-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-331"><a href="#cb3-331" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Section Trigger**: Responds when user navigates to the "birth_place" section</span>
-<span id="cb3-332"><a href="#cb3-332" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Map Proxy**: Allows server-side control of the existing map instance</span>
-<span id="cb3-333"><a href="#cb3-333" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Smooth Transition**: <span class="in">`fly_to()`</span> creates animated transitions between locations</span>
-<span id="cb3-334"><a href="#cb3-334" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Coordinates**: Precise longitude/latitude coordinates for the specific location</span>
-<span id="cb3-335"><a href="#cb3-335" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Detail Zoom**: High zoom level to show local context and landmarks</span>
-<span id="cb3-336"><a href="#cb3-336" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**Viewing Angle**: Tilted perspective provides better spatial understanding</span>
-<span id="cb3-337"><a href="#cb3-337" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>**Map Rotation**: Oriented to show the location from the most informative angle</span>
-<span id="cb3-338"><a href="#cb3-338" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-339"><a href="#cb3-339" aria-hidden="true" tabindex="-1"></a><span class="fu">## Best Practices for Transportation Data Storymaps</span></span>
-<span id="cb3-340"><a href="#cb3-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-341"><a href="#cb3-341" aria-hidden="true" tabindex="-1"></a>Based on my experience as a transportation planner, here are key considerations when creating storymaps for professional use:</span>
-<span id="cb3-342"><a href="#cb3-342" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-343"><a href="#cb3-343" aria-hidden="true" tabindex="-1"></a><span class="fu">### Data Preparation</span></span>
-<span id="cb3-344"><a href="#cb3-344" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Coordinate Accuracy**: Verify coordinates using reliable sources (Google Maps, OpenStreetMap)</span>
-<span id="cb3-345"><a href="#cb3-345" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Projection Considerations**: Understand how different projections affect your data representation</span>
-<span id="cb3-346"><a href="#cb3-346" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Performance Optimization**: For large datasets, consider data aggregation and level-of-detail strategies</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny) <span class="co"># &lt;1&gt;</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapgl) <span class="co"># &lt;2&gt;</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> shiny<span class="sc">::</span><span class="fu">fluidPage</span>( <span class="co"># &lt;3&gt;</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>  tags<span class="sc">$</span><span class="fu">link</span>(</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">href =</span> <span class="st">"https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&amp;display=swap"</span>,</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">rel=</span><span class="st">"stylesheet"</span></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">story_map</span>( <span class="co"># &lt;4&gt;</span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">map_id =</span> <span class="st">"map"</span>,</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">font_family =</span> <span class="st">"Poppins"</span>,</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">sections =</span> <span class="fu">list</span>( <span class="co"># &lt;5&gt;</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>      <span class="st">"intro"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Introduction"</span>,</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"Hello I am Pukar Bhandari; and this is my life journey."</span></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>      <span class="st">"birth_place"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Birth Place"</span>,</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I was born."</span></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>      <span class="st">"lower_primary"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Kankai Education Foundation"</span>,</span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I studied Nursery to Grade 3."</span></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>      <span class="st">"upper_primary"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Laligurans English School"</span>,</span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I studied Grade 4 &amp; Grade 5."</span></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>      <span class="st">"middle_school"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Birat Jyoti English Secondary School"</span>,</span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I studied Grade 6 &amp; Grade 7."</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>      <span class="st">"secondary_school"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Little Flowers' English School"</span>,</span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I studied Grade 8 to Grade 10."</span></span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>      <span class="st">"higher_secondary"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Kanchanjunga English Higher Secondary School"</span>,</span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I studied Higher Secondary (Plus 2)."</span></span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>      <span class="st">"bachelors"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Institute of Engineering Pulchowk Campus"</span>,</span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I obtained my Bachelor's Degree in Architecture."</span></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>      <span class="st">"masters"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"University of Utah"</span>,</span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I obtained my Master of City &amp; Metropolitan Planning degree."</span></span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>      <span class="st">"work_1"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Metro Analytics"</span>,</span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I lived and worked between 2023-2025."</span></span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>      <span class="st">"work_2"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Wasatch Front Regional Council"</span>,</span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I live and work currently."</span></span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>    <span class="at">map_type =</span> <span class="st">"maplibre"</span></span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) { <span class="co"># &lt;6&gt;</span></span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>map <span class="ot">&lt;-</span> mapgl<span class="sc">::</span><span class="fu">renderMaplibre</span>({ <span class="co"># &lt;7&gt;</span></span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre</span>(</span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> <span class="st">"https://tiles.openfreemap.org/styles/liberty"</span>, <span class="co"># &lt;8&gt;</span></span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>      <span class="at">center =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a>      <span class="at">zoom =</span> <span class="fl">2.75</span>,</span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a>      <span class="at">scrollZoom =</span> <span class="cn">FALSE</span></span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">set_projection</span>(<span class="at">projection =</span> <span class="st">"globe"</span>) <span class="sc">|&gt;</span> <span class="co"># &lt;9&gt;</span></span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">add_globe_control</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">add_navigation_control</span>(<span class="at">visualize_pitch =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">add_globe_minimap</span>(<span class="at">position =</span> <span class="st">"bottom-left"</span>)</span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"intro"</span>, { <span class="co"># &lt;10&gt;</span></span>
+<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">clear_markers</span>() <span class="sc">|&gt;</span></span>
+<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(</span>
+<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a>        <span class="at">center =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a>        <span class="at">zoom =</span> <span class="fl">2.75</span>,</span>
+<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a>        <span class="at">pitch =</span> <span class="dv">0</span>,</span>
+<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a>        <span class="at">bearing =</span> <span class="dv">0</span></span>
+<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"birth_place"</span>, {</span>
+<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99371750247397</span>, <span class="fl">26.646533355308083</span>),</span>
+<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="cb3-145"><a href="#cb3-145" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="cb3-146"><a href="#cb3-146" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"lower_primary"</span>, {</span>
+<span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99734666704784</span>, <span class="fl">26.646179601882675</span>),</span>
+<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"upper_primary"</span>, {</span>
+<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">88.01116125198942</span>, <span class="fl">26.608294715049524</span>),</span>
+<span id="cb3-159"><a href="#cb3-159" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="cb3-160"><a href="#cb3-160" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="cb3-161"><a href="#cb3-161" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="cb3-162"><a href="#cb3-162" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb3-163"><a href="#cb3-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-164"><a href="#cb3-164" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"middle_school"</span>, {</span>
+<span id="cb3-165"><a href="#cb3-165" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-166"><a href="#cb3-166" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99218594227516</span>, <span class="fl">26.620735015314324</span>),</span>
+<span id="cb3-167"><a href="#cb3-167" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="cb3-168"><a href="#cb3-168" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="cb3-169"><a href="#cb3-169" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="cb3-170"><a href="#cb3-170" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb3-171"><a href="#cb3-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-172"><a href="#cb3-172" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"secondary_school"</span>, {</span>
+<span id="cb3-173"><a href="#cb3-173" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-174"><a href="#cb3-174" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99006631463702</span>, <span class="fl">26.63185913816036</span>),</span>
+<span id="cb3-175"><a href="#cb3-175" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="cb3-176"><a href="#cb3-176" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="cb3-177"><a href="#cb3-177" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="cb3-178"><a href="#cb3-178" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb3-179"><a href="#cb3-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-180"><a href="#cb3-180" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"higher_secondary"</span>, {</span>
+<span id="cb3-181"><a href="#cb3-181" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-182"><a href="#cb3-182" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99921328178023</span>, <span class="fl">26.633744364809765</span>),</span>
+<span id="cb3-183"><a href="#cb3-183" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="cb3-184"><a href="#cb3-184" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="cb3-185"><a href="#cb3-185" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="cb3-186"><a href="#cb3-186" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb3-187"><a href="#cb3-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-188"><a href="#cb3-188" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"bachelors"</span>, {</span>
+<span id="cb3-189"><a href="#cb3-189" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-190"><a href="#cb3-190" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">85.31840215760691</span>, <span class="fl">27.681136558618093</span>),</span>
+<span id="cb3-191"><a href="#cb3-191" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="cb3-192"><a href="#cb3-192" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="cb3-193"><a href="#cb3-193" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="cb3-194"><a href="#cb3-194" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb3-195"><a href="#cb3-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-196"><a href="#cb3-196" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"masters"</span>, {</span>
+<span id="cb3-197"><a href="#cb3-197" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-198"><a href="#cb3-198" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">111.84448004883544</span>, <span class="fl">40.76106105996334</span>),</span>
+<span id="cb3-199"><a href="#cb3-199" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="cb3-200"><a href="#cb3-200" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="cb3-201"><a href="#cb3-201" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="cb3-202"><a href="#cb3-202" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb3-203"><a href="#cb3-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-204"><a href="#cb3-204" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"work_1"</span>, {</span>
+<span id="cb3-205"><a href="#cb3-205" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-206"><a href="#cb3-206" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">84.3938999520061</span>, <span class="fl">33.76728402587881</span>),</span>
+<span id="cb3-207"><a href="#cb3-207" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="cb3-208"><a href="#cb3-208" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="cb3-209"><a href="#cb3-209" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="cb3-210"><a href="#cb3-210" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb3-211"><a href="#cb3-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-212"><a href="#cb3-212" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"work_2"</span>, {</span>
+<span id="cb3-213"><a href="#cb3-213" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-214"><a href="#cb3-214" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">111.90422445885304</span>, <span class="fl">40.76973849954712</span>),</span>
+<span id="cb3-215"><a href="#cb3-215" aria-hidden="true" tabindex="-1"></a>             <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="cb3-216"><a href="#cb3-216" aria-hidden="true" tabindex="-1"></a>             <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="cb3-217"><a href="#cb3-217" aria-hidden="true" tabindex="-1"></a>             <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="cb3-218"><a href="#cb3-218" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb3-219"><a href="#cb3-219" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-220"><a href="#cb3-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-221"><a href="#cb3-221" aria-hidden="true" tabindex="-1"></a>shiny<span class="sc">::</span><span class="fu">shinyApp</span>(ui, server) <span class="co"># &lt;11&gt;</span></span>
+<span id="cb3-222"><a href="#cb3-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-223"><a href="#cb3-223" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-224"><a href="#cb3-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-225"><a href="#cb3-225" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Load {shiny} package for building reactive web applications</span>
+<span id="cb3-226"><a href="#cb3-226" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Load {mapgl} package for interactive mapping and storymap functionality  </span>
+<span id="cb3-227"><a href="#cb3-227" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Define the user interface - what users see and interact with</span>
+<span id="cb3-228"><a href="#cb3-228" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Create the main storymap interface with sidebar and map coordination</span>
+<span id="cb3-229"><a href="#cb3-229" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Define each story section with title and descriptive content</span>
+<span id="cb3-230"><a href="#cb3-230" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Define the server function - handles user interactions and updates</span>
+<span id="cb3-231"><a href="#cb3-231" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Render the interactive MapLibre map with styling and controls</span>
+<span id="cb3-232"><a href="#cb3-232" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>Use free OpenFreeMap tiles (no API key required)</span>
+<span id="cb3-233"><a href="#cb3-233" aria-hidden="true" tabindex="-1"></a><span class="ss">9. </span>Set up 3D globe projection for better geographic context</span>
+<span id="cb3-234"><a href="#cb3-234" aria-hidden="true" tabindex="-1"></a><span class="ss">10. </span>Handle section transitions - when user reaches each story step</span>
+<span id="cb3-235"><a href="#cb3-235" aria-hidden="true" tabindex="-1"></a><span class="ss">11. </span>Launch the Shiny application combining UI and server components</span>
+<span id="cb3-236"><a href="#cb3-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-237"><a href="#cb3-237" aria-hidden="true" tabindex="-1"></a><span class="fu">## Understanding the App Structure</span></span>
+<span id="cb3-238"><a href="#cb3-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-239"><a href="#cb3-239" aria-hidden="true" tabindex="-1"></a><span class="fu">### Setting Up the User Interface</span></span>
+<span id="cb3-240"><a href="#cb3-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-243"><a href="#cb3-243" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb3-244"><a href="#cb3-244" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb3-245"><a href="#cb3-245" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-line-numbers: true</span></span>
+<span id="cb3-246"><a href="#cb3-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-247"><a href="#cb3-247" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny) <span class="co"># &lt;1&gt;</span></span>
+<span id="cb3-248"><a href="#cb3-248" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapgl) <span class="co"># &lt;2&gt;</span></span>
+<span id="cb3-249"><a href="#cb3-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-250"><a href="#cb3-250" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> shiny<span class="sc">::</span><span class="fu">fluidPage</span>(</span>
+<span id="cb3-251"><a href="#cb3-251" aria-hidden="true" tabindex="-1"></a>  tags<span class="sc">$</span><span class="fu">link</span>( <span class="co"># &lt;3&gt;</span></span>
+<span id="cb3-252"><a href="#cb3-252" aria-hidden="true" tabindex="-1"></a>    <span class="at">href =</span> <span class="st">"https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&amp;display=swap"</span>,</span>
+<span id="cb3-253"><a href="#cb3-253" aria-hidden="true" tabindex="-1"></a>    <span class="at">rel=</span><span class="st">"stylesheet"</span></span>
+<span id="cb3-254"><a href="#cb3-254" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb3-255"><a href="#cb3-255" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">story_map</span>( <span class="co"># &lt;4&gt;</span></span>
+<span id="cb3-256"><a href="#cb3-256" aria-hidden="true" tabindex="-1"></a>    <span class="at">map_id =</span> <span class="st">"map"</span>,</span>
+<span id="cb3-257"><a href="#cb3-257" aria-hidden="true" tabindex="-1"></a>    <span class="at">font_family =</span> <span class="st">"Poppins"</span>, <span class="co"># &lt;5&gt;</span></span>
+<span id="cb3-258"><a href="#cb3-258" aria-hidden="true" tabindex="-1"></a>    <span class="at">sections =</span> <span class="fu">list</span>( <span class="co"># &lt;6&gt;</span></span>
+<span id="cb3-259"><a href="#cb3-259" aria-hidden="true" tabindex="-1"></a>      <span class="st">"intro"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="cb3-260"><a href="#cb3-260" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Introduction"</span>,</span>
+<span id="cb3-261"><a href="#cb3-261" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"Hello I am Pukar Bhandari; and this is my life journey."</span></span>
+<span id="cb3-262"><a href="#cb3-262" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb3-263"><a href="#cb3-263" aria-hidden="true" tabindex="-1"></a>      <span class="st">"birth_place"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="cb3-264"><a href="#cb3-264" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Birth Place"</span>,</span>
+<span id="cb3-265"><a href="#cb3-265" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I was born."</span></span>
+<span id="cb3-266"><a href="#cb3-266" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb3-267"><a href="#cb3-267" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Additional sections...</span></span>
+<span id="cb3-268"><a href="#cb3-268" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb3-269"><a href="#cb3-269" aria-hidden="true" tabindex="-1"></a>    <span class="at">map_type =</span> <span class="st">"maplibre"</span> <span class="co"># &lt;7&gt;</span></span>
+<span id="cb3-270"><a href="#cb3-270" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-271"><a href="#cb3-271" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-272"><a href="#cb3-272" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-273"><a href="#cb3-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-274"><a href="#cb3-274" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Shiny Framework**: Essential for creating reactive web applications</span>
+<span id="cb3-275"><a href="#cb3-275" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**MapGL Package**: Provides the storymap functionality and MapLibre integration</span>
+<span id="cb3-276"><a href="#cb3-276" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Custom Fonts**: Loading Google Fonts for better typography (important for professional presentations)</span>
+<span id="cb3-277"><a href="#cb3-277" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Story Map Container**: The main wrapper that coordinates the sidebar content with map interactions</span>
+<span id="cb3-278"><a href="#cb3-278" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Typography**: Consistent font family improves readability and professional appearance</span>
+<span id="cb3-279"><a href="#cb3-279" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**Section Definitions**: Each section corresponds to a step in the story with associated map behaviors</span>
+<span id="cb3-280"><a href="#cb3-280" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>**Map Engine**: Using MapLibre GL JS for performant vector tile rendering</span>
+<span id="cb3-281"><a href="#cb3-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-282"><a href="#cb3-282" aria-hidden="true" tabindex="-1"></a><span class="fu">### Configuring the Map</span></span>
+<span id="cb3-283"><a href="#cb3-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-286"><a href="#cb3-286" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb3-287"><a href="#cb3-287" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb3-288"><a href="#cb3-288" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-line-numbers: true</span></span>
+<span id="cb3-289"><a href="#cb3-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-290"><a href="#cb3-290" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb3-291"><a href="#cb3-291" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>map <span class="ot">&lt;-</span> mapgl<span class="sc">::</span><span class="fu">renderMaplibre</span>({ <span class="co"># &lt;1&gt;</span></span>
+<span id="cb3-292"><a href="#cb3-292" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre</span>(</span>
+<span id="cb3-293"><a href="#cb3-293" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> <span class="st">"https://tiles.openfreemap.org/styles/liberty"</span>, <span class="co"># &lt;2&gt;</span></span>
+<span id="cb3-294"><a href="#cb3-294" aria-hidden="true" tabindex="-1"></a>      <span class="at">center =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="co"># &lt;3&gt;</span></span>
+<span id="cb3-295"><a href="#cb3-295" aria-hidden="true" tabindex="-1"></a>      <span class="at">zoom =</span> <span class="fl">2.75</span>, <span class="co"># &lt;4&gt;</span></span>
+<span id="cb3-296"><a href="#cb3-296" aria-hidden="true" tabindex="-1"></a>      <span class="at">scrollZoom =</span> <span class="cn">FALSE</span> <span class="co"># &lt;5&gt;</span></span>
+<span id="cb3-297"><a href="#cb3-297" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb3-298"><a href="#cb3-298" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">set_projection</span>(<span class="at">projection =</span> <span class="st">"globe"</span>) <span class="sc">|&gt;</span> <span class="co"># &lt;6&gt;</span></span>
+<span id="cb3-299"><a href="#cb3-299" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">add_globe_control</span>() <span class="sc">|&gt;</span> <span class="co"># &lt;7&gt;</span></span>
+<span id="cb3-300"><a href="#cb3-300" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">add_navigation_control</span>(<span class="at">visualize_pitch =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="co"># &lt;8&gt;</span></span>
+<span id="cb3-301"><a href="#cb3-301" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">add_globe_minimap</span>(<span class="at">position =</span> <span class="st">"bottom-left"</span>) <span class="co"># &lt;9&gt;</span></span>
+<span id="cb3-302"><a href="#cb3-302" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb3-303"><a href="#cb3-303" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-304"><a href="#cb3-304" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-305"><a href="#cb3-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-306"><a href="#cb3-306" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Render Function**: Creates the reactive map output that responds to user interactions</span>
+<span id="cb3-307"><a href="#cb3-307" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Open Map Style**: Using OpenFreeMap's Liberty style (free, no API key required)</span>
+<span id="cb3-308"><a href="#cb3-308" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Initial Center**: Starting at global view (longitude 0, latitude 0)</span>
+<span id="cb3-309"><a href="#cb3-309" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Zoom Level**: Appropriate for showing global context initially</span>
+<span id="cb3-310"><a href="#cb3-310" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Scroll Control**: Disabled to prevent interference with story navigation</span>
+<span id="cb3-311"><a href="#cb3-311" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**Globe Projection**: Creates a 3D globe effect for better geographical context</span>
+<span id="cb3-312"><a href="#cb3-312" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>**Globe Controls**: Adds rotation controls for the 3D globe</span>
+<span id="cb3-313"><a href="#cb3-313" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>**Navigation Tools**: Zoom and rotation controls with pitch visualization</span>
+<span id="cb3-314"><a href="#cb3-314" aria-hidden="true" tabindex="-1"></a><span class="ss">9. </span>**Minimap**: Provides geographic context when zoomed in on specific locations</span>
+<span id="cb3-315"><a href="#cb3-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-316"><a href="#cb3-316" aria-hidden="true" tabindex="-1"></a><span class="fu">### Implementing Section Behaviors</span></span>
+<span id="cb3-317"><a href="#cb3-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-320"><a href="#cb3-320" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb3-321"><a href="#cb3-321" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb3-322"><a href="#cb3-322" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-line-numbers: true</span></span>
+<span id="cb3-323"><a href="#cb3-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-324"><a href="#cb3-324" aria-hidden="true" tabindex="-1"></a><span class="co"># Example section handler</span></span>
+<span id="cb3-325"><a href="#cb3-325" aria-hidden="true" tabindex="-1"></a>mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"birth_place"</span>, { <span class="co"># &lt;1&gt;</span></span>
+<span id="cb3-326"><a href="#cb3-326" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span> <span class="co"># &lt;2&gt;</span></span>
+<span id="cb3-327"><a href="#cb3-327" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">fly_to</span>( <span class="co"># &lt;3&gt;</span></span>
+<span id="cb3-328"><a href="#cb3-328" aria-hidden="true" tabindex="-1"></a>      <span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99371750247397</span>, <span class="fl">26.646533355308083</span>), <span class="co"># &lt;4&gt;</span></span>
+<span id="cb3-329"><a href="#cb3-329" aria-hidden="true" tabindex="-1"></a>      <span class="at">zoom =</span> <span class="dv">16</span>, <span class="co"># &lt;5&gt;</span></span>
+<span id="cb3-330"><a href="#cb3-330" aria-hidden="true" tabindex="-1"></a>      <span class="at">pitch =</span> <span class="dv">49</span>, <span class="co"># &lt;6&gt;</span></span>
+<span id="cb3-331"><a href="#cb3-331" aria-hidden="true" tabindex="-1"></a>      <span class="at">bearing =</span> <span class="fl">12.8</span> <span class="co"># &lt;7&gt;</span></span>
+<span id="cb3-332"><a href="#cb3-332" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-333"><a href="#cb3-333" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb3-334"><a href="#cb3-334" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-335"><a href="#cb3-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-336"><a href="#cb3-336" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Section Trigger**: Responds when user navigates to the "birth_place" section</span>
+<span id="cb3-337"><a href="#cb3-337" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Map Proxy**: Allows server-side control of the existing map instance</span>
+<span id="cb3-338"><a href="#cb3-338" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Smooth Transition**: <span class="in">`fly_to()`</span> creates animated transitions between locations</span>
+<span id="cb3-339"><a href="#cb3-339" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Coordinates**: Precise longitude/latitude coordinates for the specific location</span>
+<span id="cb3-340"><a href="#cb3-340" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Detail Zoom**: High zoom level to show local context and landmarks</span>
+<span id="cb3-341"><a href="#cb3-341" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**Viewing Angle**: Tilted perspective provides better spatial understanding</span>
+<span id="cb3-342"><a href="#cb3-342" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>**Map Rotation**: Oriented to show the location from the most informative angle</span>
+<span id="cb3-343"><a href="#cb3-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-344"><a href="#cb3-344" aria-hidden="true" tabindex="-1"></a><span class="fu">## Best Practices for Transportation Data Storymaps</span></span>
+<span id="cb3-345"><a href="#cb3-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-346"><a href="#cb3-346" aria-hidden="true" tabindex="-1"></a>Based on my experience as a transportation planner, here are key considerations when creating storymaps for professional use:</span>
 <span id="cb3-347"><a href="#cb3-347" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-348"><a href="#cb3-348" aria-hidden="true" tabindex="-1"></a><span class="fu">### Visual Design</span></span>
-<span id="cb3-349"><a href="#cb3-349" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Consistent Styling**: Maintain uniform zoom levels, pitch, and bearing for similar content types</span>
-<span id="cb3-350"><a href="#cb3-350" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Smooth Transitions**: Use appropriate transition speeds (typically 1-3 seconds)</span>
-<span id="cb3-351"><a href="#cb3-351" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Color Schemes**: Choose colors that work well with your base map style</span>
-<span id="cb3-352"><a href="#cb3-352" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Typography**: Select readable fonts that complement your organization's branding</span>
-<span id="cb3-353"><a href="#cb3-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-354"><a href="#cb3-354" aria-hidden="true" tabindex="-1"></a><span class="fu">### User Experience</span></span>
-<span id="cb3-355"><a href="#cb3-355" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Logical Flow**: Organize sections in a meaningful sequence (chronological, thematic, etc.)</span>
-<span id="cb3-356"><a href="#cb3-356" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Clear Navigation**: Provide obvious cues for how users should interact with the storymap</span>
-<span id="cb3-357"><a href="#cb3-357" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Performance**: Test on different devices and internet speeds</span>
-<span id="cb3-358"><a href="#cb3-358" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Accessibility**: Ensure content is accessible to users with disabilities</span>
-<span id="cb3-359"><a href="#cb3-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-360"><a href="#cb3-360" aria-hidden="true" tabindex="-1"></a><span class="fu">## Loading External App Files</span></span>
-<span id="cb3-361"><a href="#cb3-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-362"><a href="#cb3-362" aria-hidden="true" tabindex="-1"></a>To load the complete application from an external <span class="in">`app.R`</span> file (which is cleaner for larger applications), you can modify the {shinylive} block:</span>
-<span id="cb3-363"><a href="#cb3-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-364"><a href="#cb3-364" aria-hidden="true" tabindex="-1"></a><span class="in">````r</span></span>
-<span id="cb3-365"><a href="#cb3-365" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb3-348"><a href="#cb3-348" aria-hidden="true" tabindex="-1"></a><span class="fu">### Data Preparation</span></span>
+<span id="cb3-349"><a href="#cb3-349" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Coordinate Accuracy**: Verify coordinates using reliable sources (Google Maps, OpenStreetMap)</span>
+<span id="cb3-350"><a href="#cb3-350" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Projection Considerations**: Understand how different projections affect your data representation</span>
+<span id="cb3-351"><a href="#cb3-351" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Performance Optimization**: For large datasets, consider data aggregation and level-of-detail strategies</span>
+<span id="cb3-352"><a href="#cb3-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-353"><a href="#cb3-353" aria-hidden="true" tabindex="-1"></a><span class="fu">### Visual Design</span></span>
+<span id="cb3-354"><a href="#cb3-354" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Consistent Styling**: Maintain uniform zoom levels, pitch, and bearing for similar content types</span>
+<span id="cb3-355"><a href="#cb3-355" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Smooth Transitions**: Use appropriate transition speeds (typically 1-3 seconds)</span>
+<span id="cb3-356"><a href="#cb3-356" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Color Schemes**: Choose colors that work well with your base map style</span>
+<span id="cb3-357"><a href="#cb3-357" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Typography**: Select readable fonts that complement your organization's branding</span>
+<span id="cb3-358"><a href="#cb3-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-359"><a href="#cb3-359" aria-hidden="true" tabindex="-1"></a><span class="fu">### User Experience</span></span>
+<span id="cb3-360"><a href="#cb3-360" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Logical Flow**: Organize sections in a meaningful sequence (chronological, thematic, etc.)</span>
+<span id="cb3-361"><a href="#cb3-361" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Clear Navigation**: Provide obvious cues for how users should interact with the storymap</span>
+<span id="cb3-362"><a href="#cb3-362" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Performance**: Test on different devices and internet speeds</span>
+<span id="cb3-363"><a href="#cb3-363" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Accessibility**: Ensure content is accessible to users with disabilities</span>
+<span id="cb3-364"><a href="#cb3-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-365"><a href="#cb3-365" aria-hidden="true" tabindex="-1"></a><span class="fu">## Loading External App Files</span></span>
 <span id="cb3-366"><a href="#cb3-366" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-367"><a href="#cb3-367" aria-hidden="true" tabindex="-1"></a><span class="co"># In your index.qmd file</span></span>
-<span id="cb3-368"><a href="#cb3-368" aria-hidden="true" tabindex="-1"></a><span class="st">```</span><span class="at">{shinylive-r}</span></span>
-<span id="cb3-369"><a href="#cb3-369" aria-hidden="true" tabindex="-1"></a><span class="at">#| standalone: true</span></span>
-<span id="cb3-370"><a href="#cb3-370" aria-hidden="true" tabindex="-1"></a><span class="at">#| viewerHeight: 600</span></span>
-<span id="cb3-371"><a href="#cb3-371" aria-hidden="true" tabindex="-1"></a><span class="at">#| components: [editor, viewer]</span></span>
-<span id="cb3-372"><a href="#cb3-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-373"><a href="#cb3-373" aria-hidden="true" tabindex="-1"></a><span class="at"># Load the complete application</span></span>
-<span id="cb3-374"><a href="#cb3-374" aria-hidden="true" tabindex="-1"></a><span class="at">source("app.R")</span></span>
-<span id="cb3-375"><a href="#cb3-375" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
-<span id="cb3-376"><a href="#cb3-376" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb3-367"><a href="#cb3-367" aria-hidden="true" tabindex="-1"></a>To load the complete application from an external <span class="in">`app.R`</span> file (which is cleaner for larger applications), you can modify the {shinylive} block:</span>
+<span id="cb3-368"><a href="#cb3-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-369"><a href="#cb3-369" aria-hidden="true" tabindex="-1"></a><span class="in">````{r}</span></span>
+<span id="cb3-370"><a href="#cb3-370" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb3-371"><a href="#cb3-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-372"><a href="#cb3-372" aria-hidden="true" tabindex="-1"></a><span class="co"># In your index.qmd file</span></span>
+<span id="cb3-373"><a href="#cb3-373" aria-hidden="true" tabindex="-1"></a><span class="st">```</span><span class="at">{shinylive-r}</span></span>
+<span id="cb3-374"><a href="#cb3-374" aria-hidden="true" tabindex="-1"></a><span class="at">#| standalone: true</span></span>
+<span id="cb3-375"><a href="#cb3-375" aria-hidden="true" tabindex="-1"></a><span class="at">#| viewerHeight: 600</span></span>
+<span id="cb3-376"><a href="#cb3-376" aria-hidden="true" tabindex="-1"></a><span class="at">#| components: [editor, viewer]</span></span>
 <span id="cb3-377"><a href="#cb3-377" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-378"><a href="#cb3-378" aria-hidden="true" tabindex="-1"></a>This approach allows you to:</span>
-<span id="cb3-379"><a href="#cb3-379" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Maintain cleaner separation between documentation and code</span>
-<span id="cb3-380"><a href="#cb3-380" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Enable collaborative development on the application</span>
-<span id="cb3-381"><a href="#cb3-381" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Version control your application code separately</span>
-<span id="cb3-382"><a href="#cb3-382" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Reuse the application in different contexts</span>
-<span id="cb3-383"><a href="#cb3-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-384"><a href="#cb3-384" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conclusion</span></span>
-<span id="cb3-385"><a href="#cb3-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-386"><a href="#cb3-386" aria-hidden="true" tabindex="-1"></a>The {mapgl} package provides a powerful platform for creating engaging, interactive storymaps that can effectively communicate spatial narratives. Whether you're documenting personal journeys, presenting planning scenarios, or analyzing transportation patterns, this approach offers the flexibility and performance needed for professional applications.</span>
-<span id="cb3-387"><a href="#cb3-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-388"><a href="#cb3-388" aria-hidden="true" tabindex="-1"></a>The combination of R's data processing capabilities with modern web mapping technology creates opportunities for innovative visualization approaches that can enhance public engagement and decision-making processes in transportation planning and urban analytics.</span>
-<span id="cb3-389"><a href="#cb3-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-390"><a href="#cb3-390" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Resources</span></span>
-<span id="cb3-391"><a href="#cb3-391" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-392"><a href="#cb3-392" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">{mapgl} package documentation</span><span class="co">](https://walker-data.com/mapgl/)</span></span>
-<span id="cb3-393"><a href="#cb3-393" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">MapLibre GL JS documentation</span><span class="co">](https://maplibre.org/maplibre-gl-js-docs/)</span></span>
-<span id="cb3-394"><a href="#cb3-394" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">OpenFreeMap styles</span><span class="co">](https://openfreemap.org/)</span></span>
-<span id="cb3-395"><a href="#cb3-395" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Quarto documentation</span><span class="co">](https://quarto.org/)</span></span>
+<span id="cb3-378"><a href="#cb3-378" aria-hidden="true" tabindex="-1"></a><span class="at"># Load the complete application</span></span>
+<span id="cb3-379"><a href="#cb3-379" aria-hidden="true" tabindex="-1"></a><span class="at">source("app.R")</span></span>
+<span id="cb3-380"><a href="#cb3-380" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb3-381"><a href="#cb3-381" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb3-382"><a href="#cb3-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-383"><a href="#cb3-383" aria-hidden="true" tabindex="-1"></a>This approach allows you to:</span>
+<span id="cb3-384"><a href="#cb3-384" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Maintain cleaner separation between documentation and code</span>
+<span id="cb3-385"><a href="#cb3-385" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Enable collaborative development on the application</span>
+<span id="cb3-386"><a href="#cb3-386" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Version control your application code separately</span>
+<span id="cb3-387"><a href="#cb3-387" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Reuse the application in different contexts</span>
+<span id="cb3-388"><a href="#cb3-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-389"><a href="#cb3-389" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conclusion</span></span>
+<span id="cb3-390"><a href="#cb3-390" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-391"><a href="#cb3-391" aria-hidden="true" tabindex="-1"></a>The {mapgl} package provides a powerful platform for creating engaging, interactive storymaps that can effectively communicate spatial narratives. Whether you're documenting personal journeys, presenting planning scenarios, or analyzing transportation patterns, this approach offers the flexibility and performance needed for professional applications.</span>
+<span id="cb3-392"><a href="#cb3-392" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-393"><a href="#cb3-393" aria-hidden="true" tabindex="-1"></a>The combination of R's data processing capabilities with modern web mapping technology creates opportunities for innovative visualization approaches that can enhance public engagement and decision-making processes in transportation planning and urban analytics.</span>
+<span id="cb3-394"><a href="#cb3-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-395"><a href="#cb3-395" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Resources</span></span>
 <span id="cb3-396"><a href="#cb3-396" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-397"><a href="#cb3-397" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb3-398"><a href="#cb3-398" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-399"><a href="#cb3-399" aria-hidden="true" tabindex="-1"></a>*This post demonstrates practical applications of open-source geospatial tools for transportation planning and data visualization. All code is available for adaptation to your own projects and use cases.*</span>
+<span id="cb3-397"><a href="#cb3-397" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">{mapgl} package documentation</span><span class="co">](https://walker-data.com/mapgl/)</span></span>
+<span id="cb3-398"><a href="#cb3-398" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">MapLibre GL JS documentation</span><span class="co">](https://maplibre.org/maplibre-gl-js-docs/)</span></span>
+<span id="cb3-399"><a href="#cb3-399" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">OpenFreeMap styles</span><span class="co">](https://openfreemap.org/)</span></span>
+<span id="cb3-400"><a href="#cb3-400" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Quarto documentation</span><span class="co">](https://quarto.org/)</span></span>
+<span id="cb3-401"><a href="#cb3-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-402"><a href="#cb3-402" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb3-403"><a href="#cb3-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-404"><a href="#cb3-404" aria-hidden="true" tabindex="-1"></a>*This post demonstrates practical applications of open-source geospatial tools for transportation planning and data visualization. All code is available for adaptation to your own projects and use cases.*</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
