@@ -40,6 +40,9 @@ Below is the complete interactive storymap. You can scroll through the different
 #| standalone: true
 #| viewerHeight: 600
 
+# Install mapgl from Kyle Walker's r-universe
+# webr::install("mapgl", repos = "https://walkerke.r-universe.dev/")
+
 ## file: app.R
 {{< include app.R >}}
 ```

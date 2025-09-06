@@ -1,0 +1,848 @@
+---
+pagetitle: About
+format:
+  html:
+    page-layout: full
+---
+
+```{css, echo=FALSE}
+/* Respect theme colors and enhance existing styles */
+.about-hero {
+  text-align: center;
+  padding: 2rem 1rem 3rem 1rem;
+  margin-bottom: 2rem;
+}
+
+.about-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, var(--bs-primary), var(--bs-info, #0dcaf0));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.intro-paragraph {
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  padding: 1.5rem;
+  background: var(--bs-light, rgba(0,0,0,0.03));
+  border-radius: 10px;
+  border-left: 4px solid var(--bs-primary);
+}
+
+.journey-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2rem;
+  margin: 3rem 0;
+}
+
+.timeline-container {
+  position: relative;
+}
+
+.timeline-container::before {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, 
+    var(--bs-primary) 0%,
+    var(--bs-info, #0dcaf0) 50%,
+    var(--bs-success, #198754) 100%);
+  border-radius: 1px;
+}
+
+.journey-step {
+  position: relative;
+  margin: 0 0 3rem 3rem;
+  padding: 1.5rem;
+  background: var(--bs-body-bg, white);
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: 12px;
+  transition: all 0.4s ease;
+  opacity: 0.7;
+}
+
+.journey-step::before {
+  content: '';
+  position: absolute;
+  left: -2.5rem;
+  top: 1.5rem;
+  width: 12px;
+  height: 12px;
+  background: var(--bs-secondary, #6c757d);
+  border: 3px solid var(--bs-body-bg, white);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.journey-step.active {
+  opacity: 1;
+  transform: translateX(10px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  border-color: var(--bs-primary);
+}
+
+.journey-step.active::before {
+  background: var(--bs-primary);
+  width: 16px;
+  height: 16px;
+  left: -2.7rem;
+  box-shadow: 0 0 0 4px rgba(var(--bs-primary-rgb, 13,110,253), 0.2);
+}
+
+.step-period {
+  color: var(--bs-secondary, #6c757d);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.5px;
+}
+
+.step-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  color: var(--bs-body-color);
+}
+
+.step-company {
+  color: var(--bs-primary);
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.step-location {
+  color: var(--bs-secondary, #6c757d);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.step-content {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.project-highlight {
+  background: var(--bs-light, rgba(0,0,0,0.03));
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  border-left: 3px solid var(--bs-info, #0dcaf0);
+}
+
+.project-highlight h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--bs-body-color);
+  font-size: 1rem;
+}
+
+.project-highlight ul {
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.project-highlight li {
+  margin: 0.2rem 0;
+  font-size: 0.95rem;
+  color: var(--bs-body-color);
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 1rem;
+}
+
+.skill-tag {
+  background: var(--bs-primary);
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.map-sticky {
+  position: sticky;
+  top: 2rem;
+  height: 75vh;
+  background: var(--bs-body-bg, white);
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.journey-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--bs-primary), var(--bs-info, #0dcaf0));
+  transition: width 0.3s ease;
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .journey-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .map-sticky {
+    position: relative;
+    height: 50vh;
+    order: -1;
+  }
+  
+  .journey-step {
+    margin: 0 0 2rem 2rem;
+  }
+  
+  .timeline-container::before {
+    left: 0.5rem;
+  }
+  
+  .journey-step::before {
+    left: -1.5rem;
+  }
+  
+  .journey-step.active::before {
+    left: -1.7rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .about-hero h1 {
+    background: linear-gradient(45deg, #6366f1, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bs-light, #f8f9fa);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bs-secondary, #6c757d);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bs-primary);
+}
+```
+
+```{js, echo=FALSE}
+document.addEventListener('DOMContentLoaded', function() {
+  // Progress bar
+  const progressBar = document.createElement('div');
+  progressBar.className = 'journey-progress';
+  document.body.appendChild(progressBar);
+  
+  // Update progress on scroll
+  window.addEventListener('scroll', function() {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    progressBar.style.width = progress + '%';
+  });
+  
+  // Intersection Observer for timeline
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        // Remove active class from all steps
+        document.querySelectorAll('.journey-step').forEach(step => {
+          step.classList.remove('active');
+        });
+        
+        // Add active class to current step
+        entry.target.classList.add('active');
+        
+        // Update map
+        if (typeof window.updateJourneyMap === 'function') {
+          window.updateJourneyMap(entry.target.id);
+        }
+      }
+    });
+  }, {
+    threshold: 0.5,
+    rootMargin: '-20% 0px -60% 0px'
+  });
+
+  // Observe all journey steps
+  document.querySelectorAll('.journey-step').forEach(step => {
+    observer.observe(step);
+  });
+});
+```
+
+<div class="journey-progress"></div>
+
+::: {.about-hero}
+# About Me
+
+::: {.intro-paragraph}
+I am an aspiring Associate Transportation Planner with a Master's in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning.
+:::
+:::
+
+## Professional Journey
+
+::: {.journey-layout}
+
+::: {.timeline-container}
+
+::: {.journey-step #step-current}
+::: {.step-period}
+June 2023 - Present
+:::
+::: {.step-title}
+Transportation Planner/Analyst
+:::
+::: {.step-company}
+Metro Analytics
+:::
+::: {.step-location}
+Atlanta, Georgia, United States
+:::
+::: {.step-content}
+Leading comprehensive analysis efforts for transportation planning, modeling, and economic impact projects across the U.S., with particular focus on Georgia and Utah regions. Conducting in-depth research to support transportation decision-making, evaluating economic, social, and environmental impacts to inform policy and planning strategies.
+
+Developing innovative approaches using advanced modeling platforms, GIS technology, and transportation statistics to assess and visualize system performance. Collaborating with diverse public and private stakeholders to address complex policy challenges.
+:::
+
+::: {.project-highlight}
+#### Key Projects
+- Benefit-Cost Analysis: Ohio DOT Cleveland CCG3A Intersection, Missouri DOT STIP 2024-2027 & 2025-2028
+- Economic Impact Analysis: Utah's Unified Plan 2023-2050, Utah Transit Authority 2023-2050
+- Metropolitan Transportation Plans: Valdosta-Lowndes MPO, DARTS, Bowling Green-Warren County, Greater Dalton 2050 MTPs
+- Freight Planning: Stonecrest Freight Cluster Plan, ARTS Regional Freight Plan
+- NCHRP 08-146: Integrating Resiliency into Transportation System Operations
+:::
+
+::: {.skill-tags}
+<span class="skill-tag">Economic Impact Analysis</span>
+<span class="skill-tag">Benefit-Cost Analysis</span>
+<span class="skill-tag">Transport Modeling</span>
+<span class="skill-tag">Multi-modal Planning</span>
+<span class="skill-tag">GIS Technology</span>
+:::
+:::
+
+::: {.journey-step #step-teaching}
+::: {.step-period}
+August 2021 - May 2023
+:::
+::: {.step-title}
+Graduate Teaching & Research Assistant
+:::
+::: {.step-company}
+University of Utah College of Architecture + Planning
+:::
+::: {.step-location}
+Salt Lake City, Utah, United States
+:::
+::: {.step-content}
+Supported instruction across five academic terms while conducting thesis research on transportation equity. Led workshops for 48+ graduate students on community and regional analysis, focusing on demographic and economic assessments using advanced analytical techniques.
+
+Developed methodologies for evaluating transit accessibility and social equity gaps in urban transportation systems.
+:::
+
+::: {.project-highlight}
+#### Courses & Research
+- **Thesis:** "Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, U.S."
+- CMP 3850 Lightscapes, CMP 3851 Nightscapes, CMP 4600 The Just City
+- CMP 6630/REDEV 6630 Due Diligence, CMP 6010 Community & Regional Analysis
+:::
+
+::: {.skill-tags}
+<span class="skill-tag">R Programming</span>
+<span class="skill-tag">Transit Analysis</span>
+<span class="skill-tag">Social Equity</span>
+<span class="skill-tag">Research Methods</span>
+:::
+:::
+
+::: {.journey-step #step-gis}
+::: {.step-period}
+June 2022 - August 2022
+:::
+::: {.step-title}
+GIS Data Analyst
+:::
+::: {.step-company}
+Energy & Geoscience Institute
+:::
+::: {.step-location}
+Salt Lake City, Utah, United States
+:::
+::: {.step-content}
+Collaborated with geoscience researchers on global and regional mining operations analysis. Developed comprehensive geospatial datasets and conducted georeferencing of historic mining maps for Utah and Wyoming regions.
+:::
+
+::: {.skill-tags}
+<span class="skill-tag">GIS Analysis</span>
+<span class="skill-tag">Georeferencing</span>
+<span class="skill-tag">Geospatial Data</span>
+:::
+:::
+
+::: {.journey-step #step-prabal}
+::: {.step-period}
+June 2020 - July 2021
+:::
+::: {.step-title}
+Associate Architect
+:::
+::: {.step-company}
+Prabal Thapa Architects
+:::
+::: {.step-location}
+Kathmandu, Nepal
+:::
+::: {.step-content}
+Led architectural design development and project coordination for diverse project types including hospitality developments in Ghandruk and Nagarkot, institutional projects, and residential developments across Nepal.
+:::
+
+::: {.skill-tags}
+<span class="skill-tag">Project Management</span>
+<span class="skill-tag">Architectural Design</span>
+<span class="skill-tag">Client Relations</span>
+:::
+:::
+
+::: {.journey-step #step-rtcsu}
+::: {.step-period}
+September 2020 - June 2021
+:::
+::: {.step-title}
+Associate Architect
+:::
+::: {.step-company}
+Institute of Engineering - RTCSU
+:::
+::: {.step-location}
+Lalitpur, Nepal
+:::
+::: {.step-content}
+Led design team for Padma Kanya Multiple Campus masterplan development. Conducted comprehensive site investigations and strategic planning for historic women's college transformation.
+:::
+
+::: {.skill-tags}
+<span class="skill-tag">Master Planning</span>
+<span class="skill-tag">Strategic Planning</span>
+<span class="skill-tag">Campus Design</span>
+:::
+:::
+
+::: {.journey-step #step-urbanpark}
+::: {.step-period}
+January 2019 - June 2020
+:::
+::: {.step-title}
+Associate Architect
+:::
+::: {.step-company}
+Urban Park Pvt. Ltd
+:::
+::: {.step-location}
+Lalitpur, Nepal
+:::
+::: {.step-content}
+Contributed to diverse urban planning projects including the innovative Film City Masterplan in Dolakha and ICT Center design for Tulsipur's smart city transformation.
+:::
+
+::: {.project-highlight}
+#### Notable Projects
+- Film City Masterplan, Dolakha
+- ICT Center for Tulsipur Smart City
+- Infrastructure development for Nepal's IUDP
+- Municipal planning for Pathrisanischare and Belbari
+:::
+
+::: {.skill-tags}
+<span class="skill-tag">Urban Planning</span>
+<span class="skill-tag">Smart City Design</span>
+<span class="skill-tag">Infrastructure Planning</span>
+:::
+:::
+
+::: {.journey-step #step-archetype}
+::: {.step-period}
+June 2018 - January 2020
+:::
+::: {.step-title}
+Associate Architect
+:::
+::: {.step-company}
+Archetype Design Consultancy
+:::
+::: {.step-location}
+Kathmandu, Nepal
+:::
+::: {.step-content}
+Led 5-person team in major heritage conservation projects including Sindhuligadhi Area conservation masterplan and Pashupatinath Temple Complex World Heritage Site development following international ICOMOS standards.
+:::
+
+::: {.project-highlight}
+#### Conservation Projects
+- Sindhuligadhi Area Conservation Masterplan
+- Pashupatinath Temple Complex (UNESCO World Heritage Site)
+- Bagmati River Riverfront Development
+:::
+
+::: {.skill-tags}
+<span class="skill-tag">Heritage Conservation</span>
+<span class="skill-tag">ICOMOS Guidelines</span>
+<span class="skill-tag">Team Leadership</span>
+:::
+:::
+
+::: {.journey-step #step-masters}
+::: {.step-period}
+August 2021 - May 2023
+:::
+::: {.step-title}
+Master of City & Metropolitan Planning
+:::
+::: {.step-company}
+University of Utah
+:::
+::: {.step-location}
+Salt Lake City, Utah, United States
+:::
+::: {.step-content}
+Specialized in transportation equity and accessibility analysis with focus on data-driven planning methodologies. Developed expertise in R programming, GIS modeling, and demographic analysis for transportation planning applications.
+:::
+
+::: {.skill-tags}
+<span class="skill-tag">Transportation Planning</span>
+<span class="skill-tag">Data Science</span>
+<span class="skill-tag">Policy Analysis</span>
+:::
+:::
+
+::: {.journey-step #step-bachelors}
+::: {.step-period}
+October 2013 - August 2018
+:::
+::: {.step-title}
+Bachelor's in Architecture
+:::
+::: {.step-company}
+Tribhuvan University, IOE Pulchowk
+:::
+::: {.step-location}
+Kathmandu, Nepal
+:::
+::: {.step-content}
+Graduated as **Thesis Topper** with research on "Earthquake Memorial at Barpak, Gorkha" focusing on post-disaster reconstruction and memorial architecture. Received **Best Professional Project Award** for outstanding academic achievement.
+:::
+
+::: {.skill-tags}
+<span class="skill-tag">Architectural Design</span>
+<span class="skill-tag">Post-Disaster Planning</span>
+<span class="skill-tag">Spatial Analysis</span>
+:::
+:::
+
+:::
+
+::: {.map-sticky}
+```{r journey_map, echo=FALSE, message=FALSE, warning=FALSE}
+library(leaflet)
+library(htmlwidgets)
+
+# Create the map
+journey_map <- leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  setView(lng = 20, lat = 35, zoom = 2)
+
+# Add comprehensive JavaScript for map functionality
+journey_map <- onRender(journey_map, "
+function(el, x) {
+  // Store map reference globally
+  window.journeyMap = this;
+  
+  // Disable user interactions for cleaner experience
+  this.dragging.disable();
+  this.touchZoom.disable();
+  this.doubleClickZoom.disable();
+  this.scrollWheelZoom.disable();
+  this.boxZoom.disable();
+  this.keyboard.disable();
+  if (this.tap) this.tap.disable();
+  
+  // Define location coordinates and zoom levels
+  window.mapLocations = {
+    kathmandu: {
+      lng: 85.3240, 
+      lat: 27.7172, 
+      zoom: 6,
+      name: 'Kathmandu, Nepal'
+    },
+    saltlake: {
+      lng: -111.8910, 
+      lat: 40.7608, 
+      zoom: 6,
+      name: 'Salt Lake City, Utah'
+    },
+    atlanta: {
+      lng: -84.3880, 
+      lat: 33.7490, 
+      zoom: 6,
+      name: 'Atlanta, Georgia'
+    },
+    overview: {
+      lng: 20, 
+      lat: 35, 
+      zoom: 2,
+      name: 'Global Overview'
+    }
+  };
+  
+  // Arrays to track map elements
+  window.currentMarkers = [];
+  window.currentLines = [];
+  
+  // Enhanced marker creation function
+  var createLocationMarker = function(location, popup, isPrimary) {
+    var size = isPrimary ? 16 : 12;
+    var color = isPrimary ? '#0d6efd' : '#6c757d';
+    var pulseEffect = isPrimary ? 'animation: marker-pulse 2s infinite;' : '';
+    
+    var markerHtml = '<div style=\"' +
+      'background: ' + color + ';' +
+      'width: ' + size + 'px;' +
+      'height: ' + size + 'px;' +
+      'border-radius: 50%;' +
+      'border: 3px solid white;' +
+      'box-shadow: 0 2px 8px rgba(0,0,0,0.3);' +
+      pulseEffect +
+      '\"></div>' +
+      '<style>' +
+      '@keyframes marker-pulse {' +
+        '0% { transform: scale(1); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }' +
+        '50% { transform: scale(1.15); box-shadow: 0 4px 12px rgba(13,110,253,0.4); }' +
+        '100% { transform: scale(1); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }' +
+      '}' +
+      '</style>';
+    
+    var icon = L.divIcon({
+      html: markerHtml,
+      iconSize: [size, size],
+      className: 'custom-journey-marker'
+    });
+    
+    var marker = L.marker([location.lat, location.lng], {icon: icon});
+    
+    if (popup) {
+      marker.bindPopup(popup, {
+        className: 'custom-journey-popup',
+        maxWidth: 280,
+        closeButton: false
+      });
+    }
+    
+    window.currentMarkers.push(marker);
+    return marker;
+  };
+  
+  // Function to create journey path lines
+  var createJourneyLine = function(locations, style) {
+    var coordinates = locations.map(function(loc) {
+      return [loc.lat, loc.lng];
+    });
+    
+    var lineStyle = {
+      color: style.color || '#6c757d',
+      weight: style.weight || 3,
+      opacity: style.opacity || 0.7,
+      dashArray: style.dashArray || null,
+      className: 'journey-path-line'
+    };
+    
+    var line = L.polyline(coordinates, lineStyle);
+    window.currentLines.push(line);
+    return line;
+  };
+  
+  // Clear all map elements
+  var clearAllMapElements = function() {
+    window.currentMarkers.forEach(function(marker) {
+      window.journeyMap.removeLayer(marker);
+    });
+    window.currentLines.forEach(function(line) {
+      window.journeyMap.removeLayer(line);
+    });
+    window.currentMarkers = [];
+    window.currentLines = [];
+  };
+  
+  // Smooth map transition function
+  var transitionToLocation = function(location) {
+    window.journeyMap.flyTo(
+      [location.lat, location.lng], 
+      location.zoom, 
+      {
+        animate: true,
+        duration: 2.0,
+        easeLinearity: 0.15
+      }
+    );
+  };
+  
+  // Main map update function - this is called from the scroll observer
+  window.updateJourneyMap = function(stepId) {
+    console.log('updateJourneyMap called with:', stepId);
+    
+    if (!window.journeyMap) {
+      console.log('Map not ready yet');
+      return;
+    }
+    
+    // Clear existing elements
+    clearAllMapElements();
+    console.log('Map elements cleared');
+    
+    // Add delay to ensure smooth transition
+    setTimeout(function() {
+      console.log('Processing step:', stepId);
+      
+      switch(stepId) {
+        case 'step-current':
+          console.log('Showing Atlanta');
+          transitionToLocation(window.mapLocations.atlanta);
+          setTimeout(function() {
+            createLocationMarker(
+              window.mapLocations.atlanta,
+              '<strong>Atlanta, Georgia</strong><br/>Transportation Analytics<br/>Metro Analytics (2023-Present)',
+              true
+            ).addTo(window.journeyMap);
+          }, 1000);
+          break;
+          
+        case 'step-teaching':
+        case 'step-gis':
+        case 'step-masters':
+          console.log('Showing Salt Lake City');
+          transitionToLocation(window.mapLocations.saltlake);
+          setTimeout(function() {
+            createLocationMarker(
+              window.mapLocations.saltlake,
+              '<strong>Salt Lake City, Utah</strong><br/>Graduate Studies & Research<br/>University of Utah (2021-2023)',
+              true
+            ).addTo(window.journeyMap);
+            
+            // Show connection to current position for masters step
+            if (stepId === 'step-masters') {
+              createLocationMarker(
+                window.mapLocations.atlanta,
+                '<strong>Atlanta</strong><br/>Current Position',
+                false
+              ).addTo(window.journeyMap);
+              
+              createJourneyLine(
+                [window.mapLocations.saltlake, window.mapLocations.atlanta],
+                {color: '#0d6efd', weight: 3, opacity: 0.8}
+              ).addTo(window.journeyMap);
+            }
+          }, 1000);
+          break;
+          
+        case 'step-prabal':
+        case 'step-rtcsu':
+        case 'step-urbanpark':
+        case 'step-archetype':
+        case 'step-bachelors':
+          console.log('Showing Kathmandu');
+          transitionToLocation(window.mapLocations.kathmandu);
+          setTimeout(function() {
+            createLocationMarker(
+              window.mapLocations.kathmandu,
+              '<strong>Kathmandu, Nepal</strong><br/>Architecture & Urban Planning<br/>(2013-2021)',
+              true
+            ).addTo(window.journeyMap);
+            
+            // Show full journey path for professional positions
+            if (['step-prabal', 'step-rtcsu', 'step-urbanpark', 'step-archetype'].includes(stepId)) {
+              createLocationMarker(
+                window.mapLocations.saltlake,
+                '<strong>Salt Lake City</strong><br/>Graduate Studies',
+                false
+              ).addTo(window.journeyMap);
+              
+              createLocationMarker(
+                window.mapLocations.atlanta,
+                '<strong>Atlanta</strong><br/>Current Position',
+                false
+              ).addTo(window.journeyMap);
+              
+              createJourneyLine(
+                [window.mapLocations.kathmandu, window.mapLocations.saltlake, window.mapLocations.atlanta],
+                {color: '#6c757d', weight: 2, opacity: 0.6}
+              ).addTo(window.journeyMap);
+            }
+          }, 1000);
+          break;
+          
+        default:
+          console.log('Default overview');
+          // Default overview
+          transitionToLocation(window.mapLocations.overview);
+          break;
+      }
+    }, 200);
+  };
+  
+  // Make function globally available
+  window.updateMap = window.updateJourneyMap;
+  updateJourneyMap = window.updateJourneyMap;
+  
+  console.log('updateJourneyMap function created and stored globally');
+  
+  // Initialize map with first step
+  setTimeout(function() {
+    console.log('Initializing map with first step');
+    window.updateJourneyMap('step-current');
+  }, 500);
+}
+")
+
+journey_map
+```
+:::
+
+:::
+
+---
+
+## Core Competencies
+
+**Technical Skills:** R Programming, PostgreSQL, GIS Modeling, Economic Impact Analysis, Benefit-Cost Analysis, Transportation Equity Analysis, ArcGIS, Advanced Excel
+
+**Planning Expertise:** Multimodal Transportation Planning, Heritage Conservation, Smart City Development, Infrastructure Planning, Project Management, Stakeholder Engagement
+
+**Languages:** English (Full Professional), Nepali (Native), Hindi (Native), Spanish (Elementary)
+
+**Certifications:** Analyzing US Census Data in R, Introduction to ArcGIS API for Python, Joining Data with dplyr, Introduction to Statistics in R
