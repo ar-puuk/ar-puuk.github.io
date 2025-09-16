@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -68,18 +68,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="./assets/images/pb-logo.svg" rel="icon" type="image/svg+xml">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-758875b6e99f99f4045aba62d47737c9.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-191b91f41f93ef7a5416eeffbf8dbc93.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-758875b6e99f99f4045aba62d47737c9.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-35b6f7bb6e34d45445cd9ae5b0fd55f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-2031d948656c03281fac12d158ed8d96.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-35b6f7bb6e34d45445cd9ae5b0fd55f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-5d9d7de335577cbf8e4129f8bc8e8fa5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-0d4aeca4db8bee407495ff88f6ed4dc1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-5d9d7de335577cbf8e4129f8bc8e8fa5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-befe514a61c427729fb8eefaeeadeaad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-89f90f8125d9af3357ee07be3c8cc63e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-befe514a61c427729fb8eefaeeadeaad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
@@ -311,7 +312,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./assets/images/pb-logo.svg" alt="" class="navbar-logo">
+    <img src="./assets/images/pb-logo.svg" alt="" class="navbar-logo light-content">
+    <img src="./assets/images/pb-logo.svg" alt="" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Pukar Bhandari</span>
@@ -419,7 +421,7 @@ eyJhdHRyIjp7ImNvbXBsZXRpb24iOnRydWUsImVkaXQiOmZhbHNlLCJldmFsIjp0cnVlLCJvdXRwdXQi
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Welcome to the Transportation Data Science Challenge! 🚦
+<span class="screen-reader-only">Tip</span>Welcome to the Transportation Data Science Challenge! 🚦
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -464,14 +466,14 @@ time_per_car &lt;- 3  # seconds
 cars_per_cycle &lt;- green_time / time_per_car
 
 cars_per_cycle</code>
-<div class="sourceCode cell-code" id="interpolate-6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-6-1"><a href="#interpolate-6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate how many cars can pass in one green phase</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-6-1"><a href="#interpolate-6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate how many cars can pass in one green phase</span></span>
 <span id="interpolate-6-2"><a href="#interpolate-6-2" aria-hidden="true" tabindex="-1"></a>green_time <span class="ot">&lt;-</span> <span class="dv">60</span>  <span class="co"># seconds</span></span>
 <span id="interpolate-6-3"><a href="#interpolate-6-3" aria-hidden="true" tabindex="-1"></a>time_per_car <span class="ot">&lt;-</span> <span class="dv">3</span>  <span class="co"># seconds</span></span>
 <span id="interpolate-6-4"><a href="#interpolate-6-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="interpolate-6-5"><a href="#interpolate-6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Divide green time by time per car</span></span>
 <span id="interpolate-6-6"><a href="#interpolate-6-6" aria-hidden="true" tabindex="-1"></a>cars_per_cycle <span class="ot">&lt;-</span> green_time <span class="sc">/</span> time_per_car</span>
 <span id="interpolate-6-7"><a href="#interpolate-6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-6-8"><a href="#interpolate-6-8" aria-hidden="true" tabindex="-1"></a>cars_per_cycle</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="interpolate-6-8"><a href="#interpolate-6-8" aria-hidden="true" tabindex="-1"></a>cars_per_cycle</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -513,7 +515,7 @@ los_category &lt;- if (vc_ratio &lt;= 0.8) {
 }
 
 list(vc_ratio = vc_ratio, los_category = los_category)</code>
-<div class="sourceCode cell-code" id="interpolate-11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-11-1"><a href="#interpolate-11-1" aria-hidden="true" tabindex="-1"></a>volume <span class="ot">&lt;-</span> <span class="dv">1600</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-11-1"><a href="#interpolate-11-1" aria-hidden="true" tabindex="-1"></a>volume <span class="ot">&lt;-</span> <span class="dv">1600</span></span>
 <span id="interpolate-11-2"><a href="#interpolate-11-2" aria-hidden="true" tabindex="-1"></a>capacity <span class="ot">&lt;-</span> <span class="dv">1800</span></span>
 <span id="interpolate-11-3"><a href="#interpolate-11-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="interpolate-11-4"><a href="#interpolate-11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate V/C ratio</span></span>
@@ -528,7 +530,7 @@ list(vc_ratio = vc_ratio, los_category = los_category)</code>
 <span id="interpolate-11-13"><a href="#interpolate-11-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"E-F"</span></span>
 <span id="interpolate-11-14"><a href="#interpolate-11-14" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="interpolate-11-15"><a href="#interpolate-11-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-11-16"><a href="#interpolate-11-16" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(<span class="at">vc_ratio =</span> vc_ratio, <span class="at">los_category =</span> los_category)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="interpolate-11-16"><a href="#interpolate-11-16" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(<span class="at">vc_ratio =</span> vc_ratio, <span class="at">los_category =</span> los_category)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -564,7 +566,7 @@ non_car_total &lt;- 100 - car_percent  # 60%
 transit_share_of_non_car &lt;- (transit_percent / non_car_total) * 100
 
 transit_share_of_non_car</code>
-<div class="sourceCode cell-code" id="interpolate-16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-16-1"><a href="#interpolate-16-1" aria-hidden="true" tabindex="-1"></a>car_percent <span class="ot">&lt;-</span> <span class="dv">40</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-16-1"><a href="#interpolate-16-1" aria-hidden="true" tabindex="-1"></a>car_percent <span class="ot">&lt;-</span> <span class="dv">40</span></span>
 <span id="interpolate-16-2"><a href="#interpolate-16-2" aria-hidden="true" tabindex="-1"></a>transit_percent <span class="ot">&lt;-</span> <span class="dv">25</span></span>
 <span id="interpolate-16-3"><a href="#interpolate-16-3" aria-hidden="true" tabindex="-1"></a>walking_percent <span class="ot">&lt;-</span> <span class="dv">20</span></span>
 <span id="interpolate-16-4"><a href="#interpolate-16-4" aria-hidden="true" tabindex="-1"></a>cycling_percent <span class="ot">&lt;-</span> <span class="dv">15</span></span>
@@ -573,7 +575,7 @@ transit_share_of_non_car</code>
 <span id="interpolate-16-7"><a href="#interpolate-16-7" aria-hidden="true" tabindex="-1"></a>non_car_total <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">-</span> car_percent  <span class="co"># 60%</span></span>
 <span id="interpolate-16-8"><a href="#interpolate-16-8" aria-hidden="true" tabindex="-1"></a>transit_share_of_non_car <span class="ot">&lt;-</span> (transit_percent <span class="sc">/</span> non_car_total) <span class="sc">*</span> <span class="dv">100</span></span>
 <span id="interpolate-16-9"><a href="#interpolate-16-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-16-10"><a href="#interpolate-16-10" aria-hidden="true" tabindex="-1"></a>transit_share_of_non_car</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="interpolate-16-10"><a href="#interpolate-16-10" aria-hidden="true" tabindex="-1"></a>transit_share_of_non_car</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -610,7 +612,7 @@ total_daily_trips &lt;- housing_units * trip_rate
 pm_peak_trips &lt;- total_daily_trips * (pm_peak_percent / 100)
 
 list(daily = total_daily_trips, pm_peak = pm_peak_trips)</code>
-<div class="sourceCode cell-code" id="interpolate-21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-21-1"><a href="#interpolate-21-1" aria-hidden="true" tabindex="-1"></a>housing_units <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-21-1"><a href="#interpolate-21-1" aria-hidden="true" tabindex="-1"></a>housing_units <span class="ot">&lt;-</span> <span class="dv">200</span></span>
 <span id="interpolate-21-2"><a href="#interpolate-21-2" aria-hidden="true" tabindex="-1"></a>trip_rate <span class="ot">&lt;-</span> <span class="fl">9.5</span></span>
 <span id="interpolate-21-3"><a href="#interpolate-21-3" aria-hidden="true" tabindex="-1"></a>pm_peak_percent <span class="ot">&lt;-</span> <span class="dv">15</span></span>
 <span id="interpolate-21-4"><a href="#interpolate-21-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -620,7 +622,7 @@ list(daily = total_daily_trips, pm_peak = pm_peak_trips)</code>
 <span id="interpolate-21-8"><a href="#interpolate-21-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate PM peak hour trips</span></span>
 <span id="interpolate-21-9"><a href="#interpolate-21-9" aria-hidden="true" tabindex="-1"></a>pm_peak_trips <span class="ot">&lt;-</span> total_daily_trips <span class="sc">*</span> (pm_peak_percent <span class="sc">/</span> <span class="dv">100</span>)</span>
 <span id="interpolate-21-10"><a href="#interpolate-21-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-21-11"><a href="#interpolate-21-11" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(<span class="at">daily =</span> total_daily_trips, <span class="at">pm_peak =</span> pm_peak_trips)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="interpolate-21-11"><a href="#interpolate-21-11" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(<span class="at">daily =</span> total_daily_trips, <span class="at">pm_peak =</span> pm_peak_trips)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -657,7 +659,7 @@ buses_per_hour &lt;- 60 / frequency_minutes
 hourly_passenger_capacity &lt;- buses_per_hour * bus_capacity * load_factor
 
 list(buses_per_hour = buses_per_hour, hourly_capacity = hourly_passenger_capacity)</code>
-<div class="sourceCode cell-code" id="interpolate-26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-26-1"><a href="#interpolate-26-1" aria-hidden="true" tabindex="-1"></a>frequency_minutes <span class="ot">&lt;-</span> <span class="dv">12</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-26-1"><a href="#interpolate-26-1" aria-hidden="true" tabindex="-1"></a>frequency_minutes <span class="ot">&lt;-</span> <span class="dv">12</span></span>
 <span id="interpolate-26-2"><a href="#interpolate-26-2" aria-hidden="true" tabindex="-1"></a>bus_capacity <span class="ot">&lt;-</span> <span class="dv">40</span></span>
 <span id="interpolate-26-3"><a href="#interpolate-26-3" aria-hidden="true" tabindex="-1"></a>load_factor <span class="ot">&lt;-</span> <span class="fl">0.75</span></span>
 <span id="interpolate-26-4"><a href="#interpolate-26-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -667,7 +669,7 @@ list(buses_per_hour = buses_per_hour, hourly_capacity = hourly_passenger_capacit
 <span id="interpolate-26-8"><a href="#interpolate-26-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate hourly passenger capacity</span></span>
 <span id="interpolate-26-9"><a href="#interpolate-26-9" aria-hidden="true" tabindex="-1"></a>hourly_passenger_capacity <span class="ot">&lt;-</span> buses_per_hour <span class="sc">*</span> bus_capacity <span class="sc">*</span> load_factor</span>
 <span id="interpolate-26-10"><a href="#interpolate-26-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-26-11"><a href="#interpolate-26-11" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(<span class="at">buses_per_hour =</span> buses_per_hour, <span class="at">hourly_capacity =</span> hourly_passenger_capacity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="interpolate-26-11"><a href="#interpolate-26-11" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(<span class="at">buses_per_hour =</span> buses_per_hour, <span class="at">hourly_capacity =</span> hourly_passenger_capacity)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -726,14 +728,14 @@ high_traffic &lt;- traffic_data |&gt;
 count_high_traffic &lt;- nrow(high_traffic)
 
 count_high_traffic</code>
-<div class="sourceCode cell-code" id="interpolate-33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-33-1"><a href="#interpolate-33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter for high-traffic locations and count them</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-33-1"><a href="#interpolate-33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter for high-traffic locations and count them</span></span>
 <span id="interpolate-33-2"><a href="#interpolate-33-2" aria-hidden="true" tabindex="-1"></a>high_traffic <span class="ot">&lt;-</span> traffic_data <span class="sc">|&gt;</span></span>
 <span id="interpolate-33-3"><a href="#interpolate-33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(aadt <span class="sc">&gt;</span> <span class="dv">15000</span>)</span>
 <span id="interpolate-33-4"><a href="#interpolate-33-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="interpolate-33-5"><a href="#interpolate-33-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the results</span></span>
 <span id="interpolate-33-6"><a href="#interpolate-33-6" aria-hidden="true" tabindex="-1"></a>count_high_traffic <span class="ot">&lt;-</span> <span class="fu">nrow</span>(high_traffic)</span>
 <span id="interpolate-33-7"><a href="#interpolate-33-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-33-8"><a href="#interpolate-33-8" aria-hidden="true" tabindex="-1"></a>count_high_traffic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="interpolate-33-8"><a href="#interpolate-33-8" aria-hidden="true" tabindex="-1"></a>count_high_traffic</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -766,13 +768,13 @@ safety_analysis &lt;- traffic_data |&gt;
 
 # Show the results
 safety_analysis</code>
-<div class="sourceCode cell-code" id="interpolate-38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-38-1"><a href="#interpolate-38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate accident rates and arrange</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-38-1"><a href="#interpolate-38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate accident rates and arrange</span></span>
 <span id="interpolate-38-2"><a href="#interpolate-38-2" aria-hidden="true" tabindex="-1"></a>safety_analysis <span class="ot">&lt;-</span> traffic_data <span class="sc">|&gt;</span></span>
 <span id="interpolate-38-3"><a href="#interpolate-38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">accident_rate =</span> (accidents_2023 <span class="sc">/</span> aadt) <span class="sc">*</span> <span class="dv">1000</span>) <span class="sc">|&gt;</span></span>
 <span id="interpolate-38-4"><a href="#interpolate-38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(accident_rate))</span>
 <span id="interpolate-38-5"><a href="#interpolate-38-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="interpolate-38-6"><a href="#interpolate-38-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the results</span></span>
-<span id="interpolate-38-7"><a href="#interpolate-38-7" aria-hidden="true" tabindex="-1"></a>safety_analysis</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="interpolate-38-7"><a href="#interpolate-38-7" aria-hidden="true" tabindex="-1"></a>safety_analysis</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -819,7 +821,7 @@ most_efficient &lt;- transit_efficiency |&gt;
   pull(route)
 
 most_efficient</code>
-<div class="sourceCode cell-code" id="interpolate-44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-44-1"><a href="#interpolate-44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate efficiency and find the best route</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-44-1"><a href="#interpolate-44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate efficiency and find the best route</span></span>
 <span id="interpolate-44-2"><a href="#interpolate-44-2" aria-hidden="true" tabindex="-1"></a>transit_efficiency <span class="ot">&lt;-</span> transit_data <span class="sc">|&gt;</span></span>
 <span id="interpolate-44-3"><a href="#interpolate-44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">riders_per_mile =</span> daily_riders <span class="sc">/</span> route_length_miles) <span class="sc">|&gt;</span></span>
 <span id="interpolate-44-4"><a href="#interpolate-44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(riders_per_mile))</span>
@@ -829,7 +831,7 @@ most_efficient</code>
 <span id="interpolate-44-8"><a href="#interpolate-44-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span></span>
 <span id="interpolate-44-9"><a href="#interpolate-44-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(route)</span>
 <span id="interpolate-44-10"><a href="#interpolate-44-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-44-11"><a href="#interpolate-44-11" aria-hidden="true" tabindex="-1"></a>most_efficient</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="interpolate-44-11"><a href="#interpolate-44-11" aria-hidden="true" tabindex="-1"></a>most_efficient</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -887,7 +889,7 @@ bike_plot &lt;- ggplot(bike_data, aes(x = distance_downtown_km, y = daily_trips)
   theme_minimal()
 
 bike_plot</code>
-<div class="sourceCode cell-code" id="interpolate-51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-51-1"><a href="#interpolate-51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the bike share analysis plot</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-51-1"><a href="#interpolate-51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the bike share analysis plot</span></span>
 <span id="interpolate-51-2"><a href="#interpolate-51-2" aria-hidden="true" tabindex="-1"></a>bike_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(bike_data, <span class="fu">aes</span>(<span class="at">x =</span> distance_downtown_km, <span class="at">y =</span> daily_trips)) <span class="sc">+</span></span>
 <span id="interpolate-51-3"><a href="#interpolate-51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
 <span id="interpolate-51-4"><a href="#interpolate-51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
@@ -898,7 +900,7 @@ bike_plot</code>
 <span id="interpolate-51-9"><a href="#interpolate-51-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="interpolate-51-10"><a href="#interpolate-51-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
 <span id="interpolate-51-11"><a href="#interpolate-51-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-51-12"><a href="#interpolate-51-12" aria-hidden="true" tabindex="-1"></a>bike_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="interpolate-51-12"><a href="#interpolate-51-12" aria-hidden="true" tabindex="-1"></a>bike_plot</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -938,7 +940,7 @@ performance_summary &lt;- traffic_data |&gt;
   select(location, daily_volume, accidents_per_1000, congestion_level)
 
 performance_summary</code>
-<div class="sourceCode cell-code" id="interpolate-56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-56-1"><a href="#interpolate-56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create comprehensive performance summary</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-56-1"><a href="#interpolate-56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create comprehensive performance summary</span></span>
 <span id="interpolate-56-2"><a href="#interpolate-56-2" aria-hidden="true" tabindex="-1"></a>performance_summary <span class="ot">&lt;-</span> traffic_data <span class="sc">|&gt;</span></span>
 <span id="interpolate-56-3"><a href="#interpolate-56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="interpolate-56-4"><a href="#interpolate-56-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">daily_volume =</span> aadt,</span>
@@ -951,7 +953,7 @@ performance_summary</code>
 <span id="interpolate-56-11"><a href="#interpolate-56-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="interpolate-56-12"><a href="#interpolate-56-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(location, daily_volume, accidents_per_1000, congestion_level)</span>
 <span id="interpolate-56-13"><a href="#interpolate-56-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-56-14"><a href="#interpolate-56-14" aria-hidden="true" tabindex="-1"></a>performance_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="interpolate-56-14"><a href="#interpolate-56-14" aria-hidden="true" tabindex="-1"></a>performance_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1066,13 +1068,14 @@ window._ojs.runtime.interpretFromScriptTags();
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

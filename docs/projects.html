@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -35,18 +35,19 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-758875b6e99f99f4045aba62d47737c9.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-191b91f41f93ef7a5416eeffbf8dbc93.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-758875b6e99f99f4045aba62d47737c9.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-35b6f7bb6e34d45445cd9ae5b0fd55f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-2031d948656c03281fac12d158ed8d96.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-35b6f7bb6e34d45445cd9ae5b0fd55f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-5d9d7de335577cbf8e4129f8bc8e8fa5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-0d4aeca4db8bee407495ff88f6ed4dc1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-5d9d7de335577cbf8e4129f8bc8e8fa5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-befe514a61c427729fb8eefaeeadeaad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-89f90f8125d9af3357ee07be3c8cc63e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-befe514a61c427729fb8eefaeeadeaad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
@@ -126,7 +127,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -336,7 +337,8 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./assets/images/pb-logo.svg" alt="" class="navbar-logo">
+    <img src="./assets/images/pb-logo.svg" alt="" class="navbar-logo light-content">
+    <img src="./assets/images/pb-logo.svg" alt="" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Pukar Bhandari</span>
@@ -453,7 +455,7 @@ window.Quarto = {
     </div>
 </div>
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="UiUyQ1NoaW55JTJDU3RvcnltYXA=" data-listing-date-sort="1756872000000" data-listing-file-modified-sort="1757167976055" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1119">
+<div class="quarto-post image-right" data-index="0" data-categories="UiUyQ1NoaW55JTJDU3RvcnltYXA=" data-listing-date-sort="1756879200000" data-listing-file-modified-sort="1757991360657" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1119">
 <div class="thumbnail"><a href="./posts/storymap_my_journey/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/storymap_my_journey/storymap_my_journey.png" class="thumbnail-image">
@@ -490,7 +492,7 @@ Pukar Bhandari
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="UiUyQ1B5dGhvbiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNlJTJDVHJhbnNwb3J0YXRpb24=" data-listing-date-sort="1751688000000" data-listing-file-modified-sort="1756775771650" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="54" data-listing-word-count-sort="10648">
+<div class="quarto-post image-right" data-index="1" data-categories="UiUyQ1B5dGhvbiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNlJTJDVHJhbnNwb3J0YXRpb24=" data-listing-date-sort="1751695200000" data-listing-file-modified-sort="1757991360221" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="54" data-listing-word-count-sort="10648">
 <div class="thumbnail"><a href="./posts/socioeconomic-demo/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/socioeconomic-demo/lscog_taz.png" class="thumbnail-image">
@@ -531,7 +533,7 @@ Pukar Bhandari
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="UiUyQ1NoaW55JTJDR0lTJTJDQ2Vuc3VzJTIwRGF0YSUyQ0Rhc2hib2FyZA==" data-listing-date-sort="1750824000000" data-listing-file-modified-sort="1756853189447" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="965">
+<div class="quarto-post image-right" data-index="2" data-categories="UiUyQ1NoaW55JTJDR0lTJTJDQ2Vuc3VzJTIwRGF0YSUyQ0Rhc2hib2FyZA==" data-listing-date-sort="1750831200000" data-listing-file-modified-sort="1757991360186" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="965">
 <div class="thumbnail"><a href="./posts/population-pyramid-explorer/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/population-pyramid-explorer/population_pyramid_explorer.png" class="thumbnail-image">
@@ -572,7 +574,7 @@ Pukar Bhandari
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="VG9vbHMlMkNVdGlsaXRpZXMlMkNXaW5kb3dz" data-listing-date-sort="1749960000000" data-listing-file-modified-sort="1756648978812" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="254">
+<div class="quarto-post image-right" data-index="3" data-categories="VG9vbHMlMkNVdGlsaXRpZXMlMkNXaW5kb3dz" data-listing-date-sort="1749967200000" data-listing-file-modified-sort="1757991360192" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="254">
 <div class="thumbnail"><a href="./posts/robocopy-gui/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/robocopy-gui/robocopy_gui.png" class="thumbnail-image">
@@ -609,7 +611,7 @@ Pukar Bhandari
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="UiUyQ1B5dGhvbiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1716350400000" data-listing-file-modified-sort="1756670123506" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1529">
+<div class="quarto-post image-right" data-index="4" data-categories="UiUyQ1B5dGhvbiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1716357600000" data-listing-file-modified-sort="1757991360096" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1529">
 <div class="thumbnail"><a href="./posts/overture-data-download/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/overture-data-download/overture_data_download.png" class="thumbnail-image">
@@ -648,7 +650,7 @@ Pukar Bhandari
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="UiUyQ1NoaW55JTJDR0lTJTJDQ2Vuc3VzJTIwRGF0YSUyQ0Rhc2hib2FyZA==" data-listing-date-sort="1715400000000" data-listing-file-modified-sort="1756648967797" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1418">
+<div class="quarto-post image-right" data-index="5" data-categories="UiUyQ1NoaW55JTJDR0lTJTJDQ2Vuc3VzJTIwRGF0YSUyQ0Rhc2hib2FyZA==" data-listing-date-sort="1715407200000" data-listing-file-modified-sort="1757991360661" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1418">
 <div class="thumbnail"><a href="./posts/uscensus-dashboard/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/uscensus-dashboard/uscensus_dashboard.png" class="thumbnail-image">
@@ -689,7 +691,7 @@ Pukar Bhandari
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="UiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1672722000000" data-listing-file-modified-sort="1756648890969" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3047">
+<div class="quarto-post image-right" data-index="6" data-categories="UiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1672729200000" data-listing-file-modified-sort="1757991360087" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3047">
 <div class="thumbnail"><a href="./posts/nepal-population-density/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/nepal-population-density/nepal_population_density.png" class="thumbnail-image">
@@ -793,13 +795,14 @@ Pukar Bhandari
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

@@ -9,8 +9,8 @@
 <link>https://ar-puuk.github.io/projects.html</link>
 <atom:link href="https://ar-puuk.github.io/projects.xml" rel="self" type="application/rss+xml"/>
 <description>Pukar Bhandari is a Transportation Planner and Data Scientist working at the intersection of Transportation Modeling, Economic Impact Analysis, and Data Science.</description>
-<generator>quarto-1.7.34</generator>
-<lastBuildDate>Wed, 03 Sep 2025 04:00:00 GMT</lastBuildDate>
+<generator>quarto-1.8.24</generator>
+<lastBuildDate>Wed, 03 Sep 2025 06:00:00 GMT</lastBuildDate>
 <item>
   <title>Building an Interactive Storymap using {mapgl}</title>
   <dc:creator>Pukar Bhandari</dc:creator>
@@ -20,7 +20,7 @@
   <category>Shiny</category>
   <category>Storymap</category>
   <guid>https://ar-puuk.github.io/posts/storymap_my_journey/</guid>
-  <pubDate>Wed, 03 Sep 2025 04:00:00 GMT</pubDate>
+  <pubDate>Wed, 03 Sep 2025 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/storymap_my_journey/storymap_my_journey.png" medium="image" type="image/png" height="82" width="144"/>
 </item>
 <item>
@@ -34,7 +34,7 @@
   <category>Data Science</category>
   <category>Transportation</category>
   <guid>https://ar-puuk.github.io/posts/socioeconomic-demo/</guid>
-  <pubDate>Sat, 05 Jul 2025 04:00:00 GMT</pubDate>
+  <pubDate>Sat, 05 Jul 2025 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/socioeconomic-demo/lscog_taz.png" medium="image" type="image/png" height="112" width="144"/>
 </item>
 <item>
@@ -48,7 +48,7 @@
   <category>Census Data</category>
   <category>Dashboard</category>
   <guid>https://ar-puuk.github.io/posts/population-pyramid-explorer/</guid>
-  <pubDate>Wed, 25 Jun 2025 04:00:00 GMT</pubDate>
+  <pubDate>Wed, 25 Jun 2025 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/population-pyramid-explorer/population_pyramid_explorer.png" medium="image" type="image/png" height="74" width="144"/>
 </item>
 <item>
@@ -60,7 +60,7 @@
   <category>Utilities</category>
   <category>Windows</category>
   <guid>https://ar-puuk.github.io/posts/robocopy-gui/</guid>
-  <pubDate>Sun, 15 Jun 2025 04:00:00 GMT</pubDate>
+  <pubDate>Sun, 15 Jun 2025 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/robocopy-gui/robocopy_gui.png" medium="image" type="image/png" height="114" width="144"/>
 </item>
 <item>
@@ -73,7 +73,7 @@
   <category>GIS</category>
   <category>Data Science</category>
   <guid>https://ar-puuk.github.io/posts/overture-data-download/</guid>
-  <pubDate>Wed, 22 May 2024 04:00:00 GMT</pubDate>
+  <pubDate>Wed, 22 May 2024 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/overture-data-download/overture_data_download.png" medium="image" type="image/png" height="87" width="144"/>
 </item>
 <item>
@@ -87,7 +87,7 @@
   <category>Census Data</category>
   <category>Dashboard</category>
   <guid>https://ar-puuk.github.io/posts/uscensus-dashboard/</guid>
-  <pubDate>Sat, 11 May 2024 04:00:00 GMT</pubDate>
+  <pubDate>Sat, 11 May 2024 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/uscensus-dashboard/uscensus_dashboard.png" medium="image" type="image/png" height="73" width="144"/>
 </item>
 <item>
@@ -99,7 +99,7 @@
   <category>GIS</category>
   <category>Data Science</category>
   <guid>https://ar-puuk.github.io/posts/nepal-population-density/</guid>
-  <pubDate>Tue, 03 Jan 2023 05:00:00 GMT</pubDate>
+  <pubDate>Tue, 03 Jan 2023 07:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/nepal-population-density/nepal_population_density.png" medium="image" type="image/png" height="79" width="144"/>
 </item>
 </channel>

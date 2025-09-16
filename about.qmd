@@ -42,7 +42,8 @@ I am a Transportation Analyst with a Master’s in City & Metropolitan Planning 
 
 ## Work Experience
 
- - **Associate Transportation Planner** [| Metro Analytics | *June 2023 - Present*]{.gray}
+ - **Transportation Data Scientist** [| Wasatch Front Regional Council | *September 2025 - Present*]{.gray}
+ - **Transportation Planner/Analyst** [| Metro Analytics | *June 2023 - September 2025*]{.gray}
  - **Graduate Teaching & Research Assistant** [| University of Utah | *August 2021 - May 2023*]{.gray}
  - **GIS Data Analyst** [| Energy & Geoscience Institute | *June 2022 - August 2022*]{.gray}
  - **Associate Architect** [| Prabal Thapa Architects | *June 2020 - July 2021*]{.gray}

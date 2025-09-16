@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.24">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
 <meta name="author" content="Pukar Bhandari">
 <meta name="dcterms.date" content="2025-09-03">
 <meta name="description" content="Creating an open-source, interactive storymap with the {mapgl} R package to visualize my journey across the world.">
+
 <title>Building an Interactive Storymap using {mapgl} – Pukar Bhandari</title>
 <style>
 code{white-space: pre-wrap;}
@@ -57,6 +60,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
+
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
@@ -67,18 +71,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../assets/images/pb-logo.svg" rel="icon" type="image/svg+xml">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-758875b6e99f99f4045aba62d47737c9.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-191b91f41f93ef7a5416eeffbf8dbc93.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-758875b6e99f99f4045aba62d47737c9.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-35b6f7bb6e34d45445cd9ae5b0fd55f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-2031d948656c03281fac12d158ed8d96.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-35b6f7bb6e34d45445cd9ae5b0fd55f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-5d9d7de335577cbf8e4129f8bc8e8fa5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-0d4aeca4db8bee407495ff88f6ed4dc1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-5d9d7de335577cbf8e4129f8bc8e8fa5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-befe514a61c427729fb8eefaeeadeaad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-89f90f8125d9af3357ee07be3c8cc63e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-befe514a61c427729fb8eefaeeadeaad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <meta name="shinylive:serviceworker_dir" content="../..">
 <script src="../../site_libs/quarto-contrib/shinylive-0.9.1/shinylive/load-shinylive-sw.js" type="module"></script>
 <script src="../../site_libs/quarto-contrib/shinylive-0.9.1/shinylive/run-python-blocks.js" type="module"></script>
@@ -87,7 +92,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
-<link href="../../site_libs/quarto-contrib/academicons-1.9.4/size.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/quarto-contrib/academicons-1.9.4/size.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -113,7 +119,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><!-- Optimized Font Preloading --><!-- Body text font (Poppins Regular) --><link rel="preload" href="../../assets/fonts/Poppins-Regular.woff2" as="font" type="font/woff2" crossorigin="">
+}</script>
+<!-- Optimized Font Preloading -->
+
+<!-- Body text font (Poppins Regular) -->
+<link rel="preload" href="../../assets/fonts/Poppins-Regular.woff2" as="font" type="font/woff2" crossorigin="">
+
+
 <link rel="stylesheet" href="../../assets/css/index.css">
 <meta property="og:title" content="Building an Interactive Storymap using {mapgl} – Pukar Bhandari">
 <meta property="og:description" content="Creating an open-source, interactive storymap with the {mapgl} R package to visualize my journey across the world.">
@@ -130,6 +142,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="twitter:image-height" content="1258">
 <meta name="twitter:image-width" content="2209">
 </head>
+
 <body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
@@ -304,10 +317,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../assets/images/pb-logo.svg" alt="" class="navbar-logo"></a>
+    <img src="../../assets/images/pb-logo.svg" alt="" class="navbar-logo light-content">
+    <img src="../../assets/images/pb-logo.svg" alt="" class="navbar-logo dark-content">
+    </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Pukar Bhandari</span>
     </a>
@@ -318,7 +335,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item">
+  <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
@@ -338,8 +355,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-socials" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Socials</span>
     </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-socials">
-<li>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-socials">    
+        <li>
     <a class="dropdown-item" href="https://github.com/ar-puuk/" target="_blank"><i class="bi bi-github" role="img">
 </i> 
  <span class="dropdown-text">Github</span></a>
@@ -364,19 +381,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">E-mail</span></a>
   </li>  
     </ul>
-</li>
+  </li>
   <li class="nav-item compact">
     <a class="nav-link" href="../../projects.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-</div> <!-- /navcollapse -->
+          </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
-    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <div class="quarto-title-block"><div><h1 class="title">Building an Interactive Storymap using {mapgl}</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
             <p class="subtitle lead">A Visual Journey Through My Life.</p>
@@ -418,46 +439,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
    
   <ul>
-<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
   <li><a href="#why-mapgl-for-storymaps" id="toc-why-mapgl-for-storymaps" class="nav-link" data-scroll-target="#why-mapgl-for-storymaps"><span class="header-section-number">2</span> Why {mapgl} for Storymaps?</a></li>
   <li><a href="#interactive-storymap-demo" id="toc-interactive-storymap-demo" class="nav-link" data-scroll-target="#interactive-storymap-demo"><span class="header-section-number">3</span> Interactive Storymap Demo</a></li>
   <li><a href="#source-code" id="toc-source-code" class="nav-link" data-scroll-target="#source-code"><span class="header-section-number">4</span> Source Code</a></li>
-  <li>
-<a href="#understanding-the-app-structure" id="toc-understanding-the-app-structure" class="nav-link" data-scroll-target="#understanding-the-app-structure"><span class="header-section-number">5</span> Understanding the App Structure</a>
+  <li><a href="#understanding-the-app-structure" id="toc-understanding-the-app-structure" class="nav-link" data-scroll-target="#understanding-the-app-structure"><span class="header-section-number">5</span> Understanding the App Structure</a>
   <ul class="collapse">
-<li><a href="#setting-up-the-user-interface" id="toc-setting-up-the-user-interface" class="nav-link" data-scroll-target="#setting-up-the-user-interface">Setting Up the User Interface</a></li>
+  <li><a href="#setting-up-the-user-interface" id="toc-setting-up-the-user-interface" class="nav-link" data-scroll-target="#setting-up-the-user-interface">Setting Up the User Interface</a></li>
   <li><a href="#configuring-the-map" id="toc-configuring-the-map" class="nav-link" data-scroll-target="#configuring-the-map">Configuring the Map</a></li>
   <li><a href="#implementing-section-behaviors" id="toc-implementing-section-behaviors" class="nav-link" data-scroll-target="#implementing-section-behaviors">Implementing Section Behaviors</a></li>
-  </ul>
-</li>
+  </ul></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">6</span> Conclusion</a></li>
   <li><a href="#additional-resources" id="toc-additional-resources" class="nav-link" data-scroll-target="#additional-resources"><span class="header-section-number">7</span> Additional Resources</a></li>
-  </ul><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="introduction" class="level2" data-number="1"><h2 data-number="1" class="anchored" data-anchor-id="introduction">
-<span class="header-section-number">1</span> Introduction</h2>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+
+<section id="introduction" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
 <p>Interactive storymaps have become an increasingly popular tool for data visualization and storytelling, particularly in fields like urban planning, transportation analysis, and geographic data science. They allow us to combine spatial data with narrative elements, creating compelling visual stories that engage audiences while conveying complex information effectively.</p>
 <p>In this post, I’ll walk you through creating an interactive storymap using the {mapgl} R package—a powerful tool that leverages MapLibre GL JS to create stunning, performant web maps. This particular storymap traces my personal journey across different locations where I’ve lived, studied, and worked, from Nepal to the United States.</p>
-</section><section id="why-mapgl-for-storymaps" class="level2" data-number="2"><h2 data-number="2" class="anchored" data-anchor-id="why-mapgl-for-storymaps">
-<span class="header-section-number">2</span> Why {mapgl} for Storymaps?</h2>
+</section>
+<section id="why-mapgl-for-storymaps" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="why-mapgl-for-storymaps"><span class="header-section-number">2</span> Why {mapgl} for Storymaps?</h2>
 <p>The {mapgl} package offers several advantages for transportation planners and data analysts:</p>
 <ul>
-<li>
-<strong>Performance</strong>: Built on MapLibre GL JS, it handles large datasets and complex visualizations smoothly</li>
-<li>
-<strong>Interactivity</strong>: Native support for user interactions, animations, and dynamic content</li>
-<li>
-<strong>Customization</strong>: Extensive styling options and the ability to use custom map tiles</li>
-<li>
-<strong>Integration</strong>: Seamless integration with Shiny for reactive web applications</li>
-<li>
-<strong>Open Source</strong>: No API keys required when using open map styles</li>
-</ul></section><section id="interactive-storymap-demo" class="level2" data-number="3"><h2 data-number="3" class="anchored" data-anchor-id="interactive-storymap-demo">
-<span class="header-section-number">3</span> Interactive Storymap Demo</h2>
+<li><strong>Performance</strong>: Built on MapLibre GL JS, it handles large datasets and complex visualizations smoothly</li>
+<li><strong>Interactivity</strong>: Native support for user interactions, animations, and dynamic content</li>
+<li><strong>Customization</strong>: Extensive styling options and the ability to use custom map tiles</li>
+<li><strong>Integration</strong>: Seamless integration with Shiny for reactive web applications</li>
+<li><strong>Open Source</strong>: No API keys required when using open map styles</li>
+</ul>
+</section>
+<section id="interactive-storymap-demo" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="interactive-storymap-demo"><span class="header-section-number">3</span> Interactive Storymap Demo</h2>
 <p>Below is the complete interactive storymap. You can scroll through the different sections to see how the map smoothly transitions between locations, each representing a significant milestone in my journey.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -473,7 +499,7 @@ Note
 <p>Once <code>mapgl</code> is updated on <code>repo.r-wasm.org</code>, this storymap will work as expected. Thank you for your understanding!</p>
 </div>
 </div>
-<pre id="annotated-cell-1" class="shinylive-r code-annotation-code" data-engine="r"><code><a href="https://shiny.posit.co/">#| '!! shinylive warning !!': |
+<pre id="annotated-cell-1" class="shinylive-r code-annotation-code" data-engine="r"><code>#| '!! shinylive warning !!': |
 #|   shinylive does not work in self-contained HTML documents.
 #|   Please set `embed-resources: false` in your metadata.
 #| standalone: true
@@ -590,16 +616,17 @@ server &lt;- function(input, output, session) {
   })
 }
 
-shiny::shinyApp(ui, server)</a></code></pre>
-</section><section id="source-code" class="level2" data-number="4"><h2 data-number="4" class="anchored" data-anchor-id="source-code">
-<span class="header-section-number">4</span> Source Code</h2>
+shiny::shinyApp(ui, server)</code></pre>
+</section>
+<section id="source-code" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="source-code"><span class="header-section-number">4</span> Source Code</h2>
 <p>The storymap application follows a typical Shiny structure with some specialized {mapgl} components. Following is the source code for this dashboard (Please click on the numbers on the far right for additional explanation of syntax and mechanics):</p>
 <div class="cell">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>app.R</strong></pre>
 </div>
-<div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1">1</button><span id="annotated-cell-2-1" class="code-annotation-target"><a href="#annotated-cell-2-1"></a><span class="fu">library</span>(shiny)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1">1</button><span id="annotated-cell-2-1" class="code-annotation-target"><a href="#annotated-cell-2-1"></a><span class="fu">library</span>(shiny)</span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2">2</button><span id="annotated-cell-2-2" class="code-annotation-target"><a href="#annotated-cell-2-2"></a><span class="fu">library</span>(mapgl)</span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3"></a></span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="3">3</button><span id="annotated-cell-2-4" class="code-annotation-target"><a href="#annotated-cell-2-4"></a>ui <span class="ot">&lt;-</span> shiny<span class="sc">::</span><span class="fu">fluidPage</span>(</span>
@@ -706,7 +733,7 @@ shiny::shinyApp(ui, server)</a></code></pre>
 <span id="annotated-cell-2-105"><a href="#annotated-cell-2-105"></a>  })</span>
 <span id="annotated-cell-2-106"><a href="#annotated-cell-2-106"></a>}</span>
 <span id="annotated-cell-2-107"><a href="#annotated-cell-2-107"></a></span>
-<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="11">11</button><span id="annotated-cell-2-108" class="code-annotation-target"><a href="#annotated-cell-2-108"></a>shiny<span class="sc">::</span><span class="fu">shinyApp</span>(ui, server)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="11">11</button><span id="annotated-cell-2-108" class="code-annotation-target"><a href="#annotated-cell-2-108"></a>shiny<span class="sc">::</span><span class="fu">shinyApp</span>(ui, server)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
@@ -716,7 +743,8 @@ shiny::shinyApp(ui, server)</a></code></pre>
 </dd>
 <dt data-target-cell="annotated-cell-2" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-2" data-code-lines="2" data-code-annotation="2">Load {mapgl} package for interactive mapping and storymap functionality<br></span>
+<span data-code-cell="annotated-cell-2" data-code-lines="2" data-code-annotation="2">Load {mapgl} package for interactive mapping and storymap functionality<br>
+</span>
 </dd>
 <dt data-target-cell="annotated-cell-2" data-target-annotation="3">3</dt>
 <dd>
@@ -757,11 +785,13 @@ shiny::shinyApp(ui, server)</a></code></pre>
 </dl>
 </div>
 </div>
-</section><section id="understanding-the-app-structure" class="level2" data-number="5"><h2 data-number="5" class="anchored" data-anchor-id="understanding-the-app-structure">
-<span class="header-section-number">5</span> Understanding the App Structure</h2>
-<section id="setting-up-the-user-interface" class="level3"><h3 class="anchored" data-anchor-id="setting-up-the-user-interface">Setting Up the User Interface</h3>
+</section>
+<section id="understanding-the-app-structure" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="understanding-the-app-structure"><span class="header-section-number">5</span> Understanding the App Structure</h2>
+<section id="setting-up-the-user-interface" class="level3">
+<h3 class="anchored" data-anchor-id="setting-up-the-user-interface">Setting Up the User Interface</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-1" class="code-annotation-target"><a href="#annotated-cell-3-1"></a><span class="fu">library</span>(shiny)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-1" class="code-annotation-target"><a href="#annotated-cell-3-1"></a><span class="fu">library</span>(shiny)</span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2">2</button><span id="annotated-cell-3-2" class="code-annotation-target"><a href="#annotated-cell-3-2"></a><span class="fu">library</span>(mapgl)</span>
 <span id="annotated-cell-3-3"><a href="#annotated-cell-3-3"></a></span>
 <span id="annotated-cell-3-4"><a href="#annotated-cell-3-4"></a>ui <span class="ot">&lt;-</span> shiny<span class="sc">::</span><span class="fu">fluidPage</span>(</span>
@@ -785,7 +815,7 @@ shiny::shinyApp(ui, server)</a></code></pre>
 <span id="annotated-cell-3-22"><a href="#annotated-cell-3-22"></a>    ),</span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="7">7</button><span id="annotated-cell-3-23" class="code-annotation-target"><a href="#annotated-cell-3-23"></a>    <span class="at">map_type =</span> <span class="st">"maplibre"</span></span>
 <span id="annotated-cell-3-24"><a href="#annotated-cell-3-24"></a>  )</span>
-<span id="annotated-cell-3-25"><a href="#annotated-cell-3-25"></a>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-3-25"><a href="#annotated-cell-3-25"></a>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
@@ -819,9 +849,11 @@ shiny::shinyApp(ui, server)</a></code></pre>
 </dl>
 </div>
 </div>
-</section><section id="configuring-the-map" class="level3"><h3 class="anchored" data-anchor-id="configuring-the-map">Configuring the Map</h3>
+</section>
+<section id="configuring-the-map" class="level3">
+<h3 class="anchored" data-anchor-id="configuring-the-map">Configuring the Map</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-2" class="code-annotation-target"><a href="#annotated-cell-4-2"></a>  output<span class="sc">$</span>map <span class="ot">&lt;-</span> mapgl<span class="sc">::</span><span class="fu">renderMaplibre</span>({</span>
 <span id="annotated-cell-4-3"><a href="#annotated-cell-4-3"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre</span>(</span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2">2</button><span id="annotated-cell-4-4" class="code-annotation-target"><a href="#annotated-cell-4-4"></a>      <span class="at">style =</span> <span class="st">"https://tiles.openfreemap.org/styles/liberty"</span>,</span>
@@ -834,7 +866,7 @@ shiny::shinyApp(ui, server)</a></code></pre>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="8">8</button><span id="annotated-cell-4-11" class="code-annotation-target"><a href="#annotated-cell-4-11"></a>      mapgl<span class="sc">::</span><span class="fu">add_navigation_control</span>(<span class="at">visualize_pitch =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="9">9</button><span id="annotated-cell-4-12" class="code-annotation-target"><a href="#annotated-cell-4-12"></a>      mapgl<span class="sc">::</span><span class="fu">add_globe_minimap</span>(<span class="at">position =</span> <span class="st">"bottom-left"</span>)</span>
 <span id="annotated-cell-4-13"><a href="#annotated-cell-4-13"></a>  })</span>
-<span id="annotated-cell-4-14"><a href="#annotated-cell-4-14"></a>}</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-4-14"><a href="#annotated-cell-4-14"></a>}</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
@@ -876,9 +908,11 @@ shiny::shinyApp(ui, server)</a></code></pre>
 </dl>
 </div>
 </div>
-</section><section id="implementing-section-behaviors" class="level3"><h3 class="anchored" data-anchor-id="implementing-section-behaviors">Implementing Section Behaviors</h3>
+</section>
+<section id="implementing-section-behaviors" class="level3">
+<h3 class="anchored" data-anchor-id="implementing-section-behaviors">Implementing Section Behaviors</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1"></a><span class="co"># Example section handler</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1"></a><span class="co"># Example section handler</span></span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1">1</button><span id="annotated-cell-5-2" class="code-annotation-target"><a href="#annotated-cell-5-2"></a>mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"childhood"</span>, {</span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2">2</button><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3"></a>  mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3">3</button><span id="annotated-cell-5-4" class="code-annotation-target"><a href="#annotated-cell-5-4"></a>    mapgl<span class="sc">::</span><span class="fu">fly_to</span>(</span>
@@ -887,7 +921,7 @@ shiny::shinyApp(ui, server)</a></code></pre>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="6">6</button><span id="annotated-cell-5-7" class="code-annotation-target"><a href="#annotated-cell-5-7"></a>      <span class="at">pitch =</span> <span class="dv">49</span>,</span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="7">7</button><span id="annotated-cell-5-8" class="code-annotation-target"><a href="#annotated-cell-5-8"></a>      <span class="at">bearing =</span> <span class="fl">12.8</span></span>
 <span id="annotated-cell-5-9"><a href="#annotated-cell-5-9"></a>    )</span>
-<span id="annotated-cell-5-10"><a href="#annotated-cell-5-10"></a>})</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="annotated-cell-5-10"><a href="#annotated-cell-5-10"></a>})</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
@@ -921,12 +955,15 @@ shiny::shinyApp(ui, server)</a></code></pre>
 </dl>
 </div>
 </div>
-</section></section><section id="conclusion" class="level2" data-number="6"><h2 data-number="6" class="anchored" data-anchor-id="conclusion">
-<span class="header-section-number">6</span> Conclusion</h2>
+</section>
+</section>
+<section id="conclusion" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">6</span> Conclusion</h2>
 <p>The {mapgl} package provides a powerful platform for creating engaging, interactive storymaps that can effectively communicate spatial narratives. Whether you’re documenting personal journeys, presenting planning scenarios, or analyzing transportation patterns, this approach offers the flexibility and performance needed for professional applications.</p>
 <p>The combination of R’s data processing capabilities with modern web mapping technology creates opportunities for innovative visualization approaches that can enhance public engagement and decision-making processes in transportation planning and urban analytics.</p>
-</section><section id="additional-resources" class="level2" data-number="7"><h2 data-number="7" class="anchored" data-anchor-id="additional-resources">
-<span class="header-section-number">7</span> Additional Resources</h2>
+</section>
+<section id="additional-resources" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="additional-resources"><span class="header-section-number">7</span> Additional Resources</h2>
 <ul>
 <li><a href="https://walker-data.com/mapgl/">{mapgl} package documentation</a></li>
 <li><a href="https://maplibre.org/maplibre-gl-js-docs/">MapLibre GL JS documentation</a></li>
@@ -939,7 +976,9 @@ shiny::shinyApp(ui, server)</a></code></pre>
 
 <!-- -->
 
-</section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{bhandari2025,
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{bhandari2025,
   author = {Bhandari, Pukar},
   title = {Building an {Interactive} {Storymap} Using \{Mapgl\}},
   date = {2025-09-03},
@@ -949,7 +988,8 @@ shiny::shinyApp(ui, server)</a></code></pre>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-bhandari2025" class="csl-entry quarto-appendix-citeas" role="listitem">
 Bhandari, Pukar. 2025. <span>“Building an Interactive Storymap Using
 {Mapgl}.”</span> September 3, 2025. <a href="https://ar-puuk.github.io/posts/storymap_my_journey/">https://ar-puuk.github.io/posts/storymap_my_journey/</a>.
-</div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -1013,13 +1053,14 @@ Bhandari, Pukar. 2025. <span>“Building an Interactive Storymap Using
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -1453,7 +1494,7 @@ Bhandari, Pukar. 2025. <span>“Building an Interactive Storymap Using
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Building an Interactive Storymap using {mapgl}"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "A Visual Journey Through My Life."</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> |</span></span>
@@ -1648,10 +1689,11 @@ Bhandari, Pukar. 2025. <span>“Building an Interactive Storymap Using
 <span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>*This post demonstrates practical applications of open-source geospatial tools for transportation planning and data visualization. All code is available for adaptation to your own projects and use cases.*</span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
+<footer class="footer">
+  <div class="nav-footer">
     <div class="nav-footer-left">
 <p>2025 Pukar Bhandari ∙ Made with <a href="https://www.r-project.org/about.html" target="_blank"><i class="fa-brands fa-r-project" title="R Project" aria-label="r-project"></i></a>, <a href="https://quarto.org/" target="_blank"><img src="https://quarto.org/favicon.png" width="14"></a>, <a href="https://git-scm.com/" target="_blank"><i class="fa-brands fa-git-alt" title="Git alt logo" aria-label="git-alt"></i></a> and <a href="https://github.com/" target="_blank"><i class="fa-brands fa-github" title="GitHub octocat logo" aria-label="github"></i></a></p>
 </div>   
@@ -1660,7 +1702,7 @@ Bhandari, Pukar. 2025. <span>“Building an Interactive Storymap Using
 </div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
-<li class="nav-item">
+    <li class="nav-item">
     <a class="nav-link" href="../../contact.html">
 <p>Contact</p>
 </a>
@@ -1671,9 +1713,11 @@ Bhandari, Pukar. 2025. <span>“Building an Interactive Storymap Using
 </a>
   </li>  
 </ul>
-</div>
+    </div>
   </div>
 </footer>
+
+
 
 
 </body></html>

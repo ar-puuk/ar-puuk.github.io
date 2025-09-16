@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -33,18 +33,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="/./assets/images/pb-logo.svg" rel="icon" type="image/svg+xml">
 <script src="/site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="/site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="/site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="/site_libs/quarto-html/popper.min.js"></script>
 <script src="/site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="/site_libs/quarto-html/anchor.min.js"></script>
 <link href="/site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="/site_libs/quarto-html/quarto-syntax-highlighting-758875b6e99f99f4045aba62d47737c9.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="/site_libs/quarto-html/quarto-syntax-highlighting-dark-191b91f41f93ef7a5416eeffbf8dbc93.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="/site_libs/quarto-html/quarto-syntax-highlighting-758875b6e99f99f4045aba62d47737c9.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="/site_libs/quarto-html/quarto-syntax-highlighting-35b6f7bb6e34d45445cd9ae5b0fd55f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="/site_libs/quarto-html/quarto-syntax-highlighting-dark-2031d948656c03281fac12d158ed8d96.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="/site_libs/quarto-html/quarto-syntax-highlighting-35b6f7bb6e34d45445cd9ae5b0fd55f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="/site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="/site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="/site_libs/bootstrap/bootstrap-5d9d7de335577cbf8e4129f8bc8e8fa5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="/site_libs/bootstrap/bootstrap-dark-0d4aeca4db8bee407495ff88f6ed4dc1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="/site_libs/bootstrap/bootstrap-5d9d7de335577cbf8e4129f8bc8e8fa5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="/site_libs/bootstrap/bootstrap-befe514a61c427729fb8eefaeeadeaad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="/site_libs/bootstrap/bootstrap-dark-89f90f8125d9af3357ee07be3c8cc63e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="/site_libs/bootstrap/bootstrap-befe514a61c427729fb8eefaeeadeaad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script src="/site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="/site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <link href="/site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
@@ -276,7 +277,8 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="/index.html" class="navbar-brand navbar-brand-logo">
-    <img src="/assets/images/pb-logo.svg" alt="" class="navbar-logo">
+    <img src="/assets/images/pb-logo.svg" alt="" class="navbar-logo light-content">
+    <img src="/assets/images/pb-logo.svg" alt="" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="/index.html">
     <span class="navbar-title">Pukar Bhandari</span>
@@ -374,7 +376,7 @@ ul.task-list li input[type="checkbox"] {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Welcome to the Transportation Data Science Challenge! 🚦
+<span class="screen-reader-only">Tip</span>Welcome to the Transportation Data Science Challenge! 🚦
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -745,13 +747,14 @@ window._ojs.runtime.interpretFromScriptTags();
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

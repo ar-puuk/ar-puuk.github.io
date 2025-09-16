@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.34">
+<meta name="generator" content="quarto-1.8.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,18 +71,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../assets/images/pb-logo.svg" rel="icon" type="image/svg+xml">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-758875b6e99f99f4045aba62d47737c9.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-191b91f41f93ef7a5416eeffbf8dbc93.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-758875b6e99f99f4045aba62d47737c9.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-35b6f7bb6e34d45445cd9ae5b0fd55f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-2031d948656c03281fac12d158ed8d96.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-35b6f7bb6e34d45445cd9ae5b0fd55f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-5d9d7de335577cbf8e4129f8bc8e8fa5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-0d4aeca4db8bee407495ff88f6ed4dc1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-5d9d7de335577cbf8e4129f8bc8e8fa5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-befe514a61c427729fb8eefaeeadeaad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-89f90f8125d9af3357ee07be3c8cc63e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-befe514a61c427729fb8eefaeeadeaad.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
@@ -316,7 +317,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../assets/images/pb-logo.svg" alt="" class="navbar-logo">
+    <img src="../../assets/images/pb-logo.svg" alt="" class="navbar-logo light-content">
+    <img src="../../assets/images/pb-logo.svg" alt="" class="navbar-logo dark-content">
     </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Pukar Bhandari</span>
@@ -507,7 +509,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="key-dependencies-and-setup" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="key-dependencies-and-setup"><span class="header-section-number">4</span> Key Dependencies and Setup</h2>
 <p>The application leverages several powerful R packages for data processing, spatial analysis, and visualization:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom function to load packages, installing them first if not already installed</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom function to load packages, installing them first if not already installed</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>load_pkg <span class="ot">&lt;-</span> <span class="cf">function</span>(pkg) {</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(pkg, <span class="at">character.only =</span> <span class="cn">TRUE</span>)) {</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(pkg)</span>
@@ -530,7 +532,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">load_pkg</span>(<span class="st">"tidycensus"</span>)</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># UI framework</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">load_pkg</span>(<span class="st">"shiny"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">load_pkg</span>(<span class="st">"shiny"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The <code>load_pkg()</code> function ensures packages are installed and loaded, making deployment more robust across different environments.</p>
 </section>
 <section id="application-architecture" class="level2" data-number="5">
@@ -538,14 +540,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="user-interface-design" class="level3">
 <h3 class="anchored" data-anchor-id="user-interface-design">User Interface Design</h3>
 <p>The UI implements {mapgl}’s story map concept, creating a scrollable narrative experience:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mapgl<span class="sc">::</span><span class="fu">story_maplibre</span>(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mapgl<span class="sc">::</span><span class="fu">story_maplibre</span>(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">map_id =</span> <span class="st">"map"</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">font_family =</span> <span class="st">"Poppins"</span>,</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">sections =</span> <span class="fu">list</span>(</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"intro"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(...),</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"state_detail"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(...)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This approach provides intuitive navigation between the overview (state selection) and detailed analysis (county demographics).</p>
 </section>
 <section id="reactive-data-architecture" class="level3">
@@ -561,9 +563,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="geographic-data-preparation" class="level3">
 <h3 class="anchored" data-anchor-id="geographic-data-preparation">Geographic Data Preparation</h3>
 <p>The application processes spatial data through several key transformations:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>states_sf <span class="ot">&lt;-</span> tigris<span class="sc">::</span><span class="fu">states</span>(<span class="at">cb =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>states_sf <span class="ot">&lt;-</span> tigris<span class="sc">::</span><span class="fu">states</span>(<span class="at">cb =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">3857</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_zm</span>(<span class="at">drop =</span> <span class="cn">TRUE</span>, <span class="at">what =</span> <span class="st">"ZM"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_zm</span>(<span class="at">drop =</span> <span class="cn">TRUE</span>, <span class="at">what =</span> <span class="st">"ZM"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Using cartographic boundary files (<code>cb = TRUE</code>) provides simplified geometries that render faster while maintaining visual accuracy at the national scale.</p>
 </section>
 <section id="census-data-integration" class="level3">
@@ -578,13 +580,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="data-transformation-for-visualization" class="level3">
 <h3 class="anchored" data-anchor-id="data-transformation-for-visualization">Data Transformation for Visualization</h3>
 <p>Population pyramid data requires specific transformations:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> <span class="fu">ifelse</span>(SEX <span class="sc">==</span> <span class="st">"Male"</span>, <span class="sc">-</span>value, value),</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">age_min =</span> <span class="fu">ifelse</span>(</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    stringr<span class="sc">::</span><span class="fu">str_detect</span>(AGEGROUP, <span class="st">"under"</span>), <span class="dv">0</span>,</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>(stringr<span class="sc">::</span><span class="fu">str_extract</span>(AGEGROUP, <span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>))</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Male populations receive negative values for the traditional pyramid layout, and age groups are parsed to enable proper ordering.</p>
 </section>
 </section>
@@ -593,13 +595,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="map-initialization-and-styling" class="level3">
 <h3 class="anchored" data-anchor-id="map-initialization-and-styling">Map Initialization and Styling</h3>
 <p>The base map uses Carto’s Voyager style for clean, readable cartography:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mapgl<span class="sc">::</span><span class="fu">maplibre</span>(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mapgl<span class="sc">::</span><span class="fu">maplibre</span>(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">carto_style</span>(<span class="st">"voyager"</span>),</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">center =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">98.5</span>, <span class="fl">39.5</span>),</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">zoom =</span> <span class="dv">3</span>,</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">scrollZoom =</span> <span class="cn">FALSE</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>mapgl<span class="sc">::</span><span class="fu">set_projection</span>(<span class="at">projection =</span> <span class="st">"globe"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>mapgl<span class="sc">::</span><span class="fu">set_projection</span>(<span class="at">projection =</span> <span class="st">"globe"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The globe projection adds visual appeal while the disabled scroll zoom prevents navigation conflicts with the story map interface.</p>
 </section>
 <section id="dynamic-layer-management" class="level3">
@@ -615,13 +617,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="smooth-transitions" class="level3">
 <h3 class="anchored" data-anchor-id="smooth-transitions">Smooth Transitions</h3>
 <p>Section-based navigation triggers smooth map animations:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mapgl<span class="sc">::</span><span class="fu">fly_to</span>(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mapgl<span class="sc">::</span><span class="fu">fly_to</span>(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">center =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">98.5</span>, <span class="fl">39.5</span>),</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">zoom =</span> <span class="dv">3</span>,</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">bearing =</span> <span class="dv">0</span>,</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">pitch =</span> <span class="dv">0</span>,</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">duration =</span> <span class="dv">1500</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>These transitions maintain user orientation while providing engaging visual feedback.</p>
 </section>
 </section>
@@ -639,7 +641,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="age-group-processing" class="level3">
 <h3 class="anchored" data-anchor-id="age-group-processing">Age Group Processing</h3>
 <p>Age categories from the Census API require standardization for consistent display:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_y_discrete</span>(<span class="at">labels =</span> <span class="sc">~</span> stringr<span class="sc">::</span><span class="fu">str_remove_all</span>(.x, <span class="st">"Age</span><span class="sc">\\</span><span class="st">s|</span><span class="sc">\\</span><span class="st">syears"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_y_discrete</span>(<span class="at">labels =</span> <span class="sc">~</span> stringr<span class="sc">::</span><span class="fu">str_remove_all</span>(.x, <span class="st">"Age</span><span class="sc">\\</span><span class="st">s|</span><span class="sc">\\</span><span class="st">syears"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This removes redundant text while preserving essential age range information.</p>
 </section>
 <section id="dynamic-scaling" class="level3">
@@ -769,13 +771,14 @@ Explorer.”</span> June 25, 2025. <a href="https://ar-puuk.github.io/posts/popu
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -1168,7 +1171,7 @@ Explorer.”</span> June 25, 2025. <a href="https://ar-puuk.github.io/posts/popu
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb8" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Building an Interactive Population Pyramid Explorer"</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Exploring demographic patterns across US counties through interactive visualization using {R-Shiny} and {mapgl}"</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> |</span></span>
@@ -1411,7 +1414,7 @@ Explorer.”</span> June 25, 2025. <a href="https://ar-puuk.github.io/posts/popu
 <span id="cb8-241"><a href="#cb8-241" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-242"><a href="#cb8-242" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
 <span id="cb8-243"><a href="#cb8-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-244"><a href="#cb8-244" aria-hidden="true" tabindex="-1"></a>*Want to contribute or suggest improvements? Visit the project repository at:* <span class="ot">&lt;https://github.com/ar-puuk/population-pyramid-explorer&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb8-244"><a href="#cb8-244" aria-hidden="true" tabindex="-1"></a>*Want to contribute or suggest improvements? Visit the project repository at:* <span class="ot">&lt;https://github.com/ar-puuk/population-pyramid-explorer&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
