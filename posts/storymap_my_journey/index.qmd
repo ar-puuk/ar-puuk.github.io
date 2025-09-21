@@ -47,7 +47,8 @@ Once `mapgl` is updated on `repo.r-wasm.org`, this storymap will work as expecte
 #| viewerHeight: 600
 
 # Install mapgl from Kyle Walker's r-universe
-# webr::install("mapgl", repos = "https://walkerke.r-universe.dev/")
+webr::install("mapgl", repos = c("https://walkerke.r-universe.dev/", "https://repo.r-wasm.org"))
+webr::install("codetools", repos = "https://repo.r-wasm.org")
 
 ## file: app.R
 {{< include app.R >}}
