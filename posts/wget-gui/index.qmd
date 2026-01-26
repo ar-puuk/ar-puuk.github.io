@@ -1,0 +1,58 @@
+---
+title: "WgetGUI Ultimate: A Fluent Command Generator"
+description: "A modern, Windows 11-inspired web interface for building complex GNU Wget commands"
+author:
+  - name: Pukar Bhandari
+    email: pukar.bhandari@outlook.com
+image: "wget_gui.png"
+date: "2026-01-25"
+categories: [Tools, Utilities, Web Development]
+prefer-html: true
+---
+
+## Wget Command Generator
+
+Following the success of my [RobocopyGUI](https://ar-puuk.github.io/robocopy-gui/) tool, I’ve developed **WgetGUI Ultimate**. This interactive web-based interface is designed to demystify the powerful but complex GNU Wget utility, allowing users to build sophisticated download strings through a clean, Fluent-style UI.
+
+Instead of wrestling with dozens of command-line switches like `-r`, `-np`, or `--limit-rate`, you can simply toggle switches and fill in fields to see your command built in real-time.
+
+<iframe src="https://ar-puuk.github.io/wget-gui/" 
+        width="100%" 
+        height="1000px" 
+        style="border: 1px solid #ddd; border-radius: 8px;"
+        title="WgetGUI Ultimate Tool">
+</iframe>
+
+<div style="text-align: center; margin-top: 10px;">
+  <a href="https://ar-puuk.github.io/wget-gui/" target="_blank" class="btn btn-primary">Open in New Tab</a>
+  <a href="https://github.com/ar-puuk/wget-gui" target="_blank" class="btn btn-outline-secondary">View Source Code</a>
+</div>
+
+## Features
+
+The WgetGUI provides a comprehensive suite of options for web scraping and file retrieval:
+
+- **Quick Presets**: One-click configurations for common tasks like mirroring an entire website for offline viewing or checking for broken links (Spider mode).
+- **Recursive & Mirroring**: Easily set recursion depth, convert links for local viewing, and manage page requisites.
+- **Advanced Throttling**: Control your bandwidth usage with rate limiting and randomized wait intervals to avoid server rate-limits.
+- **Batch Queue**: Build multiple commands and export them as a single `.bat` file for Windows automation.
+- **Dark/Light Mode**: A native-feeling Windows 11 (Fluent) aesthetic that respects your system's theme preference.
+
+## Technical Details
+
+This tool is a pure client-side application built using **vanilla HTML, CSS, and JavaScript**. It uses:
+- **Fluent UI Design**: CSS variables are utilized to mimic the Windows 11 design language, providing a seamless experience for desktop users.
+- **GitHub Pages**: Hosted directly from the [source repository](https://github.com/ar-puuk/wget-gui), ensuring high availability and automatic updates.
+- **No Backend Required**: All command generation logic happens locally in your browser, ensuring your URLs and credentials remain private.
+
+## Use Cases
+
+WgetGUI is ideal for:
+- **Digital Archivists**: Creating offline mirrors of websites before they go offline.
+- **Developers**: Testing server responses and checking for broken links via the "Spider" feature.
+- **Bulk Downloaders**: Managing large lists of files by importing URL text files.
+- **Students**: Learning the syntax of GNU Wget through a visual, trial-and-error environment.
+
+------------------------------------------------------------------------
+
+*Feedback and contributions are welcome! Check out the project on GitHub:* <https://github.com/ar-puuk/wget-gui>

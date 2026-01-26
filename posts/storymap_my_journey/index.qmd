@@ -36,18 +36,12 @@ The {mapgl} package offers several advantages for transportation planners and da
 
 Below is the complete interactive storymap. You can scroll through the different sections to see how the map smoothly transitions between locations, each representing a significant milestone in my journey.
 
-::: {.callout-note}
-The `add_globe_control()` function isn't working because it's only available in `mapgl` version 0.2.2 and higher. The version on CRAN is 0.4.0, while the one on `repo.r-wasm.org` is still 0.2.1.
-
-Once `mapgl` is updated on `repo.r-wasm.org`, this storymap will work as expected. Thank you for your understanding!
-:::
-
 ```{shinylive-r}
 #| standalone: true
 #| viewerHeight: 600
 
-# Install mapgl from Kyle Walker's r-universe
-webr::install("mapgl", repos = c("https://walkerke.r-universe.dev/", "https://repo.r-wasm.org"))
+# Install mapgl from r-wasm repo
+webr::install("mapgl", repos = "https://repo.r-wasm.org")
 webr::install("codetools", repos = "https://repo.r-wasm.org")
 
 ## file: app.R
@@ -66,7 +60,7 @@ The storymap application follows a typical Shiny structure with some specialized
 ```
 
 1. Load {shiny} package for building reactive web applications
-2. Load {mapgl} package for interactive mapping and storymap functionality  
+2. Load {mapgl} package for interactive mapping and storymap functionality
 3. Define the user interface - what users see and interact with
 4. Create the main storymap interface with sidebar and map coordination
 5. Define each story section with title and descriptive content

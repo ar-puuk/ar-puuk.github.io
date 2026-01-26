@@ -1,5 +1,8 @@
 {
     "positron.reticulate.enabled": true,
     "editor.defaultFormatter": "Posit.air-vscode",
-    "notebook.defaultFormatter": "Posit.air-vscode"
+    "notebook.defaultFormatter": "Posit.air-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.defaultFoldingRangeProvider": null
 }

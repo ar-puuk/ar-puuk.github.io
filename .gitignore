@@ -6,3 +6,6 @@
 /.quarto/
 
 **/*.quarto_ipynb
+
+posts/nepal-election-geojson/data/nepal-wards.geojson
+posts/utah-bikeways/_data/UtahRoads.gdb

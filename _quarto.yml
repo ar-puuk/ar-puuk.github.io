@@ -1,6 +1,9 @@
 project:
   type: website
   output-dir: docs
+  # render:
+  #   - "*.qmd"
+  #   - "!posts/utah-bikeways/"
 
 website:
   title: "Pukar Bhandari"
@@ -70,7 +73,8 @@ website:
             text: Mastodon
             href: https://urbanists.social/@arpuuk
             target: _blank
-          - text: "{{< fa brands bluesky >}} &nbsp;Bluesky"
+          - icon: bluesky
+            text: Bluesky
             href: https://bsky.app/profile/arpuuk.bsky.social
             target: _blank
           - icon: envelope-fill
