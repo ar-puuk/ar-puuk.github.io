@@ -44,8 +44,8 @@ library(here)     # Robust project-relative paths
 post_dir <- here("posts", "nepal-election-geojson")
 
 # 2. Define paths to data folder
-wards_geojson_path    <- here::here(post_dir, "data", "nepal-wards.geojson")
-national_geojson_path <- here::here(post_dir, "data", "nepal-national.geojson")
+wards_geojson_path    <- here::here(post_dir, "data", "nepal-wards.gpkg")
+national_geojson_path <- here::here(post_dir, "data", "nepal-national.gpkg")
 
 # 3. Define output paths
 output_svg_path       <- here::here(post_dir, "output", "nepal_electoral_map.svg")
@@ -262,7 +262,7 @@ message("Dissolving geometries and removing slivers...")
 
 final_map_utm <- wards_utm |>
   group_by(constituency_id) |>
-  summarise(geometry = st_union(geometry)) |>
+  summarise(geometry = st_union(geom)) |>
   st_make_valid() |>
   # SLIVER REMOVAL: 1 meter expansion and contraction
   st_buffer(dist = 1) |>

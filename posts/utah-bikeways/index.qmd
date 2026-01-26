@@ -89,7 +89,7 @@ Municipal boundaries are used to aggregate roadway and bikeway data by city. The
 
 ```{r}
 # Define paths
-path_ut_cities <- file.path(dir_data, "UtahMunicipalBoundaries.gdb")
+path_ut_cities <- file.path(dir_data, "UtahMunicipalBoundaries.gpkg")
 
 # Download if not exists
 if (!fs::file_exists(path_ut_cities)) {
@@ -119,7 +119,7 @@ County boundaries are used to aggregate roadway and bikeway data for unincorpora
 
 ```{r}
 # Define paths
-path_ut_counties <- file.path(dir_data, "UtahCountyBoundaries.gdb")
+path_ut_counties <- file.path(dir_data, "UtahCountyBoundaries.gpkg")
 
 # Download if not exists
 if (!fs::file_exists(path_ut_counties)) {
@@ -149,7 +149,7 @@ The Utah Roads dataset contains all roadway centerlines statewide, including the
 
 ```{r}
 # Define paths
-path_ut_roads <- file.path(dir_data, "UtahRoads.gdb")
+path_ut_roads <- file.path(dir_data, "UtahRoads.gpkg")
 
 # Download if not exists
 if (!fs::file_exists(path_ut_roads)) {
@@ -179,7 +179,7 @@ The Bikeways dataset contains all existing bicycle facilities in Utah. Each segm
 
 ```{r}
 # Define paths
-path_ut_bikeways <- file.path(dir_data, "Bikeways.gdb")
+path_ut_bikeways <- file.path(dir_data, "Bikeways.gpkg")
 
 # Download if not exists
 if (!fs::file_exists(path_ut_bikeways)) {
@@ -232,7 +232,7 @@ sf_ut_municipal <- dplyr::bind_rows(
     sf::st_difference(
       sf_ut_cities |>
         sf::st_make_valid() |>
-        sf::st_union() |> 
+        sf::st_union() |>
         sf::st_make_valid()
     )
 )
@@ -256,7 +256,7 @@ sf_ut_roads <- sf_ut_roads |>
     dplyr::mutate(
         # TODO: fix thrulanes data
         dot_thrulanes = dplyr::if_else(is.na(dot_thrulanes), 1, dot_thrulanes),
-        miles = units::set_units(sf::st_length(`SHAPE`), "mile"),
+        miles = units::set_units(sf::st_length(`geom`), "mile"),
         lane_miles = units::set_units(dot_thrulanes * miles, "mile")
     )
 
@@ -372,7 +372,7 @@ bikeway_miles_by_city <- sf_ut_bikeways |>
 
     # Add mileage to each bikeway segment
     dplyr::mutate(
-      miles = units::set_units(sf::st_length(SHAPE), "mile")
+      miles = units::set_units(sf::st_length(geom), "mile")
     ) |>
 
     sf::st_join(
@@ -466,28 +466,30 @@ ojs_define(miles_data = combined_miles_by_city)
 ```{ojs}
 //| echo: false
 
-// 1. Transpose data from column-arrays to row-objects
+// 1. Transpose data
 miles = transpose(miles_data)
 
-// 2. Create Inputs
+// 2. Create Inputs (No changes needed here)
 viewof search = Inputs.text({placeholder: "Search for a city...", label: "Find City"})
 viewof minMiles = Inputs.range([0, 50], {label: "Min Bike Miles", step: 1, value: 5})
 
-// 3. Prepare data for plotting (Long format for stacked bars)
+// 3. Prepare data for plotting
 long_data = miles.flatMap(d => {
   const types = ["Paved Path", "Protected Bike Lane", "Bike Lane", "Marked Route", "Unmarked Route"];
   return types.map(t => ({
-    City: d.Name,
+    // FIX: Fallback to "Unincorporated/Unknown" if Name is null/NA
+    City: d.Name || "Unincorporated",
     Type: t,
-    Miles: d[t],
+    Miles: d[t] || 0,
     TotalBike: types.reduce((sum, type) => sum + (d[type] || 0), 0),
-    AllRoads: d["All Roads"]
+    AllRoads: d["All Roads"] || 0
   }));
 })
 
-// 4. Filter data based on inputs
+// 4. Filter data
 filtered = long_data.filter(d => {
-  const nameMatch = d.City.toLowerCase().includes(search.toLowerCase());
+  // FIX: Ensure d.City exists before calling .toLowerCase()
+  const nameMatch = d.City && d.City.toLowerCase().includes(search.toLowerCase());
   const mileMatch = d.TotalBike >= minMiles;
   return nameMatch && mileMatch;
 })
@@ -495,7 +497,7 @@ filtered = long_data.filter(d => {
 // 5. Render Plot
 Plot.plot({
   marginLeft: 140,
-  height: Math.max(400, new Set(filtered.map(d => d.City)).size * 20), // Dynamic height
+  height: Math.max(400, new Set(filtered.map(d => d.City)).size * 20),
   style: {fontSize: "12px"},
   x: {label: "Miles", grid: true},
   y: {label: null},
@@ -504,17 +506,14 @@ Plot.plot({
     legend: true
   },
   marks: [
-    // Stacked Bars for Bike Infrastructure
     Plot.barX(filtered, {
       x: "Miles",
       y: "City",
       fill: "Type",
-      sort: {y: "x", reverse: true}, // Sort cities by total length
+      sort: {y: "x", reverse: true},
       tip: true,
       title: d => `${d.City}\n${d.Type}: ${d.Miles} miles`
     }),
-    
-    // Black tick mark for Total Road Miles (Comparison)
     Plot.tickX(filtered, {
       x: "AllRoads",
       y: "City",
