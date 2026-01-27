@@ -466,92 +466,93 @@ ojs_define(miles_data = combined_miles_by_city)
 ```{ojs}
 //| echo: false
 
-// 1. Transpose data from R
+// 1. Setup Data & Metrics
 miles = transpose(miles_data)
 
-// 2. Create Inputs
-viewof search = Inputs.text({placeholder: "Search for a city...", label: "Find City"})
-viewof minMiles = Inputs.range([0, 50], {label: "Min Bike Miles", step: 1, value: 5})
-
-// 3. Prepare data for plotting
-long_data = miles.flatMap(d => {
-  const types = ["Paved Path", "Protected Bike Lane", "Bike Lane", "Marked Route", "Unmarked Route"];
+processedData = miles.map(d => {
+  const categories = ["Paved Path", "Protected Bike Lane", "Bike Lane", "Marked Route", "Unmarked Route"];
+  const totalBike = categories.reduce((sum, cat) => sum + (d[cat] || 0), 0);
+  const roadMiles = d["All Roads"] || 0;
   
-  // Calculate total bike miles for this row once to ensure consistency
-  const totalBike = types.reduce((sum, type) => sum + (d[type] || 0), 0);
-  
-  return types.map(t => ({
-    // SAFETY FIX: Handle null/NA names
-    City: d.Name || "Unincorporated", 
-    Type: t,
-    Miles: d[t] || 0,
-    TotalBike: totalBike,
-    AllRoads: d["All Roads"] || 0
-  }));
+  return {
+    ...d,
+    totalBike: totalBike,
+    // Calculate Density: Bike Miles per 100 Road Miles
+    density: roadMiles > 0 ? (totalBike / roadMiles) * 100 : 0,
+    city: d.Name || "Unincorporated"
+  };
 })
 
-// 4. Filter data
-filtered = long_data.filter(d => {
-  const city = d.City ? d.City.toLowerCase() : "";
-  const query = search.toLowerCase();
-  // Filter by name AND minimum mileage threshold
-  return city.includes(query) && d.TotalBike >= minMiles;
-})
+// 2. Interactive Inputs
+viewof metric = Inputs.radio(
+  new Map([
+    ["Total Bikeway Miles", "totalBike"],
+    ["Bikeway Density (Miles per 100 Road Miles)", "density"]
+  ]), 
+  {value: "totalBike", label: "Rank by:"}
+)
 
-// 5. Render Aesthetic Plot
+viewof topN = Inputs.range([10, 50], {label: "Show Top X Cities", step: 5, value: 20})
+
+// 3. Filter and Sort
+topData = d3.sort(processedData, (a, b) => d3.descending(a[metric], b[metric])).slice(0, topN)
+
+// 4. Render Visualization
 Plot.plot({
-  title: "Bikeway Infrastructure by Municipality",
-  subtitle: "Comparing miles of separated paths, lanes, and routes. Black markers indicate total road miles.",
-  marginLeft: 160, // Extra space for city names
-  height: Math.max(400, new Set(filtered.map(d => d.City)).size * 22), // Dynamic height based on row count
-  style: {
-    fontSize: "13px",
-    fontFamily: "system-ui, sans-serif"
+  title: "Utah's Leading Municipalities in Bicycle Infrastructure",
+  subtitle: `Top ${topN} cities ranked by ${metric === 'totalBike' ? 'total mileage' : 'miles per 100 roadway miles'}.`,
+  marginLeft: 150,
+  marginRight: 50,
+  width: 800,
+  height: topN * 25,
+  x: { 
+    grid: true, 
+    label: metric === 'totalBike' ? "Total Miles →" : "Bike Miles / 100 Road Miles →" 
   },
-  x: {
-    label: "Facility Length (Miles)",
-    grid: true,
-    nice: true
-  },
-  y: {
-    label: null,
-    // Sort y-axis (Cities) by the calculated TotalBike in descending order
-    domain: d3.sort(filtered, (a, b) => b.TotalBike - a.TotalBike).map(d => d.City)
-  },
+  y: { label: null },
   color: {
-    // Custom Palette: Highlights high-quality infra (Teal/Blue) vs shared (Red/Grey)
     domain: ["Paved Path", "Protected Bike Lane", "Bike Lane", "Marked Route", "Unmarked Route"],
-    range: ["#008080", "#4682B4", "#DAA520", "#CD5C5C", "#A9A9A9"],
+    range: ["#006d77", "#83c5be", "#e29578", "#ffddd2", "#9ca3af"], // Professional Teal/TerraCotta palette
     legend: true
   },
   marks: [
-    // Background rule for 0 baseline
-    Plot.ruleX([0]),
+    // Background Road Mile Reference (Only for Total Miles view)
+    metric === "totalBike" 
+      ? Plot.ruleY(topData, {y: "city", x1: 0, x2: "All Roads", stroke: "#e5e7eb", strokeWidth: 8, strokeLinecap: "round"})
+      : null,
     
-    // Stacked Bars
-    Plot.barX(filtered, {
-      x: "Miles",
-      y: "City",
-      fill: "Type",
-      order: "Type", // Ensures stack order matches legend
-      tip: {
-        format: {
-          x: true,
-          y: false,
-          fill: true
-        }
-      },
-      title: d => `${d.City}\n${d.Type}: ${d.Miles} miles`
-    }),
+    // Lollipop Stems
+    Plot.ruleY(topData, {y: "city", x: metric, stroke: "#374151", strokeWidth: 1}),
     
-    // Total Road Miles Indicator
-    Plot.tickX(filtered, {
-      x: "AllRoads",
-      y: "City",
-      stroke: "#222",
-      strokeWidth: 2,
-      opacity: 0.6, // Semi-transparent to not overpower the chart
-      title: d => `Total Road Network: ${d.AllRoads} miles`
+    // Stacked Segmented Lollipops (The "Candy")
+    Plot.dotX(
+      topData.flatMap(d => {
+        const cats = ["Paved Path", "Protected Bike Lane", "Bike Lane", "Marked Route", "Unmarked Route"];
+        let currentX = 0;
+        return cats.map(cat => {
+          const val = metric === "totalBike" ? d[cat] : (d[cat] / d["All Roads"]) * 100;
+          currentX += val;
+          return { city: d.city, type: cat, value: currentX, individual: val };
+        }).filter(v => v.individual > 0);
+      }), 
+      {
+        x: "value", 
+        y: "city", 
+        fill: "type", 
+        r: 6,
+        stroke: "white",
+        title: d => `${d.city}\n${d.type}: ${d.individual.toFixed(2)}`
+      }
+    ),
+    
+    // Labels for the end of the bars
+    Plot.text(topData, {
+      x: metric,
+      y: "city",
+      text: d => d[metric].toFixed(1),
+      dx: 25,
+      fontSize: 10,
+      fontWeight: "bold"
     })
   ]
 })
