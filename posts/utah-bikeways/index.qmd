@@ -466,93 +466,128 @@ ojs_define(miles_data = combined_miles_by_city)
 ```{ojs}
 //| echo: false
 
-// 1. Setup Data & Metrics
-miles = transpose(miles_data)
-
-processedData = miles.map(d => {
-  const categories = ["Paved Path", "Protected Bike Lane", "Bike Lane", "Marked Route", "Unmarked Route"];
-  const totalBike = categories.reduce((sum, cat) => sum + (d[cat] || 0), 0);
-  const roadMiles = d["All Roads"] || 0;
-  
-  return {
-    ...d,
-    totalBike: totalBike,
-    // Calculate Density: Bike Miles per 100 Road Miles
-    density: roadMiles > 0 ? (totalBike / roadMiles) * 100 : 0,
-    city: d.Name || "Unincorporated"
-  };
-})
-
-// 2. Interactive Inputs
-viewof metric = Inputs.radio(
-  new Map([
-    ["Total Bikeway Miles", "totalBike"],
-    ["Bikeway Density (Miles per 100 Road Miles)", "density"]
-  ]), 
-  {value: "totalBike", label: "Rank by:"}
+// 1. Multi-select Dropdown for Bikeway Types
+viewof bikeTypes = Inputs.select(
+  ["Paved Path", "Protected Bike Lane", "Bike Lane", "Marked Route", "Unmarked Route"],
+  {
+    value: ["Paved Path", "Protected Bike Lane"], // High-quality defaults
+    label: "Select Facility Types:",
+    multiple: true // Enables the multi-select dropdown behavior
+  }
 )
 
-viewof topN = Inputs.range([10, 50], {label: "Show Top X Cities", step: 5, value: 20})
+// 2. City Search with robust error handling
+viewof searchCity = Inputs.text({placeholder: "Search City (e.g. Salt Lake City)", label: "Highlight City"})
 
-// 3. Filter and Sort
-topData = d3.sort(processedData, (a, b) => d3.descending(a[metric], b[metric])).slice(0, topN)
+// 3. Dynamic Data Processing
+processedData = {
+  const selectedTypes = bikeTypes;
+  const data = transpose(miles_data)
+    // Filter out rows with missing names or zero road miles
+    .filter(d => d.Name && d.Name !== "NA" && d["All Roads"] > 0)
+    .map(d => {
+      const roadMiles = d["All Roads"] || 0;
+      const selectedBikeMiles = selectedTypes.reduce((acc, type) => acc + (parseFloat(d[type]) || 0), 0);
+      const ratio = (selectedBikeMiles / roadMiles) * 100;
 
-// 4. Render Visualization
+      return {
+        ...d,
+        selectedBikeMiles,
+        ratio
+      };
+    });
+
+  const avgRatio = d3.mean(data, d => d.ratio);
+
+  return data.map(d => ({
+    ...d,
+    avgRatio,
+    maturity: d.ratio >= avgRatio ? "Above Average" : "Below Average"
+  }));
+}
+
+// 4. Highlight Logic
+highlighted = processedData.filter(d => {
+  if (!searchCity || !d.Name) return false;
+  return d.Name.toLowerCase().includes(searchCity.toLowerCase());
+})
+
+// 5. The Visualization
 Plot.plot({
-  title: "Utah's Leading Municipalities in Bicycle Infrastructure",
-  subtitle: `Top ${topN} cities ranked by ${metric === 'totalBike' ? 'total mileage' : 'miles per 100 roadway miles'}.`,
-  marginLeft: 150,
-  marginRight: 50,
-  width: 800,
-  height: topN * 25,
-  x: { 
-    grid: true, 
-    label: metric === 'totalBike' ? "Total Miles →" : "Bike Miles / 100 Road Miles →" 
+  title: "Utah Bikeway Maturity Index",
+  subtitle: "Comparison of selected bikeway miles vs. total road network size.",
+  caption: "The dashed line represents the statewide average ratio for the selected infrastructure types.",
+  width: width,
+  height: 600,
+  grid: true,
+  style: {
+    fontSize: "12px",
+    fontFamily: "sans-serif"
   },
-  y: { label: null },
+  x: { label: "Total Road Miles (Log Scale) →", type: "log", domain: [10, 5000] },
+  y: { label: "Selected Bikeway Miles (Log Scale) →", type: "log", domain: [0.1, 500] },
+  style: { backgroundColor: 'transparent' },
   color: {
-    domain: ["Paved Path", "Protected Bike Lane", "Bike Lane", "Marked Route", "Unmarked Route"],
-    range: ["#006d77", "#83c5be", "#e29578", "#ffddd2", "#9ca3af"], // Professional Teal/TerraCotta palette
+    domain: ["Above Average", "Below Average"],
+    range: ["#008080", "#CD5C5C"],
     legend: true
   },
   marks: [
-    // Background Road Mile Reference (Only for Total Miles view)
-    metric === "totalBike" 
-      ? Plot.ruleY(topData, {y: "city", x1: 0, x2: "All Roads", stroke: "#e5e7eb", strokeWidth: 8, strokeLinecap: "round"})
-      : null,
-    
-    // Lollipop Stems
-    Plot.ruleY(topData, {y: "city", x: metric, stroke: "#374151", strokeWidth: 1}),
-    
-    // Stacked Segmented Lollipops (The "Candy")
-    Plot.dotX(
-      topData.flatMap(d => {
-        const cats = ["Paved Path", "Protected Bike Lane", "Bike Lane", "Marked Route", "Unmarked Route"];
-        let currentX = 0;
-        return cats.map(cat => {
-          const val = metric === "totalBike" ? d[cat] : (d[cat] / d["All Roads"]) * 100;
-          currentX += val;
-          return { city: d.city, type: cat, value: currentX, individual: val };
-        }).filter(v => v.individual > 0);
-      }), 
-      {
-        x: "value", 
-        y: "city", 
-        fill: "type", 
-        r: 6,
-        stroke: "white",
-        title: d => `${d.city}\n${d.type}: ${d.individual.toFixed(2)}`
-      }
-    ),
-    
-    // Labels for the end of the bars
-    Plot.text(topData, {
-      x: metric,
-      y: "city",
-      text: d => d[metric].toFixed(1),
-      dx: 25,
+    // Average Maturity Benchmark Line
+    Plot.line(d3.range(10, 5000, 100), {
+      x: d => d,
+      y: d => d * (processedData[0].avgRatio / 100),
+      stroke: "#444",
+      strokeDasharray: "4,4",
+      strokeWidth: 1,
+      opacity: 0.4
+    }),
+
+    // Data Points
+    Plot.dot(processedData, {
+      x: "All Roads",
+      y: "selectedBikeMiles",
+      stroke: "maturity",
+      fill: "maturity",
+      fillOpacity: 0.3,
+      r: 4,
+      tip: true,
+      title: d => `${d.Name}\nBikeway: ${d.selectedBikeMiles.toFixed(1)} mi\nRoadway: ${d["All Roads"]} mi\nRatio: ${d.ratio.toFixed(1)}%`
+    }),
+
+    // Highlight the Selected City
+    Plot.dot(highlighted, {
+      x: "All Roads",
+      y: "selectedBikeMiles",
+      stroke: "black",
+      strokeWidth: 2,
+      r: 8
+    }),
+
+    // FIXED LABEL: Explicit dark fill with white halo
+    Plot.text(highlighted, {
+      x: "All Roads",
+      y: "selectedBikeMiles",
+      text: "Name",
+      dy: -20,
+      fontWeight: "bold",
+      fontSize: 14,
+      fill: "#333", // Explicit dark charcoal
+      stroke: "white", // White halo
+      strokeWidth: 4,  // Thick enough to be seen
+      paintOrder: "stroke"
+    }),
+
+    // Auto-label high performers
+    Plot.text(processedData, {
+      filter: d => (d.ratio > processedData[0].avgRatio * 3 && d["All Roads"] > 100) || d.selectedBikeMiles > 120,
+      x: "All Roads",
+      y: "selectedBikeMiles",
+      text: "Name",
+      dy: -10,
       fontSize: 10,
-      fontWeight: "bold"
+      fill: "#555",
+      opacity: 0.8
     })
   ]
 })
