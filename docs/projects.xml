@@ -46,7 +46,7 @@
   <category>Transportation</category>
   <guid>https://ar-puuk.github.io/posts/utah-bikeways/</guid>
   <pubDate>Sun, 16 Nov 2025 07:00:00 GMT</pubDate>
-  <media:content url="https://ar-puuk.github.io/posts/utah-bikeways/utah_bikeways.png" medium="image" type="image/png"/>
+  <media:content url="https://ar-puuk.github.io/posts/utah-bikeways/utah_bikeways.png" medium="image" type="image/png" height="127" width="144"/>
 </item>
 <item>
   <title>Building an Interactive Storymap using {mapgl}</title>
