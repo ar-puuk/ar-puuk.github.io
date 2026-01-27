@@ -9,6 +9,7 @@ author:
       - name: Wasatch Front Regional Council
         url: "https://wfrc.utah.gov/"
 date: "2025-11-16"
+image: "utah_bikeways.png"
 categories: [R, GIS, Data Science, Transportation]
 prefer-html: true
 resources:
