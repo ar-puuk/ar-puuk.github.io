@@ -466,60 +466,92 @@ ojs_define(miles_data = combined_miles_by_city)
 ```{ojs}
 //| echo: false
 
-// 1. Transpose data
+// 1. Transpose data from R
 miles = transpose(miles_data)
 
-// 2. Create Inputs (No changes needed here)
+// 2. Create Inputs
 viewof search = Inputs.text({placeholder: "Search for a city...", label: "Find City"})
 viewof minMiles = Inputs.range([0, 50], {label: "Min Bike Miles", step: 1, value: 5})
 
 // 3. Prepare data for plotting
 long_data = miles.flatMap(d => {
   const types = ["Paved Path", "Protected Bike Lane", "Bike Lane", "Marked Route", "Unmarked Route"];
+  
+  // Calculate total bike miles for this row once to ensure consistency
+  const totalBike = types.reduce((sum, type) => sum + (d[type] || 0), 0);
+  
   return types.map(t => ({
-    // FIX: Fallback to "Unincorporated/Unknown" if Name is null/NA
-    City: d.Name || "Unincorporated",
+    // SAFETY FIX: Handle null/NA names
+    City: d.Name || "Unincorporated", 
     Type: t,
     Miles: d[t] || 0,
-    TotalBike: types.reduce((sum, type) => sum + (d[type] || 0), 0),
+    TotalBike: totalBike,
     AllRoads: d["All Roads"] || 0
   }));
 })
 
 // 4. Filter data
 filtered = long_data.filter(d => {
-  // FIX: Ensure d.City exists before calling .toLowerCase()
-  const nameMatch = d.City && d.City.toLowerCase().includes(search.toLowerCase());
-  const mileMatch = d.TotalBike >= minMiles;
-  return nameMatch && mileMatch;
+  const city = d.City ? d.City.toLowerCase() : "";
+  const query = search.toLowerCase();
+  // Filter by name AND minimum mileage threshold
+  return city.includes(query) && d.TotalBike >= minMiles;
 })
 
-// 5. Render Plot
+// 5. Render Aesthetic Plot
 Plot.plot({
-  marginLeft: 140,
-  height: Math.max(400, new Set(filtered.map(d => d.City)).size * 20),
-  style: {fontSize: "12px"},
-  x: {label: "Miles", grid: true},
-  y: {label: null},
+  title: "Bikeway Infrastructure by Municipality",
+  subtitle: "Comparing miles of separated paths, lanes, and routes. Black markers indicate total road miles.",
+  marginLeft: 160, // Extra space for city names
+  height: Math.max(400, new Set(filtered.map(d => d.City)).size * 22), // Dynamic height based on row count
+  style: {
+    fontSize: "13px",
+    fontFamily: "system-ui, sans-serif"
+  },
+  x: {
+    label: "Facility Length (Miles)",
+    grid: true,
+    nice: true
+  },
+  y: {
+    label: null,
+    // Sort y-axis (Cities) by the calculated TotalBike in descending order
+    domain: d3.sort(filtered, (a, b) => b.TotalBike - a.TotalBike).map(d => d.City)
+  },
   color: {
+    // Custom Palette: Highlights high-quality infra (Teal/Blue) vs shared (Red/Grey)
     domain: ["Paved Path", "Protected Bike Lane", "Bike Lane", "Marked Route", "Unmarked Route"],
+    range: ["#008080", "#4682B4", "#DAA520", "#CD5C5C", "#A9A9A9"],
     legend: true
   },
   marks: [
+    // Background rule for 0 baseline
+    Plot.ruleX([0]),
+    
+    // Stacked Bars
     Plot.barX(filtered, {
       x: "Miles",
       y: "City",
       fill: "Type",
-      sort: {y: "x", reverse: true},
-      tip: true,
+      order: "Type", // Ensures stack order matches legend
+      tip: {
+        format: {
+          x: true,
+          y: false,
+          fill: true
+        }
+      },
       title: d => `${d.City}\n${d.Type}: ${d.Miles} miles`
     }),
+    
+    // Total Road Miles Indicator
     Plot.tickX(filtered, {
       x: "AllRoads",
       y: "City",
-      stroke: "black",
+      stroke: "#222",
       strokeWidth: 2,
-      title: d => `Total Road Miles: ${d.AllRoads}`
+      opacity: 0.6, // Semi-transparent to not overpower the chart
+      title: d => `Total Road Network: ${d.AllRoads} miles`
     })
   ]
 })
