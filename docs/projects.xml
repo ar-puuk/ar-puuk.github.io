@@ -24,43 +24,6 @@
   <media:content url="https://ar-puuk.github.io/posts/wget-gui/wget_gui.png" medium="image" type="image/png" height="68" width="144"/>
 </item>
 <item>
-  <title>Nepal Electoral Constituency GeoJSON</title>
-  <dc:creator>Pukar Bhandari</dc:creator>
-  <link>https://ar-puuk.github.io/posts/nepal-election-geojson/</link>
-  <description><![CDATA[ In this workflow, we tackle a common geospatial problem: extracting data from stylized news graphics (like election heatmaps) and converting them into GIS-ready formats. ]]></description>
-  <category>R</category>
-  <category>GIS</category>
-  <category>Data Science</category>
-  <guid>https://ar-puuk.github.io/posts/nepal-election-geojson/</guid>
-  <pubDate>Sun, 18 Jan 2026 07:00:00 GMT</pubDate>
-  <media:content url="https://ar-puuk.github.io/posts/nepal-election-geojson/nepal_election_geojson.png" medium="image" type="image/png" height="85" width="144"/>
-</item>
-<item>
-  <title>Analyzing the Utah Bikeways data</title>
-  <dc:creator>Pukar Bhandari</dc:creator>
-  <link>https://ar-puuk.github.io/posts/utah-bikeways/</link>
-  <description><![CDATA[ This analysis calculates and compares roadway lane miles and bikeway facility miles across Utah municipalities using spatial data from the Utah Geospatial Resource Center (UGRC). ]]></description>
-  <category>R</category>
-  <category>GIS</category>
-  <category>Data Science</category>
-  <category>Transportation</category>
-  <guid>https://ar-puuk.github.io/posts/utah-bikeways/</guid>
-  <pubDate>Sun, 16 Nov 2025 07:00:00 GMT</pubDate>
-  <media:content url="https://ar-puuk.github.io/posts/utah-bikeways/utah_bikeways.png" medium="image" type="image/png" height="127" width="144"/>
-</item>
-<item>
-  <title>Building an Interactive Storymap using {mapgl}</title>
-  <dc:creator>Pukar Bhandari</dc:creator>
-  <link>https://ar-puuk.github.io/posts/storymap_my_journey/</link>
-  <description><![CDATA[ Creating an open-source, interactive storymap with the {mapgl} R package to visualize my journey across the world. ]]></description>
-  <category>R</category>
-  <category>Shiny</category>
-  <category>Storymap</category>
-  <guid>https://ar-puuk.github.io/posts/storymap_my_journey/</guid>
-  <pubDate>Wed, 03 Sep 2025 06:00:00 GMT</pubDate>
-  <media:content url="https://ar-puuk.github.io/posts/storymap_my_journey/storymap_my_journey.png" medium="image" type="image/png" height="82" width="144"/>
-</item>
-<item>
   <title>Base Year SE Data Development</title>
   <dc:creator>Pukar Bhandari</dc:creator>
   <link>https://ar-puuk.github.io/posts/socioeconomic-demo/</link>

@@ -14,6 +14,7 @@ filters:
 code-annotations: select
 prefer-html: true
 embed-resources: false
+draft: true
 ---
 
 ## Introduction
@@ -123,7 +124,7 @@ ui <- shiny::fluidPage(
 server <- function(input, output, session) {
   output$map <- mapgl::renderMaplibre({ # <1>
     mapgl::maplibre(
-      style = "https://tiles.openfreemap.org/styles/liberty", # <2>
+      style = mapgl::openfreemap_style("liberty"), # <2>
       center = c(0, 0), # <3>
       zoom = 2.75, # <4>
       scrollZoom = FALSE # <5>

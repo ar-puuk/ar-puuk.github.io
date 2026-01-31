@@ -32,7 +32,7 @@ ui <- shiny::fluidPage( # <3>
       ),
       "wfrc_ut" = mapgl::story_section(
         title = "Back to Salt Lake City, UT",
-        content = "After gaining entry-level experience in transportation planning, travel demand modeling, and data analytics, I moved back to Salt Lake City - a place I am personally and professionally attached to - in order to join the awesome analytics team at the Wasatch Front Regional Council."
+        content = "After gaining entry-level experience in transportation planning, travel demand modeling, and data analytics, I moved back to Salt Lake City - a place I am personally and professionally attached to - in order to join the awesome Analytics team at the Wasatch Front Regional Council."
       )
     ),
     map_type = "maplibre"
@@ -42,7 +42,7 @@ ui <- shiny::fluidPage( # <3>
 server <- function(input, output, session) { # <6>
   output$map <- mapgl::renderMaplibre({ # <7>
     mapgl::maplibre(
-      style = "https://tiles.openfreemap.org/styles/liberty", # <8>
+      style = mapgl::openfreemap_style("liberty"), # <8>
       center = c(0, 0),
       zoom = 2.75,
       scrollZoom = FALSE
