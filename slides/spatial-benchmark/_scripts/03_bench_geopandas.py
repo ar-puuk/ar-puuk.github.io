@@ -1,7 +1,16 @@
+import os
+import sys
 import time
 import tracemalloc
 import pandas as pd
 import geopandas as gpd
+from pathlib import Path
+
+if os.name == 'nt':
+    # In Conda on Windows, GDAL data is usually at <env>/Library/share/gdal
+    gdal_data_path = Path(sys.prefix) / "Library" / "share" / "gdal"
+    if gdal_data_path.exists():
+        os.environ['GDAL_DATA'] = str(gdal_data_path)
 
 RESULTS_CSV = "_results/benchmark_results.csv"
 
@@ -18,7 +27,7 @@ print("--- 03: Python (GeoPandas) Legacy ---")
 tracemalloc.start()
 start = time.perf_counter()
 
-df = pd.read_csv(ADDR_CSV, dtype={"CountyID": str})
+df = pd.read_csv(ADDR_CSV, dtype={"CountyID": str}, low_memory=False)
 pts = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df.x, df.y), crs="EPSG:4326")
 cnt = gpd.read_file(COUNTY_SHP).to_crs("EPSG:4326")
 

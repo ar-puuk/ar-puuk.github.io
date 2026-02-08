@@ -51,8 +51,8 @@ if (!file.exists(addr_parquet) || !file.exists(addr_csv)) {
   message("Exporting Address Points to GeoParquet...")
   # Export Parquet (Convert to WKB Binary for DuckDB)
   utah_addresses |>
-    # dplyr::mutate(geometry = sf::st_as_binary(geometry) |> unclass()) |>
     tibble::as_tibble() |>
+    dplyr::mutate(geometry = sf::st_as_binary(geometry) |> unclass()) |>
     arrow::write_parquet(addr_parquet)
 
   rm(utah_addresses) # Clear memory after large download
@@ -83,14 +83,8 @@ if (!file.exists(county_parquet) || !file.exists(county_shp)) {
   # Export to GeoParquet (Modern)
   message("Exporting County Boundaries to GeoParquet...")
   utah_counties |>
-    # dplyr::mutate(geometry = sf::st_as_binary(geometry) |> unclass()) |>
     tibble::as_tibble() |>
-    dplyr::mutate(
-      geometry = geoarrow::as_geoarrow_vctr(
-        geometry,
-        schema = geoarrow::geoarrow_wkb()
-      )
-    ) |>
+    dplyr::mutate(geometry = sf::st_as_binary(geometry) |> unclass()) |>
     arrow::write_parquet(county_parquet)
 } else {
   message("Success: All County Boundary formats (SHP/Parquet) found locally.")

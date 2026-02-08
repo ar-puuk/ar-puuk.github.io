@@ -1,11 +1,13 @@
-name: arpuuk
+name: website
 channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.10 # Pin specific python version
+  - python=3.12 # Pin specific python version
   - pandas
   - geopandas
+  - pyproj>=3.6
+  - proj>=9.3
   - shapely
   - folium
   - requests

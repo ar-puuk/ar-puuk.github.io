@@ -14,6 +14,7 @@ format:
     height: 720
     highlight-style: github
     code-line-numbers: true
+    footer: "Tech, Skills and Beyond | WFRC Analytics"
 categories: [Geospatial, R, Python, DuckDB, Parquet]
 draft: true
 ---
@@ -23,8 +24,65 @@ draft: true
 #| label: run-benchmark
 
 # Trigger the benchmark suite using R
-# This works on Windows, Mac, and Linux without needing Bash configuration
 source("_scripts/run_all.R")
+```
+
+```{r}
+#| include: false
+#| label: calc-sizes
+
+# This chunk runs INSIDE the presentation render to calculate file sizes.
+# It uses strict extension matching to avoid mixing up CSV/Parquet/SHP sharing the same base name.
+
+library(dplyr)
+library(readr)
+library(tools)
+
+# Helper 1: Get size of a single specific file
+get_size_mb <- function(path) {
+  if (file.exists(path)) file.size(path) / 1024 / 1024 else 0
+}
+
+# Helper 2: Get Shapefile size by explicitly summing its components
+# This avoids accidentally counting a .parquet file with the same name
+get_shp_size_mb <- function(shp_path) {
+  if (!file.exists(shp_path)) return(0)
+
+  # Get the base path without extension (e.g., "_data/utah_counties")
+  base_path <- tools::file_path_sans_ext(shp_path)
+
+  # Define standard Shapefile extensions
+  exts <- c("shp", "shx", "dbf", "prj", "cpg")
+
+  # Construct full paths for potential sidecars
+  sidecars <- paste(base_path, exts, sep = ".")
+
+  # Sum only the files that actually exist
+  existing_files <- sidecars[file.exists(sidecars)]
+  sum(file.size(existing_files)) / 1024 / 1024
+}
+
+# Define file paths
+addr_csv <- "_data/utah_addresses.csv"
+addr_pq  <- "_data/utah_addresses.parquet"
+cnty_shp <- "_data/utah_counties.shp"
+cnty_pq  <- "_data/utah_counties.parquet"
+
+# Create Data Frame
+sizes <- tibble(
+  Dataset = c("Addresses", "Addresses", "Counties", "Counties"),
+  Format  = c("CSV", "Parquet", "Shapefile", "Parquet"),
+  SizeMB  = c(
+    get_size_mb(addr_csv),
+    get_size_mb(addr_pq),
+    get_shp_size_mb(cnty_shp),
+    get_size_mb(cnty_pq)
+  )
+)
+
+# Save to results folder so OJS can read it via FileAttachment
+if (!dir.exists("_results")) dir.create("_results")
+write_csv(sizes, "_results/file_sizes.csv")
 ```
 
 ## The Challenge: Data Validation {background-color="#f0f0f0"}
@@ -81,26 +139,14 @@ source("_scripts/run_all.R")
 
 ---
 
-## Benchmark 01: Legacy R (`sf`)
+## Benchmark 01: Legacy R (`sf`) {.scrollable}
 
 **The "Standard" Way**: Load everything into RAM, process, output.
 
-```{.r code-line-numbers="1-3|5-7|9-13"}
-# 1. READ (Slow)
-# Reads all 1.2M rows into memory immediately
-pts <- read_csv("addresses.csv") |>
-  st_as_sf(coords = c("x", "y"), crs = 4326)
-
-# 2. TRANSFORM
-# Must align CRS manually
-cnt <- st_read("counties.shp") |> st_transform(4326)
-
-# 3. SPATIAL JOIN (The Bottleneck)
-# Uses GEOS (row-by-row C++ library)
-joined <- st_join(pts, cnt, join = st_within)
-
-# 4. AGGREGATE
-result <- joined |> count(FIPS_ST)
+```{r}
+#| file: _scripts/01_bench_sf.R
+#| eval: false
+#| echo: true
 ```
 
 ::: {.callout-important}
@@ -110,155 +156,183 @@ If your dataset is larger than your RAM, this script **crashes**.
 
 ---
 
-## Benchmark 02: Modern R (`DuckDB`)
+## Benchmark 02: Modern R (`DuckDB`) {.scrollable}
 
-**The "Streaming" Way**: Define what you want, let the engine optimize.
+**The "Index" Way**: Ingest, Index, and Query.
 
-```{.r code-line-numbers="1-2|4-6|8-14"}
-# 1. CONNECT
-con <- dbConnect(duckdb())
-dbExecute(con, "INSTALL spatial; LOAD spatial;")
-
-# 2. REGISTER VIEWS (Zero-Copy)
-# "Point to the files, don't read them yet."
-dbExecute(con, "CREATE VIEW p AS SELECT * FROM 'addresses.parquet'")
-dbExecute(con, "CREATE VIEW c AS SELECT * FROM 'counties.parquet'")
-
-# 3. SPATIAL SQL
-# The engine optimizes the join strategy (Index vs Scan)
-sql <- "
-  SELECT c.FIPS_STR, COUNT(*)
-  FROM p, c
-  WHERE ST_Within(ST_Point(p.x, p.y), ST_GeomFromWKB(c.geometry))
-  GROUP BY c.FIPS_STR
-"
-res <- dbGetQuery(con, sql)
+```{r}
+#| file: _scripts/02_bench_duckdb.R
+#| eval: false
+#| echo: true
 ```
 
 ::: {.callout-note}
-## Zero-Copy
-DuckDB creates the "views" in milliseconds. It only reads the specific byte-ranges for `x`, `y`, and `geometry` during the actual query.
+## Optimized
+By building an `RTREE` index, we sacrifice a few seconds at load time to gain massive speed during the join.
 :::
 
 ---
 
-## Benchmark 03: Legacy Python (`GeoPandas`)
+## Benchmark 03: Legacy Python (`GeoPandas`) {.scrollable}
 
 **The Python Standard**: Wraps `pandas` and `shapely`.
 
-```{.python code-line-numbers="1-5|7-9|11-14"}
-# 1. READ
-# Pandas has high memory overhead for strings
-df = pd.read_csv("addresses.csv", dtype={"CountyID": str})
-pts = gpd.GeoDataFrame(df,
-        geometry=gpd.points_from_xy(df.x, df.y))
-
-# 2. READ SHAPEFILE
-# "FIPS_STRING" is truncated to "FIPS_ST" (10 char limit)
-cnt = gpd.read_file("counties.shp").to_crs("EPSG:4326")
-
-# 3. SPATIAL JOIN
-# Uses PyGEOS/Shapely 2.0 (Vectorized but RAM heavy)
-joined = gpd.sjoin(pts, cnt, predicate="within")
-
-# 4. AGGREGATE
-res = joined.groupby("FIPS_ST").size()
+```{python}
+#| file: _scripts/03_bench_geopandas.py
+#| eval: false
+#| echo: true
 ```
 
 ---
 
-## Benchmark 04: Modern Python (`DuckDB`)
+## Benchmark 04: Modern Python (`DuckDB`) {.scrollable}
 
 **Same Engine, Different Syntax**: The SQL logic is portable.
 
-```{.python code-line-numbers="1-4|6-8|10-16"}
-# 1. SETUP
-import duckdb
-con = duckdb.connect()
-con.install_extension("spatial"); con.load_extension("spatial")
-
-# 2. REGISTER
-# Identical to R version
-con.execute("CREATE VIEW p AS SELECT * FROM 'addresses.parquet'")
-con.execute("CREATE VIEW c AS SELECT * FROM 'counties.parquet'")
-
-# 3. EXECUTE
-# We reuse the EXACT same SQL query string
-query = """
-  SELECT c.FIPS_STR, COUNT(*)
-  FROM p, c
-  WHERE ST_Within(ST_Point(p.x, p.y), ST_GeomFromWKB(c.geometry))
-  GROUP BY c.FIPS_STR
-"""
-df = con.execute(query).df()
+```{python}
+#| file: _scripts/04_bench_duckdb.py
+#| eval: false
+#| echo: true
 ```
 
 ---
 
 ## Results: Execution Time
 
-How long does the user wait?
+```{ojs}
+//| echo: false
+//| panel: sidebar
 
-```{r}
-#| echo: false
-#| message: false
-#| warning: false
-#| fig-align: center
-#| fig-width: 14
-#| fig-height: 6
+viewof opFilter = Inputs.checkbox(
+  ["Load Data", "Validation (Join)"],
+  { value: ["Load Data", "Validation (Join)"], label: "Toggle Steps:" }
+)
+```
 
-library(ggplot2)
-library(dplyr)
-library(readr)
+```{ojs}
+//| echo: false
+data = FileAttachment("_results/benchmark_results.csv").csv({ typed: true })
 
-# Load Data
-results <- read_csv("_results/benchmark_results.csv", show_col_types = FALSE)
+// Reactive filtering based on checkbox
+filteredData = data.filter(d => opFilter.includes(d.operation))
 
-# Filter for just Time
-results_time <- results %>%
-  mutate(stack = paste0(system, "\n(", language, ")"))
-
-cols <- c("sf" = "#999999", "geopandas" = "#666666",
-          "duckdb" = "#006DAE")
-
-ggplot(results_time, aes(x = stack, y = time_sec, fill = system)) +
-  geom_bar(stat = "identity", position = "dodge", width = 0.6) +
-  facet_wrap(~operation, scales = "free_y") +
-  scale_fill_manual(values = cols) +
-  labs(
-    title = "Lower is Better",
-    y = "Seconds",
-    x = NULL
-  ) +
-  theme_minimal(base_size = 20) +
-  theme(legend.position = "none")
+Plot.plot({
+  height: 500,
+  marginLeft: 200,
+  grid: true,
+  x: { label: "Total Seconds" },
+  y: { label: null },
+  color: {
+    domain: ["Load Data", "Validation (Join)"],
+    range: ["#A0CBE8", "#006DAE"], // Light Blue -> Dark Blue
+    legend: true
+  },
+  marks: [
+    Plot.barX(filteredData, {
+      y: d => `${d.system} (${d.language})`,
+      x: "time_sec",
+      fill: "operation",
+      sort: { y: "x", reverse: true }, // Auto-sorts by visible total
+      tip: true
+    }),
+    Plot.ruleX([0])
+  ]
+})
 ```
 
 ---
 
 ## Results: Peak Memory Usage
 
-What is the cost of running this infrastructure?
+```{ojs}
+//| echo: false
+Plot.plot({
+  height: 500,
+  marginLeft: 200,
+  grid: true,
+  x: { label: "Megabytes (MB)" },
+  y: { label: null },
+  color: {
+    domain: ["sf", "geopandas", "duckdb"],
+    range: ["#999999", "#666666", "#006DAE"],
+    legend: true
+  },
+  marks: [
+    Plot.barX(data, {
+      y: d => `${d.system} (${d.language})`,
+      x: "memory_mb",
+      fill: "system",
+      sort: { y: "x", reverse: true },
+      tip: true
+    }),
+    Plot.ruleX([0])
+  ]
+})
+```
+
+---
+
+## Storage Efficiency
+
+How much disk space do we save?
+
+```{ojs}
+//| echo: false
+// Read the CSV generated by the hidden R chunk
+fileData = FileAttachment("_results/file_sizes.csv").csv({ typed: true })
+
+Plot.plot({
+  height: 400,
+  marginLeft: 100,
+  grid: true,
+  x: { label: "Size (MB)" },
+  y: { label: null },
+  fx: { label: "Dataset" },
+  color: {
+    domain: ["CSV", "Shapefile", "Parquet"],
+    range: ["#999999", "#666666", "#006DAE"],
+    legend: true
+  },
+  marks: [
+    Plot.barY(fileData, {
+      x: "Format",
+      y: "SizeMB",
+      fill: "Format",
+      fx: "Dataset",
+      tip: true,
+      sort: { x: "y", reverse: true } // Sort largest to smallest
+    }),
+    Plot.ruleY([0])
+  ]
+})
+```
+
+---
+
+## Validation Results: Top Mismatches
+
+Which counties have the most mislabeled addresses?
 
 ```{r}
 #| echo: false
 #| message: false
-#| warning: false
-#| fig-align: center
-#| fig-width: 14
-#| fig-height: 6
+library(readr)
+library(knitr)
+library(dplyr)
 
-# Plot Memory
-ggplot(results_time, aes(x = stack, y = memory_mb, fill = system)) +
-  geom_bar(stat = "identity", position = "dodge", width = 0.6) +
-  scale_fill_manual(values = cols) +
-  labs(
-    title = "RAM Footprint (Lower is Better)",
-    y = "Megabytes (MB)",
-    x = NULL
-  ) +
-  theme_minimal(base_size = 20) +
-  theme(legend.position = "none")
+# The benchmark script 02_bench_duckdb.R generates this file
+if(file.exists("_results/validation_stats.csv")) {
+  stats <- read_csv("_results/validation_stats.csv", show_col_types = FALSE)
+
+  stats |>
+    knitr::kable(
+      digits = 0,
+      col.names = c("County FIPS", "Attribute Count", "Spatial Count", "Diff"),
+      align = "lccc"
+    )
+} else {
+  cat("Run benchmarks to generate stats.")
+}
 ```
 
 ---
@@ -285,8 +359,8 @@ ggplot(results_time, aes(x = stack, y = memory_mb, fill = system)) +
 |:---|:---:|:---:|
 | **Format** | CSV / Shapefile | Parquet / GeoParquet |
 | **Engine** | In-Memory (sf/pandas) | Out-of-Core (DuckDB) |
-| **Join Speed** | ~15s | ~1s |
-| **RAM Usage** | ~2 GB | ~200 MB |
+| **Join Speed** | ~5-25s | ~25-40s |
+| **RAM Usage** | ~1.5 GB | **< 30 MB** |
 | **Limit** | RAM Size | Disk Space |
 
 <br>

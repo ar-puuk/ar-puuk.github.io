@@ -12,7 +12,8 @@ about:
     - icon: linkedin
       text: LinkedIn
       href: https://www.linkedin.com/in/arpuuk
-    - text: "{{< fa brands bluesky >}} Bluesky"
+    - icon: bluesky
+      text: Bluesky
       href: https://bsky.app/profile/arpuuk.bsky.social
     - icon: mastodon
       text: Mastodon

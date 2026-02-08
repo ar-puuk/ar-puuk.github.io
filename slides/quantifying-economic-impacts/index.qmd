@@ -7,6 +7,9 @@ draft: true
 categories: [R, Transportation, Economic Impact Analysis, Benefit Cost Analysis]
 filters:
   - fontawesome
+format:
+  revealjs:
+    footer: "Transportation Data Scientist Candidate | WFRC Interview"
 ---
 
 ## My Background & Utah Connection {.smaller}

@@ -26,7 +26,6 @@ format:
     chalkboard: false
     preview-links: auto
     logo: ""
-    footer: "Transportation Data Scientist Candidate | WFRC Interview"
     css: style.css
     embed-resources: true
     mermaid:
@@ -39,4 +38,3 @@ format:
           padding: 5
         themeVariables:
           fontSize: "12px"
-
