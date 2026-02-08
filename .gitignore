@@ -8,3 +8,19 @@
 **/*.quarto_ipynb
 
 posts/utah-bikeways/_data/UtahRoads.gpkg
+slides/spatial-benchmark/_data/utah_addresses.csv
+
+# Python Virtual Environment
+env/
+venv/
+.venv/
+
+# Quarto/Reticulate Configuration
+.Renviron
+
+# R Environment (if using renv)
+renv/library/
+renv/python/
+renv/staging/
+
+/env/

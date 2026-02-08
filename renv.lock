@@ -778,6 +778,53 @@
       "Repository": "RSPM",
       "Encoding": "UTF-8"
     },
+    "bench": {
+      "Package": "bench",
+      "Version": "1.1.4",
+      "Source": "Repository",
+      "Title": "High Precision Timing of R Expressions",
+      "Authors@R": "c( person(\"Jim\", \"Hester\", role = \"aut\"), person(\"Davis\", \"Vaughan\", , \"davis@posit.co\", role = c(\"aut\", \"cre\")), person(\"Drew\", \"Schmidt\", role = \"ctb\", comment = \"read_proc_file implementation\"), person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")) )",
+      "Description": "Tools to accurately benchmark and analyze execution times for R expressions.",
+      "License": "MIT + file LICENSE",
+      "URL": "https://bench.r-lib.org/, https://github.com/r-lib/bench",
+      "BugReports": "https://github.com/r-lib/bench/issues",
+      "Depends": [
+        "R (>= 4.0.0)"
+      ],
+      "Imports": [
+        "glue (>= 1.8.0)",
+        "methods",
+        "pillar (>= 1.10.1)",
+        "profmem (>= 0.6.0)",
+        "rlang (>= 1.1.4)",
+        "stats",
+        "tibble (>= 3.2.1)",
+        "utils"
+      ],
+      "Suggests": [
+        "covr",
+        "dplyr",
+        "forcats",
+        "ggbeeswarm",
+        "ggplot2 (>= 3.5.1)",
+        "ggridges",
+        "parallel",
+        "scales",
+        "testthat (>= 3.2.3)",
+        "tidyr (>= 1.3.1)",
+        "vctrs (>= 0.6.5)",
+        "withr"
+      ],
+      "Config/Needs/website": "tidyverse/tidytemplate",
+      "Config/testthat/edition": "3",
+      "Config/usethis/last-upkeep": "2025-01-16",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.2",
+      "NeedsCompilation": "yes",
+      "Author": "Jim Hester [aut], Davis Vaughan [aut, cre], Drew Schmidt [ctb] (read_proc_file implementation), Posit Software, PBC [cph, fnd]",
+      "Maintainer": "Davis Vaughan <davis@posit.co>",
+      "Repository": "CRAN"
+    },
     "bit": {
       "Package": "bit",
       "Version": "4.6.0",
@@ -1933,7 +1980,7 @@
     },
     "dplyr": {
       "Package": "dplyr",
-      "Version": "1.1.4",
+      "Version": "1.2.0",
       "Source": "Repository",
       "Type": "Package",
       "Title": "A Grammar of Data Manipulation",
@@ -1943,27 +1990,25 @@
       "URL": "https://dplyr.tidyverse.org, https://github.com/tidyverse/dplyr",
       "BugReports": "https://github.com/tidyverse/dplyr/issues",
       "Depends": [
-        "R (>= 3.5.0)"
+        "R (>= 4.1.0)"
       ],
       "Imports": [
-        "cli (>= 3.4.0)",
+        "cli (>= 3.6.2)",
         "generics",
         "glue (>= 1.3.2)",
-        "lifecycle (>= 1.0.3)",
+        "lifecycle (>= 1.0.5)",
         "magrittr (>= 1.5)",
         "methods",
         "pillar (>= 1.9.0)",
         "R6",
-        "rlang (>= 1.1.0)",
+        "rlang (>= 1.1.7)",
         "tibble (>= 3.2.0)",
         "tidyselect (>= 1.2.0)",
         "utils",
-        "vctrs (>= 0.6.4)"
+        "vctrs (>= 0.7.1)"
       ],
       "Suggests": [
-        "bench",
         "broom",
-        "callr",
         "covr",
         "DBI",
         "dbplyr (>= 2.2.1)",
@@ -1971,12 +2016,9 @@
         "knitr",
         "Lahman",
         "lobstr",
-        "microbenchmark",
         "nycflights13",
         "purrr",
         "rmarkdown",
-        "RMySQL",
-        "RPostgreSQL",
         "RSQLite",
         "stringi (>= 1.7.6)",
         "testthat (>= 3.1.5)",
@@ -1984,13 +2026,14 @@
         "withr"
       ],
       "VignetteBuilder": "knitr",
-      "Config/Needs/website": "tidyverse, shiny, pkgdown, tidyverse/tidytemplate",
+      "Config/build/compilation-database": "true",
+      "Config/Needs/website": "tidyverse/tidytemplate",
       "Config/testthat/edition": "3",
       "Encoding": "UTF-8",
       "LazyData": "true",
-      "RoxygenNote": "7.2.3",
+      "RoxygenNote": "7.3.3",
       "NeedsCompilation": "yes",
-      "Author": "Hadley Wickham [aut, cre] (<https://orcid.org/0000-0003-4757-117X>), Romain François [aut] (<https://orcid.org/0000-0002-2444-4226>), Lionel Henry [aut], Kirill Müller [aut] (<https://orcid.org/0000-0002-1416-3412>), Davis Vaughan [aut] (<https://orcid.org/0000-0003-4777-038X>), Posit Software, PBC [cph, fnd]",
+      "Author": "Hadley Wickham [aut, cre] (ORCID: <https://orcid.org/0000-0003-4757-117X>), Romain François [aut] (ORCID: <https://orcid.org/0000-0002-2444-4226>), Lionel Henry [aut], Kirill Müller [aut] (ORCID: <https://orcid.org/0000-0002-1416-3412>), Davis Vaughan [aut] (ORCID: <https://orcid.org/0000-0003-4777-038X>), Posit Software, PBC [cph, fnd]",
       "Maintainer": "Hadley Wickham <hadley@posit.co>",
       "Repository": "CRAN"
     },
@@ -2497,6 +2540,41 @@
       "NeedsCompilation": "no",
       "Author": "Hadley Wickham [aut, cre] (ORCID: <https://orcid.org/0000-0003-4757-117X>), Max Kuhn [aut], Davis Vaughan [aut], Posit Software, PBC [cph, fnd] (ROR: <https://ror.org/03wc8by49>)",
       "Maintainer": "Hadley Wickham <hadley@posit.co>",
+      "Repository": "CRAN"
+    },
+    "geoarrow": {
+      "Package": "geoarrow",
+      "Version": "0.4.1",
+      "Source": "Repository",
+      "Title": "Extension Types for Spatial Data for Use with 'Arrow'",
+      "Authors@R": "c( person(given = \"Dewey\", family = \"Dunnington\", role = c(\"aut\", \"cre\"), email = \"dewey@dunnington.ca\", comment = c(ORCID = \"0000-0002-9415-4582\")), person(given = \"Anthony\", family = \"North\", email = \"anthony.jl.north@gmail.com\", role = c(\"ctb\")), person(\"Apache Software Foundation\", email = \"dev@arrow.apache.org\", role = c(\"cph\")), person(\"Ulf\", \"Adams\", role = \"cph\"), person(\"Daniel\", \"Lemire\", role = \"cph\"), person(\"Joao Paulo\", \"Magalhaes\", role = \"cph\") )",
+      "Description": "Provides extension types and conversions to between R-native object types and 'Arrow' columnar types. This includes integration among the 'arrow', 'nanoarrow', 'sf', and 'wk' packages such that spatial metadata is preserved wherever possible. Extension type implementations ensure first-class geometry data type support in the 'arrow' and 'nanoarrow' packages.",
+      "License": "Apache License (>= 2)",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.3",
+      "Imports": [
+        "nanoarrow (>= 0.5.0)",
+        "wk (>= 0.9.0)"
+      ],
+      "LinkingTo": [
+        "wk"
+      ],
+      "Config/testthat/edition": "3",
+      "URL": "https://geoarrow.org/geoarrow-r/, https://github.com/geoarrow/geoarrow-r",
+      "BugReports": "https://github.com/geoarrow/geoarrow-r/issues",
+      "Depends": [
+        "R (>= 3.6.0)"
+      ],
+      "Suggests": [
+        "arrow",
+        "R6",
+        "sf",
+        "testthat (>= 3.0.0)"
+      ],
+      "SystemRequirements": "C++17",
+      "NeedsCompilation": "yes",
+      "Author": "Dewey Dunnington [aut, cre] (ORCID: <https://orcid.org/0000-0002-9415-4582>), Anthony North [ctb], Apache Software Foundation [cph], Ulf Adams [cph], Daniel Lemire [cph], Joao Paulo Magalhaes [cph]",
+      "Maintainer": "Dewey Dunnington <dewey@dunnington.ca>",
       "Repository": "CRAN"
     },
     "geojsonsf": {
@@ -4407,6 +4485,39 @@
       "Maintainer": "Hadley Wickham <hadley@posit.co>",
       "Repository": "CRAN"
     },
+    "nanoarrow": {
+      "Package": "nanoarrow",
+      "Version": "0.7.0-3",
+      "Source": "Repository",
+      "Title": "Interface to the 'nanoarrow' 'C' Library",
+      "Authors@R": "c( person(given = \"Dewey\", family = \"Dunnington\", role = c(\"aut\", \"cre\"), email = \"dewey@dunnington.ca\", comment = c(ORCID = \"0000-0002-9415-4582\")), person(\"Apache Arrow\", email = \"dev@arrow.apache.org\", role = c(\"aut\", \"cph\")), person(\"Apache Software Foundation\", email = \"dev@arrow.apache.org\", role = c(\"cph\")) )",
+      "Description": "Provides an 'R' interface to the 'nanoarrow' 'C' library and the 'Apache Arrow' application binary interface. Functions to import and export 'ArrowArray', 'ArrowSchema', and 'ArrowArrayStream' 'C' structures to and from 'R' objects are provided alongside helpers to facilitate zero-copy data transfer among 'R' bindings to libraries implementing the 'Arrow' 'C' data interface.",
+      "License": "Apache License (>= 2)",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.3",
+      "URL": "https://arrow.apache.org/nanoarrow/latest/r/, https://github.com/apache/arrow-nanoarrow",
+      "BugReports": "https://github.com/apache/arrow-nanoarrow/issues",
+      "Suggests": [
+        "arrow (>= 9.0.0)",
+        "bit64",
+        "blob",
+        "dplyr",
+        "hms",
+        "jsonlite",
+        "rlang",
+        "testthat (>= 3.0.0)",
+        "tibble",
+        "vctrs",
+        "withr"
+      ],
+      "SystemRequirements": "libzstd (optional)",
+      "Config/testthat/edition": "3",
+      "Config/build/bootstrap": "TRUE",
+      "NeedsCompilation": "yes",
+      "Author": "Dewey Dunnington [aut, cre] (ORCID: <https://orcid.org/0000-0002-9415-4582>), Apache Arrow [aut, cph], Apache Software Foundation [cph]",
+      "Maintainer": "Dewey Dunnington <dewey@dunnington.ca>",
+      "Repository": "CRAN"
+    },
     "openssl": {
       "Package": "openssl",
       "Version": "2.3.4",
@@ -4783,6 +4894,33 @@
       "NeedsCompilation": "yes",
       "Author": "Gábor Csárdi [aut, cre, cph] (<https://orcid.org/0000-0001-7098-9676>), Winston Chang [aut], Posit Software, PBC [cph, fnd], Ascent Digital Services [cph, fnd]",
       "Maintainer": "Gábor Csárdi <csardi.gabor@gmail.com>",
+      "Repository": "CRAN"
+    },
+    "profmem": {
+      "Package": "profmem",
+      "Version": "0.7.0",
+      "Source": "Repository",
+      "Title": "Simple Memory Profiling for R",
+      "Imports": [
+        "utils"
+      ],
+      "Suggests": [
+        "R.rsp",
+        "markdown",
+        "microbenchmark"
+      ],
+      "VignetteBuilder": "R.rsp",
+      "Authors@R": "c(person(\"Henrik\", \"Bengtsson\", role=c(\"aut\", \"cre\", \"cph\"), email = \"henrikb@braju.com\"))",
+      "Description": "A simple and light-weight API for memory profiling of R expressions.  The profiling is built on top of R's built-in memory profiler ('utils::Rprofmem()'), which records every memory allocation done by R (also native code).",
+      "License": "LGPL (>= 2.1)",
+      "LazyLoad": "TRUE",
+      "URL": "https://henrikbengtsson.github.io/profmem/, https://github.com/HenrikBengtsson/profmem",
+      "BugReports": "https://github.com/HenrikBengtsson/profmem/issues",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.2",
+      "NeedsCompilation": "no",
+      "Author": "Henrik Bengtsson [aut, cre, cph]",
+      "Maintainer": "Henrik Bengtsson <henrikb@braju.com>",
       "Repository": "CRAN"
     },
     "progress": {

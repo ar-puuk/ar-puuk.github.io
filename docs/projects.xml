@@ -10,7 +10,20 @@
 <atom:link href="https://ar-puuk.github.io/projects.xml" rel="self" type="application/rss+xml"/>
 <description>Pukar Bhandari is a Transportation Planner and Data Scientist working at the intersection of Transportation Modeling, Economic Impact Analysis, and Data Science.</description>
 <generator>quarto-1.8.27</generator>
-<lastBuildDate>Sun, 25 Jan 2026 07:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 07 Feb 2026 07:00:00 GMT</lastBuildDate>
+<item>
+  <title></title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/slides/spatial-benchmark/</link>
+  <description><![CDATA[ undefined ]]></description>
+  <category>Geospatial</category>
+  <category>R</category>
+  <category>Python</category>
+  <category>DuckDB</category>
+  <category>Parquet</category>
+  <guid>https://ar-puuk.github.io/slides/spatial-benchmark/</guid>
+  <pubDate>Sat, 07 Feb 2026 07:00:00 GMT</pubDate>
+</item>
 <item>
   <title>WgetGUI Ultimate: A Fluent Command Generator</title>
   <dc:creator>Pukar Bhandari</dc:creator>

@@ -1,0 +1,16 @@
+name: arpuuk
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10 # Pin specific python version
+  - pandas
+  - geopandas
+  - shapely
+  - folium
+  - requests
+  - numpy
+  - pygris
+  - polars
+  - duckdb
+  - pip

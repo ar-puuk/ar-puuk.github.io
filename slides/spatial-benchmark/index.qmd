@@ -1,0 +1,296 @@
+---
+title: "Modernizing Spatial Workflows"
+subtitle: "Benchmarking DuckDB & Parquet vs. The Legacy Stack"
+author: "Pukar Bhandari"
+date: "2026-02-07"
+format:
+  revealjs:
+    theme: simple
+    css: style.css
+    transition: slide
+    background-transition: fade
+    slide-number: true
+    width: 1280
+    height: 720
+    highlight-style: github
+    code-line-numbers: true
+categories: [Geospatial, R, Python, DuckDB, Parquet]
+draft: true
+---
+
+```{r}
+#| include: false
+#| label: run-benchmark
+
+# Trigger the benchmark suite using R
+# This works on Windows, Mac, and Linux without needing Bash configuration
+source("_scripts/run_all.R")
+```
+
+## The Challenge: Data Validation {background-color="#f0f0f0"}
+
+::: {.incremental}
+* **The Task**: We have **1.2 Million** address points in Utah.
+* **The Goal**: Validate that the `CountyID` attribute matches the actual spatial location.
+* **The Method**: Perform a **Point-in-Polygon** join against County Boundaries.
+* **The Constraint**: Do it fast, reproducible, and (ideally) with low memory.
+:::
+
+::: {.fragment}
+> "Is the address labeled 'Salt Lake County' actually *inside* the Salt Lake County polygon?"
+:::
+
+---
+
+## The "Modern" Stack: Parquet
+
+<div class="columns">
+<div class="column" width="60%">
+### What is it?
+* **Columnar Storage**: Reads only the columns you need.
+* **Typed Schema**: No more guessing if "049" is a string or number.
+* **Compression**: Snappy/ZSTD compression reduces file size by ~60%.
+* **GeoParquet**: Standardizes how geometry is stored (WKB) so any tool can read it.
+</div>
+
+<div class="column" width="40%">
+![Parquet Structure](https://parquet.apache.org/images/parquet-layout.png){width="80%"}
+</div>
+</div>
+
+---
+
+## The "Modern" Stack: DuckDB
+
+<div class="columns">
+<div class="column" width="60%">
+### What is it?
+* **"SQLite for Analytics"**: An embedded SQL OLAP database.
+* **Vectorized Engine**: Processes data in batches, not row-by-row.
+* **Spatial Extension**: Adds geometry support (`ST_Within`, `ST_Point`).
+* **Zero-Copy**: Queries Parquet files *directly* without importing data into its own storage.
+</div>
+
+<div class="column" width="40%">
+<br>
+<div style="font-size: 8em; text-align: center;">
+<i class="fa-solid fa-database" style="color: #006DAE;"></i>
+</div>
+</div>
+</div>
+
+---
+
+## Benchmark 01: Legacy R (`sf`)
+
+**The "Standard" Way**: Load everything into RAM, process, output.
+
+```{.r code-line-numbers="1-3|5-7|9-13"}
+# 1. READ (Slow)
+# Reads all 1.2M rows into memory immediately
+pts <- read_csv("addresses.csv") |>
+  st_as_sf(coords = c("x", "y"), crs = 4326)
+
+# 2. TRANSFORM
+# Must align CRS manually
+cnt <- st_read("counties.shp") |> st_transform(4326)
+
+# 3. SPATIAL JOIN (The Bottleneck)
+# Uses GEOS (row-by-row C++ library)
+joined <- st_join(pts, cnt, join = st_within)
+
+# 4. AGGREGATE
+result <- joined |> count(FIPS_ST)
+```
+
+::: {.callout-important}
+## Memory Hog
+If your dataset is larger than your RAM, this script **crashes**.
+:::
+
+---
+
+## Benchmark 02: Modern R (`DuckDB`)
+
+**The "Streaming" Way**: Define what you want, let the engine optimize.
+
+```{.r code-line-numbers="1-2|4-6|8-14"}
+# 1. CONNECT
+con <- dbConnect(duckdb())
+dbExecute(con, "INSTALL spatial; LOAD spatial;")
+
+# 2. REGISTER VIEWS (Zero-Copy)
+# "Point to the files, don't read them yet."
+dbExecute(con, "CREATE VIEW p AS SELECT * FROM 'addresses.parquet'")
+dbExecute(con, "CREATE VIEW c AS SELECT * FROM 'counties.parquet'")
+
+# 3. SPATIAL SQL
+# The engine optimizes the join strategy (Index vs Scan)
+sql <- "
+  SELECT c.FIPS_STR, COUNT(*)
+  FROM p, c
+  WHERE ST_Within(ST_Point(p.x, p.y), ST_GeomFromWKB(c.geometry))
+  GROUP BY c.FIPS_STR
+"
+res <- dbGetQuery(con, sql)
+```
+
+::: {.callout-note}
+## Zero-Copy
+DuckDB creates the "views" in milliseconds. It only reads the specific byte-ranges for `x`, `y`, and `geometry` during the actual query.
+:::
+
+---
+
+## Benchmark 03: Legacy Python (`GeoPandas`)
+
+**The Python Standard**: Wraps `pandas` and `shapely`.
+
+```{.python code-line-numbers="1-5|7-9|11-14"}
+# 1. READ
+# Pandas has high memory overhead for strings
+df = pd.read_csv("addresses.csv", dtype={"CountyID": str})
+pts = gpd.GeoDataFrame(df,
+        geometry=gpd.points_from_xy(df.x, df.y))
+
+# 2. READ SHAPEFILE
+# "FIPS_STRING" is truncated to "FIPS_ST" (10 char limit)
+cnt = gpd.read_file("counties.shp").to_crs("EPSG:4326")
+
+# 3. SPATIAL JOIN
+# Uses PyGEOS/Shapely 2.0 (Vectorized but RAM heavy)
+joined = gpd.sjoin(pts, cnt, predicate="within")
+
+# 4. AGGREGATE
+res = joined.groupby("FIPS_ST").size()
+```
+
+---
+
+## Benchmark 04: Modern Python (`DuckDB`)
+
+**Same Engine, Different Syntax**: The SQL logic is portable.
+
+```{.python code-line-numbers="1-4|6-8|10-16"}
+# 1. SETUP
+import duckdb
+con = duckdb.connect()
+con.install_extension("spatial"); con.load_extension("spatial")
+
+# 2. REGISTER
+# Identical to R version
+con.execute("CREATE VIEW p AS SELECT * FROM 'addresses.parquet'")
+con.execute("CREATE VIEW c AS SELECT * FROM 'counties.parquet'")
+
+# 3. EXECUTE
+# We reuse the EXACT same SQL query string
+query = """
+  SELECT c.FIPS_STR, COUNT(*)
+  FROM p, c
+  WHERE ST_Within(ST_Point(p.x, p.y), ST_GeomFromWKB(c.geometry))
+  GROUP BY c.FIPS_STR
+"""
+df = con.execute(query).df()
+```
+
+---
+
+## Results: Execution Time
+
+How long does the user wait?
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-align: center
+#| fig-width: 14
+#| fig-height: 6
+
+library(ggplot2)
+library(dplyr)
+library(readr)
+
+# Load Data
+results <- read_csv("_results/benchmark_results.csv", show_col_types = FALSE)
+
+# Filter for just Time
+results_time <- results %>%
+  mutate(stack = paste0(system, "\n(", language, ")"))
+
+cols <- c("sf" = "#999999", "geopandas" = "#666666",
+          "duckdb" = "#006DAE")
+
+ggplot(results_time, aes(x = stack, y = time_sec, fill = system)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.6) +
+  facet_wrap(~operation, scales = "free_y") +
+  scale_fill_manual(values = cols) +
+  labs(
+    title = "Lower is Better",
+    y = "Seconds",
+    x = NULL
+  ) +
+  theme_minimal(base_size = 20) +
+  theme(legend.position = "none")
+```
+
+---
+
+## Results: Peak Memory Usage
+
+What is the cost of running this infrastructure?
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-align: center
+#| fig-width: 14
+#| fig-height: 6
+
+# Plot Memory
+ggplot(results_time, aes(x = stack, y = memory_mb, fill = system)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.6) +
+  scale_fill_manual(values = cols) +
+  labs(
+    title = "RAM Footprint (Lower is Better)",
+    y = "Megabytes (MB)",
+    x = NULL
+  ) +
+  theme_minimal(base_size = 20) +
+  theme(legend.position = "none")
+```
+
+---
+
+## Why does this matter?
+
+### 1. Scalability
+* **Legacy**: Fails when Data > RAM.
+* **Modern**: Processes 100GB of data on a laptop with 8GB RAM (Streaming).
+
+### 2. File Formats
+* **Shapefile**: 3 files (.shp, .shx, .dbf). Truncates column names. 2GB Limit.
+* **Parquet**: 1 file. Preserves full names and types. No practical limit.
+
+### 3. Portability
+* **SQL**: The SQL query in R was **identical** to the SQL query in Python.
+* Logic is moved to the *Data* layer, not the *Script* layer.
+
+---
+
+## Conclusion
+
+| Feature | Legacy Stack | Modern Stack |
+|:---|:---:|:---:|
+| **Format** | CSV / Shapefile | Parquet / GeoParquet |
+| **Engine** | In-Memory (sf/pandas) | Out-of-Core (DuckDB) |
+| **Join Speed** | ~15s | ~1s |
+| **RAM Usage** | ~2 GB | ~200 MB |
+| **Limit** | RAM Size | Disk Space |
+
+<br>
+<div class="center fragment fade-up">
+### The "Modern Data Stack" isn't just hype.
+### It's simply better engineering.
+</div>

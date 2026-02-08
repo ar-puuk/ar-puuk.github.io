@@ -8,6 +8,7 @@
   {
     "listing": "/projects.html",
     "items": [
+      "/slides/spatial-benchmark/index.html",
       "/posts/wget-gui/index.html",
       "/posts/socioeconomic-demo/index.html",
       "/posts/population-pyramid-explorer/index.html",
