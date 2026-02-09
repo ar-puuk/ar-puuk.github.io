@@ -1,4 +1,6 @@
 name: website
+# Run this to create: conda env create --prefix ./env --file environment.yml
+# Run this to update: conda env update --prefix ./env --file environment.yml --prune
 channels:
   - conda-forge
   - defaults
@@ -15,4 +17,9 @@ dependencies:
   - pygris
   - polars
   - duckdb
+  # Core dependencies for Quarto execution
+  - ipykernel
+  - pyyaml
+  - nbformat
+  - nbclient
   - pip

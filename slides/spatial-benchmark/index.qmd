@@ -19,11 +19,58 @@ categories: [Geospatial, R, Python, DuckDB, Parquet]
 draft: true
 ---
 
+```{r reticulate}
+#| include: false
+
+# From slides/spatial-benchmark/, go up two levels to project root
+project_root <- normalizePath(file.path(getwd(), "..", ".."))
+
+# Find Python (tries Windows first, then Unix)
+python_path <- file.path(project_root, "env", "python.exe")
+if (!file.exists(python_path)) {
+  python_path <- file.path(project_root, "env", "bin", "python")
+}
+
+Sys.setenv(RETICULATE_PYTHON = python_path)
+
+if (requireNamespace("reticulate", quietly = TRUE)) {
+  library(reticulate)
+  reticulate::use_python(python_path, required = TRUE)
+}
+```
+
+```{r}
+#| include: false
+#| label: benchmark-configuration
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# BENCHMARK CONFIGURATION
+# ═══════════════════════════════════════════════════════════════════════════════
+# Control benchmark execution from this central location
+#
+# ITERATIONS: Number of times to run each benchmark
+#   - Use 1 for development/testing (fast iteration)
+#   - Use 10 for final presentation (stable, representative results)
+#   - Higher values reduce timing variance but increase total runtime
+#
+# Note: Changing this value requires re-rendering the entire presentation
+# ═══════════════════════════════════════════════════════════════════════════════
+
+ITERATIONS <- 1  # Set to 10 for final presentation
+```
+
 ```{r}
 #| include: false
 #| label: run-benchmark
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# EXECUTE BENCHMARK SUITE
+# ═══════════════════════════════════════════════════════════════════════════════
+# This chunk orchestrates all benchmark scripts with the configured iteration count
+# ═══════════════════════════════════════════════════════════════════════════════
+
 # Trigger the benchmark suite using R
+# The ITERATIONS variable is available to run_all.R through the global environment
 source("_scripts/run_all.R")
 ```
 
@@ -31,8 +78,13 @@ source("_scripts/run_all.R")
 #| include: false
 #| label: calc-sizes
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# CALCULATE FILE SIZES
+# ═══════════════════════════════════════════════════════════════════════════════
 # This chunk runs INSIDE the presentation render to calculate file sizes.
-# It uses strict extension matching to avoid mixing up CSV/Parquet/SHP sharing the same base name.
+# It uses strict extension matching to avoid mixing up CSV/Parquet/SHP sharing
+# the same base name.
+# ═══════════════════════════════════════════════════════════════════════════════
 
 library(dplyr)
 library(readr)
@@ -167,8 +219,8 @@ If your dataset is larger than your RAM, this script **crashes**.
 ```
 
 ::: {.callout-note}
-## Optimized
-By building an `RTREE` index, we sacrifice a few seconds at load time to gain massive speed during the join.
+## Dual Indexing Strategy
+By building `RTREE` indexes on **both** points and polygons, we enable the query optimizer to efficiently search in both directions. This is a one-time setup cost that accelerates all subsequent spatial queries.
 :::
 
 ---
@@ -182,6 +234,11 @@ By building an `RTREE` index, we sacrifice a few seconds at load time to gain ma
 #| eval: false
 #| echo: true
 ```
+
+::: {.callout-tip}
+## Implicit Indexing
+GeoPandas automatically builds an STRtree spatial index during `sjoin()`, which makes it fast for in-memory spatial joins without explicit index creation.
+:::
 
 ---
 
@@ -337,6 +394,26 @@ if(file.exists("_results/validation_stats.csv")) {
 
 ---
 
+## Understanding the Results {background-color="#f0f0f0"}
+
+### Query Execution Time vs. Total Workflow Time
+
+::: {.incremental}
+* **DuckDB's "Load Data"** includes index creation (~2-4s)
+* **DuckDB's strength**: Once indexed, queries are fast and memory-efficient
+* **GeoPandas**: Fast for single queries on datasets that fit in RAM
+* **Key insight**: For repeated queries, DuckDB's index pays for itself
+:::
+
+::: {.fragment}
+::: {.callout-note}
+## When DuckDB Shines
+For **large datasets** (>1GB), **repeated queries**, or **limited RAM**, DuckDB's dual indexing strategy becomes increasingly valuable. The index creation is a one-time cost amortized across many queries.
+:::
+:::
+
+---
+
 ## Why does this matter?
 
 ### 1. Scalability
@@ -351,6 +428,23 @@ if(file.exists("_results/validation_stats.csv")) {
 * **SQL**: The SQL query in R was **identical** to the SQL query in Python.
 * Logic is moved to the *Data* layer, not the *Script* layer.
 
+### 4. Memory Efficiency
+* **DuckDB**: Uses <30 MB RAM for spatial joins on 1.2M points
+* **Legacy**: Requires ~1-1.5 GB RAM for the same operation
+
+---
+
+## Use Case Recommendations
+
+| Scenario | Recommended Tool | Reason |
+|:---|:---:|:---|
+| **Small data (<100MB)** | sf / GeoPandas | Simple, fast, familiar |
+| **One-time analysis** | sf / GeoPandas | Setup overhead not worth it |
+| **Large data (>1GB)** | DuckDB + Parquet | Out-of-core processing |
+| **Repeated queries** | DuckDB + Parquet | Index once, query many |
+| **Limited RAM** | DuckDB + Parquet | Memory-efficient streaming |
+| **Cross-platform** | DuckDB + Parquet | SQL is portable R↔Python |
+
 ---
 
 ## Conclusion
@@ -359,12 +453,14 @@ if(file.exists("_results/validation_stats.csv")) {
 |:---|:---:|:---:|
 | **Format** | CSV / Shapefile | Parquet / GeoParquet |
 | **Engine** | In-Memory (sf/pandas) | Out-of-Core (DuckDB) |
-| **Join Speed** | ~5-25s | ~25-40s |
+| **Index Creation** | Automatic (hidden) | Explicit (dual RTREE) |
+| **Query Speed** | Fast (if fits in RAM) | Fast (with indexing) |
 | **RAM Usage** | ~1.5 GB | **< 30 MB** |
 | **Limit** | RAM Size | Disk Space |
+| **Best For** | Small, one-off tasks | Large, repeated queries |
 
 <br>
 <div class="center fragment fade-up">
 ### The "Modern Data Stack" isn't just hype.
-### It's simply better engineering.
+### It's better engineering for the right use case.
 </div>

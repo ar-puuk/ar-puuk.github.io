@@ -24,3 +24,5 @@ renv/python/
 renv/staging/
 
 /env/
+
+/_*.local

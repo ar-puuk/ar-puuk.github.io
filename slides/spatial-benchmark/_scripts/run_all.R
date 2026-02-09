@@ -1,6 +1,22 @@
-# Orchestration Script (R Version)
+# ═══════════════════════════════════════════════════════════════════════════════
+# ORCHESTRATION SCRIPT: Benchmark Suite Runner
+# ═══════════════════════════════════════════════════════════════════════════════
+# Based on the old working version, simplified and portable
+# ═══════════════════════════════════════════════════════════════════════════════
 
-# --- Helper Functions ---
+# ───────────────────────────────────────────────────────────────────────────────
+## CONFIGURATION ----
+# ───────────────────────────────────────────────────────────────────────────────
+
+# Iterations (can be set before sourcing this script)
+if (!exists("ITERATIONS")) {
+  ITERATIONS <- 1
+}
+
+# ───────────────────────────────────────────────────────────────────────────────
+## HELPER FUNCTIONS ----
+# ───────────────────────────────────────────────────────────────────────────────
+
 run_r_script <- function(script_path) {
   message(paste("--- Running R:", script_path, "---"))
   if (!file.exists("../../renv.lock")) {
@@ -15,20 +31,32 @@ run_r_script <- function(script_path) {
 
 run_py_script <- function(script_path, python_path) {
   message(paste("--- Running Python:", script_path, "---"))
+
+  # Set iterations for Python scripts
+  Sys.setenv(BENCHMARK_ITERATIONS = ITERATIONS)
+
   exit_code <- system2(python_path, args = c(script_path))
   if (exit_code != 0) stop(paste("Script failed:", script_path))
 }
 
-# --- 1. Resolve Python Environment ---
+# ───────────────────────────────────────────────────────────────────────────────
+## SETUP ----
+# ───────────────────────────────────────────────────────────────────────────────
+
+message(paste("[Init] Running with ITERATIONS =", ITERATIONS))
+
+# Resolve Python path (portable across devices)
 python_exec <- "python"
+
 if (file.exists("../../env/python.exe")) {
   python_exec <- normalizePath("../../env/python.exe")
 } else if (file.exists("../../env/bin/python")) {
   python_exec <- normalizePath("../../env/bin/python")
 }
+
 message(paste("[Init] Using Python:", python_exec))
 
-# --- 2. Setup Results Folder ---
+# Create directories
 if (!dir.exists("_results")) {
   dir.create("_results")
 }
@@ -36,13 +64,16 @@ if (!dir.exists("_data")) {
   dir.create("_data")
 }
 
-# Initialize Results CSV in the NEW location
+# Initialize results CSV
 results_csv <- "_results/benchmark_results.csv"
 cat("system,language,operation,time_sec,memory_mb\n", file = results_csv)
+message("")
 
-# --- 3. Execute Benchmarks ---
+# ───────────────────────────────────────────────────────────────────────────────
+## EXECUTE BENCHMARKS ----
+# ───────────────────────────────────────────────────────────────────────────────
 
-# Setup Data (Only runs if needed)
+# Setup Data (if exists)
 if (file.exists("_scripts/00_setup_data.R")) {
   run_r_script("_scripts/00_setup_data.R")
 }
@@ -53,4 +84,10 @@ run_r_script("_scripts/02_bench_duckdb.R")
 run_py_script("_scripts/03_bench_geopandas.py", python_exec)
 run_py_script("_scripts/04_bench_duckdb.py", python_exec)
 
-message("--- SUCCESS: Benchmarks Complete ---")
+message("─────────────────────────────────────────────────────────")
+message("SUCCESS: Benchmarks Complete!")
+message("─────────────────────────────────────────────────────────")
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# END OF ORCHESTRATION SCRIPT
+# ═══════════════════════════════════════════════════════════════════════════════
