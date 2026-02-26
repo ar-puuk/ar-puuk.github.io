@@ -1,7 +1,7 @@
 ---
 title: "Building a Client-Side Spatial SQL Explorer"
 subtitle: DuckDB-WASM, MapLibre GL, and CodeMirror 6 — all in the browser
-image: "spatial_sql_exporer.png"
+image: "spatial_sql_explorer.png"
 author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com
