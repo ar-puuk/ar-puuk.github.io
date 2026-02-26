@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Pukar Bhandari</title>
+<link>https://ar-puuk.github.io/projects.html</link>
+<atom:link href="https://ar-puuk.github.io/projects.xml" rel="self" type="application/rss+xml"/>
+<description>Pukar Bhandari is a Transportation Planner and Data Scientist working at the intersection of Transportation Modeling, Economic Impact Analysis, and Data Science.</description>
+<generator>quarto-1.8.27</generator>
+<lastBuildDate>Wed, 25 Feb 2026 07:00:00 GMT</lastBuildDate>
+<item>
+  <title>Building a Client-Side Spatial SQL Explorer</title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/posts/spatial-sql-exporer/</link>
+  <description><![CDATA[ Most of my day-to-day GIS work happens in R or Python — loading a shapefile, writing a few spatial queries, maybe making a quick map to sanity-check the results. That workflow is fast when you’re already in a scripting environment, but it has real friction when you just want to hand someone a tool to explore a dataset without asking them to install anything, configure a Python environment, or deal with a server. ]]></description>
+  <category>JavaScript</category>
+  <category>GIS</category>
+  <category>DuckDB</category>
+  <category>WebAssembly</category>
+  <category>Open Source</category>
+  <guid>https://ar-puuk.github.io/posts/spatial-sql-exporer/</guid>
+  <pubDate>Wed, 25 Feb 2026 07:00:00 GMT</pubDate>
+  <media:content url="https://ar-puuk.github.io/posts/spatial-sql-exporer/spatial_sql_exporer.png" medium="image" type="image/png"/>
+</item>
+<item>
+  <title>WgetGUI Ultimate: A Fluent Command Generator</title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/posts/wget-gui/</link>
+  <description><![CDATA[ A modern, Windows 11-inspired web interface for building complex GNU Wget commands ]]></description>
+  <category>Tools</category>
+  <category>Utilities</category>
+  <category>Web Development</category>
+  <guid>https://ar-puuk.github.io/posts/wget-gui/</guid>
+  <pubDate>Sun, 25 Jan 2026 07:00:00 GMT</pubDate>
+  <media:content url="https://ar-puuk.github.io/posts/wget-gui/wget_gui.png" medium="image" type="image/png" height="68" width="144"/>
+</item>
+<item>
+  <title>Base Year SE Data Development</title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/posts/socioeconomic-demo/</link>
+  <description><![CDATA[ This section establishes the computational environment for processing socioeconomic data inputs for the Lower Savannah Council of Governments regional travel demand model using both R and Python platforms. ]]></description>
+  <category>R</category>
+  <category>Python</category>
+  <category>GIS</category>
+  <category>Data Science</category>
+  <category>Transportation</category>
+  <guid>https://ar-puuk.github.io/posts/socioeconomic-demo/</guid>
+  <pubDate>Sat, 05 Jul 2025 06:00:00 GMT</pubDate>
+  <media:content url="https://ar-puuk.github.io/posts/socioeconomic-demo/lscog_taz.png" medium="image" type="image/png" height="112" width="144"/>
+</item>
+<item>
+  <title>Building an Interactive Population Pyramid Explorer</title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/posts/population-pyramid-explorer/</link>
+  <description><![CDATA[ A deep dive into creating a story-driven Shiny application that combines interactive mapping with demographic visualizations using Census data. ]]></description>
+  <category>R</category>
+  <category>Shiny</category>
+  <category>GIS</category>
+  <category>Census Data</category>
+  <category>Dashboard</category>
+  <guid>https://ar-puuk.github.io/posts/population-pyramid-explorer/</guid>
+  <pubDate>Wed, 25 Jun 2025 06:00:00 GMT</pubDate>
+  <media:content url="https://ar-puuk.github.io/posts/population-pyramid-explorer/population_pyramid_explorer.png" medium="image" type="image/png" height="74" width="144"/>
+</item>
+<item>
+  <title>Interactive Robocopy GUI Tool</title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/posts/robocopy-gui/</link>
+  <description><![CDATA[ A web-based interface for generating Windows robocopy commands with ease ]]></description>
+  <category>Tools</category>
+  <category>Utilities</category>
+  <category>Windows</category>
+  <guid>https://ar-puuk.github.io/posts/robocopy-gui/</guid>
+  <pubDate>Sun, 15 Jun 2025 06:00:00 GMT</pubDate>
+  <media:content url="https://ar-puuk.github.io/posts/robocopy-gui/robocopy_gui.png" medium="image" type="image/png" height="68" width="144"/>
+</item>
+<item>
+  <title>Overture Maps Data Download</title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/posts/overture-data-download/</link>
+  <description><![CDATA[ Overture Maps Foundation provides a collaborative, open-source initiative to create the world’s most comprehensive and interoperable geospatial dataset. As transportation planners and data analysts, we often need access to high-quality geospatial data for buildings, transportation networks, places, and administrative boundaries. This post demonstrates how to efficiently download Overture Maps data using both R and Python with DuckDB’s powerful spatial capabilities. ]]></description>
+  <category>R</category>
+  <category>Python</category>
+  <category>GIS</category>
+  <category>Data Science</category>
+  <guid>https://ar-puuk.github.io/posts/overture-data-download/</guid>
+  <pubDate>Wed, 22 May 2024 06:00:00 GMT</pubDate>
+  <media:content url="https://ar-puuk.github.io/posts/overture-data-download/overture_data_download.png" medium="image" type="image/png" height="87" width="144"/>
+</item>
+<item>
+  <title>Building a U.S. Census Data Explorer</title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/posts/uscensus-dashboard/</link>
+  <description><![CDATA[ Learn how to build an interactive Shiny dashboard for exploring U.S. Census data including ACS, Decennial Census, and LEHD datasets with integrated mapping capabilities. ]]></description>
+  <category>R</category>
+  <category>Shiny</category>
+  <category>GIS</category>
+  <category>Census Data</category>
+  <category>Dashboard</category>
+  <guid>https://ar-puuk.github.io/posts/uscensus-dashboard/</guid>
+  <pubDate>Sat, 11 May 2024 06:00:00 GMT</pubDate>
+  <media:content url="https://ar-puuk.github.io/posts/uscensus-dashboard/uscensus_dashboard.png" medium="image" type="image/png" height="73" width="144"/>
+</item>
+<item>
+  <title>3D Population Density Mapping of Nepal</title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/posts/nepal-population-density/</link>
+  <description><![CDATA[ This analysis demonstrates advanced geospatial visualization techniques using R’s rayshader package to create a stunning 3D population density map of Nepal. The project showcases the integration of high-resolution population data with topographic visualization methods, resulting in an interactive and informative representation of demographic patterns across Nepal’s diverse terrain. ]]></description>
+  <category>R</category>
+  <category>GIS</category>
+  <category>Data Science</category>
+  <guid>https://ar-puuk.github.io/posts/nepal-population-density/</guid>
+  <pubDate>Tue, 03 Jan 2023 07:00:00 GMT</pubDate>
+  <media:content url="https://ar-puuk.github.io/posts/nepal-population-density/nepal_population_density.png" medium="image" type="image/png" height="79" width="144"/>
+</item>
+</channel>
+</rss>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.8.27">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Pukar Bhandari">
 <meta name="dcterms.date" content="2023-01-03">
@@ -71,9 +71,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-53c6945620fec63ef1d2b83c6e793dac.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-4913800b7d3ce971e4b39900c1a7f6ba.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-53c6945620fec63ef1d2b83c6e793dac.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-38592dd34e57e8b452f9cd91da5d3910.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-4afd397f9cee0995efc1499674d2b1d6.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-38592dd34e57e8b452f9cd91da5d3910.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-dfc8ce7107dc763be4e8c212eb475d02.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
@@ -641,7 +641,7 @@ Note
 <span><span class="va">texture</span> <span class="op">&lt;-</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/colorRamp.html">colorRampPalette</a></span><span class="op">(</span><span class="va">color</span>, bias <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">(</span><span class="fl">256</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Preview color scheme</span></span>
-<span><span class="fu">colorspace</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/colorspace/man/swatchplot.html">swatchplot</a></span><span class="op">(</span><span class="va">texture</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="fu">colorspace</span><span class="fu">::</span><span class="fu"><a href="https://colorspace.R-Forge.R-project.org/reference/swatchplot.html">swatchplot</a></span><span class="op">(</span><span class="va">texture</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/color-palette-1.png" class="img-fluid figure-img" width="672"></p>
@@ -723,8 +723,8 @@ Note
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Define text styling</span></span>
-<span><span class="va">text_color</span> <span class="op">&lt;-</span> <span class="fu">colorspace</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/colorspace/man/lighten.html">darken</a></span><span class="op">(</span><span class="va">color</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span>, <span class="fl">.5</span><span class="op">)</span></span>
-<span><span class="fu">colorspace</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/colorspace/man/swatchplot.html">swatchplot</a></span><span class="op">(</span><span class="va">text_color</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="va">text_color</span> <span class="op">&lt;-</span> <span class="fu">colorspace</span><span class="fu">::</span><span class="fu"><a href="https://colorspace.R-Forge.R-project.org/reference/lighten.html">darken</a></span><span class="op">(</span><span class="va">color</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span>, <span class="fl">.5</span><span class="op">)</span></span>
+<span><span class="fu">colorspace</span><span class="fu">::</span><span class="fu"><a href="https://colorspace.R-Forge.R-project.org/reference/swatchplot.html">swatchplot</a></span><span class="op">(</span><span class="va">text_color</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/image-annotation-1.png" class="img-fluid figure-img" width="672"></p>
