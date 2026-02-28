@@ -127,6 +127,7 @@ run_r_script("_scripts/02_bench_duckdb.R")
 run_py_script("_scripts/03_bench_geopandas.py", python_exec)
 run_py_script("_scripts/04_bench_duckdb.py", python_exec)
 run_r_script("_scripts/05_bench_sedonadb.R")
+# run_py_script("_scripts/06_bench_sedonadb.py", python_exec)
 
 message("─────────────────────────────────────────────────────────")
 message("SUCCESS: All benchmarks complete.")

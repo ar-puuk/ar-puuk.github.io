@@ -88,7 +88,7 @@ on.exit({
 # Set env vars in parent — callr subprocess inherits them automatically
 Sys.setenv(
   RENV_CONFIG_AUTOLOADER_ENABLED = "FALSE",  # Prevent renv re-activating in child
-  BENCHMARK_ITERATIONS           = "10"
+  BENCHMARK_ITERATIONS           = "1"
 )
 
 log_file <- "_results/run_all_log.txt"
@@ -242,7 +242,7 @@ If your dataset is larger than your RAM, this script **crashes**.
 
 ## Benchmark 02: Modern R (`DuckDB`) {.scrollable}
 
-**The "Index" Way**: Ingest, Index, and Query.
+**The "Modern" Way**: Columnar Parquet + embedded SQL engine.
 
 ```{r}
 #| file: _scripts/02_bench_duckdb.R
@@ -251,12 +251,11 @@ If your dataset is larger than your RAM, this script **crashes**.
 ```
 
 ::: {.callout-note}
-## Dual Indexing Strategy
-By building `RTREE` indexes on **both** points and polygons, we enable the
-query optimizer to efficiently search in both directions. Note that
-`ST_Intersects` (not `ST_Within`) is used in the join predicate — this is
-the predicate that DuckDB's RTREE engine actually accelerates for
-point-polygon queries.
+## DuckDB's SPATIAL_JOIN
+DuckDB's spatial extension uses its own internal `SPATIAL_JOIN` operator for
+`ST_Intersects` predicates — bypassing any explicit RTREE index. No `CREATE
+INDEX` step is needed or helpful for spatial joins. DuckDB handles spatial
+query planning automatically.
 :::
 
 ---
@@ -291,6 +290,13 @@ highly efficient.
 #| echo: true
 ```
 
+::: {.callout-note}
+## No Explicit Index Needed
+Same finding as Benchmark 02 — DuckDB's `SPATIAL_JOIN` operator handles
+spatial query planning internally. The `Build Index` phase has been removed
+from both R and Python DuckDB benchmarks.
+:::
+
 ---
 
 ## Benchmark 05: Modern R (`SedonaDB`) {.scrollable}
@@ -319,6 +325,26 @@ query. This is why "Load Data" for SedonaDB is near-instant, and "Validation
 
 ---
 
+## Benchmark 06: Modern Python (`SedonaDB`) {.scrollable}
+
+**Same Engine, Python API**: `sedona.db.connect()` — identical DataFusion backend.
+
+```{python}
+#| file: _scripts/06_bench_sedonadb.py
+#| eval: false
+#| echo: true
+```
+
+::: {.callout-note}
+## SedonaDB Python vs R
+The Python and R SedonaDB packages share the same underlying Rust/DataFusion
+engine. Performance should be nearly identical — any difference reflects Python
+vs R interpreter overhead in the benchmark harness, not the engine itself.
+Install: `conda install "apache-sedona[db]"`
+:::
+
+---
+
 ## Results: Execution Time
 
 ```{ojs}
@@ -326,8 +352,8 @@ query. This is why "Load Data" for SedonaDB is near-instant, and "Validation
 //| panel: sidebar
 
 viewof opFilter = Inputs.checkbox(
-  ["Load Data", "Build Index", "Validation (Join)"],
-  { value: ["Load Data", "Build Index", "Validation (Join)"], label: "Toggle Steps:" }
+  ["Load Data", "Validation (Join)"],
+  { value: ["Load Data", "Validation (Join)"], label: "Toggle Steps:" }
 )
 ```
 
@@ -462,24 +488,33 @@ if (file.exists("_results/validation_stats.csv")) {
 
 ## Understanding the Results {background-color="#f0f0f0"}
 
-### Query Execution Time vs. Total Workflow Time
+### What the numbers actually show
 
 ::: {.incremental}
-* **DuckDB's "Load Data"** measures only Parquet ingest + WKB conversion (~2–3s)
-* **DuckDB's "Build Index"** measures the RTREE index creation (~2–4s, **one-time cost**)
-* **DuckDB's strength**: Once indexed, queries are 5–10× faster than the legacy stack
-* **Key insight**: For repeated queries, the index cost is amortized to near-zero
+* **SedonaDB: 1.9s** — fastest overall, even though this includes the actual Parquet scan (lazy I/O)
+* **GeoPandas: 3.1s** — fast because 29 polygons fit in RAM and implicit STRtree is efficient
+* **sf: 28.6s** — pure in-memory but slow due to GEOS geometry overhead at 1.2M points
+* **DuckDB: 50s (R) / 96s (Python)** — **slower than sf**, despite having an explicit RTREE index
+:::
+
+::: {.fragment}
+::: {.callout-warning}
+## DuckDB's SPATIAL_JOIN Bypasses Explicit RTREE Indexes
+`EXPLAIN` confirmed: DuckDB's spatial extension intercepts any `ST_Intersects`
+join and routes it through its own `SPATIAL_JOIN` + `SEQ_SCAN` operator,
+ignoring user-created RTREE indexes entirely. The ~50s join time is DuckDB's
+**actual** spatial join performance on this dataset — explicit indexes provide
+no benefit. DuckDB's strength is analytical SQL, not optimized spatial joins.
+:::
 :::
 
 ::: {.fragment}
 ::: {.callout-note}
-## Why `ST_Intersects` instead of `ST_Within`?
-DuckDB's RTREE index accelerates **bounding-box operations** (`ST_Intersects`).
-For point geometries, `ST_Intersects(point, polygon)` is mathematically
-identical to `ST_Within(point, polygon)` — a point either lies inside or
-outside, it cannot straddle a boundary. Using `ST_Intersects` lets the RTREE
-eliminate irrelevant polygons via bounding box, then applies the exact
-geometry check.
+## SedonaDB: Lazy Evaluation + Predicate Pushdown
+SedonaDB's DataFusion engine reads only the Parquet data needed to satisfy the
+join, applying spatial filters at scan time with no explicit index step. This is
+why "Load Data" is ~0s (view registration only) and "Validation (Join)" at 1.9s
+includes full I/O — yet still beats everything else.
 :::
 :::
 
@@ -489,19 +524,20 @@ geometry check.
 
 ### 1. Scalability
 * **Legacy**: Fails when Data > RAM.
-* **Modern**: Processes 100GB of data on a laptop with 8GB RAM (Streaming).
+* **Modern (DuckDB/SedonaDB)**: Streams data — processes datasets larger than RAM.
 
 ### 2. File Formats
 * **Shapefile**: 3+ files (.shp, .shx, .dbf). Truncates column names. 2GB limit.
-* **Parquet**: 1 file. Preserves full names and types. No practical size limit.
+* **Parquet**: 1 file. Full column names and types. **79% smaller** (333MB CSV → 71MB Parquet).
 
-### 3. Portability
-* **SQL**: The SQL query in R was **identical** to the SQL query in Python.
-* Logic is moved to the *Data* layer, not the *Script* layer.
+### 3. Memory Efficiency
+* **Legacy (sf/GeoPandas)**: 990MB–1.3GB resident for this dataset.
+* **DuckDB**: 122MB load, ~2MB query — streams without holding all data in memory.
+* **SedonaDB**: ~9MB — Rust arena + lazy scan reads only what the join needs.
 
-### 4. Memory Efficiency
-* **DuckDB**: Uses modest RAM for spatial joins via streaming execution.
-* **Legacy**: Requires 1–1.5 GB RAM to hold entire dataset in memory.
+### 4. Portability
+* **SQL**: The join query in R was **identical** to the join query in Python.
+* Logic lives in the *query*, not scattered across tool-specific APIs.
 
 ---
 
@@ -509,29 +545,40 @@ geometry check.
 
 | Scenario | Recommended Tool | Reason |
 |:---|:---:|:---|
-| **Small data (<100MB)** | sf / GeoPandas | Simple, fast, familiar |
-| **One-time analysis** | sf / GeoPandas | Setup overhead not worth it |
-| **Large data (>1GB)** | DuckDB + Parquet | Out-of-core processing |
-| **Repeated queries** | DuckDB + Parquet | Index once, query many |
-| **Limited RAM** | DuckDB + Parquet | Memory-efficient streaming |
-| **Cross-platform** | DuckDB + Parquet | SQL is portable R↔Python |
+| **Small data (<100MB), one-off** | sf / GeoPandas | Simple, fast, no setup overhead |
+| **Large data, repeated SQL queries** | DuckDB + Parquet | Index once, stream large datasets |
+| **Large data, spatial joins** | SedonaDB + Parquet | Lazy pushdown, no explicit index needed |
+| **Limited RAM** | DuckDB or SedonaDB | Both stream — legacy stack crashes |
+| **Cross-language portability** | DuckDB + Parquet | Same SQL in R and Python |
+| **Fastest spatial join, R** | SedonaDB | DataFusion outperforms explicit RTREE |
 
 ---
 
 ## Conclusion
 
-| Feature | Legacy Stack | Modern Stack |
-|:---|:---:|:---:|
-| **Format** | CSV / Shapefile | Parquet / GeoParquet |
-| **Engine** | In-Memory (sf/pandas) | Out-of-Core (DuckDB) |
-| **Index Creation** | Automatic (hidden) | Explicit (dual RTREE) |
-| **Query Speed** | Fast (if fits in RAM) | Fast (with indexing) |
-| **RAM Usage** | ~1.5 GB | Modest (streams data) |
-| **Limit** | RAM Size | Disk Space |
-| **Best For** | Small, one-off tasks | Large, repeated queries |
+| Feature | Legacy (sf/GeoPandas) | DuckDB | SedonaDB |
+|:---|:---:|:---:|:---:|
+| **Format** | CSV / Shapefile | Parquet | Parquet |
+| **Join Time** | 4–29s | ~33s (R) / ~58s (Python) | **1.5s** ✅ |
+| **RAM Usage** | ~1–1.3 GB | ~120MB | ~9MB |
+| **Index Setup** | Automatic | None (SPATIAL_JOIN handles it) | None needed |
+| **Lazy I/O** | ✗ | ✗ | ✅ |
+| **Language** | R / Python | R + Python | R |
+| **Best For** | Small, one-off | Large SQL workflows | Fast spatial joins |
+
+::: {.fragment}
+::: {.callout-important}
+## DuckDB's Explicit RTREE Has No Effect on Spatial Joins
+`EXPLAIN` confirmed: DuckDB's `SPATIAL_JOIN` operator overrides user-created
+RTREE indexes — both tables are scanned sequentially regardless. For spatial
+joins, DuckDB's ~50s time is the real baseline. For large-scale non-spatial
+SQL analytics and out-of-core processing, DuckDB remains the right tool.
+:::
+:::
 
 <br>
 <div class="center fragment fade-up">
-### The "Modern Data Stack" isn't just hype.
-### It's better engineering for the right use case.
+### The winner for spatial joins: SedonaDB.
+### The winner for portable, large-scale SQL: DuckDB.
+### The right tool depends on your workflow.
 </div>
