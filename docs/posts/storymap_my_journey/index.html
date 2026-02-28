@@ -1,2 +1,1709 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"></html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Pukar Bhandari">
+<meta name="dcterms.date" content="2025-09-03">
+<meta name="description" content="Creating an open-source, interactive storymap with the {mapgl} R package to visualize my journey across the world.">
+
+<title>Building an Interactive Storymap using {mapgl} – Pukar Bhandari</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../assets/images/pb-logo.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-38592dd34e57e8b452f9cd91da5d3910.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-4afd397f9cee0995efc1499674d2b1d6.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-38592dd34e57e8b452f9cd91da5d3910.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-dfc8ce7107dc763be4e8c212eb475d02.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-f4acea4a7c5f8feb9f18e424fbc46352.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-dfc8ce7107dc763be4e8c212eb475d02.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<meta name="shinylive:serviceworker_dir" content="../..">
+<script src="../../site_libs/quarto-contrib/shinylive-0.9.1/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="../../site_libs/quarto-contrib/shinylive-0.9.1/shinylive/run-python-blocks.js" type="module"></script>
+<link href="../../site_libs/quarto-contrib/shinylive-0.9.1/shinylive/shinylive.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/academicons-1.9.4/size.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- Optimized Font Preloading -->
+
+
+
+<!-- Body text font (Poppins Regular) -->
+
+<link rel="preload" href="../../assets/fonts/Poppins-Regular.woff2" as="font" type="font/woff2" crossorigin="">
+
+
+
+<link rel="stylesheet" href="../../assets/css/index.css">
+<meta property="og:title" content="Building an Interactive Storymap using {mapgl} – Pukar Bhandari">
+<meta property="og:description" content="Creating an open-source, interactive storymap with the {mapgl} R package to visualize my journey across the world.">
+<meta property="og:image" content="https://ar-puuk.github.io/posts/storymap_my_journey/storymap_my_journey.png">
+<meta property="og:site_name" content="Pukar Bhandari">
+<meta property="og:image:height" content="1258">
+<meta property="og:image:width" content="2209">
+<meta name="twitter:title" content="Building an Interactive Storymap using {mapgl} – Pukar Bhandari">
+<meta name="twitter:description" content="Creating an open-source, interactive storymap with the {mapgl} R package to visualize my journey across the world.">
+<meta name="twitter:image" content="https://ar-puuk.github.io/posts/storymap_my_journey/storymap_my_journey.png">
+<meta name="twitter:creator" content="@arpuuk">
+<meta name="twitter:site" content="@arpuuk">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="1258">
+<meta name="twitter:image-width" content="2209">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/images/pb-logo.svg" alt="" class="navbar-logo light-content">
+    <img src="../../assets/images/pb-logo.svg" alt="" class="navbar-logo dark-content">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Pukar Bhandari</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resume.html"> 
+<span class="menu-text">Resume</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-socials" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Socials</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-socials">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/ar-puuk/" target="_blank"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Github</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.linkedin.com/in/arpuuk" target="_blank"><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="dropdown-text">LinkedIn</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://urbanists.social/@arpuuk" target="_blank"><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="dropdown-text">Mastodon</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bsky.app/profile/arpuuk.bsky.social" target="_blank"><i class="bi bi-bluesky" role="img">
+</i> 
+ <span class="dropdown-text">Bluesky</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="mailto:pukar.bhandari@outlook.com" target="_blank"><i class="bi bi-envelope-fill" role="img">
+</i> 
+ <span class="dropdown-text">E-mail</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../projects.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <div class="quarto-title-block"><div><h1 class="title">Building an Interactive Storymap using {mapgl}</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+            <p class="subtitle lead">A Visual Journey Through My Life.</p>
+                  <div>
+        <div class="description">
+          <p>Creating an open-source, interactive storymap with the {mapgl} R package to visualize my journey across the world.</p>
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">Shiny</div>
+                <div class="quarto-category">Storymap</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Pukar Bhandari <a href="mailto:pukar.bhandari@outlook.com" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 3, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#why-mapgl-for-storymaps" id="toc-why-mapgl-for-storymaps" class="nav-link" data-scroll-target="#why-mapgl-for-storymaps"><span class="header-section-number">2</span> Why {mapgl} for Storymaps?</a></li>
+  <li><a href="#interactive-storymap-demo" id="toc-interactive-storymap-demo" class="nav-link" data-scroll-target="#interactive-storymap-demo"><span class="header-section-number">3</span> Interactive Storymap Demo</a></li>
+  <li><a href="#source-code" id="toc-source-code" class="nav-link" data-scroll-target="#source-code"><span class="header-section-number">4</span> Source Code</a></li>
+  <li><a href="#understanding-the-app-structure" id="toc-understanding-the-app-structure" class="nav-link" data-scroll-target="#understanding-the-app-structure"><span class="header-section-number">5</span> Understanding the App Structure</a>
+  <ul class="collapse">
+  <li><a href="#setting-up-the-user-interface" id="toc-setting-up-the-user-interface" class="nav-link" data-scroll-target="#setting-up-the-user-interface">Setting Up the User Interface</a></li>
+  <li><a href="#configuring-the-map" id="toc-configuring-the-map" class="nav-link" data-scroll-target="#configuring-the-map">Configuring the Map</a></li>
+  <li><a href="#implementing-section-behaviors" id="toc-implementing-section-behaviors" class="nav-link" data-scroll-target="#implementing-section-behaviors">Implementing Section Behaviors</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">6</span> Conclusion</a></li>
+  <li><a href="#additional-resources" id="toc-additional-resources" class="nav-link" data-scroll-target="#additional-resources"><span class="header-section-number">7</span> Additional Resources</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+
+<section id="introduction" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
+<p>Interactive storymaps have become an increasingly popular tool for data visualization and storytelling, particularly in fields like urban planning, transportation analysis, and geographic data science. They allow us to combine spatial data with narrative elements, creating compelling visual stories that engage audiences while conveying complex information effectively.</p>
+<p>In this post, I’ll walk you through creating an interactive storymap using the {mapgl} R package—a powerful tool that leverages MapLibre GL JS to create stunning, performant web maps. This particular storymap traces my personal journey across different locations where I’ve lived, studied, and worked, from Nepal to the United States.</p>
+</section>
+<section id="why-mapgl-for-storymaps" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="why-mapgl-for-storymaps"><span class="header-section-number">2</span> Why {mapgl} for Storymaps?</h2>
+<p>The {mapgl} package offers several advantages for transportation planners and data analysts:</p>
+<ul>
+<li><strong>Performance</strong>: Built on MapLibre GL JS, it handles large datasets and complex visualizations smoothly</li>
+<li><strong>Interactivity</strong>: Native support for user interactions, animations, and dynamic content</li>
+<li><strong>Customization</strong>: Extensive styling options and the ability to use custom map tiles</li>
+<li><strong>Integration</strong>: Seamless integration with Shiny for reactive web applications</li>
+<li><strong>Open Source</strong>: No API keys required when using open map styles</li>
+</ul>
+</section>
+<section id="interactive-storymap-demo" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="interactive-storymap-demo"><span class="header-section-number">3</span> Interactive Storymap Demo</h2>
+<p>Below is the complete interactive storymap. You can scroll through the different sections to see how the map smoothly transitions between locations, each representing a significant milestone in my journey.</p>
+<pre id="annotated-cell-1" class="shinylive-r code-annotation-code" data-engine="r"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| viewerHeight: 600
+
+# Install mapgl from r-wasm repo
+webr::install("mapgl", repos = "https://repo.r-wasm.org")
+webr::install("codetools", repos = "https://repo.r-wasm.org")
+
+## file: app.R
+library(shiny)
+library(mapgl)
+
+ui &lt;- shiny::fluidPage(
+  tags$link(
+    href = "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&amp;display=swap",
+    rel="stylesheet"
+  ),
+  mapgl::story_map(
+    map_id = "map",
+    font_family = "Poppins",
+    sections = list(
+      "intro" = mapgl::story_section(
+        title = "Introduction",
+        content = "Hello I am Pukar Bhandari; and this is my life journey."
+      ),
+      "childhood" = mapgl::story_section(
+        title = "Birtamode, Jhapa",
+        content = "This is where I was born and spent the early part of my life until 2013."
+      ),
+      "bachelors" = mapgl::story_section(
+        title = "Pulchowk, Lalitpur",
+        content = "I then moved to Pulchowk in the pursuit of higher education. I obtained my Bachelor's Degree in Architecture from Institute of Engineering Pulchowk Campus in 2018."
+      ),
+      "masters" = mapgl::story_section(
+        title = "Salt Lake City, UT",
+        content = "In pursuit of even higher education, I moved to Salt Lake City, UT where I obtained my Master of City &amp; Metropolitan Planning degree from the University of Utah in May 2023."
+      ),
+      "metro_analytics" = mapgl::story_section(
+        title = "Atlanta, GA",
+        content = "I then moved to Altanta in June 2023 to work as a transportation planner &amp; analyst at Metro Analytics until September 2025."
+      ),
+      "wfrc_ut" = mapgl::story_section(
+        title = "Back to Salt Lake City, UT",
+        content = "After gaining entry-level experience in transportation planning, travel demand modeling, and data analytics, I moved back to Salt Lake City - a place I am personally and professionally attached to - in order to join the awesome Analytics team at the Wasatch Front Regional Council."
+      )
+    ),
+    map_type = "maplibre"
+  )
+)
+
+server &lt;- function(input, output, session) {
+  output$map &lt;- mapgl::renderMaplibre({
+    mapgl::maplibre(
+      style = mapgl::openfreemap_style("liberty"),
+      center = c(0, 0),
+      zoom = 2.75,
+      scrollZoom = FALSE
+    ) |&gt;
+      mapgl::set_projection(projection = "globe") |&gt;
+      mapgl::add_globe_control() |&gt;
+      mapgl::add_navigation_control(visualize_pitch = TRUE) |&gt;
+      mapgl::add_globe_minimap(position = "bottom-left")
+  })
+
+  mapgl::on_section("map", "intro", {
+    mapgl::maplibre_proxy("map") |&gt;
+      mapgl::clear_markers() |&gt;
+      mapgl::fly_to(
+        center = c(0, 0),
+        zoom = 2.75,
+        pitch = 0,
+        bearing = 0
+      )
+  })
+
+  mapgl::on_section("map", "childhood", {
+    mapgl::maplibre_proxy("map") |&gt;
+      mapgl::fly_to(center = c(87.99371750247397, 26.646533355308083),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section("map", "bachelors", {
+    mapgl::maplibre_proxy("map") |&gt;
+      mapgl::fly_to(center = c(85.31840215760691, 27.681136558618093),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section("map", "masters", {
+    mapgl::maplibre_proxy("map") |&gt;
+      mapgl::fly_to(center = c(-111.84448004883544, 40.76106105996334),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section("map", "metro_analytics", {
+    mapgl::maplibre_proxy("map") |&gt;
+      mapgl::fly_to(center = c(-84.3938999520061, 33.76728402587881),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section("map", "wfrc_ut", {
+    mapgl::maplibre_proxy("map") |&gt;
+      mapgl::fly_to(center = c(-111.90422445885304, 40.76973849954712),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+}
+
+shiny::shinyApp(ui, server)</code></pre>
+</section>
+<section id="source-code" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="source-code"><span class="header-section-number">4</span> Source Code</h2>
+<p>The storymap application follows a typical Shiny structure with some specialized {mapgl} components. Following is the source code for this dashboard (Please click on the numbers on the far right for additional explanation of syntax and mechanics):</p>
+<div class="cell">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>app.R</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1">1</button><span id="annotated-cell-2-1" class="code-annotation-target"><a href="#annotated-cell-2-1"></a><span class="fu">library</span>(shiny)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2">2</button><span id="annotated-cell-2-2" class="code-annotation-target"><a href="#annotated-cell-2-2"></a><span class="fu">library</span>(mapgl)</span>
+<span id="annotated-cell-2-3"><a href="#annotated-cell-2-3"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="3">3</button><span id="annotated-cell-2-4" class="code-annotation-target"><a href="#annotated-cell-2-4"></a>ui <span class="ot">&lt;-</span> shiny<span class="sc">::</span><span class="fu">fluidPage</span>(</span>
+<span id="annotated-cell-2-5"><a href="#annotated-cell-2-5"></a>  tags<span class="sc">$</span><span class="fu">link</span>(</span>
+<span id="annotated-cell-2-6"><a href="#annotated-cell-2-6"></a>    <span class="at">href =</span> <span class="st">"https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&amp;display=swap"</span>,</span>
+<span id="annotated-cell-2-7"><a href="#annotated-cell-2-7"></a>    <span class="at">rel=</span><span class="st">"stylesheet"</span></span>
+<span id="annotated-cell-2-8"><a href="#annotated-cell-2-8"></a>  ),</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="4">4</button><span id="annotated-cell-2-9" class="code-annotation-target"><a href="#annotated-cell-2-9"></a>  mapgl<span class="sc">::</span><span class="fu">story_map</span>(</span>
+<span id="annotated-cell-2-10"><a href="#annotated-cell-2-10"></a>    <span class="at">map_id =</span> <span class="st">"map"</span>,</span>
+<span id="annotated-cell-2-11"><a href="#annotated-cell-2-11"></a>    <span class="at">font_family =</span> <span class="st">"Poppins"</span>,</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="5">5</button><span id="annotated-cell-2-12" class="code-annotation-target"><a href="#annotated-cell-2-12"></a>    <span class="at">sections =</span> <span class="fu">list</span>(</span>
+<span id="annotated-cell-2-13"><a href="#annotated-cell-2-13"></a>      <span class="st">"intro"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-2-14"><a href="#annotated-cell-2-14"></a>        <span class="at">title =</span> <span class="st">"Introduction"</span>,</span>
+<span id="annotated-cell-2-15"><a href="#annotated-cell-2-15"></a>        <span class="at">content =</span> <span class="st">"Hello I am Pukar Bhandari; and this is my life journey."</span></span>
+<span id="annotated-cell-2-16"><a href="#annotated-cell-2-16"></a>      ),</span>
+<span id="annotated-cell-2-17"><a href="#annotated-cell-2-17"></a>      <span class="st">"childhood"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-2-18"><a href="#annotated-cell-2-18"></a>        <span class="at">title =</span> <span class="st">"Birtamode, Jhapa"</span>,</span>
+<span id="annotated-cell-2-19"><a href="#annotated-cell-2-19"></a>        <span class="at">content =</span> <span class="st">"This is where I was born and spent the early part of my life until 2013."</span></span>
+<span id="annotated-cell-2-20"><a href="#annotated-cell-2-20"></a>      ),</span>
+<span id="annotated-cell-2-21"><a href="#annotated-cell-2-21"></a>      <span class="st">"bachelors"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-2-22"><a href="#annotated-cell-2-22"></a>        <span class="at">title =</span> <span class="st">"Pulchowk, Lalitpur"</span>,</span>
+<span id="annotated-cell-2-23"><a href="#annotated-cell-2-23"></a>        <span class="at">content =</span> <span class="st">"I then moved to Pulchowk in the pursuit of higher education. I obtained my Bachelor's Degree in Architecture from Institute of Engineering Pulchowk Campus in 2018."</span></span>
+<span id="annotated-cell-2-24"><a href="#annotated-cell-2-24"></a>      ),</span>
+<span id="annotated-cell-2-25"><a href="#annotated-cell-2-25"></a>      <span class="st">"masters"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-2-26"><a href="#annotated-cell-2-26"></a>        <span class="at">title =</span> <span class="st">"Salt Lake City, UT"</span>,</span>
+<span id="annotated-cell-2-27"><a href="#annotated-cell-2-27"></a>        <span class="at">content =</span> <span class="st">"In pursuit of even higher education, I moved to Salt Lake City, UT where I obtained my Master of City &amp; Metropolitan Planning degree from the University of Utah in May 2023."</span></span>
+<span id="annotated-cell-2-28"><a href="#annotated-cell-2-28"></a>      ),</span>
+<span id="annotated-cell-2-29"><a href="#annotated-cell-2-29"></a>      <span class="st">"metro_analytics"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-2-30"><a href="#annotated-cell-2-30"></a>        <span class="at">title =</span> <span class="st">"Atlanta, GA"</span>,</span>
+<span id="annotated-cell-2-31"><a href="#annotated-cell-2-31"></a>        <span class="at">content =</span> <span class="st">"I then moved to Altanta in June 2023 to work as a transportation planner &amp; analyst at Metro Analytics until September 2025."</span></span>
+<span id="annotated-cell-2-32"><a href="#annotated-cell-2-32"></a>      ),</span>
+<span id="annotated-cell-2-33"><a href="#annotated-cell-2-33"></a>      <span class="st">"wfrc_ut"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-2-34"><a href="#annotated-cell-2-34"></a>        <span class="at">title =</span> <span class="st">"Back to Salt Lake City, UT"</span>,</span>
+<span id="annotated-cell-2-35"><a href="#annotated-cell-2-35"></a>        <span class="at">content =</span> <span class="st">"After gaining entry-level experience in transportation planning, travel demand modeling, and data analytics, I moved back to Salt Lake City - a place I am personally and professionally attached to - in order to join the awesome Analytics team at the Wasatch Front Regional Council."</span></span>
+<span id="annotated-cell-2-36"><a href="#annotated-cell-2-36"></a>      )</span>
+<span id="annotated-cell-2-37"><a href="#annotated-cell-2-37"></a>    ),</span>
+<span id="annotated-cell-2-38"><a href="#annotated-cell-2-38"></a>    <span class="at">map_type =</span> <span class="st">"maplibre"</span></span>
+<span id="annotated-cell-2-39"><a href="#annotated-cell-2-39"></a>  )</span>
+<span id="annotated-cell-2-40"><a href="#annotated-cell-2-40"></a>)</span>
+<span id="annotated-cell-2-41"><a href="#annotated-cell-2-41"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="6">6</button><span id="annotated-cell-2-42" class="code-annotation-target"><a href="#annotated-cell-2-42"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="7">7</button><span id="annotated-cell-2-43" class="code-annotation-target"><a href="#annotated-cell-2-43"></a>  output<span class="sc">$</span>map <span class="ot">&lt;-</span> mapgl<span class="sc">::</span><span class="fu">renderMaplibre</span>({</span>
+<span id="annotated-cell-2-44"><a href="#annotated-cell-2-44"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre</span>(</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="8">8</button><span id="annotated-cell-2-45" class="code-annotation-target"><a href="#annotated-cell-2-45"></a>      <span class="at">style =</span> mapgl<span class="sc">::</span><span class="fu">openfreemap_style</span>(<span class="st">"liberty"</span>),</span>
+<span id="annotated-cell-2-46"><a href="#annotated-cell-2-46"></a>      <span class="at">center =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="annotated-cell-2-47"><a href="#annotated-cell-2-47"></a>      <span class="at">zoom =</span> <span class="fl">2.75</span>,</span>
+<span id="annotated-cell-2-48"><a href="#annotated-cell-2-48"></a>      <span class="at">scrollZoom =</span> <span class="cn">FALSE</span></span>
+<span id="annotated-cell-2-49"><a href="#annotated-cell-2-49"></a>    ) <span class="sc">|&gt;</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="9">9</button><span id="annotated-cell-2-50" class="code-annotation-target"><a href="#annotated-cell-2-50"></a>      mapgl<span class="sc">::</span><span class="fu">set_projection</span>(<span class="at">projection =</span> <span class="st">"globe"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-51"><a href="#annotated-cell-2-51"></a>      mapgl<span class="sc">::</span><span class="fu">add_globe_control</span>() <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-52"><a href="#annotated-cell-2-52"></a>      mapgl<span class="sc">::</span><span class="fu">add_navigation_control</span>(<span class="at">visualize_pitch =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-53"><a href="#annotated-cell-2-53"></a>      mapgl<span class="sc">::</span><span class="fu">add_globe_minimap</span>(<span class="at">position =</span> <span class="st">"bottom-left"</span>)</span>
+<span id="annotated-cell-2-54"><a href="#annotated-cell-2-54"></a>  })</span>
+<span id="annotated-cell-2-55"><a href="#annotated-cell-2-55"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="10">10</button><span id="annotated-cell-2-56" class="code-annotation-target"><a href="#annotated-cell-2-56"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"intro"</span>, {</span>
+<span id="annotated-cell-2-57"><a href="#annotated-cell-2-57"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-58"><a href="#annotated-cell-2-58"></a>      mapgl<span class="sc">::</span><span class="fu">clear_markers</span>() <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-59"><a href="#annotated-cell-2-59"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(</span>
+<span id="annotated-cell-2-60"><a href="#annotated-cell-2-60"></a>        <span class="at">center =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="annotated-cell-2-61"><a href="#annotated-cell-2-61"></a>        <span class="at">zoom =</span> <span class="fl">2.75</span>,</span>
+<span id="annotated-cell-2-62"><a href="#annotated-cell-2-62"></a>        <span class="at">pitch =</span> <span class="dv">0</span>,</span>
+<span id="annotated-cell-2-63"><a href="#annotated-cell-2-63"></a>        <span class="at">bearing =</span> <span class="dv">0</span></span>
+<span id="annotated-cell-2-64"><a href="#annotated-cell-2-64"></a>      )</span>
+<span id="annotated-cell-2-65"><a href="#annotated-cell-2-65"></a>  })</span>
+<span id="annotated-cell-2-66"><a href="#annotated-cell-2-66"></a></span>
+<span id="annotated-cell-2-67"><a href="#annotated-cell-2-67"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"childhood"</span>, {</span>
+<span id="annotated-cell-2-68"><a href="#annotated-cell-2-68"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-69"><a href="#annotated-cell-2-69"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99371750247397</span>, <span class="fl">26.646533355308083</span>),</span>
+<span id="annotated-cell-2-70"><a href="#annotated-cell-2-70"></a>                    <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="annotated-cell-2-71"><a href="#annotated-cell-2-71"></a>                    <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="annotated-cell-2-72"><a href="#annotated-cell-2-72"></a>                    <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="annotated-cell-2-73"><a href="#annotated-cell-2-73"></a>  })</span>
+<span id="annotated-cell-2-74"><a href="#annotated-cell-2-74"></a></span>
+<span id="annotated-cell-2-75"><a href="#annotated-cell-2-75"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"bachelors"</span>, {</span>
+<span id="annotated-cell-2-76"><a href="#annotated-cell-2-76"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-77"><a href="#annotated-cell-2-77"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="fl">85.31840215760691</span>, <span class="fl">27.681136558618093</span>),</span>
+<span id="annotated-cell-2-78"><a href="#annotated-cell-2-78"></a>                    <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="annotated-cell-2-79"><a href="#annotated-cell-2-79"></a>                    <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="annotated-cell-2-80"><a href="#annotated-cell-2-80"></a>                    <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="annotated-cell-2-81"><a href="#annotated-cell-2-81"></a>  })</span>
+<span id="annotated-cell-2-82"><a href="#annotated-cell-2-82"></a></span>
+<span id="annotated-cell-2-83"><a href="#annotated-cell-2-83"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"masters"</span>, {</span>
+<span id="annotated-cell-2-84"><a href="#annotated-cell-2-84"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-85"><a href="#annotated-cell-2-85"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">111.84448004883544</span>, <span class="fl">40.76106105996334</span>),</span>
+<span id="annotated-cell-2-86"><a href="#annotated-cell-2-86"></a>                    <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="annotated-cell-2-87"><a href="#annotated-cell-2-87"></a>                    <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="annotated-cell-2-88"><a href="#annotated-cell-2-88"></a>                    <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="annotated-cell-2-89"><a href="#annotated-cell-2-89"></a>  })</span>
+<span id="annotated-cell-2-90"><a href="#annotated-cell-2-90"></a></span>
+<span id="annotated-cell-2-91"><a href="#annotated-cell-2-91"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"metro_analytics"</span>, {</span>
+<span id="annotated-cell-2-92"><a href="#annotated-cell-2-92"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-93"><a href="#annotated-cell-2-93"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">84.3938999520061</span>, <span class="fl">33.76728402587881</span>),</span>
+<span id="annotated-cell-2-94"><a href="#annotated-cell-2-94"></a>                    <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="annotated-cell-2-95"><a href="#annotated-cell-2-95"></a>                    <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="annotated-cell-2-96"><a href="#annotated-cell-2-96"></a>                    <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="annotated-cell-2-97"><a href="#annotated-cell-2-97"></a>  })</span>
+<span id="annotated-cell-2-98"><a href="#annotated-cell-2-98"></a></span>
+<span id="annotated-cell-2-99"><a href="#annotated-cell-2-99"></a>  mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"wfrc_ut"</span>, {</span>
+<span id="annotated-cell-2-100"><a href="#annotated-cell-2-100"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<span id="annotated-cell-2-101"><a href="#annotated-cell-2-101"></a>      mapgl<span class="sc">::</span><span class="fu">fly_to</span>(<span class="at">center =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">111.90422445885304</span>, <span class="fl">40.76973849954712</span>),</span>
+<span id="annotated-cell-2-102"><a href="#annotated-cell-2-102"></a>                    <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<span id="annotated-cell-2-103"><a href="#annotated-cell-2-103"></a>                    <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<span id="annotated-cell-2-104"><a href="#annotated-cell-2-104"></a>                    <span class="at">bearing =</span> <span class="fl">12.8</span>)</span>
+<span id="annotated-cell-2-105"><a href="#annotated-cell-2-105"></a>  })</span>
+<span id="annotated-cell-2-106"><a href="#annotated-cell-2-106"></a>}</span>
+<span id="annotated-cell-2-107"><a href="#annotated-cell-2-107"></a></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="11">11</button><span id="annotated-cell-2-108" class="code-annotation-target"><a href="#annotated-cell-2-108"></a>shiny<span class="sc">::</span><span class="fu">shinyApp</span>(ui, server)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-2" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="1" data-code-annotation="1">Load {shiny} package for building reactive web applications</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="2" data-code-annotation="2">Load {mapgl} package for interactive mapping and storymap functionality</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="4" data-code-annotation="3">Define the user interface - what users see and interact with</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="9" data-code-annotation="4">Create the main storymap interface with sidebar and map coordination</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="12" data-code-annotation="5">Define each story section with title and descriptive content</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="6">6</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="42" data-code-annotation="6">Define the server function - handles user interactions and updates</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="7">7</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="43" data-code-annotation="7">Render the interactive MapLibre map with styling and controls</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="8">8</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="45" data-code-annotation="8">Use free OpenFreeMap tiles (no API key required)</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="9">9</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="50" data-code-annotation="9">Set up 3D globe projection for better geographic context</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="10">10</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="56" data-code-annotation="10">Handle section transitions - when user reaches each story step</span>
+</dd>
+<dt data-target-cell="annotated-cell-2" data-target-annotation="11">11</dt>
+<dd>
+<span data-code-cell="annotated-cell-2" data-code-lines="108" data-code-annotation="11">Launch the Shiny application combining UI and server components</span>
+</dd>
+</dl>
+</div>
+</div>
+</section>
+<section id="understanding-the-app-structure" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="understanding-the-app-structure"><span class="header-section-number">5</span> Understanding the App Structure</h2>
+<section id="setting-up-the-user-interface" class="level3">
+<h3 class="anchored" data-anchor-id="setting-up-the-user-interface">Setting Up the User Interface</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-1" class="code-annotation-target"><a href="#annotated-cell-3-1"></a><span class="fu">library</span>(shiny)</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2">2</button><span id="annotated-cell-3-2" class="code-annotation-target"><a href="#annotated-cell-3-2"></a><span class="fu">library</span>(mapgl)</span>
+<span id="annotated-cell-3-3"><a href="#annotated-cell-3-3"></a></span>
+<span id="annotated-cell-3-4"><a href="#annotated-cell-3-4"></a>ui <span class="ot">&lt;-</span> shiny<span class="sc">::</span><span class="fu">fluidPage</span>(</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="3">3</button><span id="annotated-cell-3-5" class="code-annotation-target"><a href="#annotated-cell-3-5"></a>  tags<span class="sc">$</span><span class="fu">link</span>(</span>
+<span id="annotated-cell-3-6"><a href="#annotated-cell-3-6"></a>    <span class="at">href =</span> <span class="st">"https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&amp;display=swap"</span>,</span>
+<span id="annotated-cell-3-7"><a href="#annotated-cell-3-7"></a>    <span class="at">rel=</span><span class="st">"stylesheet"</span></span>
+<span id="annotated-cell-3-8"><a href="#annotated-cell-3-8"></a>  ),</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="4">4</button><span id="annotated-cell-3-9" class="code-annotation-target"><a href="#annotated-cell-3-9"></a>  mapgl<span class="sc">::</span><span class="fu">story_map</span>(</span>
+<span id="annotated-cell-3-10"><a href="#annotated-cell-3-10"></a>    <span class="at">map_id =</span> <span class="st">"map"</span>,</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="5">5</button><span id="annotated-cell-3-11" class="code-annotation-target"><a href="#annotated-cell-3-11"></a>    <span class="at">font_family =</span> <span class="st">"Poppins"</span>,</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="6">6</button><span id="annotated-cell-3-12" class="code-annotation-target"><a href="#annotated-cell-3-12"></a>    <span class="at">sections =</span> <span class="fu">list</span>(</span>
+<span id="annotated-cell-3-13"><a href="#annotated-cell-3-13"></a>      <span class="st">"intro"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-3-14"><a href="#annotated-cell-3-14"></a>        <span class="at">title =</span> <span class="st">"Introduction"</span>,</span>
+<span id="annotated-cell-3-15"><a href="#annotated-cell-3-15"></a>        <span class="at">content =</span> <span class="st">"Hello I am Pukar Bhandari; and this is my life journey."</span></span>
+<span id="annotated-cell-3-16"><a href="#annotated-cell-3-16"></a>      ),</span>
+<span id="annotated-cell-3-17"><a href="#annotated-cell-3-17"></a>      <span class="st">"childhood"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="annotated-cell-3-18"><a href="#annotated-cell-3-18"></a>        <span class="at">title =</span> <span class="st">"Birtamode, Jhapa"</span>,</span>
+<span id="annotated-cell-3-19"><a href="#annotated-cell-3-19"></a>        <span class="at">content =</span> <span class="st">"This is where I was born and spent the early part of my life until 2013."</span></span>
+<span id="annotated-cell-3-20"><a href="#annotated-cell-3-20"></a>      ),</span>
+<span id="annotated-cell-3-21"><a href="#annotated-cell-3-21"></a>      <span class="co"># Additional sections...</span></span>
+<span id="annotated-cell-3-22"><a href="#annotated-cell-3-22"></a>    ),</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="7">7</button><span id="annotated-cell-3-23" class="code-annotation-target"><a href="#annotated-cell-3-23"></a>    <span class="at">map_type =</span> <span class="st">"maplibre"</span></span>
+<span id="annotated-cell-3-24"><a href="#annotated-cell-3-24"></a>  )</span>
+<span id="annotated-cell-3-25"><a href="#annotated-cell-3-25"></a>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-3" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="1" data-code-annotation="1"><strong>Shiny Framework</strong>: Essential for creating reactive web applications</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="2" data-code-annotation="2"><strong>MapGL Package</strong>: Provides the storymap functionality and MapLibre integration</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="5" data-code-annotation="3"><strong>Custom Fonts</strong>: Loading Google Fonts for better typography (important for professional presentations)</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="9" data-code-annotation="4"><strong>Story Map Container</strong>: The main wrapper that coordinates the sidebar content with map interactions</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="11" data-code-annotation="5"><strong>Typography</strong>: Consistent font family improves readability and professional appearance</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="6">6</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="12" data-code-annotation="6"><strong>Section Definitions</strong>: Each section corresponds to a step in the story with associated map behaviors</span>
+</dd>
+<dt data-target-cell="annotated-cell-3" data-target-annotation="7">7</dt>
+<dd>
+<span data-code-cell="annotated-cell-3" data-code-lines="23" data-code-annotation="7"><strong>Map Engine</strong>: Using MapLibre GL JS for performant vector tile rendering</span>
+</dd>
+</dl>
+</div>
+</div>
+</section>
+<section id="configuring-the-map" class="level3">
+<h3 class="anchored" data-anchor-id="configuring-the-map">Configuring the Map</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-2" class="code-annotation-target"><a href="#annotated-cell-4-2"></a>  output<span class="sc">$</span>map <span class="ot">&lt;-</span> mapgl<span class="sc">::</span><span class="fu">renderMaplibre</span>({</span>
+<span id="annotated-cell-4-3"><a href="#annotated-cell-4-3"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre</span>(</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2">2</button><span id="annotated-cell-4-4" class="code-annotation-target"><a href="#annotated-cell-4-4"></a>      <span class="at">style =</span> mapgl<span class="sc">::</span><span class="fu">openfreemap_style</span>(<span class="st">"liberty"</span>),</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="3">3</button><span id="annotated-cell-4-5" class="code-annotation-target"><a href="#annotated-cell-4-5"></a>      <span class="at">center =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="4">4</button><span id="annotated-cell-4-6" class="code-annotation-target"><a href="#annotated-cell-4-6"></a>      <span class="at">zoom =</span> <span class="fl">2.75</span>,</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="5">5</button><span id="annotated-cell-4-7" class="code-annotation-target"><a href="#annotated-cell-4-7"></a>      <span class="at">scrollZoom =</span> <span class="cn">FALSE</span></span>
+<span id="annotated-cell-4-8"><a href="#annotated-cell-4-8"></a>    ) <span class="sc">|&gt;</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="6">6</button><span id="annotated-cell-4-9" class="code-annotation-target"><a href="#annotated-cell-4-9"></a>      mapgl<span class="sc">::</span><span class="fu">set_projection</span>(<span class="at">projection =</span> <span class="st">"globe"</span>) <span class="sc">|&gt;</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="7">7</button><span id="annotated-cell-4-10" class="code-annotation-target"><a href="#annotated-cell-4-10"></a>      mapgl<span class="sc">::</span><span class="fu">add_globe_control</span>() <span class="sc">|&gt;</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="8">8</button><span id="annotated-cell-4-11" class="code-annotation-target"><a href="#annotated-cell-4-11"></a>      mapgl<span class="sc">::</span><span class="fu">add_navigation_control</span>(<span class="at">visualize_pitch =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="9">9</button><span id="annotated-cell-4-12" class="code-annotation-target"><a href="#annotated-cell-4-12"></a>      mapgl<span class="sc">::</span><span class="fu">add_globe_minimap</span>(<span class="at">position =</span> <span class="st">"bottom-left"</span>)</span>
+<span id="annotated-cell-4-13"><a href="#annotated-cell-4-13"></a>  })</span>
+<span id="annotated-cell-4-14"><a href="#annotated-cell-4-14"></a>}</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-4" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="2" data-code-annotation="1"><strong>Render Function</strong>: Creates the reactive map output that responds to user interactions</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="4" data-code-annotation="2"><strong>Open Map Style</strong>: Using OpenFreeMap’s Liberty style (free, no API key required)</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="5" data-code-annotation="3"><strong>Initial Center</strong>: Starting at global view (longitude 0, latitude 0)</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="6" data-code-annotation="4"><strong>Zoom Level</strong>: Appropriate for showing global context initially</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="7" data-code-annotation="5"><strong>Scroll Control</strong>: Disabled to prevent interference with story navigation</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="6">6</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="9" data-code-annotation="6"><strong>Globe Projection</strong>: Creates a 3D globe effect for better geographical context</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="7">7</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="10" data-code-annotation="7"><strong>Globe Controls</strong>: Adds rotation controls for the 3D globe</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="8">8</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="11" data-code-annotation="8"><strong>Navigation Tools</strong>: Zoom and rotation controls with pitch visualization</span>
+</dd>
+<dt data-target-cell="annotated-cell-4" data-target-annotation="9">9</dt>
+<dd>
+<span data-code-cell="annotated-cell-4" data-code-lines="12" data-code-annotation="9"><strong>Minimap</strong>: Provides geographic context when zoomed in on specific locations</span>
+</dd>
+</dl>
+</div>
+</div>
+</section>
+<section id="implementing-section-behaviors" class="level3">
+<h3 class="anchored" data-anchor-id="implementing-section-behaviors">Implementing Section Behaviors</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1"></a><span class="co"># Example section handler</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1">1</button><span id="annotated-cell-5-2" class="code-annotation-target"><a href="#annotated-cell-5-2"></a>mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"childhood"</span>, {</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2">2</button><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3"></a>  mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3">3</button><span id="annotated-cell-5-4" class="code-annotation-target"><a href="#annotated-cell-5-4"></a>    mapgl<span class="sc">::</span><span class="fu">fly_to</span>(</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="4">4</button><span id="annotated-cell-5-5" class="code-annotation-target"><a href="#annotated-cell-5-5"></a>      <span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99371750247397</span>, <span class="fl">26.646533355308083</span>),</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="5">5</button><span id="annotated-cell-5-6" class="code-annotation-target"><a href="#annotated-cell-5-6"></a>      <span class="at">zoom =</span> <span class="dv">16</span>,</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="6">6</button><span id="annotated-cell-5-7" class="code-annotation-target"><a href="#annotated-cell-5-7"></a>      <span class="at">pitch =</span> <span class="dv">49</span>,</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="7">7</button><span id="annotated-cell-5-8" class="code-annotation-target"><a href="#annotated-cell-5-8"></a>      <span class="at">bearing =</span> <span class="fl">12.8</span></span>
+<span id="annotated-cell-5-9"><a href="#annotated-cell-5-9"></a>    )</span>
+<span id="annotated-cell-5-10"><a href="#annotated-cell-5-10"></a>})</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-5" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="2" data-code-annotation="1"><strong>Section Trigger</strong>: Responds when user navigates to the “birth_place” section</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="3" data-code-annotation="2"><strong>Map Proxy</strong>: Allows server-side control of the existing map instance</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="4" data-code-annotation="3"><strong>Smooth Transition</strong>: <code>fly_to()</code> creates animated transitions between locations</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="5" data-code-annotation="4"><strong>Coordinates</strong>: Precise longitude/latitude coordinates for the specific location</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="5">5</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="6" data-code-annotation="5"><strong>Detail Zoom</strong>: High zoom level to show local context and landmarks</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="6">6</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="7" data-code-annotation="6"><strong>Viewing Angle</strong>: Tilted perspective provides better spatial understanding</span>
+</dd>
+<dt data-target-cell="annotated-cell-5" data-target-annotation="7">7</dt>
+<dd>
+<span data-code-cell="annotated-cell-5" data-code-lines="8" data-code-annotation="7"><strong>Map Rotation</strong>: Oriented to show the location from the most informative angle</span>
+</dd>
+</dl>
+</div>
+</div>
+</section>
+</section>
+<section id="conclusion" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">6</span> Conclusion</h2>
+<p>The {mapgl} package provides a powerful platform for creating engaging, interactive storymaps that can effectively communicate spatial narratives. Whether you’re documenting personal journeys, presenting planning scenarios, or analyzing transportation patterns, this approach offers the flexibility and performance needed for professional applications.</p>
+<p>The combination of R’s data processing capabilities with modern web mapping technology creates opportunities for innovative visualization approaches that can enhance public engagement and decision-making processes in transportation planning and urban analytics.</p>
+</section>
+<section id="additional-resources" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="additional-resources"><span class="header-section-number">7</span> Additional Resources</h2>
+<ul>
+<li><a href="https://walker-data.com/mapgl/">{mapgl} package documentation</a></li>
+<li><a href="https://maplibre.org/maplibre-gl-js-docs/">MapLibre GL JS documentation</a></li>
+<li><a href="https://openfreemap.org/">OpenFreeMap styles</a></li>
+<li><a href="https://quarto.org/">Quarto documentation</a></li>
+</ul>
+<hr>
+<p><em>This post demonstrates practical applications of open-source geospatial tools for transportation planning and data visualization. All code is available for adaptation to your own projects and use cases.</em></p>
+
+
+<!-- -->
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{bhandari2025,
+  author = {Bhandari, Pukar},
+  title = {Building an {Interactive} {Storymap} Using \{Mapgl\}},
+  date = {2025-09-03},
+  url = {https://ar-puuk.github.io/posts/storymap_my_journey/},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-bhandari2025" class="csl-entry quarto-appendix-citeas" role="listitem">
+Bhandari, Pukar. 2025. <span>“Building an Interactive Storymap Using
+{Mapgl}.”</span> September 3, 2025. <a href="https://ar-puuk.github.io/posts/storymap_my_journey/">https://ar-puuk.github.io/posts/storymap_my_journey/</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/ar-puuk\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            trigger: 'click',
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            positionFixed: true,
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Building an Interactive Storymap using {mapgl}"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "A Visual Journey Through My Life."</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> |</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">  Creating an open-source, interactive storymap with the {mapgl} R package to visualize my journey across the world.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "storymap_my_journey.png"</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Pukar Bhandari</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">    email: pukar.bhandari@outlook.com</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2025-09-03"</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [R, Shiny, Storymap]</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="an">filters:</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">  - shinylive</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="an">code-annotations:</span><span class="co"> select</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="an">embed-resources:</span><span class="co"> false</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introduction</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>Interactive storymaps have become an increasingly popular tool for data visualization and storytelling, particularly in fields like urban planning, transportation analysis, and geographic data science. They allow us to combine spatial data with narrative elements, creating compelling visual stories that engage audiences while conveying complex information effectively.</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>In this post, I'll walk you through creating an interactive storymap using the {mapgl} R package—a powerful tool that leverages MapLibre GL JS to create stunning, performant web maps. This particular storymap traces my personal journey across different locations where I've lived, studied, and worked, from Nepal to the United States.</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why {mapgl} for Storymaps?</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>The {mapgl} package offers several advantages for transportation planners and data analysts:</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Performance**: Built on MapLibre GL JS, it handles large datasets and complex visualizations smoothly</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Interactivity**: Native support for user interactions, animations, and dynamic content</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Customization**: Extensive styling options and the ability to use custom map tiles</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Integration**: Seamless integration with Shiny for reactive web applications</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Open Source**: No API keys required when using open map styles</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## Interactive Storymap Demo</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>Below is the complete interactive storymap. You can scroll through the different sections to see how the map smoothly transitions between locations, each representing a significant milestone in my journey.</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="in">```{shinylive-r}</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co">#| standalone: true</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co">#| viewerHeight: 600</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Install mapgl from r-wasm repo</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ex">webr::install</span><span class="er">(</span><span class="st">"mapgl"</span><span class="ex">,</span> repos = <span class="st">"https://repo.r-wasm.org"</span><span class="kw">)</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="ex">webr::install</span><span class="er">(</span><span class="st">"codetools"</span><span class="ex">,</span> repos = <span class="st">"https://repo.r-wasm.org"</span><span class="kw">)</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co">## file: app.R</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="ex">{{</span><span class="op">&lt;</span> include <span class="ex">app.R</span> <span class="op">&gt;</span>}}</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## Source Code</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>The storymap application follows a typical Shiny structure with some specialized {mapgl} components. Following is the source code for this dashboard (Please click on the numbers on the far right for additional explanation of syntax and mechanics):</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="in">```{r filename="app.R"}</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-line-numbers: true</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>{{<span class="sc">&lt;</span> include app.R <span class="sc">&gt;</span>}}</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Load {shiny} package for building reactive web applications</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Load {mapgl} package for interactive mapping and storymap functionality</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Define the user interface - what users see and interact with</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Create the main storymap interface with sidebar and map coordination</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Define each story section with title and descriptive content</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Define the server function - handles user interactions and updates</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Render the interactive MapLibre map with styling and controls</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>Use free OpenFreeMap tiles (no API key required)</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="ss">9. </span>Set up 3D globe projection for better geographic context</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a><span class="ss">10. </span>Handle section transitions - when user reaches each story step</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="ss">11. </span>Launch the Shiny application combining UI and server components</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="fu">## Understanding the App Structure</span></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="fu">### Setting Up the User Interface</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-line-numbers: true</span></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny) <span class="co"># &lt;1&gt;</span></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapgl) <span class="co"># &lt;2&gt;</span></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> shiny<span class="sc">::</span><span class="fu">fluidPage</span>(</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>  tags<span class="sc">$</span><span class="fu">link</span>( <span class="co"># &lt;3&gt;</span></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>    <span class="at">href =</span> <span class="st">"https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&amp;display=swap"</span>,</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>    <span class="at">rel=</span><span class="st">"stylesheet"</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">story_map</span>( <span class="co"># &lt;4&gt;</span></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>    <span class="at">map_id =</span> <span class="st">"map"</span>,</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>    <span class="at">font_family =</span> <span class="st">"Poppins"</span>, <span class="co"># &lt;5&gt;</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>    <span class="at">sections =</span> <span class="fu">list</span>( <span class="co"># &lt;6&gt;</span></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>      <span class="st">"intro"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Introduction"</span>,</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"Hello I am Pukar Bhandari; and this is my life journey."</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>      <span class="st">"childhood"</span> <span class="ot">=</span> mapgl<span class="sc">::</span><span class="fu">story_section</span>(</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Birtamode, Jhapa"</span>,</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>        <span class="at">content =</span> <span class="st">"This is where I was born and spent the early part of my life until 2013."</span></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Additional sections...</span></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>    <span class="at">map_type =</span> <span class="st">"maplibre"</span> <span class="co"># &lt;7&gt;</span></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Shiny Framework**: Essential for creating reactive web applications</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**MapGL Package**: Provides the storymap functionality and MapLibre integration</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Custom Fonts**: Loading Google Fonts for better typography (important for professional presentations)</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Story Map Container**: The main wrapper that coordinates the sidebar content with map interactions</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Typography**: Consistent font family improves readability and professional appearance</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**Section Definitions**: Each section corresponds to a step in the story with associated map behaviors</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>**Map Engine**: Using MapLibre GL JS for performant vector tile rendering</span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a><span class="fu">### Configuring the Map</span></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-line-numbers: true</span></span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>map <span class="ot">&lt;-</span> mapgl<span class="sc">::</span><span class="fu">renderMaplibre</span>({ <span class="co"># &lt;1&gt;</span></span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre</span>(</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> mapgl<span class="sc">::</span><span class="fu">openfreemap_style</span>(<span class="st">"liberty"</span>), <span class="co"># &lt;2&gt;</span></span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>      <span class="at">center =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="co"># &lt;3&gt;</span></span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>      <span class="at">zoom =</span> <span class="fl">2.75</span>, <span class="co"># &lt;4&gt;</span></span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>      <span class="at">scrollZoom =</span> <span class="cn">FALSE</span> <span class="co"># &lt;5&gt;</span></span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">set_projection</span>(<span class="at">projection =</span> <span class="st">"globe"</span>) <span class="sc">|&gt;</span> <span class="co"># &lt;6&gt;</span></span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">add_globe_control</span>() <span class="sc">|&gt;</span> <span class="co"># &lt;7&gt;</span></span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">add_navigation_control</span>(<span class="at">visualize_pitch =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="co"># &lt;8&gt;</span></span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>      mapgl<span class="sc">::</span><span class="fu">add_globe_minimap</span>(<span class="at">position =</span> <span class="st">"bottom-left"</span>) <span class="co"># &lt;9&gt;</span></span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Render Function**: Creates the reactive map output that responds to user interactions</span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Open Map Style**: Using OpenFreeMap's Liberty style (free, no API key required)</span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Initial Center**: Starting at global view (longitude 0, latitude 0)</span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Zoom Level**: Appropriate for showing global context initially</span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Scroll Control**: Disabled to prevent interference with story navigation</span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**Globe Projection**: Creates a 3D globe effect for better geographical context</span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>**Globe Controls**: Adds rotation controls for the 3D globe</span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>**Navigation Tools**: Zoom and rotation controls with pitch visualization</span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a><span class="ss">9. </span>**Minimap**: Provides geographic context when zoomed in on specific locations</span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a><span class="fu">### Implementing Section Behaviors</span></span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-line-numbers: true</span></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a><span class="co"># Example section handler</span></span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"childhood"</span>, { <span class="co"># &lt;1&gt;</span></span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>  mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span> <span class="co"># &lt;2&gt;</span></span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>    mapgl<span class="sc">::</span><span class="fu">fly_to</span>( <span class="co"># &lt;3&gt;</span></span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>      <span class="at">center =</span> <span class="fu">c</span>(<span class="fl">87.99371750247397</span>, <span class="fl">26.646533355308083</span>), <span class="co"># &lt;4&gt;</span></span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>      <span class="at">zoom =</span> <span class="dv">16</span>, <span class="co"># &lt;5&gt;</span></span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>      <span class="at">pitch =</span> <span class="dv">49</span>, <span class="co"># &lt;6&gt;</span></span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>      <span class="at">bearing =</span> <span class="fl">12.8</span> <span class="co"># &lt;7&gt;</span></span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Section Trigger**: Responds when user navigates to the "birth_place" section</span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Map Proxy**: Allows server-side control of the existing map instance</span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Smooth Transition**: <span class="in">`fly_to()`</span> creates animated transitions between locations</span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Coordinates**: Precise longitude/latitude coordinates for the specific location</span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Detail Zoom**: High zoom level to show local context and landmarks</span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**Viewing Angle**: Tilted perspective provides better spatial understanding</span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>**Map Rotation**: Oriented to show the location from the most informative angle</span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conclusion</span></span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>The {mapgl} package provides a powerful platform for creating engaging, interactive storymaps that can effectively communicate spatial narratives. Whether you're documenting personal journeys, presenting planning scenarios, or analyzing transportation patterns, this approach offers the flexibility and performance needed for professional applications.</span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>The combination of R's data processing capabilities with modern web mapping technology creates opportunities for innovative visualization approaches that can enhance public engagement and decision-making processes in transportation planning and urban analytics.</span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a><span class="fu">## Additional Resources</span></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">{mapgl} package documentation</span><span class="co">](https://walker-data.com/mapgl/)</span></span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">MapLibre GL JS documentation</span><span class="co">](https://maplibre.org/maplibre-gl-js-docs/)</span></span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">OpenFreeMap styles</span><span class="co">](https://openfreemap.org/)</span></span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Quarto documentation</span><span class="co">](https://quarto.org/)</span></span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>*This post demonstrates practical applications of open-source geospatial tools for transportation planning and data visualization. All code is available for adaptation to your own projects and use cases.*</span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>2025 Pukar Bhandari ∙ Made with <a href="https://www.r-project.org/about.html" target="_blank"><i class="fa-brands fa-r-project" title="R Project" aria-label="r-project"></i></a>, <a href="https://quarto.org/" target="_blank"><img src="https://quarto.org/favicon.png" width="14"></a>, <a href="https://git-scm.com/" target="_blank"><i class="fa-brands fa-git-alt" title="Git alt logo" aria-label="git-alt"></i></a> and <a href="https://github.com/" target="_blank"><i class="fa-brands fa-github" title="GitHub octocat logo" aria-label="github"></i></a></p>
+</div>   
+    <div class="nav-footer-center">
+<p><a href="https://www.linkedin.com/in/arpuuk" title="LinkedIn" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" aria-label="linkedin"></i></a> &nbsp; <a href="https://github.com/ar-puuk/" title="github" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i></a> &nbsp; <a href="https://bsky.app/profile/arpuuk.bsky.social" title="Bluesky" target="_blank" rel="noopener"><i class="fa-brands fa-bluesky" aria-label="bluesky"></i></a> &nbsp; <a href="https://urbanists.social/@arpuuk" title="Mastodon" target="_blank" rel="noopener"><i class="fa-brands fa-mastodon" aria-label="mastodon"></i></a> &nbsp; <a href="https://orcid.org/0000-0002-1043-2937" title="orcid" target="_blank" rel="noopener"><i class="ai  ai-orcid" aria-label="orcid"></i></a> &nbsp; <a href="https://scholar.google.com/citations?user=vnwRlAsAAAAJ&amp;hl=en" title="Google Scholar" target="_blank" rel="noopener"><i class="ai  ai-google-scholar" aria-label="google-scholar"></i></a> &nbsp; <a href="mailto:pukar.bhandari@outlook.com" title="E-mail" target="_blank" rel="noopener"><i class="fa-solid fa-envelope" aria-label="envelope"></i></a></p>
+</div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../contact.html">
+<p>Contact</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../license.html">
+<p>License</p>
+</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

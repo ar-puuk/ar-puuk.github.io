@@ -1,9 +1,13 @@
 system,language,operation,time_sec,memory_mb
-sf,R,Load Data,7.9909,486.98
-sf,R,Validation (Join),18.0084,1028.01
-duckdb,R,Load Data,1.8908,0.61
-duckdb,R,Validation (Join),30.6859,0.00
-geopandas,Python,Load Data,23.1855,1001.91
-geopandas,Python,Validation (Join),2.8362,595.66
-duckdb,Python,Load Data,3.6493,0.01
-duckdb,Python,Validation (Join),50.4631,0.08
+sf,R,Load Data,17.5500,990.39
+sf,R,Validation (Join),28.5600,1308.34
+duckdb,R,Load Data,2.5300,121.90
+duckdb,R,Build Index,0.3500,142.89
+duckdb,R,Validation (Join),50.6800,1.77
+geopandas,Python,Load Data,12.6826,1199.01
+geopandas,Python,Validation (Join),3.0735,630.05
+duckdb,Python,Load Data,5.5162,15.86
+duckdb,Python,Build Index,0.7338,10.26
+duckdb,Python,Validation (Join),96.3144,6.84
+sedonadb,R,Load Data,0.0300,9.21
+sedonadb,R,Validation (Join),1.8900,-11.23

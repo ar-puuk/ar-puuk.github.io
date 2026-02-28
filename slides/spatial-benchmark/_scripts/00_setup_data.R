@@ -1,33 +1,38 @@
-# --- SETUP & LIBRARIES ---
+# ═══════════════════════════════════════════════════════════════════════════════
+# SETUP DATA: Download, convert, and verify prerequisites
+# ═══════════════════════════════════════════════════════════════════════════════
+# FIX (vs previous version):
+#   Module D previously checked for Java, sparklyr, and apache.sedona — those
+#   are requirements for the Spark-based Apache Sedona, NOT for the sedonadb
+#   community package. sedonadb is an embedded Rust/DataFusion engine with no
+#   JVM dependency whatsoever. Module D is replaced with a simple package
+#   availability check and smoke test.
+# ═══════════════════════════════════════════════════════════════════════════════
 
-# 1. Package Installation (uncomment if running on a new machine)
-# install.packages(c("arcgislayers", "sf", "arrow", "geoarrow", "dplyr", "readr", "tibble"))
-
-# 2. Load Libraries
-library(arcgislayers) # Interfaces with ArcGIS REST APIs
-library(sf) # Standard for spatial data handling in R
-library(arrow) # engine for Parquet files
-library(geoarrow) # Extension for GeoParquet support (v0.4.1)
-library(dplyr) # Data manipulation
-library(readr) # High-performance CSV writing
+library(arcgislayers)
+library(sf)
+library(arrow)
+library(geoarrow)
+library(dplyr)
+library(readr)
 library(tibble)
+library(duckdb)
+library(DBI)
 
-# 3. Define Paths (Relative to CWD, which run_all.sh sets to 'spatial-benchmark/')
 data_dir <- "_data"
 if (!dir.exists(data_dir)) {
   dir.create(data_dir)
 }
 
-# --- 2. MODULAR DATA INGESTION ---
+# --- File Paths ---
 
-# Define target file paths for easier checking
 addr_parquet <- file.path(data_dir, "utah_addresses.parquet")
 addr_csv <- file.path(data_dir, "utah_addresses.csv")
 county_parquet <- file.path(data_dir, "utah_counties.parquet")
 county_shp <- file.path(data_dir, "utah_counties.shp")
 
 # --- MODULE A: UTAH ADDRESS POINTS (~1.2M records) ---
-# Logic: Download if either the Parquet OR the CSV is missing
+
 if (!file.exists(addr_parquet) || !file.exists(addr_csv)) {
   message("Address data missing or incomplete. Downloading from UGRC...")
 
@@ -37,7 +42,6 @@ if (!file.exists(addr_parquet) || !file.exists(addr_csv)) {
     arcgislayers::arc_open() |>
     arcgislayers::arc_select(crs = 4326)
 
-  # Export to CSV (Legacy)
   message("Exporting Address Points to CSV...")
   utah_addresses |>
     dplyr::mutate(
@@ -47,21 +51,19 @@ if (!file.exists(addr_parquet) || !file.exists(addr_csv)) {
     sf::st_drop_geometry() |>
     readr::write_csv(addr_csv, append = FALSE)
 
-  # Export to GeoParquet (Modern)
   message("Exporting Address Points to GeoParquet...")
-  # Export Parquet (Convert to WKB Binary for DuckDB)
   utah_addresses |>
     tibble::as_tibble() |>
     dplyr::mutate(geometry = sf::st_as_binary(geometry) |> unclass()) |>
     arrow::write_parquet(addr_parquet)
 
-  rm(utah_addresses) # Clear memory after large download
+  rm(utah_addresses)
 } else {
   message("Success: All Address Point formats (CSV/Parquet) found locally.")
 }
 
 # --- MODULE B: UTAH COUNTY BOUNDARIES ---
-# Logic: Download if either the Parquet OR the SHP is missing
+
 if (!file.exists(county_parquet) || !file.exists(county_shp)) {
   message("County data missing or incomplete. Downloading from UGRC...")
 
@@ -71,16 +73,10 @@ if (!file.exists(county_parquet) || !file.exists(county_shp)) {
     arcgislayers::arc_open() |>
     arcgislayers::arc_select(crs = 4326)
 
-  # Export to Shapefile (Legacy)
   message("Exporting County Boundaries to SHP...")
   utah_counties |>
-    sf::st_write(
-      county_shp,
-      delete_dsn = TRUE,
-      quiet = TRUE
-    )
+    sf::st_write(county_shp, delete_dsn = TRUE, quiet = TRUE)
 
-  # Export to GeoParquet (Modern)
   message("Exporting County Boundaries to GeoParquet...")
   utah_counties |>
     tibble::as_tibble() |>
@@ -89,5 +85,54 @@ if (!file.exists(county_parquet) || !file.exists(county_shp)) {
 } else {
   message("Success: All County Boundary formats (SHP/Parquet) found locally.")
 }
+
+# --- MODULE C: PRE-INSTALL DUCKDB SPATIAL EXTENSION (once) ---
+#
+# Install the DuckDB spatial extension here so benchmark scripts can
+# use LOAD spatial (fast, no network check) rather than INSTALL spatial
+# (slow, makes a network version-check every time). INSTALL is idempotent.
+
+message("Pre-installing DuckDB spatial extension (if not already cached)...")
+con <- dbConnect(duckdb())
+dbExecute(con, "INSTALL spatial;")
+dbExecute(con, "LOAD spatial;")
+dbDisconnect(con)
+message("DuckDB spatial extension ready.")
+
+# --- MODULE D: VERIFY SEDONADB PACKAGE ---
+#
+# FIX: sedonadb (from community.r-multiverse.org) is an EMBEDDED Rust/DataFusion
+# engine — it has NO Java dependency, NO Spark requirement, NO JVM.
+# The previous version of this module incorrectly checked for Java, sparklyr,
+# and apache.sedona (requirements for the Spark-based Apache Sedona, a
+# completely different package). Those checks are removed entirely.
+
+message("Verifying sedonadb package...")
+
+if (!requireNamespace("sedonadb", quietly = TRUE)) {
+  stop(
+    "sedonadb package not found. Install it with:\n",
+    "  install.packages('sedonadb', repos = 'https://community.r-multiverse.org')"
+  )
+}
+
+library(sedonadb)
+
+# Smoke test: verify spatial SQL functions are accessible
+tryCatch(
+  {
+    test_result <- sd_sql("SELECT ST_Point(1.0, 2.0) AS geom") |> sd_collect()
+    stopifnot(nrow(test_result) == 1L)
+    message("sedonadb ready. Spatial functions verified.")
+  },
+  error = function(e) {
+    stop(
+      "sedonadb loaded but spatial functions failed. Error:\n",
+      conditionMessage(e),
+      "\n",
+      "Try reinstalling: install.packages('sedonadb', repos = 'https://community.r-multiverse.org')"
+    )
+  }
+)
 
 message("Setup Phase Finished. Files verified in: ", data_dir)

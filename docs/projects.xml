@@ -26,19 +26,6 @@
   <media:content url="https://ar-puuk.github.io/posts/spatial-sql-exporer/spatial_sql_explorer.png" medium="image" type="image/png" height="72" width="144"/>
 </item>
 <item>
-  <title></title>
-  <dc:creator>Pukar Bhandari</dc:creator>
-  <link>https://ar-puuk.github.io/slides/spatial-benchmark/</link>
-  <description><![CDATA[ undefined ]]></description>
-  <category>Geospatial</category>
-  <category>R</category>
-  <category>Python</category>
-  <category>DuckDB</category>
-  <category>Parquet</category>
-  <guid>https://ar-puuk.github.io/slides/spatial-benchmark/</guid>
-  <pubDate>Sat, 07 Feb 2026 07:00:00 GMT</pubDate>
-</item>
-<item>
   <title>WgetGUI Ultimate: A Fluent Command Generator</title>
   <dc:creator>Pukar Bhandari</dc:creator>
   <link>https://ar-puuk.github.io/posts/wget-gui/</link>
@@ -51,53 +38,16 @@
   <media:content url="https://ar-puuk.github.io/posts/wget-gui/wget_gui.png" medium="image" type="image/png" height="68" width="144"/>
 </item>
 <item>
-  <title></title>
-  <dc:creator>Pukar Bhandari</dc:creator>
-  <link>https://ar-puuk.github.io/posts/nepal-election-geojson/</link>
-  <description><![CDATA[ undefined ]]></description>
-  <category>R</category>
-  <category>GIS</category>
-  <category>Data Science</category>
-  <guid>https://ar-puuk.github.io/posts/nepal-election-geojson/</guid>
-  <pubDate>Sun, 18 Jan 2026 07:00:00 GMT</pubDate>
-  <media:content url="https://ar-puuk.github.io/posts/nepal-election-geojson/nepal_election_geojson.png" medium="image" type="image/png" height="85" width="144"/>
-</item>
-<item>
-  <title></title>
-  <dc:creator>Pukar Bhandari</dc:creator>
-  <link>https://ar-puuk.github.io/posts/utah-bikeways/</link>
-  <description><![CDATA[ undefined ]]></description>
-  <category>R</category>
-  <category>GIS</category>
-  <category>Data Science</category>
-  <category>Transportation</category>
-  <guid>https://ar-puuk.github.io/posts/utah-bikeways/</guid>
-  <pubDate>Sun, 16 Nov 2025 07:00:00 GMT</pubDate>
-  <media:content url="https://ar-puuk.github.io/posts/utah-bikeways/utah_bikeways.png" medium="image" type="image/png" height="127" width="144"/>
-</item>
-<item>
-  <title></title>
+  <title>Building an Interactive Storymap using {mapgl}</title>
   <dc:creator>Pukar Bhandari</dc:creator>
   <link>https://ar-puuk.github.io/posts/storymap_my_journey/</link>
-  <description><![CDATA[ undefined ]]></description>
+  <description><![CDATA[ Creating an open-source, interactive storymap with the {mapgl} R package to visualize my journey across the world. ]]></description>
   <category>R</category>
   <category>Shiny</category>
   <category>Storymap</category>
   <guid>https://ar-puuk.github.io/posts/storymap_my_journey/</guid>
   <pubDate>Wed, 03 Sep 2025 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/storymap_my_journey/storymap_my_journey.png" medium="image" type="image/png" height="82" width="144"/>
-</item>
-<item>
-  <title></title>
-  <dc:creator>Pukar Bhandari</dc:creator>
-  <link>https://ar-puuk.github.io/slides/quantifying-economic-impacts/</link>
-  <description><![CDATA[ undefined ]]></description>
-  <category>R</category>
-  <category>Transportation</category>
-  <category>Economic Impact Analysis</category>
-  <category>Benefit Cost Analysis</category>
-  <guid>https://ar-puuk.github.io/slides/quantifying-economic-impacts/</guid>
-  <pubDate>Thu, 07 Aug 2025 06:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Base Year SE Data Development</title>

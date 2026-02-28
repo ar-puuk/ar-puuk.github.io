@@ -17,122 +17,154 @@ format:
     footer: "Tech, Skills and Beyond | WFRC Analytics"
 categories: [Geospatial, R, Python, DuckDB, Parquet]
 draft: true
+# freeze: auto is set project-wide in the root _quarto.yml.
+# The run-benchmarks chunk below uses callr::rscript() to execute run_all.R
+# safely from within knitr. Because of freeze: auto, benchmarks only re-run
+# when explicitly requested:
+#
+#   Normal render (frozen, instant):     quarto render index.qmd
+#   Re-run benchmarks + re-render:       quarto render index.qmd --no-freeze
 ---
 
-```{r reticulate}
-#| include: false
-
-# From slides/spatial-benchmark/, go up two levels to project root
-project_root <- normalizePath(file.path(getwd(), "..", ".."))
-
-# Find Python (tries Windows first, then Unix)
-python_path <- file.path(project_root, "env", "python.exe")
-if (!file.exists(python_path)) {
-  python_path <- file.path(project_root, "env", "bin", "python")
-}
-
-Sys.setenv(RETICULATE_PYTHON = python_path)
-
-if (requireNamespace("reticulate", quietly = TRUE)) {
-  library(reticulate)
-  reticulate::use_python(python_path, required = TRUE)
-}
-```
-
 ```{r}
 #| include: false
-#| label: benchmark-configuration
-
+#| label: run-benchmarks
 # ═══════════════════════════════════════════════════════════════════════════════
-# BENCHMARK CONFIGURATION
-# ═══════════════════════════════════════════════════════════════════════════════
-# Control benchmark execution from this central location
+# BENCHMARK EXECUTION
 #
-# ITERATIONS: Number of times to run each benchmark
-#   - Use 1 for development/testing (fast iteration)
-#   - Use 10 for final presentation (stable, representative results)
-#   - Higher values reduce timing variance but increase total runtime
+# Runs the full benchmark suite via callr::rscript(), which is safe to call
+# from within knitr. (system2("Rscript", ...) deadlocks on Windows because
+# child processes inherit knitr's captured stdout/stderr connections.)
 #
-# Note: Changing this value requires re-rendering the entire presentation
+# freeze: auto (set project-wide in _quarto.yml) caches this chunk after the
+# first successful render — subsequent renders skip it entirely.
+#
+# Workflow:
+#   Normal render (use cached results):  quarto render index.qmd
+#   Re-run benchmarks + re-render:       quarto render index.qmd --no-freeze
+#
+# stdout/stderr are captured to temp files so they survive knitr's output
+# capture and print correctly on both success and failure.
+#
+# RENV_CONFIG_AUTOLOADER_ENABLED=FALSE stops renv from re-activating inside
+# the callr subprocess. The parent knitr session already has the correct
+# library loaded — renv re-activating in the child causes failures when the
+# lockfile is out-of-sync, even if all needed packages are installed.
 # ═══════════════════════════════════════════════════════════════════════════════
 
-ITERATIONS <- 1  # Set to 10 for final presentation
-```
+if (!requireNamespace("callr", quietly = TRUE)) {
+  stop("Package 'callr' is required. Install with: install.packages('callr')")
+}
 
-```{r}
-#| include: false
-#| label: run-benchmark
+# Capture stdout/stderr to temp files.
+# callr's env argument REPLACES the subprocess environment when supplied,
+# stripping PATH, R_HOME, etc. and causing Rscript.exe to fail before running
+# a single line. Instead, set env vars in the PARENT session via Sys.setenv()
+# so callr inherits the full environment unchanged.
+stdout_file <- tempfile("run_all_stdout_")
+stderr_file <- tempfile("run_all_stderr_")
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# EXECUTE BENCHMARK SUITE
-# ═══════════════════════════════════════════════════════════════════════════════
-# This chunk orchestrates all benchmark scripts with the configured iteration count
-# ═══════════════════════════════════════════════════════════════════════════════
+# Restore env vars and remove temp files on chunk exit
+old_renv_flag <- Sys.getenv("RENV_CONFIG_AUTOLOADER_ENABLED", unset = NA)
+old_iterations <- Sys.getenv("BENCHMARK_ITERATIONS", unset = NA)
 
-# Trigger the benchmark suite using R
-# The ITERATIONS variable is available to run_all.R through the global environment
-source("_scripts/run_all.R")
+on.exit({
+  # Restore RENV_CONFIG_AUTOLOADER_ENABLED
+  if (is.na(old_renv_flag)) {
+    Sys.unsetenv("RENV_CONFIG_AUTOLOADER_ENABLED")
+  } else {
+    Sys.setenv(RENV_CONFIG_AUTOLOADER_ENABLED = old_renv_flag)
+  }
+  # Restore BENCHMARK_ITERATIONS
+  if (is.na(old_iterations)) {
+    Sys.unsetenv("BENCHMARK_ITERATIONS")
+  } else {
+    Sys.setenv(BENCHMARK_ITERATIONS = old_iterations)
+  }
+  if (file.exists(stdout_file)) file.remove(stdout_file)
+  if (file.exists(stderr_file)) file.remove(stderr_file)
+}, add = TRUE)
+
+# Set env vars in parent — callr subprocess inherits them automatically
+Sys.setenv(
+  RENV_CONFIG_AUTOLOADER_ENABLED = "FALSE",  # Prevent renv re-activating in child
+  BENCHMARK_ITERATIONS           = "10"
+)
+
+log_file <- "_results/run_all_log.txt"
+if (!dir.exists("_results")) dir.create("_results", recursive = TRUE)
+
+message("Running benchmark suite — output logged to: ", log_file)
+
+result <- tryCatch({
+  callr::rscript(
+    script = "_scripts/run_all.R",
+    wd     = getwd(),
+    stdout = stdout_file,
+    stderr = stderr_file
+  )
+  "success"
+}, error = function(e) conditionMessage(e))
+
+# Always write full output to log file regardless of knitr capture
+log_lines <- c(
+  paste("=== run_all.R log:", Sys.time(), "==="),
+  paste("Working directory:", getwd()),
+  paste("Result:", result),
+  "",
+  "--- stdout ---",
+  if (file.exists(stdout_file)) readLines(stdout_file, warn = FALSE) else "(empty)",
+  "",
+  "--- stderr ---",
+  if (file.exists(stderr_file)) readLines(stderr_file, warn = FALSE) else "(empty)"
+)
+writeLines(log_lines, log_file)
+
+if (result != "success") {
+  stop(
+    "run_all.R failed. Full output written to: ", log_file, "\n",
+    "Open that file to see the actual error.\n",
+    "callr: ", result
+  )
+}
+
+message("Benchmark suite complete.")
 ```
 
 ```{r}
 #| include: false
 #| label: calc-sizes
-
 # ═══════════════════════════════════════════════════════════════════════════════
-# CALCULATE FILE SIZES
-# ═══════════════════════════════════════════════════════════════════════════════
-# This chunk runs INSIDE the presentation render to calculate file sizes.
-# It uses strict extension matching to avoid mixing up CSV/Parquet/SHP sharing
-# the same base name.
+# CALCULATE FILE SIZES (fast — just stat() calls, runs at render time)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 library(dplyr)
 library(readr)
 library(tools)
 
-# Helper 1: Get size of a single specific file
 get_size_mb <- function(path) {
   if (file.exists(path)) file.size(path) / 1024 / 1024 else 0
 }
 
-# Helper 2: Get Shapefile size by explicitly summing its components
-# This avoids accidentally counting a .parquet file with the same name
 get_shp_size_mb <- function(shp_path) {
   if (!file.exists(shp_path)) return(0)
-
-  # Get the base path without extension (e.g., "_data/utah_counties")
   base_path <- tools::file_path_sans_ext(shp_path)
-
-  # Define standard Shapefile extensions
   exts <- c("shp", "shx", "dbf", "prj", "cpg")
-
-  # Construct full paths for potential sidecars
   sidecars <- paste(base_path, exts, sep = ".")
-
-  # Sum only the files that actually exist
-  existing_files <- sidecars[file.exists(sidecars)]
-  sum(file.size(existing_files)) / 1024 / 1024
+  sum(file.size(sidecars[file.exists(sidecars)])) / 1024 / 1024
 }
 
-# Define file paths
-addr_csv <- "_data/utah_addresses.csv"
-addr_pq  <- "_data/utah_addresses.parquet"
-cnty_shp <- "_data/utah_counties.shp"
-cnty_pq  <- "_data/utah_counties.parquet"
-
-# Create Data Frame
 sizes <- tibble(
   Dataset = c("Addresses", "Addresses", "Counties", "Counties"),
   Format  = c("CSV", "Parquet", "Shapefile", "Parquet"),
   SizeMB  = c(
-    get_size_mb(addr_csv),
-    get_size_mb(addr_pq),
-    get_shp_size_mb(cnty_shp),
-    get_size_mb(cnty_pq)
+    get_size_mb("_data/utah_addresses.csv"),
+    get_size_mb("_data/utah_addresses.parquet"),
+    get_shp_size_mb("_data/utah_counties.shp"),
+    get_size_mb("_data/utah_counties.parquet")
   )
 )
 
-# Save to results folder so OJS can read it via FileAttachment
 if (!dir.exists("_results")) dir.create("_results")
 write_csv(sizes, "_results/file_sizes.csv")
 ```
@@ -177,8 +209,8 @@ write_csv(sizes, "_results/file_sizes.csv")
 ### What is it?
 * **"SQLite for Analytics"**: An embedded SQL OLAP database.
 * **Vectorized Engine**: Processes data in batches, not row-by-row.
-* **Spatial Extension**: Adds geometry support (`ST_Within`, `ST_Point`).
-* **Zero-Copy**: Queries Parquet files *directly* without importing data into its own storage.
+* **Spatial Extension**: Adds geometry support (`ST_Within`, `ST_Intersects`).
+* **Zero-Copy**: Queries Parquet files *directly* without importing data.
 </div>
 
 <div class="column" width="40%">
@@ -220,7 +252,11 @@ If your dataset is larger than your RAM, this script **crashes**.
 
 ::: {.callout-note}
 ## Dual Indexing Strategy
-By building `RTREE` indexes on **both** points and polygons, we enable the query optimizer to efficiently search in both directions. This is a one-time setup cost that accelerates all subsequent spatial queries.
+By building `RTREE` indexes on **both** points and polygons, we enable the
+query optimizer to efficiently search in both directions. Note that
+`ST_Intersects` (not `ST_Within`) is used in the join predicate — this is
+the predicate that DuckDB's RTREE engine actually accelerates for
+point-polygon queries.
 :::
 
 ---
@@ -237,7 +273,10 @@ By building `RTREE` indexes on **both** points and polygons, we enable the query
 
 ::: {.callout-tip}
 ## Implicit Indexing
-GeoPandas automatically builds an STRtree spatial index during `sjoin()`, which makes it fast for in-memory spatial joins without explicit index creation.
+GeoPandas automatically builds an STRtree spatial index during `sjoin()`,
+which makes it fast for in-memory spatial joins without explicit index
+creation. For 29 non-overlapping county polygons, this implicit index is
+highly efficient.
 :::
 
 ---
@@ -254,6 +293,32 @@ GeoPandas automatically builds an STRtree spatial index during `sjoin()`, which 
 
 ---
 
+## Benchmark 05: Modern R (`SedonaDB`) {.scrollable}
+
+**The Arrow-Native Way**: DataFusion-backed spatial SQL, no JVM required.
+
+```{r}
+#| file: _scripts/05_bench_sedonadb.R
+#| eval: false
+#| echo: true
+```
+
+::: {.callout-note}
+## How SedonaDB differs from DuckDB
+Both are embedded single-node engines, but SedonaDB is built on Apache Arrow
++ DataFusion (Rust) with spatial as a first-class citizen from day one. There
+is no explicit `CREATE INDEX` step — spatial indexing is managed internally
+by the query planner. The R API is pipe-native: `sd_read_parquet() |>
+sd_to_view() |> ...` rather than SQL DDL statements.
+
+**Lazy evaluation**: `sd_read_parquet()` registers a view without scanning
+any data — the actual Parquet read happens when `sd_collect()` executes the
+query. This is why "Load Data" for SedonaDB is near-instant, and "Validation
+(Join)" includes both scan and compute time.
+:::
+
+---
+
 ## Results: Execution Time
 
 ```{ojs}
@@ -261,8 +326,8 @@ GeoPandas automatically builds an STRtree spatial index during `sjoin()`, which 
 //| panel: sidebar
 
 viewof opFilter = Inputs.checkbox(
-  ["Load Data", "Validation (Join)"],
-  { value: ["Load Data", "Validation (Join)"], label: "Toggle Steps:" }
+  ["Load Data", "Build Index", "Validation (Join)"],
+  { value: ["Load Data", "Build Index", "Validation (Join)"], label: "Toggle Steps:" }
 )
 ```
 
@@ -270,7 +335,6 @@ viewof opFilter = Inputs.checkbox(
 //| echo: false
 data = FileAttachment("_results/benchmark_results.csv").csv({ typed: true })
 
-// Reactive filtering based on checkbox
 filteredData = data.filter(d => opFilter.includes(d.operation))
 
 Plot.plot({
@@ -280,8 +344,8 @@ Plot.plot({
   x: { label: "Total Seconds" },
   y: { label: null },
   color: {
-    domain: ["Load Data", "Validation (Join)"],
-    range: ["#A0CBE8", "#006DAE"], // Light Blue -> Dark Blue
+    domain: ["Load Data", "Build Index", "Validation (Join)"],
+    range: ["#A0CBE8", "#5BA3C9", "#006DAE"],
     legend: true
   },
   marks: [
@@ -289,7 +353,7 @@ Plot.plot({
       y: d => `${d.system} (${d.language})`,
       x: "time_sec",
       fill: "operation",
-      sort: { y: "x", reverse: true }, // Auto-sorts by visible total
+      sort: { y: "x", reverse: true },
       tip: true
     }),
     Plot.ruleX([0])
@@ -303,22 +367,26 @@ Plot.plot({
 
 ```{ojs}
 //| echo: false
+// FIX: Use filteredData (respects opFilter checkbox) and fill by operation —
+// consistent with the timing chart. The previous version used raw `data`
+// with fill by system, which caused multiple overlapping bars per system
+// (last drawn wins) once "Build Index" was added as a third operation.
 Plot.plot({
   height: 500,
   marginLeft: 200,
   grid: true,
-  x: { label: "Megabytes (MB)" },
+  x: { label: "Megabytes (MB) — Process RSS Delta" },
   y: { label: null },
   color: {
-    domain: ["sf", "geopandas", "duckdb"],
-    range: ["#999999", "#666666", "#006DAE"],
+    domain: ["Load Data", "Build Index", "Validation (Join)"],
+    range: ["#A0CBE8", "#5BA3C9", "#006DAE"],
     legend: true
   },
   marks: [
-    Plot.barX(data, {
+    Plot.barX(filteredData, {
       y: d => `${d.system} (${d.language})`,
       x: "memory_mb",
-      fill: "system",
+      fill: "operation",
       sort: { y: "x", reverse: true },
       tip: true
     }),
@@ -335,7 +403,6 @@ How much disk space do we save?
 
 ```{ojs}
 //| echo: false
-// Read the CSV generated by the hidden R chunk
 fileData = FileAttachment("_results/file_sizes.csv").csv({ typed: true })
 
 Plot.plot({
@@ -357,7 +424,7 @@ Plot.plot({
       fill: "Format",
       fx: "Dataset",
       tip: true,
-      sort: { x: "y", reverse: true } // Sort largest to smallest
+      sort: { x: "y", reverse: true }
     }),
     Plot.ruleY([0])
   ]
@@ -377,8 +444,7 @@ library(readr)
 library(knitr)
 library(dplyr)
 
-# The benchmark script 02_bench_duckdb.R generates this file
-if(file.exists("_results/validation_stats.csv")) {
+if (file.exists("_results/validation_stats.csv")) {
   stats <- read_csv("_results/validation_stats.csv", show_col_types = FALSE)
 
   stats |>
@@ -399,16 +465,21 @@ if(file.exists("_results/validation_stats.csv")) {
 ### Query Execution Time vs. Total Workflow Time
 
 ::: {.incremental}
-* **DuckDB's "Load Data"** includes index creation (~2-4s)
-* **DuckDB's strength**: Once indexed, queries are fast and memory-efficient
-* **GeoPandas**: Fast for single queries on datasets that fit in RAM
-* **Key insight**: For repeated queries, DuckDB's index pays for itself
+* **DuckDB's "Load Data"** measures only Parquet ingest + WKB conversion (~2–3s)
+* **DuckDB's "Build Index"** measures the RTREE index creation (~2–4s, **one-time cost**)
+* **DuckDB's strength**: Once indexed, queries are 5–10× faster than the legacy stack
+* **Key insight**: For repeated queries, the index cost is amortized to near-zero
 :::
 
 ::: {.fragment}
 ::: {.callout-note}
-## When DuckDB Shines
-For **large datasets** (>1GB), **repeated queries**, or **limited RAM**, DuckDB's dual indexing strategy becomes increasingly valuable. The index creation is a one-time cost amortized across many queries.
+## Why `ST_Intersects` instead of `ST_Within`?
+DuckDB's RTREE index accelerates **bounding-box operations** (`ST_Intersects`).
+For point geometries, `ST_Intersects(point, polygon)` is mathematically
+identical to `ST_Within(point, polygon)` — a point either lies inside or
+outside, it cannot straddle a boundary. Using `ST_Intersects` lets the RTREE
+eliminate irrelevant polygons via bounding box, then applies the exact
+geometry check.
 :::
 :::
 
@@ -421,16 +492,16 @@ For **large datasets** (>1GB), **repeated queries**, or **limited RAM**, DuckDB'
 * **Modern**: Processes 100GB of data on a laptop with 8GB RAM (Streaming).
 
 ### 2. File Formats
-* **Shapefile**: 3 files (.shp, .shx, .dbf). Truncates column names. 2GB Limit.
-* **Parquet**: 1 file. Preserves full names and types. No practical limit.
+* **Shapefile**: 3+ files (.shp, .shx, .dbf). Truncates column names. 2GB limit.
+* **Parquet**: 1 file. Preserves full names and types. No practical size limit.
 
 ### 3. Portability
 * **SQL**: The SQL query in R was **identical** to the SQL query in Python.
 * Logic is moved to the *Data* layer, not the *Script* layer.
 
 ### 4. Memory Efficiency
-* **DuckDB**: Uses <30 MB RAM for spatial joins on 1.2M points
-* **Legacy**: Requires ~1-1.5 GB RAM for the same operation
+* **DuckDB**: Uses modest RAM for spatial joins via streaming execution.
+* **Legacy**: Requires 1–1.5 GB RAM to hold entire dataset in memory.
 
 ---
 
@@ -455,7 +526,7 @@ For **large datasets** (>1GB), **repeated queries**, or **limited RAM**, DuckDB'
 | **Engine** | In-Memory (sf/pandas) | Out-of-Core (DuckDB) |
 | **Index Creation** | Automatic (hidden) | Explicit (dual RTREE) |
 | **Query Speed** | Fast (if fits in RAM) | Fast (with indexing) |
-| **RAM Usage** | ~1.5 GB | **< 30 MB** |
+| **RAM Usage** | ~1.5 GB | Modest (streams data) |
 | **Limit** | RAM Size | Disk Space |
 | **Best For** | Small, one-off tasks | Large, repeated queries |
 

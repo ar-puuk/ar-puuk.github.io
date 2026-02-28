@@ -14,7 +14,6 @@ filters:
 code-annotations: select
 prefer-html: true
 embed-resources: false
-draft: true
 ---
 
 ## Introduction

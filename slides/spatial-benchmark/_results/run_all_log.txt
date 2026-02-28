@@ -1,0 +1,280 @@
+=== run_all.R log: 2026-02-27 19:27:33.184241 ===
+Working directory: C:/Users/Pukar.Bhandari/Documents/GitHub/ar-puuk.github.io/slides/spatial-benchmark
+Result: success
+
+--- stdout ---
+Linking to GEOS 3.14.1, GDAL 3.12.1, PROJ 9.7.1; sf_use_s2() is TRUE
+Linking to GEOS 3.14.1, GDAL 3.12.1, PROJ 9.7.1; sf_use_s2() is TRUE
+
+Attaching package: 'arrow'
+
+
+Attaching package: 'arrow'
+
+The following object is masked from 'package:utils':
+
+    timestamp
+
+The following object is masked from 'package:utils':
+
+    timestamp
+
+
+Attaching package: 'dplyr'
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+Loading required package: DBI
+Loading required package: DBI
+Success: All Address Point formats (CSV/Parquet) found locally.
+Success: All Address Point formats (CSV/Parquet) found locally.
+Success: All County Boundary formats (SHP/Parquet) found locally.
+Success: All County Boundary formats (SHP/Parquet) found locally.
+Pre-installing DuckDB spatial extension (if not already cached)...
+Pre-installing DuckDB spatial extension (if not already cached)...
+[1] 0
+[1] 0
+[1] 0
+[1] 0
+DuckDB spatial extension ready.
+DuckDB spatial extension ready.
+Verifying sedonadb package...
+Verifying sedonadb package...
+sedonadb ready. Spatial functions verified.
+sedonadb ready. Spatial functions verified.
+Setup Phase Finished. Files verified in: _data
+Setup Phase Finished. Files verified in: _data
+Linking to GEOS 3.14.1, GDAL 3.12.1, PROJ 9.7.1; sf_use_s2() is TRUE
+Linking to GEOS 3.14.1, GDAL 3.12.1, PROJ 9.7.1; sf_use_s2() is TRUE
+
+Attaching package: 'dplyr'
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────
+Running: BENCHMARK 01 - R (sf) Legacy Stack
+────────────────────────────────────────────────────────────
+Running: BENCHMARK 01 - R (sf) Legacy Stack
+────────────────────────────────────────────────────────────
+Warning message:
+Warning message:
+One or more parsing issues, call `problems()` on your data frame for details,
+e.g.:
+  dat <- vroom(...)
+  problems(dat) 
+One or more parsing issues, call `problems()` on your data frame for details,
+e.g.:
+  dat <- vroom(...)
+  problems(dat) 
+  Load Data: 17.550s | 990.4 MB RSS delta
+  Load Data: 17.550s | 990.4 MB RSS delta
+Warning message:
+Warning message:
+One or more parsing issues, call `problems()` on your data frame for details,
+e.g.:
+  dat <- vroom(...)
+  problems(dat) 
+One or more parsing issues, call `problems()` on your data frame for details,
+e.g.:
+  dat <- vroom(...)
+  problems(dat) 
+  Validation (Join): 28.560s | 1308.3 MB RSS delta
+  Validation (Join): 28.560s | 1308.3 MB RSS delta
+Warning messages:
+1: Warning messages:
+In rm(pts, cnt, res_attr, res_spatial) : object 'res_attr' not found
+2: In rm(pts, cnt, res_attr, res_spatial) : object 'res_spatial' not found
+────────────────────────────────────────────────────────────
+1: In rm(pts, cnt, res_attr, res_spatial) : object 'res_attr' not found
+2: In rm(pts, cnt, res_attr, res_spatial) : object 'res_spatial' not found
+────────────────────────────────────────────────────────────
+BENCHMARK 01 Complete!
+────────────────────────────────────────────────────────────
+BENCHMARK 01 Complete!
+────────────────────────────────────────────────────────────
+Loading required package: DBI
+Loading required package: DBI
+
+Attaching package: 'dplyr'
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────
+Running: BENCHMARK 02 - R (DuckDB) Modern Stack
+────────────────────────────────────────────────────────────
+Phase 2a: Benchmarking data ingest (no indexing)...
+Running: BENCHMARK 02 - R (DuckDB) Modern Stack
+────────────────────────────────────────────────────────────
+Phase 2a: Benchmarking data ingest (no indexing)...
+  Load Data: 2.530s | 121.9 MB RSS delta
+  Load Data: 2.530s | 121.9 MB RSS delta
+Phase 2b: Benchmarking RTREE index creation...
+Phase 2b: Benchmarking RTREE index creation...
+[1] 0
+[1] 0
+[1] 1476679
+[1] 1476679
+[1] 29
+[1] 29
+  Build Index: 0.350s | 142.9 MB RSS delta
+  Build Index: 0.350s | 142.9 MB RSS delta
+Running warmup query (not timed)...
+Running warmup query (not timed)...
+Warmup complete. Starting timed benchmark...
+Warmup complete. Starting timed benchmark...
+  Validation (Join): 50.680s | 1.8 MB RSS delta
+  Validation (Join): 50.680s | 1.8 MB RSS delta
+Generating validation statistics...
+Generating validation statistics...
+Validation stats saved to: _results/validation_stats.csv
+Validation stats saved to: _results/validation_stats.csv
+────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────
+BENCHMARK 02 Complete!
+────────────────────────────────────────────────────────────
+BENCHMARK 02 Complete!
+────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────
+Running: BENCHMARK 03 - Python (GeoPandas) Legacy Stack
+────────────────────────────────────────────────────────────
+  Load Data: 12.683s | 1199.0 MB RSS delta
+  Validation (Join): 3.074s | 630.1 MB RSS delta
+────────────────────────────────────────────────────────────
+BENCHMARK 03 Complete!
+────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────
+Running: BENCHMARK 04 - Python (DuckDB) Modern Stack
+────────────────────────────────────────────────────────────
+Installing spatial extension (one-time, not timed)...
+Spatial extension ready.
+  Load Data: 5.516s | 15.9 MB RSS delta
+  Build Index: 0.734s | 10.3 MB RSS delta
+Running warmup query (not timed)...
+Warmup complete. Starting timed benchmark...
+  Validation (Join): 96.314s | 6.8 MB RSS delta
+────────────────────────────────────────────────────────────
+BENCHMARK 04 Complete!
+────────────────────────────────────────────────────────────
+
+Attaching package: 'dplyr'
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────
+Running: BENCHMARK 05 - R (SedonaDB) Modern Stack
+────────────────────────────────────────────────────────────
+Running: BENCHMARK 05 - R (SedonaDB) Modern Stack
+────────────────────────────────────────────────────────────
+  Load Data: 0.030s | 9.2 MB RSS delta
+  Load Data: 0.030s | 9.2 MB RSS delta
+Running warmup query (not timed)...
+Running warmup query (not timed)...
+Warmup complete. Starting timed benchmark...
+Warmup complete. Starting timed benchmark...
+  Validation (Join): 1.890s | -11.2 MB RSS delta
+  Validation (Join): 1.890s | -11.2 MB RSS delta
+────────────────────────────────────────────────────────────
+BENCHMARK 05 Complete!
+────────────────────────────────────────────────────────────
+BENCHMARK 05 Complete!
+────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────
+
+--- stderr ---
+[Init] Running with ITERATIONS = 1
+[Init] Using Python: C:\Users\Pukar.Bhandari\Documents\GitHub\ar-puuk.github.io\env\python.exe
+[Init] Results CSV initialized: _results/benchmark_results.csv
+
+--- Running R: _scripts/00_setup_data.R ---
+--- Done: _scripts/00_setup_data.R ---
+
+--- Running R: _scripts/01_bench_sf.R ---
+--- Done: _scripts/01_bench_sf.R ---
+
+--- Running R: _scripts/02_bench_duckdb.R ---
+--- Done: _scripts/02_bench_duckdb.R ---
+
+--- Running Python: _scripts/03_bench_geopandas.py ---
+--- Done: _scripts/03_bench_geopandas.py ---
+
+--- Running Python: _scripts/04_bench_duckdb.py ---
+--- Done: _scripts/04_bench_duckdb.py ---
+
+--- Running R: _scripts/05_bench_sedonadb.R ---
+--- Done: _scripts/05_bench_sedonadb.R ---
+
+─────────────────────────────────────────────────────────
+SUCCESS: All benchmarks complete.
+  Results written to: _results/benchmark_results.csv
+─────────────────────────────────────────────────────────

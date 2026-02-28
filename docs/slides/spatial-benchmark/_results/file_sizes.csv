@@ -1,5 +1,0 @@
-Dataset,Format,SizeMB
-Addresses,CSV,333.30253314971924
-Addresses,Parquet,70.98097133636475
-Counties,Shapefile,2.396148681640625
-Counties,Parquet,2.31351375579834

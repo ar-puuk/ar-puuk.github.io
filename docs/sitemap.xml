@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ar-puuk.github.io/posts/spatial-sql-exporer/index.html</loc>
-    <lastmod>2026-02-26T07:14:15.929Z</lastmod>
-  </url>
-  <url>
     <loc>https://ar-puuk.github.io/resume.html</loc>
     <lastmod>2025-11-14T05:41:14.817Z</lastmod>
   </url>
@@ -21,28 +17,52 @@
     <lastmod>2025-11-14T05:41:14.788Z</lastmod>
   </url>
   <url>
-    <loc>https://ar-puuk.github.io/posts/socioeconomic-demo/index.html</loc>
-    <lastmod>2026-02-08T07:11:44.684Z</lastmod>
+    <loc>https://ar-puuk.github.io/posts/spatial-sql-exporer/index.html</loc>
+    <lastmod>2026-02-26T07:14:15.929Z</lastmod>
   </url>
   <url>
-    <loc>https://ar-puuk.github.io/posts/population-pyramid-explorer/index.html</loc>
-    <lastmod>2025-11-14T05:41:12.805Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ar-puuk.github.io/posts/nepal-population-density/index.html</loc>
-    <lastmod>2025-11-14T05:41:12.597Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ar-puuk.github.io/404-gradethis.html</loc>
-    <lastmod>2025-11-14T05:41:10.285Z</lastmod>
+    <loc>https://ar-puuk.github.io/posts/robocopy-gui/index.html</loc>
+    <lastmod>2025-11-14T05:41:12.847Z</lastmod>
   </url>
   <url>
     <loc>https://ar-puuk.github.io/posts/overture-data-download/index.html</loc>
     <lastmod>2025-11-14T05:41:12.638Z</lastmod>
   </url>
   <url>
-    <loc>https://ar-puuk.github.io/posts/robocopy-gui/index.html</loc>
-    <lastmod>2025-11-14T05:41:12.847Z</lastmod>
+    <loc>https://ar-puuk.github.io/index.html</loc>
+    <lastmod>2025-11-14T05:41:12.397Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/about.html</loc>
+    <lastmod>2026-02-08T05:13:33.165Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/404-gradethis.html</loc>
+    <lastmod>2025-11-14T05:41:10.285Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/contact.html</loc>
+    <lastmod>2025-11-14T05:41:10.869Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/license.html</loc>
+    <lastmod>2025-11-14T05:41:12.397Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/posts/nepal-population-density/index.html</loc>
+    <lastmod>2025-11-14T05:41:12.597Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/posts/population-pyramid-explorer/index.html</loc>
+    <lastmod>2025-11-14T05:41:12.805Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/posts/socioeconomic-demo/index.html</loc>
+    <lastmod>2026-02-08T07:11:44.684Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/posts/storymap_my_journey/index.html</loc>
+    <lastmod>2026-02-28T03:35:01.530Z</lastmod>
   </url>
   <url>
     <loc>https://ar-puuk.github.io/projects.html</loc>
