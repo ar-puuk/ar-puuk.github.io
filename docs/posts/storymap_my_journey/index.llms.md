@@ -18,6 +18,10 @@ The {mapgl} package offers several advantages for transportation planners and da
 
 Below is the complete interactive storymap. You can scroll through the different sections to see how the map smoothly transitions between locations, each representing a significant milestone in my journey.
 
+> **NOTE:**
+>
+> Please be patient while the R environment and packages load in your browser. This may take a few seconds to initialize while the `shinylive` components are prepared.
+
 ``` shinylive-r
 #| '!! shinylive warning !!': |
 #|   shinylive does not work in self-contained HTML documents.
