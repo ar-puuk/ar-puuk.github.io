@@ -2,10 +2,10 @@
 title: "Prompt Engineering Best Practices"
 subtitle: "For Analytics & Modeling"
 author: "Pukar Bhandari"
-date: today
+date: 2026-04-04
 format:
   revealjs:
-    # theme: [default, custom.scss]
+    theme: [default, custom.scss]
     slide-number: true
     transition: fade
     width: 1280

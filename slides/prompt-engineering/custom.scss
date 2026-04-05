@@ -1,0 +1,39 @@
+/*-- scss:defaults --*/
+
+$presentation-heading-color: #1a3a5c;
+$link-color: #2e78c2;
+$code-block-bg: #2e3440;/* #f8f9fa */
+$code-block-border-color: #dee2e6;
+$body-color: #2d3436;
+
+/*-- scss:rules --*/
+
+.reveal .slide-logo {
+  max-height: 45px !important;
+}
+
+.reveal blockquote {
+  border-left: 4px solid #2e78c2;
+  padding-left: 1em;
+  font-style: normal;
+  background: rgba(46, 120, 194, 0.05);
+  border-radius: 4px;
+  padding: 0.75em 1em;
+}
+
+.reveal .callout {
+  font-size: 0.85em;
+}
+
+.reveal pre code {
+  font-size: 0.75em;
+  line-height: 1.4;
+}
+
+.reveal table {
+  font-size: 0.78em;
+}
+
+.reveal .panel-tabset .nav-link {
+  font-size: 0.85em;
+}
