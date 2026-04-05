@@ -1,0 +1,504 @@
+---
+title: "Prompt Engineering Best Practices"
+subtitle: "For Analytics & Modeling"
+author: "Pukar Bhandari"
+date: today
+format:
+  revealjs:
+    # theme: [default, custom.scss]
+    slide-number: true
+    transition: fade
+    width: 1280
+    height: 720
+    footer: "WFRC · Tech, Skills, and Beyond · 2026"
+    logo: https://wfrc.utah.gov/wp-content/uploads/2025/05/footer-logo.svg
+    title-slide-attributes:
+      data-background-color: "#1a1a2e"
+      data-background-image: https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1280&q=80
+      data-background-opacity: "0.15"
+    code-line-numbers: false
+    highlight-style: monokai
+    incremental: true
+---
+
+## Why This Talk? {background-color="#1a1a2e"}
+
+> "The difference between a **good** LLM output and a **great** one is almost never the model — it's the prompt."
+
+<br>
+
+- Most of us are **brute-forcing** our chats
+- Copy → paste → pray → re-paste
+- Today: move to **structured, repeatable** prompt engineering
+- **10 minutes** to level up your LLM workflow
+
+::: {.notes}
+**[~1 min]**
+
+Welcome everyone. Quick show of hands — how many of you used ChatGPT, Claude, or Gemini at least once this week? Great. Now, how many of you feel like you're getting the *best possible* output every time? Probably fewer hands.
+
+That gap is what this talk is about. Most of us — myself included when I started — treat LLMs like a search engine. You type something in, get something back, and if it's not right, you rephrase and try again. That's brute-forcing.
+
+Today I want to give you a set of concrete, practical techniques that will dramatically improve the quality of what you get back — especially for the kind of work we do: R scripts, Python pipelines, SQL queries, spatial analysis, travel demand modeling. All of these have specific patterns where prompt engineering makes a huge difference.
+
+We'll cover seven techniques in 10 minutes. Each one is immediately usable. Let's go.
+:::
+
+## 1 · Context & Role Prompting {background-color="#16213e"}
+
+:::: {.columns}
+::: {.column width="50%"}
+
+### ❌ Without Role
+
+```
+Write an R script to join 
+traffic counts to TAZ polygons.
+```
+
+*Generic, may use wrong packages,*
+*ignores projection issues*
+
+:::
+::: {.column width="50%"}
+
+### ✅ With Role
+
+```
+Act as an expert transportation 
+data scientist using R with sf.
+I work with WFRC TAZ shapefiles 
+(UTM 12N, EPSG:26912) and AADT 
+count stations as point data.
+
+Write an R script to spatially 
+join traffic counts to TAZ polygons 
+using the base pipe operator.
+```
+
+:::
+::::
+
+. . .
+
+**When you DON'T need it:** quick syntax lookups, simple factual questions
+
+::: {.notes}
+**[~1.5 min]**
+
+This is technique number one and it's arguably the highest-leverage thing you can do. When you set a role, you are essentially telling the LLM *which part of its training data to weight most heavily*.
+
+Look at the difference on screen. The left side — "write an R script to join traffic counts to TAZ polygons" — is going to give you something. But it might use `merge()` instead of `sf::st_join()`. It might not handle CRS transformations. It might use tidyverse pipes when you want base R pipes.
+
+The right side gives the LLM three critical pieces of context: WHO you want it to be (an expert transportation data scientist), WHAT tools you're using (R with sf, base pipe), and WHAT your data looks like (WFRC TAZ shapefiles in UTM 12N, point data for counts). Now the LLM knows to use `st_join()`, to check `st_crs()`, and to write idiomatic base-pipe R code.
+
+When do you NOT need this? If you're just asking "what's the syntax for `dplyr::case_when()`?" — skip the role. Quick syntax lookups don't benefit from a paragraph of preamble. Use your judgment: the more complex and domain-specific the task, the more a role prompt pays off.
+
+One tip: save your best role prompts somewhere — a text file, a snippet manager, a pinned Slack message. You'll reuse them constantly.
+:::
+
+## 2 · Plan First, Implement Second {background-color="#16213e"}
+
+:::: {.columns}
+::: {.column width="48%"}
+
+### Brute-Force
+
+```
+Write a Python script to process 
+the household travel survey, 
+calculate average trip lengths 
+by mode and income group, and 
+export the results for Cube.
+```
+
+*One shot → bugs, missed edge cases*
+
+:::
+::: {.column width="52%"}
+
+### Chain of Thought
+
+```
+I need to process the WFRC 
+household travel survey (CSV) 
+and calculate average trip lengths 
+by mode and income group for 
+Cube Voyager import.
+
+STEP 1: Outline the logical steps 
+you would take. Do NOT write code 
+yet. List assumptions.
+
+STEP 2: Wait for my approval 
+before writing the Python code.
+```
+
+:::
+::::
+
+. . .
+
+**Why it works:** You catch logic errors *before* they're buried in 200 lines of code.
+
+::: {.notes}
+**[~1.5 min]**
+
+This is one of the most powerful techniques and it comes straight from the research literature — it's called "Chain of Thought" or "Plan and Solve" prompting. The core idea is simple: force the LLM to think before it codes.
+
+On the left, you're asking the LLM to do everything in one shot. It has to figure out the data structure, decide how to handle missing values, choose aggregation logic, format the output for Cube — all simultaneously. That's where bugs hide.
+
+On the right, you explicitly break it into two phases. "First, outline the steps. List your assumptions. Wait for my approval." This does three things:
+
+First, it surfaces the LLM's assumptions. Maybe it assumes trip length is in miles when your survey uses kilometers. Maybe it drops records with missing income instead of categorizing them as "Unknown." You catch these before a single line of code is written.
+
+Second, it creates a plan you can edit. "Actually, we also need to filter out trips under 0.1 miles — those are likely GPS noise." Now the LLM incorporates that into its implementation.
+
+Third, it often produces better code because the LLM has already organized its thinking. This is especially true for complex multi-step tasks like building a mode choice utility calculation or processing GTFS feeds.
+
+This is a mindset shift: use the LLM as a *collaborator*, not a vending machine.
+:::
+
+## 3 · File Uploads & Data Privacy {background-color="#0f3460"}
+
+:::: {.columns}
+::: {.column width="55%"}
+
+### ✅ Safe to Upload
+
+- R scripts, Python notebooks, `.qmd` files
+- WFRC public GitHub repos
+- Published documentation & specs
+- SQL query logic (no credentials!)
+
+### ⛔ Do NOT Upload
+
+- Raw survey respondent data
+- Personally identifiable information (PII)
+- Proprietary model parameters
+- Internal HR / financial records
+
+:::
+::: {.column width="45%"}
+
+### The Workaround
+
+```r
+# Share a SCHEMA, not the data:
+"My data looks like this:
+
+hh_id | persons | income_group
+  int |     int | chr (Low/Med/High)
+veh   | lat     | lng
+  int |   dbl   | dbl
+
+~45,000 rows. Some NAs in 
+income_group (~8%). 
+Write an R script to impute 
+missing income using a 
+k-nearest neighbors approach 
+based on persons, veh, lat, lng."
+```
+
+:::
+::::
+
+::: {.notes}
+**[~1.5 min]**
+
+This slide is critical, and I want everyone to internalize this. Uploading files to LLMs is incredibly powerful — Claude, ChatGPT, and Gemini can all read your code files directly. But there's a bright line between code and data.
+
+Code is almost always safe. Our WFRC repositories are public on GitHub. Your R scripts, your Python notebooks, your Quarto documents — upload them freely. The LLM can read the whole file, understand context, and give you much better help than if you paste a snippet.
+
+Data is where you have to be careful. The household travel survey contains home locations, trip origins and destinations, income, household composition. That is sensitive data. Even if the LLM provider says they don't train on your uploads, you are still transmitting that data over the internet to a third-party server. Don't do it.
+
+The workaround is on the right side of the screen: share a schema, not the data. Describe your columns, data types, approximate row count, and the nature of any quality issues like missing values. This gives the LLM everything it needs to write correct code without ever seeing a single real record.
+
+Another option: create a small fake dataset. Use R to generate 50 synthetic rows with `sample()` and `runif()` that mimic the real structure. Upload that. The LLM writes code against it, and you run it on the real data locally.
+
+One more note on context window bloat: if you upload a 10,000-line script, the LLM is spending most of its attention budget just holding that file in memory. Be selective. Upload the specific module or function you need help with, not the entire codebase.
+:::
+
+## 4 · Managing Long Contexts {background-color="#0f3460"}
+
+:::: {.columns}
+::: {.column width="50%"}
+
+### The Problem
+
+```
+ Message 1: "Here's my R script..."
+ Message 5: "Now add mode share..."
+ Message 12: "Why did you forget 
+              the CRS transform 
+              from slide 1?"
+ Message 18: 🤯 Complete nonsense
+```
+
+LLMs lose coherence as conversations grow.
+
+:::
+::: {.column width="50%"}
+
+### The Fix: Summarize & Restart
+
+```
+Summarize our conversation so far:
+- What script are we building?
+- What variables and data are 
+  involved?
+- What's working and what's not?
+
+Format it so I can paste it into 
+a brand new chat as the opening 
+message.
+```
+
+*Copy that summary → New chat → Paste → Continue with full coherence.*
+
+:::
+::::
+
+::: {.notes}
+**[~1 min]**
+
+This is a quick but important one. Every LLM has a context window — think of it as short-term memory. Claude's is 200K tokens, GPT-4o is 128K, Gemini can go up to a million. Sounds huge, right? But in practice, once you've gone back and forth 15 or 20 times, uploaded files, pasted error messages — the model starts to "forget" earlier instructions or subtly contradict itself. Researchers call this the "lost in the middle" problem — LLMs attend most strongly to the beginning and end of their context.
+
+The fix is simple and it works shockingly well. When you feel a conversation getting wobbly — maybe the LLM just forgot a key constraint, or it's repeating something you already corrected — ask it to summarize the current state.
+
+"Summarize what we've built so far. List the key variables, the data sources, what's working, and what's still broken. Format it so I can use it as a starting prompt."
+
+Then you literally open a new chat, paste that summary, and pick up where you left off — but now the model has a clean, focused context instead of 18 messages of conversational drift.
+
+I do this at least once per complex coding session. It takes 30 seconds and saves you from the maddening experience of the LLM "hallucinating" a variable name it made up six messages ago.
+:::
+
+## 5 · Coding Agents & System Prompts {background-color="#1a1a2e"}
+
+:::: {.columns}
+::: {.column width="55%"}
+
+### The Agent Landscape (2026)
+
+| Tool | Model Lock-in | Open Source |
+|------|:---:|:---:|
+| **Claude Code** | Claude | No |
+| **GitHub Copilot** | Multi | No |
+| **Cursor** | Multi | No |
+| **Codex (OpenAI)** | GPT | No |
+| **OpenClaw** | Multi | ✅ |
+| **Gemini Code Assist** | Gemini | No |
+
+:::
+::: {.column width="45%"}
+
+### `CLAUDE.md` / `AGENT.md`
+
+Place in your **project root**:
+
+```markdown
+# CLAUDE.md
+## Project Context
+WFRC travel demand model (Cube).
+R + sf + data.table. Base pipe.
+
+## Conventions
+- EPSG:26912 for all spatial ops
+- Snake_case variable names
+- Never use `library(tidyverse)`
+  — import packages individually
+
+## Data
+TAZ shapefile: data/taz_v4.shp
+Count stations: data/aadt_2025.csv
+```
+
+:::
+::::
+
+::: {.notes}
+**[~1.5 min]**
+
+Now let's talk about the next frontier beyond chat-based LLMs: coding agents. These are tools that don't just suggest code — they can read your entire project, run commands, create files, and iterate on errors autonomously.
+
+The table on the left shows the major players. Claude Code is Anthropic's terminal-based agent — it's become very popular, hitting around $2.5 billion in annualized revenue. GitHub Copilot is the one most people know. Cursor is an AI-native code editor. OpenClaw is the open-source wildcard — it started as a weekend project and exploded to nearly 200K GitHub stars. It's model-agnostic, so you can run it with Claude, GPT, Gemini, or even local models.
+
+Fun fact for the room: just a few days ago — March 31st — Anthropic accidentally shipped Claude Code's entire source code to the public npm registry. Over 500,000 lines of TypeScript were exposed before they caught it. A packaging error caused by a misconfigured build file. It's already been forked thousands of times. It's a good reminder that even the "safety-first" AI lab makes human errors in CI/CD.
+
+Now, the actionable technique on the right: CLAUDE.md files — sometimes called AGENT.md. When you place a markdown file in your project root, coding agents like Claude Code automatically read it as standing instructions. Think of it as a system prompt that lives with your codebase.
+
+For us at WFRC, this is where you encode things like: "always use EPSG:26912," "use base pipe, not magrittr," "our TAZ shapefile lives at this path." Every time the agent spins up, it reads this file and behaves accordingly. It's like onboarding a new team member, except the team member has perfect memory of the instructions.
+
+If you're not using coding agents yet, start with Copilot or Claude Code. If you already are, add a CLAUDE.md to your project today.
+:::
+
+## 6 · Meta-Prompting {background-color="#1a1a2e"}
+
+### Let the LLM write your prompt
+
+<br>
+
+```
+I need to write a complex ArcPy script that automates 
+network analysis for our regional travel demand model.
+
+Before writing any code:
+1. Ask me 3 clarification questions about my data and goals.
+2. Then generate the best possible prompt I should use — 
+   including role, context, constraints, and output format — 
+   so I can paste it back to you (or a different model) 
+   for the best result.
+```
+
+. . .
+
+<br>
+
+**Why?** The LLM knows what *it* needs to perform well. Let it tell you.
+
+::: {.notes}
+**[~1 min]**
+
+This is my favorite technique and it's the most meta. Instead of struggling to write the perfect prompt yourself, ask the LLM to write the prompt for you.
+
+The example on screen is a real scenario: you need a complex ArcPy script for network analysis. Instead of trying to specify everything upfront — and inevitably forgetting something — you say: "Ask me three clarification questions, then generate the best possible prompt."
+
+What happens is fascinating. The LLM will ask you things like: "What network dataset are you using — is it an ESRI network dataset or OpenStreetMap?" or "Do you need impedance based on free-flow travel time or congested time?" or "Should the output be a feature class or a CSV of OD travel times?"
+
+These are exactly the details that make the difference between a generic script and one that actually works for your project. The LLM knows what information it needs to produce good output — it just needs permission to ask.
+
+Then it generates a beautifully structured prompt with role, context, constraints, and output format. You can use that prompt in the same chat, or copy it to a different model — maybe you want Claude for the planning and Gemini for the implementation.
+
+This is also great for the official documentation links. Anthropic, OpenAI, and Google all publish prompt engineering guides. The core advice converges: be specific, give examples, use structured formatting, and break complex tasks into steps. Meta-prompting automates all of that.
+:::
+
+## 7 · Before & After Examples {background-color="#0f3460"}
+
+:::: {.columns}
+::: {.column width="50%"}
+
+### ❌ Before (Vague)
+
+```
+Help me with SQL for 
+traffic counts.
+```
+
+<br>
+
+```
+Make a map of transit 
+routes in R.
+```
+
+<br>
+
+```
+My pandas script is broken, 
+fix it.
+```
+
+:::
+::: {.column width="50%"}
+
+### ✅ After (Engineered)
+
+```
+Act as a SQL Server expert. 
+Write a query against our 
+traffic_counts table (columns: 
+station_id, date, hour, volume, 
+direction) that returns AADT by 
+station for 2025 using the AASHTO 
+factor method. Include comments.
+```
+
+```
+Act as an R/sf developer. 
+Using {sf} and base R plotting, 
+map UTA TRAX lines from a GTFS 
+shapes.txt file. Color lines by 
+route_id. Use EPSG:26912.
+```
+
+```
+[Upload the .py file directly]
+This script processes the WFRC 
+household travel survey. It fails 
+at line 47 with a KeyError on 
+'trip_mode'. The CSV has columns: 
+[list them]. What's wrong?
+```
+
+:::
+::::
+
+::: {.notes}
+**[~1 min]**
+
+Let's close with concrete before-and-after examples that tie everything together.
+
+The "before" prompts on the left are what most of us start with. They're not wrong — they'll get you something. But the "after" prompts on the right incorporate the techniques we've covered:
+
+Example one — SQL: We set a role (SQL Server expert), specify the table schema, name the exact calculation method (AASHTO factor), and request comments. That's role prompting plus schema sharing.
+
+Example two — mapping: We specify the package (sf), the data source (GTFS shapes.txt), the visual encoding (color by route_id), and the CRS. The LLM doesn't have to guess anything.
+
+Example three — debugging: Instead of saying "it's broken, fix it," we upload the actual file, point to the exact line, name the error, and list the columns. This is the difference between a 5-message debugging loop and a one-shot fix.
+
+These patterns come straight from the official guidance. Anthropic's docs emphasize being explicit and using structured formatting. OpenAI recommends providing context and examples. Google's best practices say to specify the output format. They all converge on the same core idea: the more precisely you specify the task, the better the result.
+:::
+
+## Cheat Sheet {background-color="#1a1a2e"}
+
+| # | Technique | One-Liner |
+|---|-----------|-----------|
+| 1 | **Role Prompt** | *"Act as an expert \_\_\_ using \_\_\_..."* |
+| 2 | **Plan First** | *"Outline steps first. Wait for approval."* |
+| 3 | **File Uploads** | *Upload code freely; share schemas, not data.* |
+| 4 | **Summarize & Restart** | *"Summarize this chat for a fresh session."* |
+| 5 | **Agent Files** | *Put a `CLAUDE.md` in your project root.* |
+| 6 | **Meta-Prompt** | *"Ask me 3 questions, then write my prompt."* |
+| 7 | **Be Specific** | *Name the table, the CRS, the package, the error.* |
+
+::: {.notes}
+**[~1 min]**
+
+Here's your cheat sheet — screenshot this or I'll share the slides after.
+
+Seven techniques, all immediately usable:
+
+1. Role prompting — tell the LLM who to be.
+2. Plan first — don't let it code until you've approved the plan.
+3. File uploads — upload code freely, but protect sensitive data by sharing schemas.
+4. Summarize and restart — when conversations get long, compress and start fresh.
+5. Agent files — put a CLAUDE.md or AGENT.md in your project root for automatic context.
+6. Meta-prompting — let the LLM write your prompt.
+7. Be specific — always name the table, the CRS, the package, the error.
+
+My challenge to you: pick ONE technique from this list and use it deliberately in your next LLM session. I bet you'll notice the difference immediately.
+:::
+
+## Resources {.smaller}
+
+**Official prompt engineering guides:**
+
+- [Anthropic — Prompting Best Practices](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices)
+- [OpenAI — Prompt Engineering Guide](https://platform.openai.com/docs/guides/prompt-engineering)
+- [Google — Gemini Prompting Strategies](https://ai.google.dev/gemini-api/docs/prompting-strategies)
+
+**Interactive tutorials:**
+
+- [Anthropic Prompt Engineering Tutorial (GitHub)](https://github.com/anthropics/prompt-eng-interactive-tutorial)
+
+**Coding agents:**
+
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | [Codex](https://openai.com/codex/) |  [Cursor](https://www.cursor.com/) | [GitHub Copilot](https://github.com/features/copilot) | [OpenClaw](https://github.com/openclaw/openclaw)
+
+::: {.notes}
+**[Leave up for Q&A]**
+
+These are your follow-up resources. The Anthropic tutorial on GitHub is especially good — it's a series of Jupyter notebooks that let you practice each technique hands-on. Highly recommend going through it with your own examples.
+
+If anyone wants to set up a CLAUDE.md file for their project, or wants help crafting a reusable role prompt template for WFRC work, come find me after the talk. Happy to help.
+:::

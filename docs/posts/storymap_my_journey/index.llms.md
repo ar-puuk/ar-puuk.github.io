@@ -1,0 +1,395 @@
+## 1 Introduction
+
+Interactive storymaps have become an increasingly popular tool for data visualization and storytelling, particularly in fields like urban planning, transportation analysis, and geographic data science. They allow us to combine spatial data with narrative elements, creating compelling visual stories that engage audiences while conveying complex information effectively.
+
+In this post, I’ll walk you through creating an interactive storymap using the {mapgl} R package—a powerful tool that leverages MapLibre GL JS to create stunning, performant web maps. This particular storymap traces my personal journey across different locations where I’ve lived, studied, and worked, from Nepal to the United States.
+
+## 2 Why {mapgl} for Storymaps?
+
+The {mapgl} package offers several advantages for transportation planners and data analysts:
+
+- **Performance**: Built on MapLibre GL JS, it handles large datasets and complex visualizations smoothly
+- **Interactivity**: Native support for user interactions, animations, and dynamic content
+- **Customization**: Extensive styling options and the ability to use custom map tiles
+- **Integration**: Seamless integration with Shiny for reactive web applications
+- **Open Source**: No API keys required when using open map styles
+
+## 3 Interactive Storymap Demo
+
+Below is the complete interactive storymap. You can scroll through the different sections to see how the map smoothly transitions between locations, each representing a significant milestone in my journey.
+
+``` shinylive-r
+#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| viewerHeight: 600
+
+# Install mapgl from r-wasm repo
+webr::install("mapgl", repos = "https://repo.r-wasm.org")
+webr::install("codetools", repos = "https://repo.r-wasm.org")
+
+## file: app.R
+library(shiny) # <1>
+library(mapgl) # <2>
+
+ui <- shiny::fluidPage( # <3>
+  tags$link(
+    href = "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap",
+    rel="stylesheet"
+  ),
+  mapgl::story_map( # <4>
+    map_id = "map",
+    font_family = "Poppins",
+    sections = list( # <5>
+      "intro" = mapgl::story_section(
+        title = "Introduction",
+        content = "Hello I am Pukar Bhandari; and this is my life journey."
+      ),
+      "childhood" = mapgl::story_section(
+        title = "Birtamode, Jhapa",
+        content = "This is where I was born and spent the early part of my life until 2013."
+      ),
+      "bachelors" = mapgl::story_section(
+        title = "Pulchowk, Lalitpur",
+        content = "I then moved to Pulchowk in the pursuit of higher education. I obtained my Bachelor's Degree in Architecture from Institute of Engineering Pulchowk Campus in 2018."
+      ),
+      "masters" = mapgl::story_section(
+        title = "Salt Lake City, UT",
+        content = "In pursuit of even higher education, I moved to Salt Lake City, UT where I obtained my Master of City & Metropolitan Planning degree from the University of Utah in May 2023."
+      ),
+      "metro_analytics" = mapgl::story_section(
+        title = "Atlanta, GA",
+        content = "I then moved to Altanta in June 2023 to work as a transportation planner & analyst at Metro Analytics until September 2025."
+      ),
+      "wfrc_ut" = mapgl::story_section(
+        title = "Back to Salt Lake City, UT",
+        content = "After gaining entry-level experience in transportation planning, travel demand modeling, and data analytics, I moved back to Salt Lake City - a place I am personally and professionally attached to - in order to join the awesome Analytics team at the Wasatch Front Regional Council."
+      )
+    ),
+    map_type = "maplibre"
+  )
+)
+
+server <- function(input, output, session) { # <6>
+  output$map <- mapgl::renderMaplibre({ # <7>
+    mapgl::maplibre(
+      style = mapgl::openfreemap_style("liberty"), # <8>
+      center = c(0, 0),
+      zoom = 2.75,
+      scrollZoom = FALSE
+    ) |>
+      mapgl::set_projection(projection = "globe") |> # <9>
+      mapgl::add_globe_control() |>
+      mapgl::add_navigation_control(visualize_pitch = TRUE) |>
+      mapgl::add_globe_minimap(position = "bottom-left")
+  })
+
+  mapgl::on_section("map", "intro", { # <10>
+    mapgl::maplibre_proxy("map") |>
+      mapgl::clear_markers() |>
+      mapgl::fly_to(
+        center = c(0, 0),
+        zoom = 2.75,
+        pitch = 0,
+        bearing = 0
+      )
+  })
+
+  mapgl::on_section("map", "childhood", {
+    mapgl::maplibre_proxy("map") |>
+      mapgl::fly_to(center = c(87.99371750247397, 26.646533355308083),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section("map", "bachelors", {
+    mapgl::maplibre_proxy("map") |>
+      mapgl::fly_to(center = c(85.31840215760691, 27.681136558618093),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section("map", "masters", {
+    mapgl::maplibre_proxy("map") |>
+      mapgl::fly_to(center = c(-111.84448004883544, 40.76106105996334),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section("map", "metro_analytics", {
+    mapgl::maplibre_proxy("map") |>
+      mapgl::fly_to(center = c(-84.3938999520061, 33.76728402587881),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section("map", "wfrc_ut", {
+    mapgl::maplibre_proxy("map") |>
+      mapgl::fly_to(center = c(-111.90422445885304, 40.76973849954712),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+}
+
+shiny::shinyApp(ui, server) # <11>
+```
+
+## 4 Source Code
+
+The storymap application follows a typical Shiny structure with some specialized {mapgl} components. Following is the source code for this dashboard (Please click on the numbers on the far right for additional explanation of syntax and mechanics):
+
+``` numberSource
+library(shiny) # <1>
+library(mapgl) # <2>
+
+ui <- shiny::fluidPage( # <3>
+  tags$link(
+    href = "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap",
+    rel="stylesheet"
+  ),
+  mapgl::story_map( # <4>
+    map_id = "map",
+    font_family = "Poppins",
+    sections = list( # <5>
+      "intro" = mapgl::story_section(
+        title = "Introduction",
+        content = "Hello I am Pukar Bhandari; and this is my life journey."
+      ),
+      "childhood" = mapgl::story_section(
+        title = "Birtamode, Jhapa",
+        content = "This is where I was born and spent the early part of my life until 2013."
+      ),
+      "bachelors" = mapgl::story_section(
+        title = "Pulchowk, Lalitpur",
+        content = "I then moved to Pulchowk in the pursuit of higher education. I obtained my Bachelor's Degree in Architecture from Institute of Engineering Pulchowk Campus in 2018."
+      ),
+      "masters" = mapgl::story_section(
+        title = "Salt Lake City, UT",
+        content = "In pursuit of even higher education, I moved to Salt Lake City, UT where I obtained my Master of City & Metropolitan Planning degree from the University of Utah in May 2023."
+      ),
+      "metro_analytics" = mapgl::story_section(
+        title = "Atlanta, GA",
+        content = "I then moved to Altanta in June 2023 to work as a transportation planner & analyst at Metro Analytics until September 2025."
+      ),
+      "wfrc_ut" = mapgl::story_section(
+        title = "Back to Salt Lake City, UT",
+        content = "After gaining entry-level experience in transportation planning, travel demand modeling, and data analytics, I moved back to Salt Lake City - a place I am personally and professionally attached to - in order to join the awesome Analytics team at the Wasatch Front Regional Council."
+      )
+    ),
+    map_type = "maplibre"
+  )
+)
+
+server <- function(input, output, session) { # <6>
+  output$map <- mapgl::renderMaplibre({ # <7>
+    mapgl::maplibre(
+      style = mapgl::openfreemap_style("liberty"), # <8>
+      center = c(0, 0),
+      zoom = 2.75,
+      scrollZoom = FALSE
+    ) |>
+      mapgl::set_projection(projection = "globe") |> # <9>
+      mapgl::add_globe_control() |>
+      mapgl::add_navigation_control(visualize_pitch = TRUE) |>
+      mapgl::add_globe_minimap(position = "bottom-left")
+  })
+
+  mapgl::on_section("map", "intro", { # <10>
+    mapgl::maplibre_proxy("map") |>
+      mapgl::clear_markers() |>
+      mapgl::fly_to(
+        center = c(0, 0),
+        zoom = 2.75,
+        pitch = 0,
+        bearing = 0
+      )
+  })
+
+  mapgl::on_section("map", "childhood", {
+    mapgl::maplibre_proxy("map") |>
+      mapgl::fly_to(center = c(87.99371750247397, 26.646533355308083),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section("map", "bachelors", {
+    mapgl::maplibre_proxy("map") |>
+      mapgl::fly_to(center = c(85.31840215760691, 27.681136558618093),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section("map", "masters", {
+    mapgl::maplibre_proxy("map") |>
+      mapgl::fly_to(center = c(-111.84448004883544, 40.76106105996334),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section("map", "metro_analytics", {
+    mapgl::maplibre_proxy("map") |>
+      mapgl::fly_to(center = c(-84.3938999520061, 33.76728402587881),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section("map", "wfrc_ut", {
+    mapgl::maplibre_proxy("map") |>
+      mapgl::fly_to(center = c(-111.90422445885304, 40.76973849954712),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+}
+
+shiny::shinyApp(ui, server) # <11>
+```
+
+1.  Load {shiny} package for building reactive web applications
+2.  Load {mapgl} package for interactive mapping and storymap functionality
+3.  Define the user interface - what users see and interact with
+4.  Create the main storymap interface with sidebar and map coordination
+5.  Define each story section with title and descriptive content
+6.  Define the server function - handles user interactions and updates
+7.  Render the interactive MapLibre map with styling and controls
+8.  Use free OpenFreeMap tiles (no API key required)
+9.  Set up 3D globe projection for better geographic context
+10. Handle section transitions - when user reaches each story step
+11. Launch the Shiny application combining UI and server components
+
+## 5 Understanding the App Structure
+
+### Setting Up the User Interface
+
+``` numberSource
+library(shiny) # <1>
+library(mapgl) # <2>
+
+ui <- shiny::fluidPage(
+  tags$link( # <3>
+    href = "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap",
+    rel="stylesheet"
+  ),
+  mapgl::story_map( # <4>
+    map_id = "map",
+    font_family = "Poppins", # <5>
+    sections = list( # <6>
+      "intro" = mapgl::story_section(
+        title = "Introduction",
+        content = "Hello I am Pukar Bhandari; and this is my life journey."
+      ),
+      "childhood" = mapgl::story_section(
+        title = "Birtamode, Jhapa",
+        content = "This is where I was born and spent the early part of my life until 2013."
+      ),
+      # Additional sections...
+    ),
+    map_type = "maplibre" # <7>
+  )
+)
+```
+
+1.  **Shiny Framework**: Essential for creating reactive web applications
+2.  **MapGL Package**: Provides the storymap functionality and MapLibre integration
+3.  **Custom Fonts**: Loading Google Fonts for better typography (important for professional presentations)
+4.  **Story Map Container**: The main wrapper that coordinates the sidebar content with map interactions
+5.  **Typography**: Consistent font family improves readability and professional appearance
+6.  **Section Definitions**: Each section corresponds to a step in the story with associated map behaviors
+7.  **Map Engine**: Using MapLibre GL JS for performant vector tile rendering
+
+### Configuring the Map
+
+``` numberSource
+server <- function(input, output, session) {
+  output$map <- mapgl::renderMaplibre({ # <1>
+    mapgl::maplibre(
+      style = mapgl::openfreemap_style("liberty"), # <2>
+      center = c(0, 0), # <3>
+      zoom = 2.75, # <4>
+      scrollZoom = FALSE # <5>
+    ) |>
+      mapgl::set_projection(projection = "globe") |> # <6>
+      mapgl::add_globe_control() |> # <7>
+      mapgl::add_navigation_control(visualize_pitch = TRUE) |> # <8>
+      mapgl::add_globe_minimap(position = "bottom-left") # <9>
+  })
+}
+```
+
+1.  **Render Function**: Creates the reactive map output that responds to user interactions
+2.  **Open Map Style**: Using OpenFreeMap’s Liberty style (free, no API key required)
+3.  **Initial Center**: Starting at global view (longitude 0, latitude 0)
+4.  **Zoom Level**: Appropriate for showing global context initially
+5.  **Scroll Control**: Disabled to prevent interference with story navigation
+6.  **Globe Projection**: Creates a 3D globe effect for better geographical context
+7.  **Globe Controls**: Adds rotation controls for the 3D globe
+8.  **Navigation Tools**: Zoom and rotation controls with pitch visualization
+9.  **Minimap**: Provides geographic context when zoomed in on specific locations
+
+### Implementing Section Behaviors
+
+``` numberSource
+# Example section handler
+mapgl::on_section("map", "childhood", { # <1>
+  mapgl::maplibre_proxy("map") |> # <2>
+    mapgl::fly_to( # <3>
+      center = c(87.99371750247397, 26.646533355308083), # <4>
+      zoom = 16, # <5>
+      pitch = 49, # <6>
+      bearing = 12.8 # <7>
+    )
+})
+```
+
+1.  **Section Trigger**: Responds when user navigates to the “birth_place” section
+2.  **Map Proxy**: Allows server-side control of the existing map instance
+3.  **Smooth Transition**: `fly_to()` creates animated transitions between locations
+4.  **Coordinates**: Precise longitude/latitude coordinates for the specific location
+5.  **Detail Zoom**: High zoom level to show local context and landmarks
+6.  **Viewing Angle**: Tilted perspective provides better spatial understanding
+7.  **Map Rotation**: Oriented to show the location from the most informative angle
+
+## 6 Conclusion
+
+The {mapgl} package provides a powerful platform for creating engaging, interactive storymaps that can effectively communicate spatial narratives. Whether you’re documenting personal journeys, presenting planning scenarios, or analyzing transportation patterns, this approach offers the flexibility and performance needed for professional applications.
+
+The combination of R’s data processing capabilities with modern web mapping technology creates opportunities for innovative visualization approaches that can enhance public engagement and decision-making processes in transportation planning and urban analytics.
+
+## 7 Additional Resources
+
+- [{mapgl} package documentation](https://walker-data.com/mapgl/)
+- [MapLibre GL JS documentation](https://maplibre.org/maplibre-gl-js-docs/)
+- [OpenFreeMap styles](https://openfreemap.org/)
+- [Quarto documentation](https://quarto.org/)
+
+------------------------------------------------------------------------
+
+*This post demonstrates practical applications of open-source geospatial tools for transportation planning and data visualization. All code is available for adaptation to your own projects and use cases.*
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@online{bhandari2025,
+  author = {Bhandari, Pukar},
+  title = {Building an {Interactive} {Storymap} Using \{Mapgl\}},
+  date = {2025-09-03},
+  url = {https://ar-puuk.github.io/posts/storymap_my_journey/},
+  langid = {en}
+}
+```
+
+For attribution, please cite this work as:
+
+Bhandari, Pukar. 2025. “Building an Interactive Storymap Using {Mapgl}.” September 3. <https://ar-puuk.github.io/posts/storymap_my_journey/>.

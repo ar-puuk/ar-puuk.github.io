@@ -21,11 +21,9 @@ if (!requireNamespace("here", quietly = TRUE)) {
 }
 # Disable automatic environment management
 Sys.setenv(
-  RETICULATE_PYTHON = file.path(here::here(), "env", "python.exe"),
+  RETICULATE_PYTHON = file.path(here::here(), ".venv", "Scripts", "python.exe"),
   RETICULATE_PYTHON_ENV = "",        # Disable auto env creation
-  RETICULATE_PYTHON_FALLBACK = "",   # Don't fall back to auto discovery
-  PROJ_LIB = file.path(here::here(), "env", "Library", "share", "proj"),
-  PROJ_DATA = file.path(here::here(), "env", "Library", "share", "proj")
+  RETICULATE_PYTHON_FALLBACK = ""    # Don't fall back to auto discovery
 )
 
 # 3. Load reticulate and check config
@@ -196,7 +194,12 @@ project_crs = "EPSG:3361"
 
 API authentication enables access to detailed demographic and economic datasets from the Census Bureau.
 The key configuration supports both R and Python environments for automated data retrieval workflows.
-> 💡 **Need a Census API key?** Get one for free at [census.gov/developers](https://www.census.gov/developers/)
+
+::: {.callout-tip}
+### Need a Census API key?
+
+Get one for free at [census.gov/developers](https://www.census.gov/developers/)
+:::
 
 ::: {.panel-tabset group="language"}
 #### {{< fa brands r-project >}} R

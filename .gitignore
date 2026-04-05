@@ -26,3 +26,4 @@ renv/staging/
 /env/
 
 /_*.local
+.positai

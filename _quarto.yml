@@ -10,6 +10,7 @@ website:
   description: Pukar Bhandari is a Transportation Planner and Data Scientist working at the intersection of Transportation Modeling, Economic Impact Analysis, and Data Science.
   favicon: "assets/images/pb-logo.svg"
   site-url: "https://ar-puuk.github.io"
+  llms-txt: true
 
   # repo-url: "https://github.com/ar-puuk/ar-puuk.github.io"
   # repo-actions: [source, issue]

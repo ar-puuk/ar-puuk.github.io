@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.27">
+<meta name="generator" content="quarto-1.9.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,6 +12,9 @@
 
 <title>Building an Interactive Storymap using {mapgl} – Pukar Bhandari</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -71,23 +74,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../assets/images/pb-logo.svg" rel="icon" type="image/svg+xml">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-38592dd34e57e8b452f9cd91da5d3910.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-4afd397f9cee0995efc1499674d2b1d6.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-38592dd34e57e8b452f9cd91da5d3910.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-72db539ff086cefd843774671ba4c001.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-21a8542e7c6994207989a3ae2464dd0e.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-72db539ff086cefd843774671ba4c001.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-dfc8ce7107dc763be4e8c212eb475d02.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-f4acea4a7c5f8feb9f18e424fbc46352.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-dfc8ce7107dc763be4e8c212eb475d02.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-1055c5f9dac41917fe0cbd0cdbc537fc.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-ce999fdce592a962884c79acbf334402.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-1055c5f9dac41917fe0cbd0cdbc537fc.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <meta name="shinylive:serviceworker_dir" content="../..">
-<script src="../../site_libs/quarto-contrib/shinylive-0.9.1/shinylive/load-shinylive-sw.js" type="module"></script>
-<script src="../../site_libs/quarto-contrib/shinylive-0.9.1/shinylive/run-python-blocks.js" type="module"></script>
-<link href="../../site_libs/quarto-contrib/shinylive-0.9.1/shinylive/shinylive.css" rel="stylesheet">
+<script src="../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/run-python-blocks.js" type="module"></script>
+<link href="../../site_libs/quarto-contrib/shinylive-0.10.8/shinylive/shinylive.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
@@ -490,7 +492,126 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="interactive-storymap-demo" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="interactive-storymap-demo"><span class="header-section-number">3</span> Interactive Storymap Demo</h2>
 <p>Below is the complete interactive storymap. You can scroll through the different sections to see how the map smoothly transitions between locations, each representing a significant milestone in my journey.</p>
-<pre id="annotated-cell-1" class="shinylive-r code-annotation-code" data-engine="r"><code>#| '!! shinylive warning !!': |
+<pre id="annotated-cell-1" class="shinylive-r code-annotation-code" data-engine="r" data-llms-code-original="#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| viewerHeight: 600
+
+# Install mapgl from r-wasm repo
+webr::install(&quot;mapgl&quot;, repos = &quot;https://repo.r-wasm.org&quot;)
+webr::install(&quot;codetools&quot;, repos = &quot;https://repo.r-wasm.org&quot;)
+
+## file: app.R
+library(shiny) # <1>
+library(mapgl) # <2>
+
+ui <- shiny::fluidPage( # <3>
+  tags$link(
+    href = &quot;https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&amp;display=swap&quot;,
+    rel=&quot;stylesheet&quot;
+  ),
+  mapgl::story_map( # <4>
+    map_id = &quot;map&quot;,
+    font_family = &quot;Poppins&quot;,
+    sections = list( # <5>
+      &quot;intro&quot; = mapgl::story_section(
+        title = &quot;Introduction&quot;,
+        content = &quot;Hello I am Pukar Bhandari; and this is my life journey.&quot;
+      ),
+      &quot;childhood&quot; = mapgl::story_section(
+        title = &quot;Birtamode, Jhapa&quot;,
+        content = &quot;This is where I was born and spent the early part of my life until 2013.&quot;
+      ),
+      &quot;bachelors&quot; = mapgl::story_section(
+        title = &quot;Pulchowk, Lalitpur&quot;,
+        content = &quot;I then moved to Pulchowk in the pursuit of higher education. I obtained my Bachelor's Degree in Architecture from Institute of Engineering Pulchowk Campus in 2018.&quot;
+      ),
+      &quot;masters&quot; = mapgl::story_section(
+        title = &quot;Salt Lake City, UT&quot;,
+        content = &quot;In pursuit of even higher education, I moved to Salt Lake City, UT where I obtained my Master of City &amp; Metropolitan Planning degree from the University of Utah in May 2023.&quot;
+      ),
+      &quot;metro_analytics&quot; = mapgl::story_section(
+        title = &quot;Atlanta, GA&quot;,
+        content = &quot;I then moved to Altanta in June 2023 to work as a transportation planner &amp; analyst at Metro Analytics until September 2025.&quot;
+      ),
+      &quot;wfrc_ut&quot; = mapgl::story_section(
+        title = &quot;Back to Salt Lake City, UT&quot;,
+        content = &quot;After gaining entry-level experience in transportation planning, travel demand modeling, and data analytics, I moved back to Salt Lake City - a place I am personally and professionally attached to - in order to join the awesome Analytics team at the Wasatch Front Regional Council.&quot;
+      )
+    ),
+    map_type = &quot;maplibre&quot;
+  )
+)
+
+server <- function(input, output, session) { # <6>
+  output$map <- mapgl::renderMaplibre({ # <7>
+    mapgl::maplibre(
+      style = mapgl::openfreemap_style(&quot;liberty&quot;), # <8>
+      center = c(0, 0),
+      zoom = 2.75,
+      scrollZoom = FALSE
+    ) |>
+      mapgl::set_projection(projection = &quot;globe&quot;) |> # <9>
+      mapgl::add_globe_control() |>
+      mapgl::add_navigation_control(visualize_pitch = TRUE) |>
+      mapgl::add_globe_minimap(position = &quot;bottom-left&quot;)
+  })
+
+  mapgl::on_section(&quot;map&quot;, &quot;intro&quot;, { # <10>
+    mapgl::maplibre_proxy(&quot;map&quot;) |>
+      mapgl::clear_markers() |>
+      mapgl::fly_to(
+        center = c(0, 0),
+        zoom = 2.75,
+        pitch = 0,
+        bearing = 0
+      )
+  })
+
+  mapgl::on_section(&quot;map&quot;, &quot;childhood&quot;, {
+    mapgl::maplibre_proxy(&quot;map&quot;) |>
+      mapgl::fly_to(center = c(87.99371750247397, 26.646533355308083),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section(&quot;map&quot;, &quot;bachelors&quot;, {
+    mapgl::maplibre_proxy(&quot;map&quot;) |>
+      mapgl::fly_to(center = c(85.31840215760691, 27.681136558618093),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section(&quot;map&quot;, &quot;masters&quot;, {
+    mapgl::maplibre_proxy(&quot;map&quot;) |>
+      mapgl::fly_to(center = c(-111.84448004883544, 40.76106105996334),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section(&quot;map&quot;, &quot;metro_analytics&quot;, {
+    mapgl::maplibre_proxy(&quot;map&quot;) |>
+      mapgl::fly_to(center = c(-84.3938999520061, 33.76728402587881),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section(&quot;map&quot;, &quot;wfrc_ut&quot;, {
+    mapgl::maplibre_proxy(&quot;map&quot;) |>
+      mapgl::fly_to(center = c(-111.90422445885304, 40.76973849954712),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+}
+
+shiny::shinyApp(ui, server) # <11>
+"><code>#| '!! shinylive warning !!': |
 #|   shinylive does not work in self-contained HTML documents.
 #|   Please set `embed-resources: false` in your metadata.
 #| standalone: true
@@ -618,7 +739,114 @@ shiny::shinyApp(ui, server)</code></pre>
 <div class="code-with-filename-file">
 <pre><strong>app.R</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-2"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1">1</button><span id="annotated-cell-2-1" class="code-annotation-target"><a href="#annotated-cell-2-1"></a><span class="fu">library</span>(shiny)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-2" data-llms-code-original="library(shiny) # <1>
+library(mapgl) # <2>
+
+ui <- shiny::fluidPage( # <3>
+  tags$link(
+    href = &quot;https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&amp;display=swap&quot;,
+    rel=&quot;stylesheet&quot;
+  ),
+  mapgl::story_map( # <4>
+    map_id = &quot;map&quot;,
+    font_family = &quot;Poppins&quot;,
+    sections = list( # <5>
+      &quot;intro&quot; = mapgl::story_section(
+        title = &quot;Introduction&quot;,
+        content = &quot;Hello I am Pukar Bhandari; and this is my life journey.&quot;
+      ),
+      &quot;childhood&quot; = mapgl::story_section(
+        title = &quot;Birtamode, Jhapa&quot;,
+        content = &quot;This is where I was born and spent the early part of my life until 2013.&quot;
+      ),
+      &quot;bachelors&quot; = mapgl::story_section(
+        title = &quot;Pulchowk, Lalitpur&quot;,
+        content = &quot;I then moved to Pulchowk in the pursuit of higher education. I obtained my Bachelor's Degree in Architecture from Institute of Engineering Pulchowk Campus in 2018.&quot;
+      ),
+      &quot;masters&quot; = mapgl::story_section(
+        title = &quot;Salt Lake City, UT&quot;,
+        content = &quot;In pursuit of even higher education, I moved to Salt Lake City, UT where I obtained my Master of City &amp; Metropolitan Planning degree from the University of Utah in May 2023.&quot;
+      ),
+      &quot;metro_analytics&quot; = mapgl::story_section(
+        title = &quot;Atlanta, GA&quot;,
+        content = &quot;I then moved to Altanta in June 2023 to work as a transportation planner &amp; analyst at Metro Analytics until September 2025.&quot;
+      ),
+      &quot;wfrc_ut&quot; = mapgl::story_section(
+        title = &quot;Back to Salt Lake City, UT&quot;,
+        content = &quot;After gaining entry-level experience in transportation planning, travel demand modeling, and data analytics, I moved back to Salt Lake City - a place I am personally and professionally attached to - in order to join the awesome Analytics team at the Wasatch Front Regional Council.&quot;
+      )
+    ),
+    map_type = &quot;maplibre&quot;
+  )
+)
+
+server <- function(input, output, session) { # <6>
+  output$map <- mapgl::renderMaplibre({ # <7>
+    mapgl::maplibre(
+      style = mapgl::openfreemap_style(&quot;liberty&quot;), # <8>
+      center = c(0, 0),
+      zoom = 2.75,
+      scrollZoom = FALSE
+    ) |>
+      mapgl::set_projection(projection = &quot;globe&quot;) |> # <9>
+      mapgl::add_globe_control() |>
+      mapgl::add_navigation_control(visualize_pitch = TRUE) |>
+      mapgl::add_globe_minimap(position = &quot;bottom-left&quot;)
+  })
+
+  mapgl::on_section(&quot;map&quot;, &quot;intro&quot;, { # <10>
+    mapgl::maplibre_proxy(&quot;map&quot;) |>
+      mapgl::clear_markers() |>
+      mapgl::fly_to(
+        center = c(0, 0),
+        zoom = 2.75,
+        pitch = 0,
+        bearing = 0
+      )
+  })
+
+  mapgl::on_section(&quot;map&quot;, &quot;childhood&quot;, {
+    mapgl::maplibre_proxy(&quot;map&quot;) |>
+      mapgl::fly_to(center = c(87.99371750247397, 26.646533355308083),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section(&quot;map&quot;, &quot;bachelors&quot;, {
+    mapgl::maplibre_proxy(&quot;map&quot;) |>
+      mapgl::fly_to(center = c(85.31840215760691, 27.681136558618093),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section(&quot;map&quot;, &quot;masters&quot;, {
+    mapgl::maplibre_proxy(&quot;map&quot;) |>
+      mapgl::fly_to(center = c(-111.84448004883544, 40.76106105996334),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section(&quot;map&quot;, &quot;metro_analytics&quot;, {
+    mapgl::maplibre_proxy(&quot;map&quot;) |>
+      mapgl::fly_to(center = c(-84.3938999520061, 33.76728402587881),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+
+  mapgl::on_section(&quot;map&quot;, &quot;wfrc_ut&quot;, {
+    mapgl::maplibre_proxy(&quot;map&quot;) |>
+      mapgl::fly_to(center = c(-111.90422445885304, 40.76973849954712),
+                    zoom = 16,
+                    pitch = 49,
+                    bearing = 12.8)
+  })
+}
+
+shiny::shinyApp(ui, server) # <11>"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="1">1</button><span id="annotated-cell-2-1" class="code-annotation-target"><a href="#annotated-cell-2-1"></a><span class="fu">library</span>(shiny)</span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="2">2</button><span id="annotated-cell-2-2" class="code-annotation-target"><a href="#annotated-cell-2-2"></a><span class="fu">library</span>(mapgl)</span>
 <span id="annotated-cell-2-3"><a href="#annotated-cell-2-3"></a></span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-2" data-target-annotation="3">3</button><span id="annotated-cell-2-4" class="code-annotation-target"><a href="#annotated-cell-2-4"></a>ui <span class="ot">&lt;-</span> shiny<span class="sc">::</span><span class="fu">fluidPage</span>(</span>
@@ -782,7 +1010,31 @@ shiny::shinyApp(ui, server)</code></pre>
 <section id="setting-up-the-user-interface" class="level3">
 <h3 class="anchored" data-anchor-id="setting-up-the-user-interface">Setting Up the User Interface</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-3"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-1" class="code-annotation-target"><a href="#annotated-cell-3-1"></a><span class="fu">library</span>(shiny)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-3" data-llms-code-original="library(shiny) # <1>
+library(mapgl) # <2>
+
+ui <- shiny::fluidPage(
+  tags$link( # <3>
+    href = &quot;https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&amp;display=swap&quot;,
+    rel=&quot;stylesheet&quot;
+  ),
+  mapgl::story_map( # <4>
+    map_id = &quot;map&quot;,
+    font_family = &quot;Poppins&quot;, # <5>
+    sections = list( # <6>
+      &quot;intro&quot; = mapgl::story_section(
+        title = &quot;Introduction&quot;,
+        content = &quot;Hello I am Pukar Bhandari; and this is my life journey.&quot;
+      ),
+      &quot;childhood&quot; = mapgl::story_section(
+        title = &quot;Birtamode, Jhapa&quot;,
+        content = &quot;This is where I was born and spent the early part of my life until 2013.&quot;
+      ),
+      # Additional sections...
+    ),
+    map_type = &quot;maplibre&quot; # <7>
+  )
+)"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1">1</button><span id="annotated-cell-3-1" class="code-annotation-target"><a href="#annotated-cell-3-1"></a><span class="fu">library</span>(shiny)</span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="2">2</button><span id="annotated-cell-3-2" class="code-annotation-target"><a href="#annotated-cell-3-2"></a><span class="fu">library</span>(mapgl)</span>
 <span id="annotated-cell-3-3"><a href="#annotated-cell-3-3"></a></span>
 <span id="annotated-cell-3-4"><a href="#annotated-cell-3-4"></a>ui <span class="ot">&lt;-</span> shiny<span class="sc">::</span><span class="fu">fluidPage</span>(</span>
@@ -844,7 +1096,20 @@ shiny::shinyApp(ui, server)</code></pre>
 <section id="configuring-the-map" class="level3">
 <h3 class="anchored" data-anchor-id="configuring-the-map">Configuring the Map</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-4"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-4" data-llms-code-original="server <- function(input, output, session) {
+  output$map <- mapgl::renderMaplibre({ # <1>
+    mapgl::maplibre(
+      style = mapgl::openfreemap_style(&quot;liberty&quot;), # <2>
+      center = c(0, 0), # <3>
+      zoom = 2.75, # <4>
+      scrollZoom = FALSE # <5>
+    ) |>
+      mapgl::set_projection(projection = &quot;globe&quot;) |> # <6>
+      mapgl::add_globe_control() |> # <7>
+      mapgl::add_navigation_control(visualize_pitch = TRUE) |> # <8>
+      mapgl::add_globe_minimap(position = &quot;bottom-left&quot;) # <9>
+  })
+}"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-4-1"><a href="#annotated-cell-4-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="1">1</button><span id="annotated-cell-4-2" class="code-annotation-target"><a href="#annotated-cell-4-2"></a>  output<span class="sc">$</span>map <span class="ot">&lt;-</span> mapgl<span class="sc">::</span><span class="fu">renderMaplibre</span>({</span>
 <span id="annotated-cell-4-3"><a href="#annotated-cell-4-3"></a>    mapgl<span class="sc">::</span><span class="fu">maplibre</span>(</span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-4" data-target-annotation="2">2</button><span id="annotated-cell-4-4" class="code-annotation-target"><a href="#annotated-cell-4-4"></a>      <span class="at">style =</span> mapgl<span class="sc">::</span><span class="fu">openfreemap_style</span>(<span class="st">"liberty"</span>),</span>
@@ -903,7 +1168,16 @@ shiny::shinyApp(ui, server)</code></pre>
 <section id="implementing-section-behaviors" class="level3">
 <h3 class="anchored" data-anchor-id="implementing-section-behaviors">Implementing Section Behaviors</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-5"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1"></a><span class="co"># Example section handler</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-5" data-llms-code-original="# Example section handler
+mapgl::on_section(&quot;map&quot;, &quot;childhood&quot;, { # <1>
+  mapgl::maplibre_proxy(&quot;map&quot;) |> # <2>
+    mapgl::fly_to( # <3>
+      center = c(87.99371750247397, 26.646533355308083), # <4>
+      zoom = 16, # <5>
+      pitch = 49, # <6>
+      bearing = 12.8 # <7>
+    )
+})"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-5-1"><a href="#annotated-cell-5-1"></a><span class="co"># Example section handler</span></span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="1">1</button><span id="annotated-cell-5-2" class="code-annotation-target"><a href="#annotated-cell-5-2"></a>mapgl<span class="sc">::</span><span class="fu">on_section</span>(<span class="st">"map"</span>, <span class="st">"childhood"</span>, {</span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="2">2</button><span id="annotated-cell-5-3" class="code-annotation-target"><a href="#annotated-cell-5-3"></a>  mapgl<span class="sc">::</span><span class="fu">maplibre_proxy</span>(<span class="st">"map"</span>) <span class="sc">|&gt;</span></span>
 <button class="code-annotation-anchor" data-target-cell="annotated-cell-5" data-target-annotation="3">3</button><span id="annotated-cell-5-4" class="code-annotation-target"><a href="#annotated-cell-5-4"></a>    mapgl<span class="sc">::</span><span class="fu">fly_to</span>(</span>
@@ -978,7 +1252,7 @@ shiny::shinyApp(ui, server)</code></pre>
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-bhandari2025" class="csl-entry quarto-appendix-citeas" role="listitem">
 Bhandari, Pukar. 2025. <span>“Building an Interactive Storymap Using
-{Mapgl}.”</span> September 3, 2025. <a href="https://ar-puuk.github.io/posts/storymap_my_journey/">https://ar-puuk.github.io/posts/storymap_my_journey/</a>.
+{Mapgl}.”</span> September 3. <a href="https://ar-puuk.github.io/posts/storymap_my_journey/">https://ar-puuk.github.io/posts/storymap_my_journey/</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -1485,7 +1759,202 @@ Bhandari, Pukar. 2025. <span>“Building an Interactive Storymap Using
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false" data-llms-code-original="---
+title: &quot;Building an Interactive Storymap using {mapgl}&quot;
+subtitle: &quot;A Visual Journey Through My Life.&quot;
+description: |
+  Creating an open-source, interactive storymap with the {mapgl} R package to visualize my journey across the world.
+image: &quot;storymap_my_journey.png&quot;
+author:
+  - name: Pukar Bhandari
+    email: pukar.bhandari@outlook.com
+date: &quot;2025-09-03&quot;
+categories: [R, Shiny, Storymap]
+filters:
+  - shinylive
+code-annotations: select
+prefer-html: true
+embed-resources: false
+---
+
+## Introduction
+
+Interactive storymaps have become an increasingly popular tool for data visualization and storytelling, particularly in fields like urban planning, transportation analysis, and geographic data science. They allow us to combine spatial data with narrative elements, creating compelling visual stories that engage audiences while conveying complex information effectively.
+
+In this post, I'll walk you through creating an interactive storymap using the {mapgl} R package—a powerful tool that leverages MapLibre GL JS to create stunning, performant web maps. This particular storymap traces my personal journey across different locations where I've lived, studied, and worked, from Nepal to the United States.
+
+## Why {mapgl} for Storymaps?
+
+The {mapgl} package offers several advantages for transportation planners and data analysts:
+
+- **Performance**: Built on MapLibre GL JS, it handles large datasets and complex visualizations smoothly
+- **Interactivity**: Native support for user interactions, animations, and dynamic content
+- **Customization**: Extensive styling options and the ability to use custom map tiles
+- **Integration**: Seamless integration with Shiny for reactive web applications
+- **Open Source**: No API keys required when using open map styles
+
+## Interactive Storymap Demo
+
+Below is the complete interactive storymap. You can scroll through the different sections to see how the map smoothly transitions between locations, each representing a significant milestone in my journey.
+
+```{shinylive-r}
+#| standalone: true
+#| viewerHeight: 600
+
+# Install mapgl from r-wasm repo
+webr::install(&quot;mapgl&quot;, repos = &quot;https://repo.r-wasm.org&quot;)
+webr::install(&quot;codetools&quot;, repos = &quot;https://repo.r-wasm.org&quot;)
+
+## file: app.R
+{{< include app.R >}}
+```
+
+## Source Code
+
+The storymap application follows a typical Shiny structure with some specialized {mapgl} components. Following is the source code for this dashboard (Please click on the numbers on the far right for additional explanation of syntax and mechanics):
+
+```{r filename=&quot;app.R&quot;}
+#| eval: false
+#| code-line-numbers: true
+
+{{< include app.R >}}
+```
+
+1. Load {shiny} package for building reactive web applications
+2. Load {mapgl} package for interactive mapping and storymap functionality
+3. Define the user interface - what users see and interact with
+4. Create the main storymap interface with sidebar and map coordination
+5. Define each story section with title and descriptive content
+6. Define the server function - handles user interactions and updates
+7. Render the interactive MapLibre map with styling and controls
+8. Use free OpenFreeMap tiles (no API key required)
+9. Set up 3D globe projection for better geographic context
+10. Handle section transitions - when user reaches each story step
+11. Launch the Shiny application combining UI and server components
+
+## Understanding the App Structure
+
+### Setting Up the User Interface
+
+quarto-executable-code-5450563D
+
+```r
+#| eval: false
+#| code-line-numbers: true
+
+library(shiny) # <1>
+library(mapgl) # <2>
+
+ui <- shiny::fluidPage(
+  tags$link( # <3>
+    href = &quot;https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&amp;display=swap&quot;,
+    rel=&quot;stylesheet&quot;
+  ),
+  mapgl::story_map( # <4>
+    map_id = &quot;map&quot;,
+    font_family = &quot;Poppins&quot;, # <5>
+    sections = list( # <6>
+      &quot;intro&quot; = mapgl::story_section(
+        title = &quot;Introduction&quot;,
+        content = &quot;Hello I am Pukar Bhandari; and this is my life journey.&quot;
+      ),
+      &quot;childhood&quot; = mapgl::story_section(
+        title = &quot;Birtamode, Jhapa&quot;,
+        content = &quot;This is where I was born and spent the early part of my life until 2013.&quot;
+      ),
+      # Additional sections...
+    ),
+    map_type = &quot;maplibre&quot; # <7>
+  )
+)
+```
+
+1. **Shiny Framework**: Essential for creating reactive web applications
+2. **MapGL Package**: Provides the storymap functionality and MapLibre integration
+3. **Custom Fonts**: Loading Google Fonts for better typography (important for professional presentations)
+4. **Story Map Container**: The main wrapper that coordinates the sidebar content with map interactions
+5. **Typography**: Consistent font family improves readability and professional appearance
+6. **Section Definitions**: Each section corresponds to a step in the story with associated map behaviors
+7. **Map Engine**: Using MapLibre GL JS for performant vector tile rendering
+
+### Configuring the Map
+
+quarto-executable-code-5450563D
+
+```r
+#| eval: false
+#| code-line-numbers: true
+
+server <- function(input, output, session) {
+  output$map <- mapgl::renderMaplibre({ # <1>
+    mapgl::maplibre(
+      style = mapgl::openfreemap_style(&quot;liberty&quot;), # <2>
+      center = c(0, 0), # <3>
+      zoom = 2.75, # <4>
+      scrollZoom = FALSE # <5>
+    ) |>
+      mapgl::set_projection(projection = &quot;globe&quot;) |> # <6>
+      mapgl::add_globe_control() |> # <7>
+      mapgl::add_navigation_control(visualize_pitch = TRUE) |> # <8>
+      mapgl::add_globe_minimap(position = &quot;bottom-left&quot;) # <9>
+  })
+}
+```
+
+1. **Render Function**: Creates the reactive map output that responds to user interactions
+2. **Open Map Style**: Using OpenFreeMap's Liberty style (free, no API key required)
+3. **Initial Center**: Starting at global view (longitude 0, latitude 0)
+4. **Zoom Level**: Appropriate for showing global context initially
+5. **Scroll Control**: Disabled to prevent interference with story navigation
+6. **Globe Projection**: Creates a 3D globe effect for better geographical context
+7. **Globe Controls**: Adds rotation controls for the 3D globe
+8. **Navigation Tools**: Zoom and rotation controls with pitch visualization
+9. **Minimap**: Provides geographic context when zoomed in on specific locations
+
+### Implementing Section Behaviors
+
+quarto-executable-code-5450563D
+
+```r
+#| eval: false
+#| code-line-numbers: true
+
+# Example section handler
+mapgl::on_section(&quot;map&quot;, &quot;childhood&quot;, { # <1>
+  mapgl::maplibre_proxy(&quot;map&quot;) |> # <2>
+    mapgl::fly_to( # <3>
+      center = c(87.99371750247397, 26.646533355308083), # <4>
+      zoom = 16, # <5>
+      pitch = 49, # <6>
+      bearing = 12.8 # <7>
+    )
+})
+```
+
+1. **Section Trigger**: Responds when user navigates to the &quot;birth_place&quot; section
+2. **Map Proxy**: Allows server-side control of the existing map instance
+3. **Smooth Transition**: `fly_to()` creates animated transitions between locations
+4. **Coordinates**: Precise longitude/latitude coordinates for the specific location
+5. **Detail Zoom**: High zoom level to show local context and landmarks
+6. **Viewing Angle**: Tilted perspective provides better spatial understanding
+7. **Map Rotation**: Oriented to show the location from the most informative angle
+
+## Conclusion
+
+The {mapgl} package provides a powerful platform for creating engaging, interactive storymaps that can effectively communicate spatial narratives. Whether you're documenting personal journeys, presenting planning scenarios, or analyzing transportation patterns, this approach offers the flexibility and performance needed for professional applications.
+
+The combination of R's data processing capabilities with modern web mapping technology creates opportunities for innovative visualization approaches that can enhance public engagement and decision-making processes in transportation planning and urban analytics.
+
+## Additional Resources
+
+- [{mapgl} package documentation](https://walker-data.com/mapgl/)
+- [MapLibre GL JS documentation](https://maplibre.org/maplibre-gl-js-docs/)
+- [OpenFreeMap styles](https://openfreemap.org/)
+- [Quarto documentation](https://quarto.org/)
+
+---
+
+*This post demonstrates practical applications of open-source geospatial tools for transportation planning and data visualization. All code is available for adaptation to your own projects and use cases.*"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Building an Interactive Storymap using {mapgl}"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "A Visual Journey Through My Life."</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> |</span></span>

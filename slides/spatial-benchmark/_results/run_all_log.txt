@@ -1,4 +1,4 @@
-=== run_all.R log: 2026-02-27 19:27:33.184241 ===
+=== run_all.R log: 2026-04-04 17:57:22.324444 ===
 Working directory: C:/Users/Pukar.Bhandari/Documents/GitHub/ar-puuk.github.io/slides/spatial-benchmark
 Result: success
 
@@ -29,13 +29,13 @@ The following objects are masked from 'package:stats':
 
     filter, lag
 
-The following objects are masked from 'package:stats':
-
-    filter, lag
-
 The following objects are masked from 'package:base':
 
     intersect, setdiff, setequal, union
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
 
 The following objects are masked from 'package:base':
 
@@ -88,9 +88,9 @@ The following objects are masked from 'package:base':
 ────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 Running: BENCHMARK 01 - R (sf) Legacy Stack
-────────────────────────────────────────────────────────────
 Running: BENCHMARK 01 - R (sf) Legacy Stack
 ────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────
 Warning message:
 Warning message:
 One or more parsing issues, call `problems()` on your data frame for details,
@@ -101,8 +101,8 @@ One or more parsing issues, call `problems()` on your data frame for details,
 e.g.:
   dat <- vroom(...)
   problems(dat) 
-  Load Data: 17.550s | 990.4 MB RSS delta
-  Load Data: 17.550s | 990.4 MB RSS delta
+  Load Data: 16.620s | 994.3 MB RSS delta
+  Load Data: 16.620s | 994.3 MB RSS delta
 Warning message:
 Warning message:
 One or more parsing issues, call `problems()` on your data frame for details,
@@ -113,19 +113,19 @@ One or more parsing issues, call `problems()` on your data frame for details,
 e.g.:
   dat <- vroom(...)
   problems(dat) 
-  Validation (Join): 28.560s | 1308.3 MB RSS delta
-  Validation (Join): 28.560s | 1308.3 MB RSS delta
+  Validation (Join): 28.620s | 1323.2 MB RSS delta
+  Validation (Join): 28.620s | 1323.2 MB RSS delta
 Warning messages:
-1: Warning messages:
-In rm(pts, cnt, res_attr, res_spatial) : object 'res_attr' not found
+Warning messages:
+1: In rm(pts, cnt, res_attr, res_spatial) : object 'res_attr' not found
 2: In rm(pts, cnt, res_attr, res_spatial) : object 'res_spatial' not found
-────────────────────────────────────────────────────────────
 1: In rm(pts, cnt, res_attr, res_spatial) : object 'res_attr' not found
 2: In rm(pts, cnt, res_attr, res_spatial) : object 'res_spatial' not found
 ────────────────────────────────────────────────────────────
-BENCHMARK 01 Complete!
 ────────────────────────────────────────────────────────────
 BENCHMARK 01 Complete!
+BENCHMARK 01 Complete!
+────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 Loading required package: DBI
 Loading required package: DBI
@@ -154,13 +154,13 @@ The following objects are masked from 'package:base':
 ────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 Running: BENCHMARK 02 - R (DuckDB) Modern Stack
-────────────────────────────────────────────────────────────
-Phase 2a: Benchmarking data ingest (no indexing)...
 Running: BENCHMARK 02 - R (DuckDB) Modern Stack
 ────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────
 Phase 2a: Benchmarking data ingest (no indexing)...
-  Load Data: 2.530s | 121.9 MB RSS delta
-  Load Data: 2.530s | 121.9 MB RSS delta
+Phase 2a: Benchmarking data ingest (no indexing)...
+  Load Data: 1.720s | 120.4 MB RSS delta
+  Load Data: 1.720s | 120.4 MB RSS delta
 Phase 2b: Benchmarking RTREE index creation...
 Phase 2b: Benchmarking RTREE index creation...
 [1] 0
@@ -169,14 +169,14 @@ Phase 2b: Benchmarking RTREE index creation...
 [1] 1476679
 [1] 29
 [1] 29
-  Build Index: 0.350s | 142.9 MB RSS delta
-  Build Index: 0.350s | 142.9 MB RSS delta
+  Build Index: 0.530s | 124.4 MB RSS delta
+  Build Index: 0.530s | 124.4 MB RSS delta
 Running warmup query (not timed)...
 Running warmup query (not timed)...
 Warmup complete. Starting timed benchmark...
 Warmup complete. Starting timed benchmark...
-  Validation (Join): 50.680s | 1.8 MB RSS delta
-  Validation (Join): 50.680s | 1.8 MB RSS delta
+  Validation (Join): 63.910s | 42.8 MB RSS delta
+  Validation (Join): 63.910s | 42.8 MB RSS delta
 Generating validation statistics...
 Generating validation statistics...
 Validation stats saved to: _results/validation_stats.csv
@@ -184,14 +184,14 @@ Validation stats saved to: _results/validation_stats.csv
 ────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 BENCHMARK 02 Complete!
-────────────────────────────────────────────────────────────
 BENCHMARK 02 Complete!
+────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 Running: BENCHMARK 03 - Python (GeoPandas) Legacy Stack
 ────────────────────────────────────────────────────────────
-  Load Data: 12.683s | 1199.0 MB RSS delta
-  Validation (Join): 3.074s | 630.1 MB RSS delta
+  Load Data: 12.539s | 948.1 MB RSS delta
+  Validation (Join): 2.465s | 588.1 MB RSS delta
 ────────────────────────────────────────────────────────────
 BENCHMARK 03 Complete!
 ────────────────────────────────────────────────────────────
@@ -200,11 +200,11 @@ Running: BENCHMARK 04 - Python (DuckDB) Modern Stack
 ────────────────────────────────────────────────────────────
 Installing spatial extension (one-time, not timed)...
 Spatial extension ready.
-  Load Data: 5.516s | 15.9 MB RSS delta
-  Build Index: 0.734s | 10.3 MB RSS delta
+  Load Data: 1.767s | 15.9 MB RSS delta
+  Build Index: 0.439s | 14.2 MB RSS delta
 Running warmup query (not timed)...
 Warmup complete. Starting timed benchmark...
-  Validation (Join): 96.314s | 6.8 MB RSS delta
+  Validation (Join): 76.322s | 42.8 MB RSS delta
 ────────────────────────────────────────────────────────────
 BENCHMARK 04 Complete!
 ────────────────────────────────────────────────────────────
@@ -218,6 +218,10 @@ The following objects are masked from 'package:stats':
 
     filter, lag
 
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
 The following objects are masked from 'package:stats':
 
     filter, lag
@@ -226,34 +230,29 @@ The following objects are masked from 'package:base':
 
     intersect, setdiff, setequal, union
 
-The following objects are masked from 'package:base':
-
-    intersect, setdiff, setequal, union
-
 ────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 Running: BENCHMARK 05 - R (SedonaDB) Modern Stack
-────────────────────────────────────────────────────────────
 Running: BENCHMARK 05 - R (SedonaDB) Modern Stack
 ────────────────────────────────────────────────────────────
-  Load Data: 0.030s | 9.2 MB RSS delta
-  Load Data: 0.030s | 9.2 MB RSS delta
+────────────────────────────────────────────────────────────
+  Load Data: 0.010s | 9.6 MB RSS delta
+  Load Data: 0.010s | 9.6 MB RSS delta
 Running warmup query (not timed)...
 Running warmup query (not timed)...
 Warmup complete. Starting timed benchmark...
 Warmup complete. Starting timed benchmark...
-  Validation (Join): 1.890s | -11.2 MB RSS delta
-  Validation (Join): 1.890s | -11.2 MB RSS delta
+  Validation (Join): 0.650s | 24.8 MB RSS delta
+  Validation (Join): 0.650s | 24.8 MB RSS delta
+────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 BENCHMARK 05 Complete!
-────────────────────────────────────────────────────────────
 BENCHMARK 05 Complete!
 ────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 
 --- stderr ---
 [Init] Running with ITERATIONS = 1
-[Init] Using Python: C:\Users\Pukar.Bhandari\Documents\GitHub\ar-puuk.github.io\env\python.exe
 [Init] Results CSV initialized: _results/benchmark_results.csv
 
 --- Running R: _scripts/00_setup_data.R ---

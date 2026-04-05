@@ -1,7 +1,14 @@
 [
   {
+    "listing": "/research/index.html",
+    "items": [
+      "/research/articles/salt-lake-transit-equity-2023/index.html"
+    ]
+  },
+  {
     "listing": "/projects.html",
     "items": [
+      "/slides/prompt-engineering/index.html",
       "/posts/spatial-sql-exporer/index.html",
       "/posts/wget-gui/index.html",
       "/posts/storymap_my_journey/index.html",
@@ -11,12 +18,6 @@
       "/posts/overture-data-download/index.html",
       "/posts/uscensus-dashboard/index.html",
       "/posts/nepal-population-density/index.html"
-    ]
-  },
-  {
-    "listing": "/research/index.html",
-    "items": [
-      "/research/articles/salt-lake-transit-equity-2023/index.html"
     ]
   }
 ]

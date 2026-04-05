@@ -196,7 +196,7 @@ write_csv(sizes, "_results/file_sizes.csv")
 </div>
 
 <div class="column" width="40%">
-![Parquet Structure](https://parquet.apache.org/images/parquet-layout.png){width="80%"}
+![Parquet Structure](csv_vs_parquet.jpg){width="80%"}
 </div>
 </div>
 

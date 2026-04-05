@@ -1,0 +1,27 @@
+[project]
+name = "ar-puuk-github-io"
+version = "0.1.0"
+description = "Personal portfolio website"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "apache-sedona[db]>=1.8.1",
+    "duckdb>=1.5.1",
+    "folium>=0.20.0",
+    "geoarrow-pyarrow>=0.2.0",
+    "geopandas>=1.1.3",
+    "ipykernel>=7.2.0",
+    "jupyter-client>=8.8.0",
+    "mapclassify>=2.10.0",
+    "matplotlib>=3.10.8",
+    "pandas>=3.0.2",
+    "polars>=1.39.3",
+    "psutil>=7.2.2",
+    "pyarrow>=23.0.1",
+    "pygris>=0.2.1",
+    "pyogrio>=0.12.1",
+    "pyspark>=4.1.1",
+    "rasterio>=1.5.0",
+    "scikit-learn>=1.8.0",
+    "sedonadb>=0.3.0",
+]

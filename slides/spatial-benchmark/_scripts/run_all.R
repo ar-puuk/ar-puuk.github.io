@@ -54,23 +54,15 @@ run_r_script <- function(script_path) {
   message(paste("--- Done:", script_path, "---\n"))
 }
 
-run_py_script <- function(script_path, python_path) {
+run_py_script <- function(script_path) {
   message(paste("--- Running Python:", script_path, "---"))
-
-  # Set iterations for Python scripts via environment variable
   Sys.setenv(BENCHMARK_ITERATIONS = ITERATIONS)
 
-  # system2() is safe here because Python is an external binary, not another
-  # R session — it does not inherit R's internal connection objects.
-  exit_code <- system2(python_path, args = script_path)
+  # Let uv handle the execution and environment isolation
+  exit_code <- system2("uv", args = c("run", script_path))
 
   if (exit_code != 0) {
-    stop(paste(
-      "Python script failed with exit code",
-      exit_code,
-      ":",
-      script_path
-    ))
+    stop(paste("Python script failed with exit code", exit_code, ":", script_path))
   }
   message(paste("--- Done:", script_path, "---\n"))
 }
@@ -80,24 +72,6 @@ run_py_script <- function(script_path, python_path) {
 # ───────────────────────────────────────────────────────────────────────────────
 
 message(paste("[Init] Running with ITERATIONS =", ITERATIONS))
-
-# Resolve Python path (portable across devices)
-python_exec <- "python"
-
-if (file.exists("../../env/python.exe")) {
-  python_exec <- normalizePath("../../env/python.exe")
-} else if (file.exists("../../env/bin/python")) {
-  python_exec <- normalizePath("../../env/bin/python")
-} else {
-  warning(
-    "Virtual environment Python not found at ../../env/. ",
-    "Falling back to system 'python'. ",
-    "Expected path: ",
-    normalizePath("../../env/python.exe", mustWork = FALSE)
-  )
-}
-
-message(paste("[Init] Using Python:", python_exec))
 
 # Create directories
 if (!dir.exists("_results")) {
@@ -124,8 +98,8 @@ if (file.exists("_scripts/00_setup_data.R")) {
 # Run Benchmarks
 run_r_script("_scripts/01_bench_sf.R")
 run_r_script("_scripts/02_bench_duckdb.R")
-run_py_script("_scripts/03_bench_geopandas.py", python_exec)
-run_py_script("_scripts/04_bench_duckdb.py", python_exec)
+run_py_script("_scripts/03_bench_geopandas.py")
+run_py_script("_scripts/04_bench_duckdb.py")
 run_r_script("_scripts/05_bench_sedonadb.R")
 # run_py_script("_scripts/06_bench_sedonadb.py", python_exec)
 
