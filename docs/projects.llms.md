@@ -1,11 +1,3 @@
-### [Prompt Engineering Best Practices](slides/prompt-engineering/index.llms.md)
-
-[For Analytics & Modeling](slides/prompt-engineering/index.llms.md)
-
-Apr 4, 2026
-
-Pukar Bhandari
-
 [![](./posts/spatial-sql-exporer/spatial_sql_explorer.png)](posts/spatial-sql-exporer/index.llms.md)
 
 ### [Building a Client-Side Spatial SQL Explorer](posts/spatial-sql-exporer/index.llms.md)

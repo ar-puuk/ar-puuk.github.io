@@ -3,6 +3,7 @@ title: "Prompt Engineering Best Practices"
 subtitle: "For Analytics & Modeling"
 author: "Pukar Bhandari"
 date: 2026-04-04
+image: "prompt_engineering.png"
 format:
   revealjs:
     theme: [default, custom.scss]
@@ -19,6 +20,8 @@ format:
     code-line-numbers: false
     highlight-style: monokai
     incremental: true
+draft: true
+categories: [AI, Productivity]
 ---
 
 ## Why This Talk? {background-color="#1a1a2e"}

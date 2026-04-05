@@ -10,15 +10,7 @@
 <atom:link href="https://ar-puuk.github.io/projects.xml" rel="self" type="application/rss+xml"/>
 <description>Pukar Bhandari is a Transportation Planner and Data Scientist working at the intersection of Transportation Modeling, Economic Impact Analysis, and Data Science.</description>
 <generator>quarto-1.9.36</generator>
-<lastBuildDate>Sat, 04 Apr 2026 06:00:00 GMT</lastBuildDate>
-<item>
-  <title></title>
-  <dc:creator>Pukar Bhandari</dc:creator>
-  <link>https://ar-puuk.github.io/slides/prompt-engineering/</link>
-  <description><![CDATA[ undefined ]]></description>
-  <guid>https://ar-puuk.github.io/slides/prompt-engineering/</guid>
-  <pubDate>Sat, 04 Apr 2026 06:00:00 GMT</pubDate>
-</item>
+<lastBuildDate>Wed, 25 Feb 2026 07:00:00 GMT</lastBuildDate>
 <item>
   <title>Building a Client-Side Spatial SQL Explorer</title>
   <dc:creator>Pukar Bhandari</dc:creator>
