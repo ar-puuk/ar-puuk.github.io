@@ -8,7 +8,7 @@ Still rough around the edges but functional. If you work with travel demand mode
 
 ⬡ OMX File Viewer
 
-[↗ Open app](https://ar-puuk.github.io/omx_viewer/ "Open in new tab") [⌥ GitHub](https://github.com/ar-puuk/omx_viewer "View source on GitHub")
+[↗ Open app](https://ar-puuk.github.io/omx-viewer/ "Open in new tab") [⌥ GitHub](https://github.com/ar-puuk/omx-viewer "View source on GitHub")
 
 ⤢ Fullscreen
 

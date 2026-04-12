@@ -27,10 +27,10 @@ Still rough around the edges but functional. If you work with travel demand mode
   <div class="app-embed-toolbar">
     <span class="app-embed-label">⬡ OMX File Viewer</span>
     <div class="app-embed-links">
-      <a href="https://ar-puuk.github.io/omx_viewer/" target="_blank" rel="noopener" title="Open in new tab">
+      <a href="https://ar-puuk.github.io/omx-viewer/" target="_blank" rel="noopener" title="Open in new tab">
         ↗ Open app
       </a>
-      <a href="https://github.com/ar-puuk/omx_viewer" target="_blank" rel="noopener" title="View source on GitHub">
+      <a href="https://github.com/ar-puuk/omx-viewer" target="_blank" rel="noopener" title="View source on GitHub">
         ⌥ GitHub
       </a>
       <button class="app-fullscreen-btn" onclick="toggleFullscreen(this)" title="Toggle fullscreen">⤢ Fullscreen</button>
@@ -39,7 +39,7 @@ Still rough around the edges but functional. If you work with travel demand mode
   <div class="app-embed-frame" id="app-embed-frame">
     <iframe
       id="spatial-sql-iframe"
-      src="https://ar-puuk.github.io/omx_viewer/"
+      src="https://ar-puuk.github.io/omx-viewer/"
       title="Spatial SQL Explorer"
       allowfullscreen
       loading="lazy"
