@@ -1,0 +1,137 @@
+---
+title: "Building a Client-Side Open Matrix (OMX) File Viewer"
+subtitle: Built on webassembly, works in browser, and data never leaves your computer
+image: "omx_viewer.png"
+author:
+  - name: Pukar Bhandari
+    email: pukar.bhandari@outlook.com
+date: "2026-04-11"
+categories: [JavaScript, WebAssembly, OMX, Travel Demand Modeling, Open Source]
+prefer-html: true
+---
+
+I spent way too long writing one-off Python scripts everytime I had to check what's inside an OMX (Open Matrix Format) file. There had to be a better way.
+
+So, I built a browser tool to preview OMX files directly. You can:
+- Browse individual matrices as separate tabs
+- Navigate to a specific row/col and see that cell's value across all matrices at once
+- Run aggregations (sum, mean, median, etc.) across zones or across matrices
+- Do basic matrix arithmetic and export results
+
+Built on WebAssembly so it's fast and works without any backend, right on your browser. Tested up to 120 MB, should handle more than that though I'd cap expectations around ~300 MB for most laptops.
+
+Still rough around the edges but functional. If you work with travel demand models and want to try it, the live app is embedded below.
+
+```{=html}
+<div class="app-embed-wrapper">
+  <div class="app-embed-toolbar">
+    <span class="app-embed-label">⬡ OMX File Viewer</span>
+    <div class="app-embed-links">
+      <a href="https://ar-puuk.github.io/omx_viewer/" target="_blank" rel="noopener" title="Open in new tab">
+        ↗ Open app
+      </a>
+      <a href="https://github.com/ar-puuk/omx_viewer" target="_blank" rel="noopener" title="View source on GitHub">
+        ⌥ GitHub
+      </a>
+      <button class="app-fullscreen-btn" onclick="toggleFullscreen(this)" title="Toggle fullscreen">⤢ Fullscreen</button>
+    </div>
+  </div>
+  <div class="app-embed-frame" id="app-embed-frame">
+    <iframe
+      id="spatial-sql-iframe"
+      src="https://ar-puuk.github.io/omx_viewer/"
+      title="Spatial SQL Explorer"
+      allowfullscreen
+      loading="lazy"
+    ></iframe>
+  </div>
+</div>
+
+<style>
+.app-embed-wrapper {
+  border: 1px solid #2a3f57;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 1.5rem 0 2rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  background: #0b0f14;
+  font-family: 'JetBrains Mono', monospace;
+}
+.app-embed-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: #0f1419;
+  border-bottom: 1px solid #1f2d3d;
+}
+.app-embed-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #f0a500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.app-embed-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.app-embed-links a {
+  font-size: 11px;
+  color: #6b8099;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.app-embed-links a:hover { color: #f0a500; }
+.app-fullscreen-btn {
+  font-family: inherit;
+  font-size: 11px;
+  color: #6b8099;
+  background: none;
+  border: 1px solid #2a3f57;
+  border-radius: 4px;
+  padding: 3px 9px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.app-fullscreen-btn:hover { color: #f0a500; border-color: #f0a500; }
+.app-embed-frame {
+  width: 100%;
+  height: 600px;
+  transition: height 0.25s ease;
+}
+.app-embed-frame.fullscreen {
+  position: fixed;
+  inset: 0;
+  height: 100vh !important;
+  z-index: 9999;
+  border-radius: 0;
+}
+.app-embed-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+</style>
+
+<script>
+function toggleFullscreen(btn) {
+  const frame = document.getElementById('app-embed-frame');
+  const isFullscreen = frame.classList.toggle('fullscreen');
+  btn.textContent = isFullscreen ? '✕ Exit' : '⤢ Fullscreen';
+  document.body.style.overflow = isFullscreen ? 'hidden' : '';
+  if (isFullscreen) {
+    // Allow ESC to exit
+    const handler = (e) => {
+      if (e.key === 'Escape') { toggleFullscreen(btn); document.removeEventListener('keydown', handler); }
+    };
+    document.addEventListener('keydown', handler);
+  }
+}
+</script>
+```
+
+
+If you work with travel demand model and want a quick way to preview the contents of an Open Matrix (OMX) file, give it a try. The code is on [GitHub](https://github.com/ar-puuk/omx-viewer) — issues and PRs welcome.

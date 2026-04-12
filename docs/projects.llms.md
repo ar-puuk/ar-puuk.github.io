@@ -1,3 +1,23 @@
+[![](./posts/parquet-explorer/parquet_explorer.png)](posts/parquet-explorer/index.llms.md)
+
+### [Building a Client-Side Geo/Parquet File Viewer](posts/parquet-explorer/index.llms.md)
+
+[Built on webassembly, works in browser, and data never leaves your computer](posts/parquet-explorer/index.llms.md)
+
+Apr 12, 2026
+
+Pukar Bhandari
+
+[![](./posts/omx-viewer/omx_viewer.png)](posts/omx-viewer/index.llms.md)
+
+### [Building a Client-Side Open Matrix (OMX) File Viewer](posts/omx-viewer/index.llms.md)
+
+[Built on webassembly, works in browser, and data never leaves your computer](posts/omx-viewer/index.llms.md)
+
+Apr 11, 2026
+
+Pukar Bhandari
+
 [![](./posts/spatial-sql-exporer/spatial_sql_explorer.png)](posts/spatial-sql-exporer/index.llms.md)
 
 ### [Building a Client-Side Spatial SQL Explorer](posts/spatial-sql-exporer/index.llms.md)

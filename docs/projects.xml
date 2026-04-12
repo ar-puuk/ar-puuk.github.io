@@ -9,8 +9,36 @@
 <link>https://ar-puuk.github.io/projects.html</link>
 <atom:link href="https://ar-puuk.github.io/projects.xml" rel="self" type="application/rss+xml"/>
 <description>Pukar Bhandari is a Transportation Planner and Data Scientist working at the intersection of Transportation Modeling, Economic Impact Analysis, and Data Science.</description>
-<generator>quarto-1.9.36</generator>
-<lastBuildDate>Wed, 25 Feb 2026 07:00:00 GMT</lastBuildDate>
+<generator>quarto-1.9.37</generator>
+<lastBuildDate>Sun, 12 Apr 2026 06:00:00 GMT</lastBuildDate>
+<item>
+  <title>Building a Client-Side Geo/Parquet File Viewer</title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/posts/parquet-explorer/</link>
+  <description><![CDATA[ Want a quick way to preview what is inside your parquet file, the live app is embedded below. ]]></description>
+  <category>JavaScript</category>
+  <category>WebAssembly</category>
+  <category>Parquet</category>
+  <category>DuckDB</category>
+  <category>Open Source</category>
+  <guid>https://ar-puuk.github.io/posts/parquet-explorer/</guid>
+  <pubDate>Sun, 12 Apr 2026 06:00:00 GMT</pubDate>
+  <media:content url="https://ar-puuk.github.io/posts/parquet-explorer/parquet_explorer.png" medium="image" type="image/png" height="65" width="144"/>
+</item>
+<item>
+  <title>Building a Client-Side Open Matrix (OMX) File Viewer</title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/posts/omx-viewer/</link>
+  <description><![CDATA[ I spent way too long writing one-off Python scripts everytime I had to check what’s inside an OMX (Open Matrix Format) file. There had to be a better way. ]]></description>
+  <category>JavaScript</category>
+  <category>WebAssembly</category>
+  <category>OMX</category>
+  <category>Travel Demand Modeling</category>
+  <category>Open Source</category>
+  <guid>https://ar-puuk.github.io/posts/omx-viewer/</guid>
+  <pubDate>Sat, 11 Apr 2026 06:00:00 GMT</pubDate>
+  <media:content url="https://ar-puuk.github.io/posts/omx-viewer/omx_viewer.png" medium="image" type="image/png" height="65" width="144"/>
+</item>
 <item>
   <title>Building a Client-Side Spatial SQL Explorer</title>
   <dc:creator>Pukar Bhandari</dc:creator>
