@@ -1,5 +1,3 @@
-### [ActivitySim Accessibility](slides/activitysim-accessibility/index.llms.md)
-
 [![](./posts/parquet-explorer/parquet_explorer.png)](posts/parquet-explorer/index.llms.md)
 
 ### [Building a Client-Side Geo/Parquet File Viewer](posts/parquet-explorer/index.llms.md)

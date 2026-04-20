@@ -1,5 +1,11 @@
 ---
-title: "ActivitySim Accessibility"
+title: "ActivitySim Initialization & Accessibility"
+subtitle: "Components Deep Dive for Travel Demand Modelers"
+author: "Pukar Bhandari"
+date: 2026-04-19
+draft: true
+image: "activitysim_accessibility.png"
+categories: [TDM, Accessibility, ActivitySim, ABM]
 ---
 
 ```{=html}
