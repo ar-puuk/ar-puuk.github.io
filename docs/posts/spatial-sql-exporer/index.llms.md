@@ -14,35 +14,35 @@ The live app is embedded below. Load the demo data (Nepal district boundaries) a
 
 ⤢ Fullscreen
 
-⬡ Spatial SQL Explorer
+⬡
+
+Spatial SQL Explorer
 
 Starting up…
 
-[⬡ Spatial SQL Explorer](./ "Reset to home")
+[Spatial SQL Explorer](./ "Reset")
 
 ☾
 
-DuckDB-WASM · MapLibre GL · 100% client-side
+DuckDB-WASM · MapLibre GL · client-side
 
-Loaded Tables
+Tables
 
-⟳ clear session
+⟳ clear
 
 No tables loaded.
+
+Schema
+
+Click a table above to inspect its schema
 
 Load Data
 
 Demo Data
 
-⬆ Drop files here or click to browse GeoJSON · CSV · TSV · Parquet
+⬆ Drop files or click to browse GeoJSON · CSV · TSV · Parquet
 
-SQL Query Ctrl+Enter to run
-
-▶ Run Query
-
-LIMIT
-
-Query History
+History
 
 Light
 
@@ -56,9 +56,13 @@ Topo
 
 ⬇ PNG
 
-Query Output
+SQL Editor
 
-Run a query to see results.
+Results
+
+Map Style
+
+Ctrl+Enter to run
 
 ⬡ Share
 
@@ -66,7 +70,22 @@ CSV
 
 GeoJSON
 
+SQL Query
+
+▶ Run Query
+
+LIMIT
+
+Query Output
+
+Run a query to see results.
+
 Executing query…
+
+⬡
+
+Write a SQL query and press  
+**Run Query** to see results here.
 
 Map Style
 
@@ -82,7 +101,7 @@ Column
 
 Color
 
-\#f0a500
+\#b45309
 
 Method
 
@@ -110,10 +129,35 @@ Opacity
 
 85%
 
-⬡
+### Tweaks
 
-Write a SQL query and press  
-**Run Query** to see results here.
+Variant
+
+Studio
+
+Void
+
+Mode
+
+Dark
+
+Pearl
+
+Drawer Height
+
+Compact
+
+Default
+
+Tall
+
+Rail Width
+
+Narrow
+
+Default
+
+Wide
 
 ## 2 Why DuckDB in the browser?
 

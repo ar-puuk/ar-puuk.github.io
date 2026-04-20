@@ -1,3 +1,9 @@
+### [Accessibility in Activity Based Model](slides/activitysim-accessibility/index.llms.md)
+
+Apr 19, 2026
+
+Pukar Bhandari
+
 [![](./posts/parquet-explorer/parquet_explorer.png)](posts/parquet-explorer/index.llms.md)
 
 ### [Building a Client-Side Geo/Parquet File Viewer](posts/parquet-explorer/index.llms.md)
