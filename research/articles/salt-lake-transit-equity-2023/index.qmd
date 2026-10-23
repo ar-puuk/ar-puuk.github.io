@@ -39,6 +39,9 @@ pub-info:
       url: Zinia2023TransitEquity.pdf
       icon: fa-solid fa-file-pdf
       local: true
+    - name: Project Website
+      url: https://ar-puuk.github.io/SLCo-Transit-Equity/
+      icon: fa-solid fa-globe
     - name: Code & Data
       url: https://github.com/ar-puuk/SLCo-Transit-Equity
       icon: fa-brands fa-github
