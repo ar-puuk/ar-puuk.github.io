@@ -21,6 +21,7 @@ My research focuses on transportation planning, data science, and geospatial ana
   - [ Full details »](../research/articles/salt-lake-transit-equity-2023/index.llms.md)
   - [ Published version](https://doi.org/10.1177/03611981231170005)
   - [ Pre-print](../research\articles\salt-lake-transit-equity-2023\Zinia2023TransitEquity.pdf)
+  - [ Project Website](https://ar-puuk.github.io/SLCo-Transit-Equity/)
   - [ Code & Data](https://github.com/ar-puuk/SLCo-Transit-Equity)
   - [ Add to Zotero](https://www.zotero.org/save?type=doi&q=10.1177/03611981231170005)
 
