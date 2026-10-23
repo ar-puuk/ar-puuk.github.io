@@ -16,6 +16,12 @@ prefer-html: true
 embed-resources: false
 ---
 
+```{r}
+#| include: false
+# Needed by the shinylive filter; listed here so renv::snapshot() records it.
+library(shinylive)
+```
+
 ## Introduction
 
 Interactive storymaps have become an increasingly popular tool for data visualization and storytelling, particularly in fields like urban planning, transportation analysis, and geographic data science. They allow us to combine spatial data with narrative elements, creating compelling visual stories that engage audiences while conveying complex information effectively.

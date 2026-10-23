@@ -4,5 +4,11 @@
     "notebook.defaultFormatter": "Posit.air-vscode",
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
-    "editor.defaultFoldingRangeProvider": null
+    "editor.defaultFoldingRangeProvider": null,
+    "r.rpath.windows": "C:\\Program Files\\R\\R-4.6.1\\bin\\R.exe",
+    "r.rterm.windows": "C:\\Program Files\\R\\R-4.6.1\\bin\\R.exe",
+    "terminal.integrated.env.windows": {
+        "QUARTO_R": "C:\\Program Files\\R\\R-4.6.1\\bin",
+        "R_LIBS": "${workspaceFolder}\\renv\\library\\windows\\R-4.6\\x86_64-w64-mingw32"
+    }
 }
