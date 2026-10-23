@@ -2,8 +2,8 @@
 
 This analysis demonstrates advanced geospatial visualization techniques using R’s rayshader package to create a stunning 3D population density map of Nepal. The project showcases the integration of high-resolution population data with topographic visualization methods, resulting in an interactive and informative representation of demographic patterns across Nepal’s diverse terrain.
 
-**Key Technologies**: R, rayshader, sf, stars, magick  
-**Data Source**: Kontur Population Dataset (400m H3 hexagon resolution)  
+**Key Technologies**: R, rayshader, sf, stars, magick\
+**Data Source**: Kontur Population Dataset (400m H3 hexagon resolution)\
 **Projection**: ESRI:102306 (Nepal Nagarkot TM)
 
 ## 2 Environment Setup
@@ -12,7 +12,7 @@ This analysis demonstrates advanced geospatial visualization techniques using R�
 
 Package Installation (Run Once)
 
-``` downlit
+``` r
 # Core packages for geospatial analysis
 install.packages(c("tidyverse", "here", "sf", "tmap", "ggplot2", "mapview", "stars"))
 
@@ -23,7 +23,7 @@ install.packages(c("rayshader", "MetBrewer", "colorspace", "rayrender", "magick"
 install.packages("extrafont")
 ```
 
-``` downlit
+``` r
 # Load required libraries
 library(tidyverse)
 library(here)
@@ -37,7 +37,7 @@ library(magick)
 library(extrafont)
 ```
 
-``` downlit
+``` r
 # Configure 3D rendering
 options(rgl.useNULL = FALSE)
 
@@ -50,7 +50,7 @@ project_crs <- "EPSG:6207"
 
 The analysis utilizes high-resolution population data from Kontur, provided in H3 hexagonal grid format at 400-meter resolution. This dataset offers superior granularity compared to traditional administrative boundary-based population estimates.
 
-``` downlit
+``` r
 # Load population data (H3 hexagons at 400m resolution)
 nep_hex <- sf::st_read(
   paste0(
@@ -70,7 +70,7 @@ nep_hex <- sf::st_read(
     Bounding box:  xmin: 8911286 ymin: 3041698 xmax: 9818046 ymax: 3562066
     Projected CRS: WGS 84 / Pseudo-Mercator
 
-``` downlit
+``` r
 # Load administrative boundaries
 nep_admin <- sf::st_read(
   paste0(
@@ -90,7 +90,7 @@ nep_admin <- sf::st_read(
     Bounding box:  xmin: 80.05862 ymin: 26.34776 xmax: 88.20153 ymax: 30.44694
     Geodetic CRS:  WGS 84
 
-``` downlit
+``` r
 # Create unified Nepal boundary
 nepal_boundary <- nep_admin |>
   sf::st_geometry() |>
@@ -101,16 +101,16 @@ nepal_boundary <- nep_admin |>
 
 > **NOTE:**
 >
-> **Data Sources**:  
-> - **Population Data**: [Kontur Population Dataset](https://data.humdata.org/dataset/kontur-population-nepal)  
-> - **Administrative Boundaries**: [Kontur Boundaries Dataset](https://data.humdata.org/dataset/kontur-boundaries-nepal)  
+> **Data Sources**:\
+> - **Population Data**: [Kontur Population Dataset](https://data.humdata.org/dataset/kontur-population-nepal)\
+> - **Administrative Boundaries**: [Kontur Boundaries Dataset](https://data.humdata.org/dataset/kontur-boundaries-nepal)\
 > - **Coordinate Reference System**: EPSG:6207 for accurate representation of Nepal’s geography
 
 ## 4 Data Processing and Visualization Setup
 
 ### Initial Data Exploration
 
-``` downlit
+``` r
 # Preliminary visualization to verify data quality
 ggplot2::ggplot(nep_hex) +
   ggplot2::geom_sf(ggplot2::aes(fill = population), color = "gray66", linewidth = 0) +
@@ -127,7 +127,7 @@ ggplot2::ggplot(nep_hex) +
 
 The conversion from vector hexagon data to raster format is essential for rayshader’s 3D rendering capabilities. This process involves calculating optimal dimensions while preserving the geographic aspect ratio.
 
-``` downlit
+``` r
 # Calculate bounding box and aspect ratio
 bbox <- sf::st_bbox(nepal_boundary)
 
@@ -171,7 +171,7 @@ pop_matrix <- matrix(pop_raster$population,
 
 The visualization employs the “OKeeffe2” palette from MetBrewer, chosen for its warm earth tones that effectively represent population density while maintaining visual appeal and accessibility.
 
-``` downlit
+``` r
 # Generate color palette
 color <- MetBrewer::met.brewer("OKeeffe2")
 
@@ -188,7 +188,7 @@ colorspace::swatchplot(texture)
 
 ### Interactive 3D Display
 
-``` downlit
+``` r
 # Close any existing RGL windows
 rgl::close3d()
 
@@ -215,7 +215,7 @@ rayshader::render_camera(
 
 The final rendering process utilizes rayshader’s advanced lighting system to create publication-ready visualizations with professional-grade quality and resolution.
 
-``` downlit
+``` r
 outfile <- here::here("posts/nepal-population-density/plots/final_plot.png")
 
 # Render high-quality image with timing
@@ -256,7 +256,7 @@ outfile <- here::here("posts/nepal-population-density/plots/final_plot.png")
 
 The final step enhances the visualization with strategic city labels and professional annotation using the {magick} package for image manipulation.
 
-``` downlit
+``` r
 # Load rendered image
 pop_raster <- magick::image_read(
   here::here("posts/nepal-population-density/plots/final_plot.png")
@@ -269,7 +269,7 @@ colorspace::swatchplot(text_color)
 
 ![](index_files/figure-html/image-annotation-1.png)
 
-``` downlit
+``` r
 # Import and load fonts
 extrafont::font_import(
   paths = here::here("posts/nepal-population-density/font"), prompt = FALSE
@@ -278,7 +278,7 @@ extrafont::font_import(
 extrafont::loadfonts(quiet = TRUE)
 ```
 
-``` downlit
+``` r
 # Add comprehensive annotations
 pop_raster |>
   # magick::image_crop(gravity = "center", geometry = "") |> 

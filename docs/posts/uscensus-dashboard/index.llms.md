@@ -3,7 +3,7 @@
 As a transportation planner, accessing and visualizing demographic and employment data is crucial for informed decision-making. The U.S. Census Bureau provides a wealth of information through various datasets, but navigating multiple APIs and data formats can be challenging. To streamline this process, I developed an interactive R Shiny dashboard that provides unified access to three major Census data sources:
 
 - **American Community Survey (ACS)** - Detailed demographic and socioeconomic estimates
-- **Decennial Census** - Complete population counts every 10 years  
+- **Decennial Census** - Complete population counts every 10 years\
 - **Longitudinal Employer-Household Dynamics (LEHD)** - Employment and commuting patterns
 
 This post walks through the development process, key technical decisions, and lessons learned while building this data exploration tool.
@@ -261,7 +261,7 @@ The `req()` function ensures all required inputs are available before processing
 Several features are planned for future releases:
 
 - **Data Visualization**: Built-in charts and maps with Census data overlays
-- **Comparison Tools**: Side-by-side analysis across years or geographies  
+- **Comparison Tools**: Side-by-side analysis across years or geographies\
 - **Custom Geography**: Support for user-uploaded boundary files
 - **Batch Processing**: Multiple state/year combinations in single requests
 - **API Integration**: Direct connection to external GIS platforms

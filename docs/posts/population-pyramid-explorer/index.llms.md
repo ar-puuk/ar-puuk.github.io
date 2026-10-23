@@ -196,7 +196,7 @@ The x-axis automatically adjusts to population magnitudes using thousands format
 Several design decisions optimize application performance:
 
 - **{tigris} caching** reduces repeated API calls for geographic data
-- **`selectize` server-side processing** handles large county lists efficiently  
+- **`selectize` server-side processing** handles large county lists efficiently\
 - **Reactive dependency management** prevents unnecessary data updates
 
 ### Error Handling and Validation
@@ -212,7 +212,7 @@ The application includes robust input validation:
 Potential extensions to this application include:
 
 - **Multi-county comparison** capabilities
-- **Time series analysis** showing demographic changes over years  
+- **Time series analysis** showing demographic changes over years\
 - **Additional demographic variables** (income, education, housing)
 - **Export functionality** for charts and data
 - **Integration with transportation metrics** for comprehensive planning analysis

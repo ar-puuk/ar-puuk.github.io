@@ -4,11 +4,11 @@ This section establishes the computational environment for processing socioecono
 
 ## 1.1 Install and load packages
 
-The package installation process incorporates essential libraries for comprehensive geospatial data analysis. The R environment includes [tidyverse](https://tidyverse.tidyverse.org) for data manipulation, [sf](https://r-spatial.github.io/sf/) for spatial data handling, [tidycensus](https://walker-data.com/tidycensus/) for Census Bureau data access, and [lehdr](https://github.com/jamgreen/lehdr/) for Longitudinal Employer-Household Dynamics data retrieval. The Python environment focuses on core data science libraries including `{pandas}` for data manipulation, `{geopandas}` for spatial analysis, and `{pygris}` for Census data queries. These packages form the analytical backbone for processing demographic, employment, and geographic data required for travel demand modeling.
+The package installation process incorporates essential libraries for comprehensive geospatial data analysis. The R environment includes `{tidyverse}` for data manipulation, `{sf}` for spatial data handling, `{tidycensus}` for Census Bureau data access, and `{lehdr}` for Longitudinal Employer-Household Dynamics data retrieval. The Python environment focuses on core data science libraries including `{pandas}` for data manipulation, `{geopandas}` for spatial analysis, and `{pygris}` for Census data queries. These packages form the analytical backbone for processing demographic, employment, and geographic data required for travel demand modeling.
 
 ##  R
 
-``` downlit
+``` r
 # # Install required packages
 # install.packages(c(
 #   "tidyverse",
@@ -67,11 +67,11 @@ from pygris.data import get_census, get_lodes
 
 ## 1.2 Project folder
 
-The centralized directory structure organizes input data, processing files, and model outputs. By using the [here](https://here.r-lib.org/) package in R and `pathlib` in Python, we ensure that file paths work correctly regardless of the computer or operating system.
+The centralized directory structure organizes input data, processing files, and model outputs. By using the `{here}` package in R and `pathlib` in Python, we ensure that file paths work correctly regardless of the computer or operating system.
 
 ##  R
 
-``` downlit
+``` r
 # Define Paths relative to Project Root
 # We want data in: posts/socioeconomic-demo/data
 # We want output in: posts/socioeconomic-demo/output
@@ -93,7 +93,7 @@ print(paste("Data Directory:", data_dir))
 
     [1] "Data Directory: C:/Users/Pukar.Bhandari/Documents/GitHub/ar-puuk.github.io/posts/socioeconomic-demo/data"
 
-``` downlit
+``` r
 print(paste("Output Directory:", output_dir))
 ```
 
@@ -133,11 +133,11 @@ print(f"Output Directory: {output_dir.resolve()}")
 
 ## 1.3 Set global options and parameters
 
-Configuration settings optimize performance and establish spatial consistency. We set the [tigris](https://github.com/walkerke/tigris) cache to a local folder within the project to prevent redundant downloads and ensure portability. The South Carolina State Plane coordinate system (`EPSG:3361`) serves as the standard projection for accurate GIS operations.
+Configuration settings optimize performance and establish spatial consistency. We set the `{tigris}` cache to a local folder within the project to prevent redundant downloads and ensure portability. The South Carolina State Plane coordinate system (`EPSG:3361`) serves as the standard projection for accurate GIS operations.
 
 ##  R
 
-``` downlit
+``` r
 # Set Tigris Cache to local project folder
 tigris_cache <- file.path(data_dir, "tigris")
 dir.create(tigris_cache, showWarnings = FALSE)
@@ -169,7 +169,7 @@ API authentication enables access to detailed demographic and economic datasets 
 
 ##  R
 
-``` downlit
+``` r
 # Set your API key into environment
 tidycensus::census_api_key("your_api_key_here", install = TRUE)
 ```
@@ -191,7 +191,7 @@ The study area encompasses six counties within South Carolina: Aiken, Allendale,
 
 ##  R
 
-``` downlit
+``` r
 # Define state abbreviation and county names
 state_abb <- "SC"
 county_names <- c(
@@ -223,7 +223,7 @@ FIPS code conversion translates state abbreviations and county names into standa
 
 ##  R
 
-``` downlit
+``` r
 # Converting state abbreviation code to FIPS code
 state_fips <- tidycensus:::validate_state(state = state_abb)
 county_fips <- vapply(
@@ -277,7 +277,7 @@ The TAZ shapefile provides the fundamental spatial framework for travel demand m
 
 ##  R
 
-``` downlit
+``` r
 # Load TAZ Shapefile
 # We assume the input TAZ file is in the data directory
 taz_path <- file.path(data_dir, "SE_2019_AD_10_30_2023.gpkg")
@@ -366,7 +366,7 @@ The interactive map visualization displays the TAZ structure colored by county, 
 
 ##  R
 
-``` downlit
+``` r
 # Create interactive map
 mapview::mapview(lscog_taz, zcol = "COUNTY", lwd = 1.6, map.types = "CartoDB.Voyager", col.regions = RColorBrewer::brewer.pal(6, "Dark2"))
 ```
@@ -390,7 +390,7 @@ The 2020 Decennial Census provides population and housing data at the census blo
 
 ##  R
 
-``` downlit
+``` r
 # Define variables to download
 dec_variables <- c(
     TOTPOP = "P1_001N", # Total Population
@@ -534,7 +534,7 @@ The American Community Survey 5-year estimates provide household income data at 
 
 ##  R
 
-``` downlit
+``` r
 # Define variables to download
 acs_variables <- c(
     INC_CAT_02 = "B19001_002", # Less than $10,000
@@ -714,7 +714,7 @@ The Longitudinal Employer-Household Dynamics Workplace Area Characteristics data
 
 ##  R
 
-``` downlit
+``` r
 # Download LEHD WAC data at block level
 lscog_emp <- lehdr::grab_lodes(
   version = "LODES8",
@@ -870,7 +870,7 @@ To retrieve the data, we check if a local copy exists to ensure reproducibility 
 
 ##  R
 
-``` downlit
+``` r
 # Define local path for public schools
 pub_sch_path <- file.path(data_dir, "lscog_pub_sch_enroll.gpkg")
 
@@ -1018,7 +1018,7 @@ We download the raw ZIP file to the local data folder if it is not already prese
 
 ##  R
 
-``` downlit
+``` r
 # Private School Data Setup
 pss_url <- "https://nces.ed.gov/surveys/pss/zip/pss1920_pu_csv.zip"
 pss_folder <- file.path(data_dir, "PSS - Private")
@@ -1160,7 +1160,7 @@ Post-secondary institution locations are obtained from the NCES Integrated Posts
 
 ##  R
 
-``` downlit
+``` r
 # Define local path for colleges
 college_path <- file.path(data_dir, "lscog_college_loc.gpkg")
 
@@ -1259,11 +1259,11 @@ The data cleaning process involves harmonizing multiple Census data sources to c
 
 ## 4.1 Household-weighted interpolation
 
-The interpolation process transfers ACS block group data to individual census blocks using household counts as weights. This method ensures that socioeconomic characteristics are distributed proportionally based on residential density rather than simple geometric overlay. The [tidycensus](https://walker-data.com/tidycensus/) package provides robust interpolation functionality that preserves the extensive nature of count variables while maintaining spatial relationships. For Python, the [`interpolate_pw()`](https://walker-data.com/tidycensus/reference/interpolate_pw.html) function is implemented to achieve similar functionality using population-weighted interpolation.
+The interpolation process transfers ACS block group data to individual census blocks using household counts as weights. This method ensures that socioeconomic characteristics are distributed proportionally based on residential density rather than simple geometric overlay. The `{tidycensus}` package provides robust interpolation functionality that preserves the extensive nature of count variables while maintaining spatial relationships. For Python, the `interpolate_pw()` function is implemented to achieve similar functionality using population-weighted interpolation.
 
 ##  R
 
-``` downlit
+``` r
 # Interpolate ACS data to Decennial Census blocks
 lscog_acs_cb <- tidycensus::interpolate_pw(
   from = lscog_acs,
@@ -1486,7 +1486,7 @@ The comparative visualization reveals the increased spatial resolution achieved 
 
 ##  R
 
-``` downlit
+``` r
 # Compare before and after interpolation
 mapview::mapview(lscog_acs_cb, zcol = "INC_49999", color = NA) |
 mapview::mapview(lscog_acs, zcol = "INC_49999", color = NA)
@@ -1506,7 +1506,7 @@ The integration step merges the interpolated ACS socioeconomic data with the Dec
 
 ##  R
 
-``` downlit
+``` r
 ## Combine ACS Data to Decennial data
 lscog_pop_hh <- lscog_dec |>
   dplyr::left_join(
@@ -1571,7 +1571,7 @@ Income category adjustments reconcile the interpolated ACS estimates with actual
 
 ##  R
 
-``` downlit
+``` r
 ## Combine adjusted HH income level to Decennial census instead of ACS
 lscog_pop_hh <- lscog_pop_hh |>
   dplyr::mutate(
@@ -1639,7 +1639,7 @@ The employment integration incorporates LEHD (Longitudinal Employer-Household Dy
 
 ##  R
 
-``` downlit
+``` r
 # Join LEHD Data to the Decennial data
 lscog_pop_hh_emp <- lscog_pop_hh |>
   dplyr::left_join(lscog_emp, by = dplyr::join_by(GEOID))
@@ -1711,7 +1711,7 @@ The Traffic Analysis Zone (TAZ) boundary export provides the fundamental geograp
 
 ##  R
 
-``` downlit
+``` r
 # Export as CSV
 lscog_taz |>
   sf::st_drop_geometry() |>
@@ -1735,7 +1735,7 @@ lscog_taz.to_csv(
 
 ##  R
 
-``` downlit
+``` r
 # Export as GDB
 lscog_taz |>
   sf::write_sf(
@@ -1764,7 +1764,7 @@ The block-to-TAZ conversion table establishes the critical linkage between fine-
 
 ##  R
 
-``` downlit
+``` r
 # Export as CSV
 lscog_cb |>
   sf::st_join(lscog_taz) |>
@@ -1794,7 +1794,7 @@ The decennial census block export captures the foundational demographic counts u
 
 ##  R
 
-``` downlit
+``` r
 # Export as CSV
 lscog_dec |>
   sf::st_drop_geometry() |>
@@ -1818,7 +1818,7 @@ lscog_dec.to_csv(
 
 ##  R
 
-``` downlit
+``` r
 # Export as GDB
 lscog_dec |>
   sf::write_sf(
@@ -1847,7 +1847,7 @@ The interpolated ACS data export delivers income distribution estimates at the c
 
 ##  R
 
-``` downlit
+``` r
 # Export as CSV
 lscog_acs_cb |>
   dplyr::select(GEOID, INC_14999, INC_49999, INC_50000) |>
@@ -1872,7 +1872,7 @@ lscog_acs_cb[['GEOID', 'INC_14999', 'INC_49999', 'INC_50000']].to_csv(
 
 ##  R
 
-``` downlit
+``` r
 # Export as GDB
 lscog_acs_cb |>
   dplyr::select(GEOID, INC_14999, INC_49999, INC_50000) |>
@@ -1902,7 +1902,7 @@ The employment data export provides comprehensive workplace characteristics by i
 
 ##  R
 
-``` downlit
+``` r
 # Export as CSV
 lscog_pop_hh_emp |>
   dplyr::select(GEOID, TOTAL_EMP:PUBLIC_ADM) |>
@@ -1929,7 +1929,7 @@ lscog_pop_hh_emp[['GEOID', 'TOTAL_EMP', 'AGR_FOR_FI', 'MINING', 'CONSTRUCTI',
 
 ##  R
 
-``` downlit
+``` r
 # Export as GDB
 lscog_pop_hh_emp |>
   dplyr::select(GEOID, TOTAL_EMP:PUBLIC_ADM) |>
@@ -1961,7 +1961,7 @@ The public school location export integrates educational facility data with the 
 
 ##  R
 
-``` downlit
+``` r
 # Export as CSV
 lscog_pub_sch_enroll |>
   sf::st_join(lscog_taz |> dplyr::select(ID, TAZ_ID)) |>
@@ -1990,7 +1990,7 @@ lscog_pub_sch_enroll.sjoin(
 
 ##  R
 
-``` downlit
+``` r
 # Export as GDB
 lscog_pub_sch_enroll |>
   sf::st_join(lscog_taz |> dplyr::select(ID, TAZ_ID)) |>
@@ -2023,7 +2023,7 @@ The private school dataset complements the public education data by capturing en
 
 ##  R
 
-``` downlit
+``` r
 # Export as CSV
 lscog_pvt_sch_enroll |>
   sf::st_join(lscog_taz |> dplyr::select(ID, TAZ_ID)) |>
@@ -2052,7 +2052,7 @@ lscog_pvt_sch_enroll.sjoin(
 
 ##  R
 
-``` downlit
+``` r
 # Export as GDB
 lscog_pvt_sch_enroll |>
   sf::st_join(lscog_taz |> dplyr::select(ID, TAZ_ID)) |>
@@ -2087,7 +2087,7 @@ The spatial join operation aggregates all demographic, housing, and employment v
 
 ##  R
 
-``` downlit
+``` r
 # Aggregate population, households, and employment to TAZ
 lscog_taz_pop <- lscog_taz |>
   sf::st_join(
@@ -2227,7 +2227,7 @@ The school enrollment combination merges public and private educational institut
 
 ##  R
 
-``` downlit
+``` r
 # Combine school enrollment data
 lscog_sch_enroll <- dplyr::bind_rows(
   lscog_pub_sch_enroll,
@@ -2304,7 +2304,7 @@ The subsequent TAZ aggregation counts total student enrollment within each zone,
 
 ##  R
 
-``` downlit
+``` r
 # count the number of school enrollment within each TAZ
 lscog_taz_enroll <- lscog_taz |>
   sf::st_join(lscog_sch_enroll) |>
@@ -2378,7 +2378,7 @@ This step integrates all TAZ-level socioeconomic datasets into a comprehensive b
 
 ##  R
 
-``` downlit
+``` r
 # Combine population, household, employments, and school enrollment
 lscog_se_base <- lscog_taz_pop |>
   dplyr::left_join(
@@ -2485,7 +2485,7 @@ This validation confirms that the total household count matches the sum of all h
 
 ##  R
 
-``` downlit
+``` r
 # check the sum of household by household size
 lscog_se_base |>
   dplyr::filter(HH != (HH_1 + HH_2 + HH_3 + HH_4)) |>
@@ -2512,7 +2512,7 @@ The income category validation verifies that household totals equal the sum of a
 
 ##  R
 
-``` downlit
+``` r
 # check the sum of household by income level
 lscog_se_base |>
   dplyr::filter(HH != (INC_14999 + INC_49999 + INC_50000)) |>
@@ -2539,7 +2539,7 @@ The employment validation confirms that total employment equals the sum of all i
 
 ##  R
 
-``` downlit
+``` r
 # check the sum of employment by categories
 lscog_se_base |>
   dplyr::filter(
@@ -2590,7 +2590,7 @@ The final export creates the complete TAZ-level socioeconomic dataset in both ta
 
 ##  R
 
-``` downlit
+``` r
 # Export as CSV
 lscog_se_base |>
   sf::st_drop_geometry() |>
@@ -2614,7 +2614,7 @@ lscog_se_base.to_csv(
 
 ##  R
 
-``` downlit
+``` r
 # Export as GDB
 lscog_se_base |>
   sf::write_sf(
