@@ -9,7 +9,6 @@ author:
     email: pukar.bhandari@outlook.com
 date: "2026-09-29"
 categories: [JavaScript, Python, GIS, Open Source]
-code-annotations: select
 prefer-html: true
 ---
 

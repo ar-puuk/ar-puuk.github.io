@@ -9,7 +9,6 @@ author:
     email: pukar.bhandari@outlook.com
 date: "2026-08-20"
 categories: [Developer Tools, Travel Demand Modeling, Open Source]
-code-annotations: select
 prefer-html: true
 ---
 

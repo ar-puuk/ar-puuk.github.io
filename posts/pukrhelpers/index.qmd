@@ -7,7 +7,6 @@ author:
     email: pukar.bhandari@outlook.com
 date: "2025-05-23"
 categories: [R, GIS, Developer Tools, Open Source]
-code-annotations: select
 prefer-html: true
 ---
 

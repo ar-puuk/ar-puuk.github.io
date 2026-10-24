@@ -9,7 +9,6 @@ author:
     email: pukar.bhandari@outlook.com
 date: "2026-10-19"
 categories: [JavaScript, Python, Transportation, Web Apps, Open Source]
-code-annotations: select
 prefer-html: true
 ---
 
