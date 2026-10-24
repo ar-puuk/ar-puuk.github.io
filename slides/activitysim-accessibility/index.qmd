@@ -1,5 +1,7 @@
 ---
 title: "ActivitySim Initialization & Accessibility"
+description: "A deep dive for travel demand modelers on how ActivitySim loads data, validates inputs, and computes its first aggregate measure, accessibility."
+image-alt: "Title slide: Initialization and Accessibility, an ActivitySim deep dive for travel demand modelers."
 subtitle: "Components Deep Dive for Travel Demand Modelers"
 author: "Pukar Bhandari"
 date: 2026-04-19

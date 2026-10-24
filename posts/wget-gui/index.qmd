@@ -1,5 +1,6 @@
 ---
 title: "WgetGUI Ultimate: A Fluent Command Generator"
+image-alt: "WgetGUI Ultimate window with target URL and output fields and the generated wget command."
 description: "A modern, Windows 11-inspired web interface for building complex GNU Wget commands"
 author:
   - name: Pukar Bhandari

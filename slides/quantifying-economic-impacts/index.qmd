@@ -1,5 +1,6 @@
 ---
 title: "Quantifying Economic Effects of Transportation Investments"
+description: "Slides on methods and applications for quantifying the economic effects of transportation investments in regional planning."
 subtitle: "Methods and Applications for Regional Planning"
 author: "Pukar Bhandari"
 date: "2025-08-07"

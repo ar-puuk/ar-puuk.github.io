@@ -1,5 +1,6 @@
 ---
 title: "Interactive Robocopy GUI Tool"
+image-alt: "RoboGUI Ultimate window with source and destination fields, quick presets and the generated robocopy command."
 description: "A web-based interface for generating Windows robocopy commands with ease"
 author:
   - name: Pukar Bhandari

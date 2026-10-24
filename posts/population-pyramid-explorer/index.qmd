@@ -1,5 +1,6 @@
 ---
 title: "Building an Interactive Population Pyramid Explorer"
+image-alt: "Population pyramid for Autauga County, Alabama, beside a tract-level map of Alabama."
 subtitle: "Exploring demographic patterns across US counties through interactive visualization using {R-Shiny} and {mapgl}"
 description: |
   A deep dive into creating a story-driven Shiny application that combines interactive mapping with demographic visualizations using Census data.

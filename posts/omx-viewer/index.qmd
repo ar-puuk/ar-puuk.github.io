@@ -1,5 +1,7 @@
 ---
 title: "Building a Client-Side Open Matrix (OMX) File Viewer"
+description: "A browser-based viewer for OMX matrix files from travel demand models. It runs on WebAssembly, so the data never leaves your computer."
+image-alt: "OMX Viewer showing a 3,629 by 3,629 trip matrix as a scrollable table with a file info side panel."
 subtitle: Built on webassembly, works in browser, and data never leaves your computer
 image: "omx_viewer.png"
 author:

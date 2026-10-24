@@ -1,5 +1,6 @@
 ---
 title: "An Education Explorer for Public NCES Data"
+image-alt: "Utah Education Explorer map of public schools, private schools and colleges as clustered markers, with a layers panel and a year timeline."
 subtitle: Schools, colleges and district boundaries on one map, with 25+ years of history
 description: A static, map-first dashboard for publicly available NCES data (CCD, PSS, IPEDS) for one U.S. state at a time, powered by DuckDB-WASM.
 image: "education_explorer.png"

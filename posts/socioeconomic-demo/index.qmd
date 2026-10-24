@@ -1,5 +1,7 @@
 ---
 title: "Base Year SE Data Development"
+description: "Developing base-year socioeconomic data by traffic analysis zone for the Lower Savannah COG 2050 Long Range Transportation Plan, using R and Python."
+image-alt: "Map of six South Carolina counties in the Lower Savannah region divided into colored traffic analysis zones."
 subtitle: Lower Savannah Council of Governments (LSCOG) 2050 Long Range Transportation Plan
 image: "lscog_taz.png"
 author:

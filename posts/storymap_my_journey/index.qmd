@@ -1,5 +1,6 @@
 ---
 title: "Building an Interactive Storymap using {mapgl}"
+image-alt: "Globe view centered on Africa with an introduction card for a personal story map."
 subtitle: "A Visual Journey Through My Life."
 description: |
   Creating an open-source, interactive storymap with the {mapgl} R package to visualize my journey across the world.

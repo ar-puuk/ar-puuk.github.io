@@ -1,5 +1,6 @@
 ---
 title: "Borderline: A U.S. Geography Guessing Game"
+image-alt: "Borderline game start screen with mode, difficulty, timing and round options and a Play button, in a dark theme."
 subtitle: Name a state, click its outline — no interior borders to give it away
 description: A browser geography game for U.S. states and counties, built as plain static HTML, CSS and JavaScript with no build step.
 image: "borderline.png"

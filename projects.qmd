@@ -7,6 +7,8 @@ listing:
     - work/**/*.qmd
   sort: "date desc"
   type: default
+  fields: [image, date, title, description, categories]
+  date-format: "MMM YYYY"
   categories: true
   sort-ui: true
   filter-ui: true

@@ -1,5 +1,7 @@
 ---
 title: "3D Population Density Mapping of Nepal"
+description: "A 3D population density map of Nepal built in R with rayshader and Kontur population data."
+image-alt: "3D population density map of Nepal with tall orange columns marking Kathmandu and other cities."
 subtitle: "Using Rayshader for Advanced Geospatial Visualization"
 author:
   - name: Pukar Bhandari

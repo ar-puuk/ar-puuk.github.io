@@ -1,5 +1,6 @@
 ---
 title: "SE 2025 Urban Form D Variables (H3)"
+image-alt: "Map of H3 hexagons on the Wasatch Front shaded by population and employment density, with a smoothed versus raw swipe divider."
 subtitle: Six urban-form measures on H3 hexagons for the WFRC and MAG region
 description: Calculates the D variables of urban form (density, diversity, design, destinations, demographics, distance to transit) for the Wasatch Front region at H3 resolution. Developed at the Wasatch Front Regional Council.
 image: "se2025_h3.png"

@@ -1,5 +1,6 @@
 ---
 title: "Building a U.S. Census Data Explorer"
+image-alt: "Census Data Explorer with year, state and county filters, a map of Utah counties and a table of block group data."
 subtitle: "A Shiny Dashboard for ACS, Decennial Census, and LEHD Data"
 description: |
   Learn how to build an interactive Shiny dashboard for exploring U.S. Census data including ACS, Decennial Census, and LEHD datasets with integrated mapping capabilities.

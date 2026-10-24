@@ -1,5 +1,6 @@
 ---
 title: "Analyzing the Utah Bikeways data"
+image-alt: "Scatter plot of bikeway miles against total road miles for Utah cities, colored above and below the statewide average."
 subtitle: Comparing the bikeways by type with the highway mileage for each city
 description: This analysis calculates and compares roadway lane miles and bikeway facility miles across Utah municipalities using spatial data from the Utah Geospatial Resource Center (UGRC).
 author:

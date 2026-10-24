@@ -1,5 +1,6 @@
 ---
 title: "GTFS vs. TDM Transit Network Comparison"
+image-alt: "Map comparing GTFS transit lines and stops with travel demand model transit lines along the Wasatch Front."
 subtitle: Visually checking the travel demand model's transit network against published GTFS
 description: A web map for comparing the base-year transit network in the Wasatch Front travel demand model with GTFS transit data. Developed at the Wasatch Front Regional Council.
 image: "gtfs_vs_tdm.png"

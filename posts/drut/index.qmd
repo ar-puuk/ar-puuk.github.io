@@ -1,5 +1,6 @@
 ---
 title: "Drut: Linting and Formatting for Cube Voyager Scripts"
+image-alt: "Drut documentation page introducing the Cube Voyager script linter, formatter and editor tooling suite."
 subtitle: A Rust-based toolchain and VS Code extension for travel-demand model control-statement files
 description: Drut is a linter, formatter and editor tooling suite for Cube Voyager scripts (.s / .block), with a CLI, a language server for VS Code, and an MCP server.
 image: "drut.png"

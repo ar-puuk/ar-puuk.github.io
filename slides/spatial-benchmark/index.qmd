@@ -1,5 +1,8 @@
 ---
 title: "Modernizing Spatial Workflows"
+image: "csv_vs_parquet.jpg"
+description: "Benchmarks of DuckDB, SedonaDB and GeoParquet against sf and GeoPandas on Utah address and county data, in R and Python."
+image-alt: "Cartoon contrasting CSV, which checks every box of mixed fruit, with Parquet, which opens only the box of apples."
 subtitle: "Benchmarking DuckDB & Parquet vs. The Legacy Stack"
 author: "Pukar Bhandari"
 date: "2026-02-07"

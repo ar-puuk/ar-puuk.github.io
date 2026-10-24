@@ -1,5 +1,6 @@
 ---
 title: "Opportunity Zones 2.0 Tract Info Sheets"
+image-alt: "Map of a census tract outlined in dark blue with transit and land-use context."
 subtitle: Auto-generated PDF info sheets for every eligible census tract in the WFRC and MAG region
 description: A Quarto and R pipeline that builds county summary and per-tract detail PDFs for Utah's Opportunity Zones 2.0 eligible list. Developed at the Wasatch Front Regional Council.
 image: "oz_tract_map.png"

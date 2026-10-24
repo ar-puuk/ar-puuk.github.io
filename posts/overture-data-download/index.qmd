@@ -1,5 +1,7 @@
 ---
 title: "Overture Maps Data Download"
+description: "Downloading Overture Maps data for an area of interest with DuckDB, in both R and Python."
+image-alt: "Interactive map of the Salt Lake City area covered with clustered purple points from Overture Maps data."
 subtitle: "Applying DuckDB in R and Python"
 image: "overture_data_download.png"
 author:

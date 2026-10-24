@@ -1,5 +1,6 @@
 ---
 title: "Commute Flow Explorer"
+image-alt: "Commute Flow Explorer map of the Wasatch Front with commute flow lines scaled by volume."
 subtitle: Place your own analysis points and compare commuter flows between them
 description: A client-side web app for exploring origin-destination commuter flows across the Wasatch Front using H3 cells and DuckDB-WASM. Developed at the Wasatch Front Regional Council.
 image: "commute_explorer.png"

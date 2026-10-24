@@ -1,5 +1,6 @@
 ---
 title: "Restyling Utah's Vector Basemap for MapLibre"
+image-alt: "UGRC Vector Map Tile Styles editor showing a dark Salt Lake City basemap and a layer list."
 subtitle: Dark and warm-light themes for UGRC's Lite basemap, plus a browser-based style editor
 description: Alternate MapLibre styles for UGRC's Lite vector basemap, generated from live upstream sources, and a visual editor to tweak, compare and download them.
 image: "ugrc_styles.png"

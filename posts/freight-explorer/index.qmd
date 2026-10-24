@@ -1,5 +1,6 @@
 ---
 title: "A Zero-Cost Freight Flow Explorer for Utah"
+image-alt: "Freight Explorer dashboard for Utah with freight flow lines on a map, summary tonnage and value figures, and mode and direction charts."
 subtitle: FAF origin-destination flows, DuckDB-WASM, and deck.gl — no backend required
 description: A map-first explorer for the public Freight Analysis Framework (FAF) data, built as a static site that queries Parquet files directly in the browser.
 image: "freight_explorer.jpg"

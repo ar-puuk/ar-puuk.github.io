@@ -1,5 +1,6 @@
 ---
 title: "Housing Site Evaluator"
+image-alt: "Wasatch Front Housing Site Evaluator welcome dialog explaining how to select communities, filter by land use and set priorities."
 subtitle: A rebuilt scoring pipeline for WFRC's Housing Access-to-Opportunity (ATO) Calculator
 description: Scores every parcel and H3 hexagon in the Wasatch Front region on access to jobs, transit and everyday necessities. Developed at the Wasatch Front Regional Council.
 image: "housing_site_evaluator.png"

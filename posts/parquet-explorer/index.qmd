@@ -1,5 +1,7 @@
 ---
 title: "Building a Client-Side Geo/Parquet File Viewer"
+description: "A browser-based viewer for GeoParquet and Parquet files with SQL and map views. It runs on WebAssembly, so the data stays on your computer."
+image-alt: "Parquet Explorer with a column list, a map of points, a data table and a schema panel for a Nodes.parquet file."
 subtitle: Built on webassembly, works in browser, and data never leaves your computer
 image: "parquet_explorer.png"
 author:

@@ -1,5 +1,7 @@
 ---
 title: "Nepal Electoral Constituency GeoJSON"
+description: "Scraping a constituency map from an election results site, converting its SVG paths to GIS geometry, and georeferencing it against ward boundaries in R."
+image-alt: "Map of Nepal's electoral constituencies in grey with national parks highlighted in green."
 subtitle: "Scraping SVG, converting to GIS, and Georeferencing data with R"
 author:
   - name: Pukar Bhandari

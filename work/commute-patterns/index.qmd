@@ -1,5 +1,6 @@
 ---
 title: "Utah Commuter Flow Patterns"
+image-alt: "Utah Commuter Flow Patterns dashboard with a map of Salt Lake City inflow, top flow bars and a commute length chart."
 subtitle: An open-source rebuild of WFRC's Regional Commuter Flows map
 description: An interactive, client-side map of commute flows across Utah, built on LEHD LODES data and open-source tools. Developed at the Wasatch Front Regional Council.
 image: "commute_patterns.png"

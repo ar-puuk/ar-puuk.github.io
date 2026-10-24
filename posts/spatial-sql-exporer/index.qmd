@@ -1,5 +1,6 @@
 ---
 title: "Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code"
+image-alt: "Spatial Explorer landing page, 'Open a map file. Query it like a database.', with a SQL query over a hex-binned world map."
 subtitle: DuckDB-WASM, MapLibre GL and Svelte — one codebase, a web app and a VS Code extension, and your files never leave your machine
 description: Open a geospatial file, query it with spatial SQL, style it and export it without a desktop GIS. How the project grew from a single-page experiment into a web app and a VS Code extension.
 image: "spatial_sql_explorer.png"
