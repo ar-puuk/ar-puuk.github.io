@@ -18,8 +18,11 @@ embed-resources: false
 
 ```{r}
 #| include: false
-# Needed by the shinylive filter; listed here so renv::snapshot() records it.
+# Needed by the shinylive filter (shinylive) and by `code-link: true` (downlit,
+# xml2); listed here so renv::snapshot() records them.
 library(shinylive)
+library(downlit)
+library(xml2)
 ```
 
 ## Introduction

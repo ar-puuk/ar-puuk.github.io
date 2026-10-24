@@ -8,6 +8,11 @@ author:
 date: "2024-05-22"
 categories: [R, Python, GIS, Data Science]
 prefer-html: true
+format:
+  typst:
+    # The R/Python tabsets become level-4 headings in the PDF; numbering them
+    # (number-depth 2, no level-3 parent) makes Typst warn about a zero counter
+    number-sections: false
 ---
 
 ```{r reticulate}
