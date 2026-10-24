@@ -1,5 +1,6 @@
 ---
 title: "Prompt Engineering Best Practices"
+brand: ../../assets/brand/_brand.yml
 description: "Slides on prompt engineering best practices for analytics and modeling work, presented in WFRC's Tech, Skills, and Beyond series."
 image-alt: "Title slide for Prompt Engineering Best Practices over a darkened photo of a humanoid robot reading."
 subtitle: "For Analytics & Modeling"
@@ -16,7 +17,7 @@ format:
     footer: "WFRC · Tech, Skills, and Beyond · 2026"
     logo: https://wfrc.utah.gov/wp-content/uploads/2025/05/footer-logo.svg
     title-slide-attributes:
-      data-background-color: "#1a1a2e"
+      data-background-color: "#0E171E"
       data-background-image: https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1280&q=80
       data-background-opacity: "0.15"
     code-line-numbers: false
@@ -26,7 +27,7 @@ draft: true
 categories: [AI]
 ---
 
-## Why This Talk? {background-color="#1a1a2e"}
+## Why This Talk? {background-color="#0E171E"}
 
 > "The difference between a **good** LLM output and a **great** one is almost never the model — it's the prompt."
 
@@ -49,7 +50,7 @@ Today I want to give you a set of concrete, practical techniques that will drama
 We'll cover seven techniques in 10 minutes. Each one is immediately usable. Let's go.
 :::
 
-## 1 · Context & Role Prompting {background-color="#16213e"}
+## 1 · Context & Role Prompting {background-color="#1A2B35"}
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -102,7 +103,7 @@ When do you NOT need this? If you're just asking "what's the syntax for `dplyr::
 One tip: save your best role prompts somewhere — a text file, a snippet manager, a pinned Slack message. You'll reuse them constantly.
 :::
 
-## 2 · Plan First, Implement Second {background-color="#16213e"}
+## 2 · Plan First, Implement Second {background-color="#1A2B35"}
 
 :::: {.columns}
 ::: {.column width="48%"}
@@ -164,7 +165,7 @@ Third, it often produces better code because the LLM has already organized its t
 This is a mindset shift: use the LLM as a *collaborator*, not a vending machine.
 :::
 
-## 3 · File Uploads & Data Privacy {background-color="#0f3460"}
+## 3 · File Uploads & Data Privacy {background-color="#005577"}
 
 :::: {.columns}
 ::: {.column width="55%"}
@@ -224,7 +225,7 @@ Another option: create a small fake dataset. Use R to generate 50 synthetic rows
 One more note on context window bloat: if you upload a 10,000-line script, the LLM is spending most of its attention budget just holding that file in memory. Be selective. Upload the specific module or function you need help with, not the entire codebase.
 :::
 
-## 4 · Managing Long Contexts {background-color="#0f3460"}
+## 4 · Managing Long Contexts {background-color="#005577"}
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -278,7 +279,7 @@ Then you literally open a new chat, paste that summary, and pick up where you le
 I do this at least once per complex coding session. It takes 30 seconds and saves you from the maddening experience of the LLM "hallucinating" a variable name it made up six messages ago.
 :::
 
-## 5 · Coding Agents & System Prompts {background-color="#1a1a2e"}
+## 5 · Coding Agents & System Prompts {background-color="#0E171E"}
 
 :::: {.columns}
 ::: {.column width="55%"}
@@ -337,7 +338,7 @@ For us at WFRC, this is where you encode things like: "always use EPSG:26912," "
 If you're not using coding agents yet, start with Copilot or Claude Code. If you already are, add a CLAUDE.md to your project today.
 :::
 
-## 6 · Meta-Prompting {background-color="#1a1a2e"}
+## 6 · Meta-Prompting {background-color="#0E171E"}
 
 ### Let the LLM write your prompt
 
@@ -377,7 +378,7 @@ Then it generates a beautifully structured prompt with role, context, constraint
 This is also great for the official documentation links. Anthropic, OpenAI, and Google all publish prompt engineering guides. The core advice converges: be specific, give examples, use structured formatting, and break complex tasks into steps. Meta-prompting automates all of that.
 :::
 
-## 7 · Before & After Examples {background-color="#0f3460"}
+## 7 · Before & After Examples {background-color="#005577"}
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -454,7 +455,7 @@ Example three — debugging: Instead of saying "it's broken, fix it," we upload 
 These patterns come straight from the official guidance. Anthropic's docs emphasize being explicit and using structured formatting. OpenAI recommends providing context and examples. Google's best practices say to specify the output format. They all converge on the same core idea: the more precisely you specify the task, the better the result.
 :::
 
-## Cheat Sheet {background-color="#1a1a2e"}
+## Cheat Sheet {background-color="#0E171E"}
 
 | # | Technique | One-Liner |
 |---|-----------|-----------|
