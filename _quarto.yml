@@ -11,11 +11,16 @@ website:
   favicon: "assets/images/pb-logo.svg"
   site-url: "https://ar-puuk.github.io"
   llms-txt: true
+  reader-mode: true
+  search:
+    location: navbar
+    type: overlay
+    keyboard-shortcut: ["/"]
   # show draft: true pages (flagged with a Draft banner); use "gone" to hide them
   draft-mode: visible
 
-  # repo-url: "https://github.com/ar-puuk/ar-puuk.github.io"
-  # repo-actions: [source, issue]
+  repo-url: "https://github.com/ar-puuk/ar-puuk.github.io"
+  repo-actions: [source, issue]
 
   # page-navigation: false
   # back-to-top-navigation: false
@@ -88,7 +93,7 @@ website:
         href: projects.xml
 
   page-footer:
-    left: 2025 Pukar Bhandari &#8729; Made with [{{< fa brands r-project title="R Project" >}}](https://www.r-project.org/about.html){target=_blank}, [<img src="https://quarto.org/favicon.png" width="14">](https://quarto.org/){target=_blank}, [{{< fa brands git-alt title="Git alt logo" >}}](https://git-scm.com/){target=_blank} and [{{< fa brands github title="GitHub octocat logo" >}}](https://github.com/){target=_blank}
+    left: '&copy; 2025&ndash;<span id="footer-year">2026</span> Pukar Bhandari &#8729; Made with [{{< fa brands r-project title="R Project" >}}](https://www.r-project.org/about.html){target=_blank}, [<img src="https://quarto.org/favicon.png" width="14">](https://quarto.org/){target=_blank}, [{{< fa brands git-alt title="Git alt logo" >}}](https://git-scm.com/){target=_blank} and [{{< fa brands github title="GitHub octocat logo" >}}](https://github.com/){target=_blank}'
     center: |
           <a href="https://www.linkedin.com/in/arpuuk" title="LinkedIn" target="_blank" rel="noopener">{{< fa brands linkedin >}}</a>
           &nbsp;
@@ -128,6 +133,15 @@ format:
     css: assets/css/index.css
     include-in-header:
       - _includes/preload-fonts.html
+    include-after-body:
+      - _includes/footer-year.html
+    link-external-icon: true
+    link-external-newwindow: true
+    smooth-scroll: true
+    citations-hover: true
+    footnotes-hover: true
+    email-obfuscation: javascript
+    lang: en-US
 
 # freeze computational output
 # (see https://quarto.org/docs/projects/code-execution.html#freeze)
