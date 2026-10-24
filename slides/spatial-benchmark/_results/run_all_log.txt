@@ -1,5 +1,5 @@
-=== run_all.R log: 2026-04-04 17:57:22.324444 ===
-Working directory: C:/Users/Pukar.Bhandari/Documents/GitHub/ar-puuk.github.io/slides/spatial-benchmark
+=== run_all.R log: 2026-10-23 19:48:48.892005 ===
+Working directory: D:/GitHub/ar-puuk.github.io/slides/spatial-benchmark
 Result: success
 
 --- stdout ---
@@ -29,10 +29,6 @@ The following objects are masked from 'package:stats':
 
     filter, lag
 
-The following objects are masked from 'package:base':
-
-    intersect, setdiff, setequal, union
-
 The following objects are masked from 'package:stats':
 
     filter, lag
@@ -41,6 +37,10 @@ The following objects are masked from 'package:base':
 
     intersect, setdiff, setequal, union
 
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
 Loading required package: DBI
 Loading required package: DBI
 Success: All Address Point formats (CSV/Parquet) found locally.
@@ -49,6 +49,16 @@ Success: All County Boundary formats (SHP/Parquet) found locally.
 Success: All County Boundary formats (SHP/Parquet) found locally.
 Pre-installing DuckDB spatial extension (if not already cached)...
 Pre-installing DuckDB spatial extension (if not already cached)...
+duckdb is storing downloaded extensions and secrets under ~/.duckdb:
+ℹ C:\Users\Pukar.Bhandari/.duckdb
+This persists across sessions and is shared with the DuckDB CLI and other clients.
+ℹ Run duckdb(shared_home = FALSE) to use a temporary directory instead.
+ℹ See ?duckdb_storage for details and alternatives.
+duckdb is storing downloaded extensions and secrets under ~/.duckdb:
+ℹ C:\Users\Pukar.Bhandari/.duckdb
+This persists across sessions and is shared with the DuckDB CLI and other clients.
+ℹ Run duckdb(shared_home = FALSE) to use a temporary directory instead.
+ℹ See ?duckdb_storage for details and alternatives.
 [1] 0
 [1] 0
 [1] 0
@@ -88,9 +98,9 @@ The following objects are masked from 'package:base':
 ────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 Running: BENCHMARK 01 - R (sf) Legacy Stack
+────────────────────────────────────────────────────────────
 Running: BENCHMARK 01 - R (sf) Legacy Stack
 ────────────────────────────────────────────────────────────
-────────────────────────────────────────────────────────────
 Warning message:
 Warning message:
 One or more parsing issues, call `problems()` on your data frame for details,
@@ -101,8 +111,8 @@ One or more parsing issues, call `problems()` on your data frame for details,
 e.g.:
   dat <- vroom(...)
   problems(dat) 
-  Load Data: 16.620s | 994.3 MB RSS delta
-  Load Data: 16.620s | 994.3 MB RSS delta
+  Load Data: 8.640s | 1043.3 MB RSS delta
+  Load Data: 8.640s | 1043.3 MB RSS delta
 Warning message:
 Warning message:
 One or more parsing issues, call `problems()` on your data frame for details,
@@ -113,19 +123,19 @@ One or more parsing issues, call `problems()` on your data frame for details,
 e.g.:
   dat <- vroom(...)
   problems(dat) 
-  Validation (Join): 28.620s | 1323.2 MB RSS delta
-  Validation (Join): 28.620s | 1323.2 MB RSS delta
+  Validation (Join): 11.360s | 1624.2 MB RSS delta
+  Validation (Join): 11.360s | 1624.2 MB RSS delta
 Warning messages:
 Warning messages:
 1: In rm(pts, cnt, res_attr, res_spatial) : object 'res_attr' not found
 2: In rm(pts, cnt, res_attr, res_spatial) : object 'res_spatial' not found
+────────────────────────────────────────────────────────────
+BENCHMARK 01 Complete!
+────────────────────────────────────────────────────────────
 1: In rm(pts, cnt, res_attr, res_spatial) : object 'res_attr' not found
 2: In rm(pts, cnt, res_attr, res_spatial) : object 'res_spatial' not found
 ────────────────────────────────────────────────────────────
-────────────────────────────────────────────────────────────
 BENCHMARK 01 Complete!
-BENCHMARK 01 Complete!
-────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 Loading required package: DBI
 Loading required package: DBI
@@ -154,29 +164,49 @@ The following objects are masked from 'package:base':
 ────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 Running: BENCHMARK 02 - R (DuckDB) Modern Stack
+────────────────────────────────────────────────────────────
+Phase 2a: Benchmarking data ingest (no indexing)...
 Running: BENCHMARK 02 - R (DuckDB) Modern Stack
 ────────────────────────────────────────────────────────────
-────────────────────────────────────────────────────────────
 Phase 2a: Benchmarking data ingest (no indexing)...
-Phase 2a: Benchmarking data ingest (no indexing)...
-  Load Data: 1.720s | 120.4 MB RSS delta
-  Load Data: 1.720s | 120.4 MB RSS delta
+duckdb is storing downloaded extensions and secrets under ~/.duckdb:
+ℹ C:\Users\Pukar.Bhandari/.duckdb
+This persists across sessions and is shared with the DuckDB CLI and other clients.
+ℹ Run duckdb(shared_home = FALSE) to use a temporary directory instead.
+ℹ See ?duckdb_storage for details and alternatives.
+duckdb is storing downloaded extensions and secrets under ~/.duckdb:
+ℹ C:\Users\Pukar.Bhandari/.duckdb
+This persists across sessions and is shared with the DuckDB CLI and other clients.
+ℹ Run duckdb(shared_home = FALSE) to use a temporary directory instead.
+ℹ See ?duckdb_storage for details and alternatives.
+  Load Data: 0.920s | 106.3 MB RSS delta
+  Load Data: 0.920s | 106.3 MB RSS delta
 Phase 2b: Benchmarking RTREE index creation...
 Phase 2b: Benchmarking RTREE index creation...
+duckdb is storing downloaded extensions and secrets under ~/.duckdb:
+ℹ C:\Users\Pukar.Bhandari/.duckdb
+This persists across sessions and is shared with the DuckDB CLI and other clients.
+ℹ Run duckdb(shared_home = FALSE) to use a temporary directory instead.
+ℹ See ?duckdb_storage for details and alternatives.
+duckdb is storing downloaded extensions and secrets under ~/.duckdb:
+ℹ C:\Users\Pukar.Bhandari/.duckdb
+This persists across sessions and is shared with the DuckDB CLI and other clients.
+ℹ Run duckdb(shared_home = FALSE) to use a temporary directory instead.
+ℹ See ?duckdb_storage for details and alternatives.
 [1] 0
 [1] 0
-[1] 1476679
-[1] 1476679
+[1] 1501132
+[1] 1501132
 [1] 29
 [1] 29
-  Build Index: 0.530s | 124.4 MB RSS delta
-  Build Index: 0.530s | 124.4 MB RSS delta
+  Build Index: 0.170s | 147.4 MB RSS delta
+  Build Index: 0.170s | 147.4 MB RSS delta
 Running warmup query (not timed)...
 Running warmup query (not timed)...
 Warmup complete. Starting timed benchmark...
 Warmup complete. Starting timed benchmark...
-  Validation (Join): 63.910s | 42.8 MB RSS delta
-  Validation (Join): 63.910s | 42.8 MB RSS delta
+  Validation (Join): 9.440s | 0.2 MB RSS delta
+  Validation (Join): 9.440s | 0.2 MB RSS delta
 Generating validation statistics...
 Generating validation statistics...
 Validation stats saved to: _results/validation_stats.csv
@@ -184,14 +214,14 @@ Validation stats saved to: _results/validation_stats.csv
 ────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 BENCHMARK 02 Complete!
-BENCHMARK 02 Complete!
 ────────────────────────────────────────────────────────────
+BENCHMARK 02 Complete!
 ────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 Running: BENCHMARK 03 - Python (GeoPandas) Legacy Stack
 ────────────────────────────────────────────────────────────
-  Load Data: 12.539s | 948.1 MB RSS delta
-  Validation (Join): 2.465s | 588.1 MB RSS delta
+  Load Data: 5.918s | 964.5 MB RSS delta
+  Validation (Join): 1.223s | 598.6 MB RSS delta
 ────────────────────────────────────────────────────────────
 BENCHMARK 03 Complete!
 ────────────────────────────────────────────────────────────
@@ -200,11 +230,11 @@ Running: BENCHMARK 04 - Python (DuckDB) Modern Stack
 ────────────────────────────────────────────────────────────
 Installing spatial extension (one-time, not timed)...
 Spatial extension ready.
-  Load Data: 1.767s | 15.9 MB RSS delta
-  Build Index: 0.439s | 14.2 MB RSS delta
+  Load Data: 0.931s | 16.2 MB RSS delta
+  Build Index: 0.236s | 11.5 MB RSS delta
 Running warmup query (not timed)...
 Warmup complete. Starting timed benchmark...
-  Validation (Join): 76.322s | 42.8 MB RSS delta
+  Validation (Join): 24.674s | 47.3 MB RSS delta
 ────────────────────────────────────────────────────────────
 BENCHMARK 04 Complete!
 ────────────────────────────────────────────────────────────
@@ -218,10 +248,6 @@ The following objects are masked from 'package:stats':
 
     filter, lag
 
-The following objects are masked from 'package:base':
-
-    intersect, setdiff, setequal, union
-
 The following objects are masked from 'package:stats':
 
     filter, lag
@@ -230,25 +256,29 @@ The following objects are masked from 'package:base':
 
     intersect, setdiff, setequal, union
 
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
 ────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 Running: BENCHMARK 05 - R (SedonaDB) Modern Stack
+────────────────────────────────────────────────────────────
 Running: BENCHMARK 05 - R (SedonaDB) Modern Stack
 ────────────────────────────────────────────────────────────
-────────────────────────────────────────────────────────────
-  Load Data: 0.010s | 9.6 MB RSS delta
-  Load Data: 0.010s | 9.6 MB RSS delta
+  Load Data: 0.010s | 10.6 MB RSS delta
+  Load Data: 0.010s | 10.6 MB RSS delta
 Running warmup query (not timed)...
 Running warmup query (not timed)...
 Warmup complete. Starting timed benchmark...
 Warmup complete. Starting timed benchmark...
-  Validation (Join): 0.650s | 24.8 MB RSS delta
-  Validation (Join): 0.650s | 24.8 MB RSS delta
+  Validation (Join): 0.070s | 0.8 MB RSS delta
+  Validation (Join): 0.070s | 0.8 MB RSS delta
 ────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 BENCHMARK 05 Complete!
-BENCHMARK 05 Complete!
 ────────────────────────────────────────────────────────────
+BENCHMARK 05 Complete!
 ────────────────────────────────────────────────────────────
 
 --- stderr ---

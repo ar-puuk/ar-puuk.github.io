@@ -1,16 +1,10 @@
 # Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, U.S.
 
-Transportation
-
-Accessibility
-
-Equity
-
-Data Analysis
-
 R
 
-Geospatial
+GIS
+
+Transportation
 
 This study examines social equity dimensions of accessibility to light rail transit stations in Salt Lake County using the Two-Step Floating Catchment Area method and spatial regression models, finding generally equitable access with higher accessibility for households without vehicles.
 

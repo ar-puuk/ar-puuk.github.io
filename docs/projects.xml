@@ -18,8 +18,8 @@
   <description><![CDATA[ A static, map-first dashboard for publicly available NCES data (CCD, PSS, IPEDS) for one U.S. state at a time, powered by DuckDB-WASM. ]]></description>
   <category>JavaScript</category>
   <category>Python</category>
-  <category>DuckDB</category>
-  <category>Education</category>
+  <category>Data Science</category>
+  <category>Web Apps</category>
   <category>Open Source</category>
   <guid>https://ar-puuk.github.io/posts/education-explorer/</guid>
   <pubDate>Mon, 19 Oct 2026 06:00:00 GMT</pubDate>
@@ -32,9 +32,8 @@
   <description><![CDATA[ A map-first explorer for the public Freight Analysis Framework (FAF) data, built as a static site that queries Parquet files directly in the browser. ]]></description>
   <category>JavaScript</category>
   <category>Python</category>
-  <category>DuckDB</category>
-  <category>Freight</category>
   <category>Transportation</category>
+  <category>Web Apps</category>
   <category>Open Source</category>
   <guid>https://ar-puuk.github.io/posts/freight-explorer/</guid>
   <pubDate>Mon, 19 Oct 2026 06:00:00 GMT</pubDate>
@@ -47,8 +46,7 @@
   <description><![CDATA[ Alternate MapLibre styles for UGRC’s Lite vector basemap, generated from live upstream sources, and a visual editor to tweak, compare and download them. ]]></description>
   <category>JavaScript</category>
   <category>Python</category>
-  <category>MapLibre</category>
-  <category>Cartography</category>
+  <category>GIS</category>
   <category>Open Source</category>
   <guid>https://ar-puuk.github.io/posts/ugrc-styles/</guid>
   <pubDate>Tue, 29 Sep 2026 06:00:00 GMT</pubDate>
@@ -60,8 +58,7 @@
   <link>https://ar-puuk.github.io/posts/borderline/</link>
   <description><![CDATA[ A browser geography game for U.S. states and counties, built as plain static HTML, CSS and JavaScript with no build step. ]]></description>
   <category>JavaScript</category>
-  <category>Games</category>
-  <category>Geography</category>
+  <category>Web Apps</category>
   <category>Open Source</category>
   <guid>https://ar-puuk.github.io/posts/borderline/</guid>
   <pubDate>Mon, 21 Sep 2026 06:00:00 GMT</pubDate>
@@ -72,9 +69,8 @@
   <dc:creator>Pukar Bhandari</dc:creator>
   <link>https://ar-puuk.github.io/posts/drut/</link>
   <description><![CDATA[ Drut is a linter, formatter and editor tooling suite for Cube Voyager scripts (.s / .block), with a CLI, a language server for VS Code, and an MCP server. ]]></description>
-  <category>Rust</category>
-  <category>Travel Demand Modeling</category>
   <category>Developer Tools</category>
+  <category>Travel Demand Modeling</category>
   <category>Open Source</category>
   <guid>https://ar-puuk.github.io/posts/drut/</guid>
   <pubDate>Thu, 20 Aug 2026 06:00:00 GMT</pubDate>
@@ -86,10 +82,8 @@
   <link>https://ar-puuk.github.io/work/gtfs-vs-tdm/</link>
   <description><![CDATA[ A web map for comparing the base-year transit network in the Wasatch Front travel demand model with GTFS transit data. Developed at the Wasatch Front Regional Council. ]]></description>
   <category>WFRC</category>
-  <category>Work</category>
-  <category>Transit</category>
+  <category>Transportation</category>
   <category>Travel Demand Modeling</category>
-  <category>GTFS</category>
   <guid>https://ar-puuk.github.io/work/gtfs-vs-tdm/</guid>
   <pubDate>Thu, 02 Jul 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/work/gtfs-vs-tdm/gtfs_vs_tdm.png" medium="image" type="image/png" height="82" width="144"/>
@@ -100,11 +94,9 @@
   <link>https://ar-puuk.github.io/work/commute-explorer/</link>
   <description><![CDATA[ A client-side web app for exploring origin-destination commuter flows across the Wasatch Front using H3 cells and DuckDB-WASM. Developed at the Wasatch Front Regional Council. ]]></description>
   <category>WFRC</category>
-  <category>Work</category>
-  <category>Transportation</category>
   <category>JavaScript</category>
-  <category>DuckDB</category>
-  <category>Commuting</category>
+  <category>Transportation</category>
+  <category>Web Apps</category>
   <guid>https://ar-puuk.github.io/work/commute-explorer/</guid>
   <pubDate>Fri, 26 Jun 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/work/commute-explorer/commute_explorer.png" medium="image" type="image/png" height="82" width="144"/>
@@ -115,11 +107,8 @@
   <link>https://ar-puuk.github.io/work/opportunity-zones-info-sheets/</link>
   <description><![CDATA[ A Quarto and R pipeline that builds county summary and per-tract detail PDFs for Utah’s Opportunity Zones 2.0 eligible list. Developed at the Wasatch Front Regional Council. ]]></description>
   <category>WFRC</category>
-  <category>Work</category>
-  <category>GIS</category>
-  <category>Quarto</category>
   <category>R</category>
-  <category>Reports</category>
+  <category>GIS</category>
   <guid>https://ar-puuk.github.io/work/opportunity-zones-info-sheets/</guid>
   <pubDate>Thu, 28 May 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/work/opportunity-zones-info-sheets/oz_tract_map.png" medium="image" type="image/png" height="202" width="144"/>
@@ -130,11 +119,9 @@
   <link>https://ar-puuk.github.io/work/commute-patterns/</link>
   <description><![CDATA[ An interactive, client-side map of commute flows across Utah, built on LEHD LODES data and open-source tools. Developed at the Wasatch Front Regional Council. ]]></description>
   <category>WFRC</category>
-  <category>Work</category>
-  <category>Transportation</category>
   <category>JavaScript</category>
-  <category>DuckDB</category>
-  <category>Commuting</category>
+  <category>Transportation</category>
+  <category>Web Apps</category>
   <guid>https://ar-puuk.github.io/work/commute-patterns/</guid>
   <pubDate>Sun, 17 May 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/work/commute-patterns/commute_patterns.png" medium="image" type="image/png" height="86" width="144"/>
@@ -145,11 +132,9 @@
   <link>https://ar-puuk.github.io/work/se2025-h3/</link>
   <description><![CDATA[ Calculates the D variables of urban form (density, diversity, design, destinations, demographics, distance to transit) for the Wasatch Front region at H3 resolution. Developed at the Wasatch Front Regional Council. ]]></description>
   <category>WFRC</category>
-  <category>Work</category>
-  <category>Urban Form</category>
-  <category>H3</category>
   <category>R</category>
   <category>GIS</category>
+  <category>Web Apps</category>
   <guid>https://ar-puuk.github.io/work/se2025-h3/</guid>
   <pubDate>Thu, 14 May 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/work/se2025-h3/se2025_h3.png" medium="image" type="image/png" height="91" width="144"/>
@@ -160,9 +145,8 @@
   <link>https://ar-puuk.github.io/posts/parquet-explorer/</link>
   <description><![CDATA[ Want a quick way to preview what is inside your parquet file? This is a browser-based, zero-backend viewer for Parquet and GeoParquet, built on DuckDB-WASM. Nothing is uploaded; everything runs locally in your tab. ]]></description>
   <category>JavaScript</category>
-  <category>WebAssembly</category>
-  <category>Parquet</category>
-  <category>DuckDB</category>
+  <category>Data Science</category>
+  <category>Web Apps</category>
   <category>Open Source</category>
   <guid>https://ar-puuk.github.io/posts/parquet-explorer/</guid>
   <pubDate>Sun, 12 Apr 2026 06:00:00 GMT</pubDate>
@@ -174,9 +158,8 @@
   <link>https://ar-puuk.github.io/posts/omx-viewer/</link>
   <description><![CDATA[ I spent way too long writing one-off Python scripts everytime I had to check what’s inside an OMX (Open Matrix Format) file. There had to be a better way. ]]></description>
   <category>JavaScript</category>
-  <category>WebAssembly</category>
-  <category>OMX</category>
   <category>Travel Demand Modeling</category>
+  <category>Web Apps</category>
   <category>Open Source</category>
   <guid>https://ar-puuk.github.io/posts/omx-viewer/</guid>
   <pubDate>Sat, 11 Apr 2026 06:00:00 GMT</pubDate>
@@ -187,11 +170,10 @@
   <dc:creator>Pukar Bhandari</dc:creator>
   <link>https://ar-puuk.github.io/posts/spatial-sql-exporer/</link>
   <description><![CDATA[ Open a geospatial file, query it with spatial SQL, style it and export it without a desktop GIS. How the project grew from a single-page experiment into a web app and a VS Code extension. ]]></description>
-  <category>TypeScript</category>
+  <category>JavaScript</category>
   <category>GIS</category>
-  <category>DuckDB</category>
-  <category>WebAssembly</category>
-  <category>VS Code</category>
+  <category>Developer Tools</category>
+  <category>Web Apps</category>
   <category>Open Source</category>
   <guid>https://ar-puuk.github.io/posts/spatial-sql-exporer/</guid>
   <pubDate>Wed, 25 Feb 2026 07:00:00 GMT</pubDate>
@@ -202,9 +184,7 @@
   <dc:creator>Pukar Bhandari</dc:creator>
   <link>https://ar-puuk.github.io/posts/wget-gui/</link>
   <description><![CDATA[ A modern, Windows 11-inspired web interface for building complex GNU Wget commands ]]></description>
-  <category>Tools</category>
-  <category>Utilities</category>
-  <category>Web Development</category>
+  <category>Developer Tools</category>
   <guid>https://ar-puuk.github.io/posts/wget-gui/</guid>
   <pubDate>Sun, 25 Jan 2026 07:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/wget-gui/wget_gui.png" medium="image" type="image/png" height="68" width="144"/>
@@ -215,11 +195,9 @@
   <link>https://ar-puuk.github.io/work/housing-site-evaluator/</link>
   <description><![CDATA[ Scores every parcel and H3 hexagon in the Wasatch Front region on access to jobs, transit and everyday necessities. Developed at the Wasatch Front Regional Council. ]]></description>
   <category>WFRC</category>
-  <category>Work</category>
-  <category>Housing</category>
-  <category>Accessibility</category>
   <category>R</category>
-  <category>DuckDB</category>
+  <category>Transportation</category>
+  <category>Web Apps</category>
   <guid>https://ar-puuk.github.io/work/housing-site-evaluator/</guid>
   <pubDate>Tue, 02 Dec 2025 07:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/work/housing-site-evaluator/housing_site_evaluator.png" medium="image" type="image/png" height="91" width="144"/>
@@ -230,8 +208,7 @@
   <link>https://ar-puuk.github.io/posts/storymap_my_journey/</link>
   <description><![CDATA[ Creating an open-source, interactive storymap with the {mapgl} R package to visualize my journey across the world. ]]></description>
   <category>R</category>
-  <category>Shiny</category>
-  <category>Storymap</category>
+  <category>Web Apps</category>
   <guid>https://ar-puuk.github.io/posts/storymap_my_journey/</guid>
   <pubDate>Wed, 03 Sep 2025 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/storymap_my_journey/storymap_my_journey.png" medium="image" type="image/png" height="82" width="144"/>
@@ -243,7 +220,6 @@
   <description><![CDATA[ This section establishes the computational environment for processing socioeconomic data inputs for the Lower Savannah Council of Governments regional travel demand model using both R and Python platforms. ]]></description>
   <category>R</category>
   <category>Python</category>
-  <category>GIS</category>
   <category>Data Science</category>
   <category>Transportation</category>
   <guid>https://ar-puuk.github.io/posts/socioeconomic-demo/</guid>
@@ -256,10 +232,8 @@
   <link>https://ar-puuk.github.io/posts/population-pyramid-explorer/</link>
   <description><![CDATA[ A deep dive into creating a story-driven Shiny application that combines interactive mapping with demographic visualizations using Census data. ]]></description>
   <category>R</category>
-  <category>Shiny</category>
-  <category>GIS</category>
-  <category>Census Data</category>
-  <category>Dashboard</category>
+  <category>Data Science</category>
+  <category>Web Apps</category>
   <guid>https://ar-puuk.github.io/posts/population-pyramid-explorer/</guid>
   <pubDate>Wed, 25 Jun 2025 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/population-pyramid-explorer/population_pyramid_explorer.png" medium="image" type="image/png" height="74" width="144"/>
@@ -269,9 +243,7 @@
   <dc:creator>Pukar Bhandari</dc:creator>
   <link>https://ar-puuk.github.io/posts/robocopy-gui/</link>
   <description><![CDATA[ A web-based interface for generating Windows robocopy commands with ease ]]></description>
-  <category>Tools</category>
-  <category>Utilities</category>
-  <category>Windows</category>
+  <category>Developer Tools</category>
   <guid>https://ar-puuk.github.io/posts/robocopy-gui/</guid>
   <pubDate>Sun, 15 Jun 2025 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/robocopy-gui/robocopy_gui.png" medium="image" type="image/png" height="68" width="144"/>
@@ -282,8 +254,8 @@
   <link>https://ar-puuk.github.io/posts/pukrhelpers/</link>
   <description><![CDATA[ An R package collecting helper functions from my day-to-day data and GIS work. Maintained lightly. ]]></description>
   <category>R</category>
-  <category>Package</category>
   <category>GIS</category>
+  <category>Developer Tools</category>
   <category>Open Source</category>
   <guid>https://ar-puuk.github.io/posts/pukrhelpers/</guid>
   <pubDate>Fri, 23 May 2025 06:00:00 GMT</pubDate>
