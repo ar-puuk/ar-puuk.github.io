@@ -1,4 +1,4 @@
-=== run_all.R log: 2026-10-23 19:48:48.892005 ===
+=== run_all.R log: 2026-10-23 22:16:58.932148 ===
 Working directory: D:/GitHub/ar-puuk.github.io/slides/spatial-benchmark
 Result: success
 
@@ -49,16 +49,6 @@ Success: All County Boundary formats (SHP/Parquet) found locally.
 Success: All County Boundary formats (SHP/Parquet) found locally.
 Pre-installing DuckDB spatial extension (if not already cached)...
 Pre-installing DuckDB spatial extension (if not already cached)...
-duckdb is storing downloaded extensions and secrets under ~/.duckdb:
-ℹ C:\Users\Pukar.Bhandari/.duckdb
-This persists across sessions and is shared with the DuckDB CLI and other clients.
-ℹ Run duckdb(shared_home = FALSE) to use a temporary directory instead.
-ℹ See ?duckdb_storage for details and alternatives.
-duckdb is storing downloaded extensions and secrets under ~/.duckdb:
-ℹ C:\Users\Pukar.Bhandari/.duckdb
-This persists across sessions and is shared with the DuckDB CLI and other clients.
-ℹ Run duckdb(shared_home = FALSE) to use a temporary directory instead.
-ℹ See ?duckdb_storage for details and alternatives.
 [1] 0
 [1] 0
 [1] 0
@@ -111,8 +101,8 @@ One or more parsing issues, call `problems()` on your data frame for details,
 e.g.:
   dat <- vroom(...)
   problems(dat) 
-  Load Data: 8.640s | 1043.3 MB RSS delta
-  Load Data: 8.640s | 1043.3 MB RSS delta
+  Load Data: 8.690s | 1043.2 MB RSS delta
+  Load Data: 8.690s | 1043.2 MB RSS delta
 Warning message:
 Warning message:
 One or more parsing issues, call `problems()` on your data frame for details,
@@ -123,19 +113,19 @@ One or more parsing issues, call `problems()` on your data frame for details,
 e.g.:
   dat <- vroom(...)
   problems(dat) 
-  Validation (Join): 11.360s | 1624.2 MB RSS delta
-  Validation (Join): 11.360s | 1624.2 MB RSS delta
+  Validation (Join): 11.290s | 1685.0 MB RSS delta
+  Validation (Join): 11.290s | 1685.0 MB RSS delta
 Warning messages:
 Warning messages:
 1: In rm(pts, cnt, res_attr, res_spatial) : object 'res_attr' not found
 2: In rm(pts, cnt, res_attr, res_spatial) : object 'res_spatial' not found
 ────────────────────────────────────────────────────────────
 BENCHMARK 01 Complete!
-────────────────────────────────────────────────────────────
 1: In rm(pts, cnt, res_attr, res_spatial) : object 'res_attr' not found
 2: In rm(pts, cnt, res_attr, res_spatial) : object 'res_spatial' not found
 ────────────────────────────────────────────────────────────
 BENCHMARK 01 Complete!
+────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 Loading required package: DBI
 Loading required package: DBI
@@ -169,44 +159,24 @@ Phase 2a: Benchmarking data ingest (no indexing)...
 Running: BENCHMARK 02 - R (DuckDB) Modern Stack
 ────────────────────────────────────────────────────────────
 Phase 2a: Benchmarking data ingest (no indexing)...
-duckdb is storing downloaded extensions and secrets under ~/.duckdb:
-ℹ C:\Users\Pukar.Bhandari/.duckdb
-This persists across sessions and is shared with the DuckDB CLI and other clients.
-ℹ Run duckdb(shared_home = FALSE) to use a temporary directory instead.
-ℹ See ?duckdb_storage for details and alternatives.
-duckdb is storing downloaded extensions and secrets under ~/.duckdb:
-ℹ C:\Users\Pukar.Bhandari/.duckdb
-This persists across sessions and is shared with the DuckDB CLI and other clients.
-ℹ Run duckdb(shared_home = FALSE) to use a temporary directory instead.
-ℹ See ?duckdb_storage for details and alternatives.
-  Load Data: 0.920s | 106.3 MB RSS delta
-  Load Data: 0.920s | 106.3 MB RSS delta
+  Load Data: 0.920s | 111.4 MB RSS delta
+  Load Data: 0.920s | 111.4 MB RSS delta
 Phase 2b: Benchmarking RTREE index creation...
 Phase 2b: Benchmarking RTREE index creation...
-duckdb is storing downloaded extensions and secrets under ~/.duckdb:
-ℹ C:\Users\Pukar.Bhandari/.duckdb
-This persists across sessions and is shared with the DuckDB CLI and other clients.
-ℹ Run duckdb(shared_home = FALSE) to use a temporary directory instead.
-ℹ See ?duckdb_storage for details and alternatives.
-duckdb is storing downloaded extensions and secrets under ~/.duckdb:
-ℹ C:\Users\Pukar.Bhandari/.duckdb
-This persists across sessions and is shared with the DuckDB CLI and other clients.
-ℹ Run duckdb(shared_home = FALSE) to use a temporary directory instead.
-ℹ See ?duckdb_storage for details and alternatives.
 [1] 0
 [1] 0
 [1] 1501132
 [1] 1501132
 [1] 29
 [1] 29
-  Build Index: 0.170s | 147.4 MB RSS delta
-  Build Index: 0.170s | 147.4 MB RSS delta
+  Build Index: 0.180s | 147.1 MB RSS delta
+  Build Index: 0.180s | 147.1 MB RSS delta
 Running warmup query (not timed)...
 Running warmup query (not timed)...
 Warmup complete. Starting timed benchmark...
 Warmup complete. Starting timed benchmark...
-  Validation (Join): 9.440s | 0.2 MB RSS delta
-  Validation (Join): 9.440s | 0.2 MB RSS delta
+  Validation (Join): 9.200s | -2.3 MB RSS delta
+  Validation (Join): 9.200s | -2.3 MB RSS delta
 Generating validation statistics...
 Generating validation statistics...
 Validation stats saved to: _results/validation_stats.csv
@@ -220,8 +190,8 @@ BENCHMARK 02 Complete!
 ────────────────────────────────────────────────────────────
 Running: BENCHMARK 03 - Python (GeoPandas) Legacy Stack
 ────────────────────────────────────────────────────────────
-  Load Data: 5.918s | 964.5 MB RSS delta
-  Validation (Join): 1.223s | 598.6 MB RSS delta
+  Load Data: 6.037s | 964.4 MB RSS delta
+  Validation (Join): 1.191s | 596.8 MB RSS delta
 ────────────────────────────────────────────────────────────
 BENCHMARK 03 Complete!
 ────────────────────────────────────────────────────────────
@@ -230,11 +200,11 @@ Running: BENCHMARK 04 - Python (DuckDB) Modern Stack
 ────────────────────────────────────────────────────────────
 Installing spatial extension (one-time, not timed)...
 Spatial extension ready.
-  Load Data: 0.931s | 16.2 MB RSS delta
-  Build Index: 0.236s | 11.5 MB RSS delta
+  Load Data: 1.288s | 14.8 MB RSS delta
+  Build Index: 0.231s | 12.5 MB RSS delta
 Running warmup query (not timed)...
 Warmup complete. Starting timed benchmark...
-  Validation (Join): 24.674s | 47.3 MB RSS delta
+  Validation (Join): 30.008s | 51.3 MB RSS delta
 ────────────────────────────────────────────────────────────
 BENCHMARK 04 Complete!
 ────────────────────────────────────────────────────────────
@@ -266,14 +236,14 @@ Running: BENCHMARK 05 - R (SedonaDB) Modern Stack
 ────────────────────────────────────────────────────────────
 Running: BENCHMARK 05 - R (SedonaDB) Modern Stack
 ────────────────────────────────────────────────────────────
-  Load Data: 0.010s | 10.6 MB RSS delta
-  Load Data: 0.010s | 10.6 MB RSS delta
+  Load Data: 0.020s | 10.6 MB RSS delta
+  Load Data: 0.020s | 10.6 MB RSS delta
 Running warmup query (not timed)...
 Running warmup query (not timed)...
 Warmup complete. Starting timed benchmark...
 Warmup complete. Starting timed benchmark...
-  Validation (Join): 0.070s | 0.8 MB RSS delta
-  Validation (Join): 0.070s | 0.8 MB RSS delta
+  Validation (Join): 0.080s | 1.6 MB RSS delta
+  Validation (Join): 0.080s | 1.6 MB RSS delta
 ────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 BENCHMARK 05 Complete!
