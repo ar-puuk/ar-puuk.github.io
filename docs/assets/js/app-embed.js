@@ -1,16 +1,20 @@
-// Fullscreen toggle for every .app-embed-wrapper on the page (ESC exits).
+// Fullscreen toggle for every .app-embed-wrapper on the page. The toolbar stays
+// visible in fullscreen; ESC also exits (when focus is outside the iframe).
+const setFullscreen = (wrapper, on) => {
+  wrapper.classList.toggle("fullscreen", on);
+  wrapper.querySelector(".app-fullscreen-btn").textContent = on
+    ? "Exit fullscreen"
+    : "Fullscreen";
+  document.body.style.overflow = on ? "hidden" : "";
+};
 document.addEventListener("click", (e) => {
   const btn = e.target.closest(".app-fullscreen-btn");
   if (!btn) return;
-  const frame = btn
-    .closest(".app-embed-wrapper")
-    .querySelector(".app-embed-frame");
-  const on = frame.classList.toggle("fullscreen");
-  btn.textContent = on ? "Exit fullscreen" : "Fullscreen";
-  document.body.style.overflow = on ? "hidden" : "";
+  const wrapper = btn.closest(".app-embed-wrapper");
+  setFullscreen(wrapper, !wrapper.classList.contains("fullscreen"));
 });
 document.addEventListener("keydown", (e) => {
   if (e.key !== "Escape") return;
-  const frame = document.querySelector(".app-embed-frame.fullscreen");
-  if (frame) frame.closest(".app-embed-wrapper").querySelector(".app-fullscreen-btn").click();
+  const wrapper = document.querySelector(".app-embed-wrapper.fullscreen");
+  if (wrapper) setFullscreen(wrapper, false);
 });
