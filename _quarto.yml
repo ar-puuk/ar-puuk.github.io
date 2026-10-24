@@ -28,12 +28,12 @@ website:
   # back-to-top-navigation: false
   # margin-header: subscribe.html
 
-  # announcement:
-  #   icon: info-circle
-  #   dismissable: true
-  #   content: "**Alert** - this website is currently under development."
-  #   type: primary
-  #   position: below-navbar
+  announcement:
+    icon: megaphone
+    dismissable: true
+    content: "**New:** [Education Explorer](/posts/education-explorer/){.no-external target='_self'} and [Freight Explorer](/posts/freight-explorer/){.no-external target='_self'}, two zero-backend data apps built on public data."
+    type: primary
+    position: below-navbar
 
   twitter-card:
     creator: "@arpuuk"
