@@ -16,3 +16,6 @@ execute:
 
 citation: false
 page-navigation: true
+
+# Show a "Modified" date taken from the file modification time
+date-modified: last-modified

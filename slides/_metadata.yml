@@ -38,3 +38,6 @@ format:
           padding: 5
         themeVariables:
           fontSize: "12px"
+
+# Show a "Modified" date taken from the file modification time
+date-modified: last-modified
