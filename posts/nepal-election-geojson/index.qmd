@@ -104,7 +104,13 @@ tryCatch({
 })
 ```
 
+::: {.content-visible when-format="html"}
 ![Scraped Electoral Map of Nepal in SVG format](./output/nepal_electoral_map.svg)
+:::
+
+::: {.content-visible unless-format="html"}
+(The scraped SVG map is shown on the web version of this post.)
+:::
 
 ## Parsing SVG Paths to Geometry
 

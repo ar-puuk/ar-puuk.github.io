@@ -11,6 +11,10 @@ author:
 date: "2025-07-05"
 categories: [R, Python, Data Science, Transportation]
 prefer-html: true
+format:
+  typst:
+    # tabsets become level-4 headings in Typst, which breaks numbering at depth 2
+    number-sections: false
 ---
 
 ```{r reticulate}
