@@ -6,7 +6,7 @@ author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com
 date: "2026-04-11"
-categories: [JavaScript, WebAssembly, OMX, Travel Demand Modeling, Open Source]
+categories: [JavaScript, Travel Demand Modeling, Web Apps, Open Source]
 prefer-html: true
 ---
 

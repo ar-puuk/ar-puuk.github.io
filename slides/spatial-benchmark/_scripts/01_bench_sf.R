@@ -79,6 +79,7 @@ res_io <- measure_rss(
       col_types = cols(CountyID = col_character()),
       show_col_types = FALSE
     ) |>
+      filter(!is.na(x), !is.na(y)) |> # drop UGRC points with no geometry
       st_as_sf(coords = c("x", "y"), crs = 4326)
 
     cnt <- st_read(county_shp, quiet = TRUE) |>
@@ -103,6 +104,7 @@ pts <- read_csv(
   col_types = cols(CountyID = col_character()),
   show_col_types = FALSE
 ) |>
+  filter(!is.na(x), !is.na(y)) |> # drop UGRC points with no geometry
   st_as_sf(coords = c("x", "y"), crs = 4326)
 
 cnt <- st_read(county_shp, quiet = TRUE) |>

@@ -9,7 +9,7 @@ author:
       - name: Metro Analytics
         url: "https://www.metroanalytics.com/"
 date: "2025-07-05"
-categories: [R, Python, GIS, Data Science, Transportation]
+categories: [R, Python, Data Science, Transportation]
 prefer-html: true
 ---
 

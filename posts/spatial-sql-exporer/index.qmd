@@ -8,7 +8,7 @@ author:
     email: pukar.bhandari@outlook.com
 date: "2026-02-25"
 date-modified: "2026-10-23"
-categories: [TypeScript, GIS, DuckDB, WebAssembly, VS Code, Open Source]
+categories: [JavaScript, GIS, Developer Tools, Web Apps, Open Source]
 code-annotations: select
 prefer-html: true
 ---

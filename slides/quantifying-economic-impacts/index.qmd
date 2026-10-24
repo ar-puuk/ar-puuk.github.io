@@ -4,7 +4,7 @@ subtitle: "Methods and Applications for Regional Planning"
 author: "Pukar Bhandari"
 date: "2025-08-07"
 draft: true
-categories: [R, Transportation, Economic Impact Analysis, Benefit Cost Analysis]
+categories: [Transportation, Data Science]
 filters:
   - fontawesome
 format:

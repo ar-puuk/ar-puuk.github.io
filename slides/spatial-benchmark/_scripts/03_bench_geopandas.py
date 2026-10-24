@@ -63,6 +63,7 @@ for _ in range(ITERATIONS):
     t_start    = time.perf_counter()
 
     df = pd.read_csv(ADDR_CSV, dtype={"CountyID": str}, low_memory=False)
+    df = df.dropna(subset=["x", "y"])  # drop UGRC points with no geometry
     pts = gpd.GeoDataFrame(
         df,
         geometry=gpd.points_from_xy(df.x, df.y),
@@ -84,6 +85,7 @@ print(f"  Load Data: {statistics.median(load_times):.3f}s | {max(load_mems):.1f}
 
 # Load data once outside the timed loop (same pattern as 01_bench_sf.R)
 df  = pd.read_csv(ADDR_CSV, dtype={"CountyID": str}, low_memory=False)
+df = df.dropna(subset=["x", "y"])  # drop UGRC points with no geometry
 pts = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df.x, df.y), crs="EPSG:4326")
 cnt = gpd.read_file(COUNTY_SHP).to_crs("EPSG:4326")
 

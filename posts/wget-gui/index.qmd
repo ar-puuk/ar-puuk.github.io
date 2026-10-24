@@ -6,7 +6,7 @@ author:
     email: pukar.bhandari@outlook.com
 image: "wget_gui.png"
 date: "2026-01-25"
-categories: [Tools, Utilities, Web Development]
+categories: [Developer Tools]
 prefer-html: true
 ---
 

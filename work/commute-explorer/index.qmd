@@ -10,7 +10,7 @@ author:
       - name: Wasatch Front Regional Council
         url: "https://wfrc.utah.gov/"
 date: "2026-06-26"
-categories: [WFRC, Work, Transportation, JavaScript, DuckDB, Commuting]
+categories: [WFRC, JavaScript, Transportation, Web Apps]
 prefer-html: true
 ---
 

@@ -20,13 +20,7 @@ author:
     affiliation:
       - Department of City and Metropolitan Planning, University of Utah, Salt Lake City, UT
       - Healthy Aging and Resilient Places Lab, College of Architecture and Planning, University of Utah, Salt Lake City, UT
-categories:
-  - Transportation
-  - Accessibility
-  - Equity
-  - Data Analysis
-  - R
-  - Geospatial
+categories: [R, GIS, Transportation]
 description: "This study examines social equity dimensions of accessibility to light rail transit stations in Salt Lake County using the Two-Step Floating Catchment Area method and spatial regression models, finding generally equitable access with higher accessibility for households without vehicles."
 pub-info:
   reference: >-

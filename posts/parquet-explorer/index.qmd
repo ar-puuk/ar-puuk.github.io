@@ -6,7 +6,7 @@ author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com
 date: "2026-04-12"
-categories: [JavaScript, WebAssembly, Parquet, DuckDB, Open Source]
+categories: [JavaScript, Data Science, Web Apps, Open Source]
 prefer-html: true
 ---
 

@@ -8,7 +8,7 @@ author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com
 date: "2025-09-03"
-categories: [R, Shiny, Storymap]
+categories: [R, Web Apps]
 filters:
   - shinylive
 code-annotations: select

@@ -21,7 +21,7 @@ format:
     highlight-style: monokai
     incremental: true
 draft: true
-categories: [AI, Productivity]
+categories: [AI]
 ---
 
 ## Why This Talk? {background-color="#1a1a2e"}
