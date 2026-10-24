@@ -27,3 +27,8 @@ renv/staging/
 
 /_*.local
 .positai
+
+# knitr caches and standalone README preview output
+*_cache/
+README.html
+README_files/
