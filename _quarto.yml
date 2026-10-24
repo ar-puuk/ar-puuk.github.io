@@ -142,6 +142,7 @@ format:
     footnotes-hover: true
     email-obfuscation: javascript
     lang: en-US
+    lightbox: auto
 
 # freeze computational output
 # (see https://quarto.org/docs/projects/code-execution.html#freeze)

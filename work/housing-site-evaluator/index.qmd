@@ -19,7 +19,7 @@ prefer-html: true
 **Developed at the Wasatch Front Regional Council (WFRC).** The tool and its repository belong to WFRC; this page only summarizes my work. It is a **complete rebuild of WFRC's original [Housing ATO Calculator](https://github.com/WFRCAnalytics/MAP-Housing-ATO-Calculator/)**. I did not create the original tool or its concept; my contribution was modernizing the scoring pipeline and the web apps.
 :::
 
-![The Wasatch Front Housing Site Evaluator on its welcome screen.](housing_site_evaluator.png){.lightbox}
+![The Wasatch Front Housing Site Evaluator on its welcome screen.](housing_site_evaluator.png)
 
 ## What it does
 

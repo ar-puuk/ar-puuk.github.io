@@ -19,7 +19,7 @@ prefer-html: true
 **Developed at the Wasatch Front Regional Council (WFRC).** The application and its repository belong to WFRC; this page only summarizes my work.
 :::
 
-![The explorer's region-wide flow map, with the year selector and Select Points button.](commute_explorer.png){.lightbox}
+![The explorer's region-wide flow map, with the year selector and Select Points button.](commute_explorer.png)
 
 ## What it does
 

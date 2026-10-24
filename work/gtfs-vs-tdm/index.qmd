@@ -19,7 +19,7 @@ prefer-html: true
 **Developed at the Wasatch Front Regional Council (WFRC).** The tool and its repository belong to WFRC; this page only summarizes my work.
 :::
 
-![The comparison map, overlaying the model's 2023 transit lines on a GTFS snapshot.](gtfs_vs_tdm.png){.lightbox}
+![The comparison map, overlaying the model's 2023 transit lines on a GTFS snapshot.](gtfs_vs_tdm.png)
 
 ## What it does
 

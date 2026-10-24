@@ -19,7 +19,7 @@ prefer-html: true
 **Developed at the Wasatch Front Regional Council (WFRC), with Mountainland Association of Governments (MAG).** The reports and repository belong to WFRC; this page only summarizes my work.
 :::
 
-![A tract-level map from one of the info sheets: the tract outline, with Wasatch Choice centers, rail stops and nearby land use.](oz_tract_map.png){.lightbox fig-alt="Map of a census tract outlined in dark blue with transit and land-use context." width="50%"}
+![A tract-level map from one of the info sheets: the tract outline, with Wasatch Choice centers, rail stops and nearby land use.](oz_tract_map.png){fig-alt="Map of a census tract outlined in dark blue with transit and land-use context." width="50%"}
 
 ## What it does
 
