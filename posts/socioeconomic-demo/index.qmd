@@ -33,6 +33,11 @@ if (!requireNamespace("reticulate", quietly = TRUE)) {
 }
 library(reticulate)
 reticulate::py_config()
+
+# The Census API now rejects requests without a key (see 'Set census API key')
+if (!nzchar(Sys.getenv("CENSUS_API_KEY"))) {
+  stop("CENSUS_API_KEY is not set. Add it to _environment.local at the project root.")
+}
 ```
 
 # Set up the environment
@@ -201,25 +206,13 @@ The key configuration supports both R and Python environments for automated data
 Get one for free at [census.gov/developers](https://www.census.gov/developers/)
 :::
 
-::: {.panel-tabset group="language"}
-#### {{< fa brands r-project >}} R
+Put the key in a file named `_environment.local` at the project root. Quarto loads it for both the R and Python engines, and the repository's `.gitignore` already excludes `_*.local` files, so the key is stored in one place and never committed:
 
-```{r}
-#| eval: false
-
-# Set your API key into environment
-tidycensus::census_api_key("your_api_key_here", install = TRUE)
+```text
+CENSUS_API_KEY=your_api_key_here
 ```
 
-#### {{< fa brands python >}} Python
-
-```{python}
-#| eval: false
-
-# Set your API key into environment
-os.environ['CENSUS_API_KEY'] = 'your_api_key_here'
-```
-:::
+`tidycensus` reads `CENSUS_API_KEY` on its own, and the Python code below passes `os.getenv("CENSUS_API_KEY")` to the API.
 
 # Define study area
 
@@ -415,7 +408,7 @@ lscog_dec <- tidycensus::get_decennial(
   cb = FALSE,
   geometry = TRUE,
   keep_geo_vars = TRUE,
-  # key = Sys.getenv('CENSUS_API_KEY'),
+  key = Sys.getenv('CENSUS_API_KEY'),
   variables = dec_variables
 ) |>
   sf::st_transform(project_crs) |>
@@ -461,7 +454,7 @@ lscog_dec = get_census(
     variables=list(dec_variables.keys()),
     params={
         "for": f"block:*",
-        # "key": f"{os.getenv('CENSUS_API_KEY')}",
+        "key": os.getenv('CENSUS_API_KEY'),
         "in": f"state:{state_fips} county:{','.join(county_fips)}"
     },
     return_geoid=True,
@@ -534,7 +527,7 @@ lscog_acs <- tidycensus::get_acs(
   output = "wide",
   cb = FALSE,
   geometry = TRUE,
-  # key = Sys.getenv('CENSUS_API_KEY'),
+  key = Sys.getenv('CENSUS_API_KEY'),
   variables = acs_variables
 ) |>
   sf::st_transform(project_crs) |>
@@ -593,7 +586,7 @@ lscog_acs = get_census(
     variables=list(acs_variables.keys()),
     params={
         "for": f"block group:*",
-        # "key": f"{os.getenv('CENSUS_API_KEY')}",
+        "key": os.getenv('CENSUS_API_KEY'),
         "in": f"state:{state_fips} county:{','.join(county_fips)}"
     },
     return_geoid=True,

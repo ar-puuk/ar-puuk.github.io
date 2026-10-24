@@ -6591,10 +6591,6 @@
       "Config/roxygen2/version": "8.0.0",
       "Config/pak/sysreqs": "libzstd-dev libclang-dev",
       "Repository": "https://r-multiverse.r-universe.dev",
-      "RemoteUrl": "https://github.com/apache/sedona-db",
-      "RemoteRef": "apache-sedona-db-0.5.0",
-      "RemoteSha": "751453f04cd6e09842adf3073b2b3dac7d1777bc",
-      "RemoteSubdir": "r/sedonadb",
       "NeedsCompilation": "yes",
       "Author": "Dewey Dunnington [aut, cre]",
       "Maintainer": "Dewey Dunnington <dewey@dunnington.ca>"

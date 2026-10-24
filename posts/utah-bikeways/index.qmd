@@ -77,7 +77,7 @@ tmap::tmap_mode("view")
 
 # Read Data from UGRC
 
-All spatial datasets are downloaded from UGRC's ArcGIS REST services. To improve performance and enable offline work, the data is cached locally as GeoDatabase files. The code checks if local copies exist before downloading.
+All spatial datasets are downloaded from UGRC's ArcGIS REST services. To improve performance and enable offline work, the data is cached locally as GeoDatabase files. Each file is downloaded the first time the post is rendered and reused afterwards, so nothing needs to be fetched by hand (the statewide roads file is large and is not committed).
 
 ```{r}
 # set data folder
@@ -103,11 +103,12 @@ if (!fs::file_exists(path_ut_cities)) {
   # Write to a GeoDatabase
   sf_ut_cities |>
     sf::st_write(path_ut_cities, layer = "UtahMunicipalBoundaries", append = FALSE)
-} else {
-  # Read from local copy
-  sf_ut_cities <- sf::st_read(path_ut_cities) |>
-    sf::st_transform(PROJECT_CRS)
 }
+
+# Always read from the local copy, so the geometry column is the same
+# whether the file was just downloaded or already existed
+sf_ut_cities <- sf::st_read(path_ut_cities, quiet = TRUE) |>
+  sf::st_transform(PROJECT_CRS)
 ```
 
 ```{r}
@@ -133,11 +134,12 @@ if (!fs::file_exists(path_ut_counties)) {
   # Write to a GeoDatabase
   sf_ut_counties |>
     sf::st_write(path_ut_counties, layer = "UtahCountyBoundaries", append = FALSE)
-} else {
-  # Read from local copy
-  sf_ut_counties <- sf::st_read(path_ut_counties) |>
-    sf::st_transform(PROJECT_CRS)
 }
+
+# Always read from the local copy, so the geometry column is the same
+# whether the file was just downloaded or already existed
+sf_ut_counties <- sf::st_read(path_ut_counties, quiet = TRUE) |>
+  sf::st_transform(PROJECT_CRS)
 ```
 
 ```{r}
@@ -163,11 +165,12 @@ if (!fs::file_exists(path_ut_roads)) {
   # Write to a GeoDatabase
   sf_ut_roads |>
     sf::st_write(path_ut_roads, layer = "UtahRoads", append = FALSE)
-} else {
-  # Read from local copy
-  sf_ut_roads <- sf::st_read(path_ut_roads) |>
-    sf::st_transform(PROJECT_CRS)
 }
+
+# Always read from the local copy, so the geometry column is the same
+# whether the file was just downloaded or already existed
+sf_ut_roads <- sf::st_read(path_ut_roads, quiet = TRUE) |>
+  sf::st_transform(PROJECT_CRS)
 ```
 
 ```{r}
@@ -193,11 +196,12 @@ if (!fs::file_exists(path_ut_bikeways)) {
   # Write to a GeoDatabase
   sf_ut_bikeways |>
     sf::st_write(path_ut_bikeways, layer = "Bikeways", append = FALSE)
-} else {
-  # Read from local copy
-  sf_ut_bikeways <- sf::st_read(path_ut_bikeways) |>
-    sf::st_transform(PROJECT_CRS)
 }
+
+# Always read from the local copy, so the geometry column is the same
+# whether the file was just downloaded or already existed
+sf_ut_bikeways <- sf::st_read(path_ut_bikeways, quiet = TRUE) |>
+  sf::st_transform(PROJECT_CRS)
 ```
 
 ```{r}

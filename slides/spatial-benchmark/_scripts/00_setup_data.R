@@ -42,6 +42,11 @@ if (!file.exists(addr_parquet) || !file.exists(addr_csv)) {
     arcgislayers::arc_open() |>
     arcgislayers::arc_select(crs = 4326)
 
+  # The live layer contains points with no geometry; every benchmark builds
+  # points from coordinates, so drop them up front
+  utah_addresses <- utah_addresses |>
+    dplyr::filter(!sf::st_is_empty(geometry))
+
   message("Exporting Address Points to CSV...")
   utah_addresses |>
     dplyr::mutate(

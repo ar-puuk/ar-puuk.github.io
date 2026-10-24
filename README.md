@@ -67,14 +67,26 @@ We use `renv` to manage R packages. The library folder is ignored by Git, so you
 
 3.  **Package versions are pinned to a dated Posit Package Manager snapshot** (see `.Rprofile`), so installs get prebuilt Windows binaries and are reproducible. To update packages, change the date in `.Rprofile`, then run `renv::update()` and `renv::snapshot()`.
 
-    > `sedonadb` comes from r-universe, which only keeps its latest build, so it is not date-pinned.
+    > `sedonadb` comes from r-universe, which only keeps its latest build, so it is not date-pinned. Its `renv.lock` record has the `Remote*` GitHub fields removed (they break `renv::restore()`), so `renv::status()` reports it as out of sync. This is harmless; `renv::snapshot()` re-adds the fields, so delete them again afterwards.
 
     > Packages used only by Quarto extensions are loaded in a hidden chunk (e.g. `library(shinylive)` in `posts/storymap_my_journey/index.qmd`) so `renv::snapshot()` records them.
 
 ## 5. VS Code Settings (optional)
 `.vscode/settings.json` points R and Quarto at R 4.6.1 and sets `R_LIBS` to the project's renv library for VS Code terminals. This lets Quarto extensions that call `Rscript` from a subfolder (such as shinylive) find the project packages.
 
-## 6. Verify Installation
+Outside VS Code, set it yourself before rendering (PowerShell):
+
+```powershell
+$env:R_LIBS = (Resolve-Path "renv/library/windows/R-4.6/x86_64-w64-mingw32").Path
+```
+
+## 6. API Keys and Downloaded Data
+Secrets and large downloads are not committed.
+
+- **Census API key** (needed by `posts/socioeconomic-demo`): create a file named `_environment.local` in the project root containing `CENSUS_API_KEY=your_key`. Quarto loads it for both R and Python, and `.gitignore` excludes it. Get a free key at <https://www.census.gov/developers/>.
+- **UGRC data** (Utah roads, bikeways, boundaries, address points): downloaded from UGRC's ArcGIS REST services the first time the post or slides are rendered, then reused. The first render of `posts/utah-bikeways` and `slides/spatial-benchmark` is therefore slow. The first full render of `slides/spatial-benchmark` also runs every benchmark (about 1.5M addresses), so expect it to take a while.
+
+## 7. Verify Installation
 Run the Quarto check command to ensure it detects both engines correctly:
 
 ```bash
@@ -84,7 +96,7 @@ quarto check
 * **Look for:** "Python 3 installation" pointing to your local `.venv/Scripts/python.exe`.
 * **Look for:** "Jupyter engine render... OK".
 
-## 7. Rendering the Site
+## 8. Rendering the Site
 To build the website locally:
 
 ```bash

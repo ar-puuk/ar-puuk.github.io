@@ -13,21 +13,18 @@ prefer-html: true
 ```{r reticulate}
 #| include: false
 
-# Setup reticulate for Python code execution
-if (!requireNamespace("reticulate", quietly = TRUE)) {
-  install.packages("reticulate", dependencies = TRUE)
-}
+# Use the project uv environment (.venv) for Python code execution
+Sys.setenv(
+  RETICULATE_PYTHON = file.path(here::here(), ".venv", "Scripts", "python.exe"),
+  RETICULATE_PYTHON_ENV = "",
+  RETICULATE_PYTHON_FALLBACK = ""
+)
 library(reticulate)
+reticulate::py_config()
 
-reticulate::use_condaenv("metro", required = TRUE)
-
-# # Install python packages
-# reticulate::py_install(
-#   packages = c("duckdb", "matplotlib", "pandas", "geopandas", "shapely", "folium", "pathlib", "folium", "fastparquet"),
-#   envname = "metro",
-#   method = "conda",
-#   pip = TRUE
-# )
+# Load Python's pyarrow before R's arrow: in one session on Windows the reverse
+# order makes `import pyarrow` fail (pandas then cannot read parquet).
+invisible(reticulate::import("pyarrow"))
 ```
 
 # Downloading Overture Maps Data with R and Python
@@ -387,14 +384,16 @@ slco_places_sf |>
 ```{python eval = knitr::is_html_output()}
 
 # Simple quick visualization using GeoPandas
-slco_places_gdf \
-    .sample(n=1000, random_state=123) \
-    .rename(columns={
-        "names.primary": "names_primary",
-        "categories.main": "categories_main"
-    }) \
-    [['names_primary', 'categories_main', 'confidence', 'geometry']] \
+(
+    slco_places_gdf
+    .sample(n=1000, random_state=123)
+    .assign(  # names and categories are struct columns, read back as dicts
+        names_primary=lambda d: d["names"].str["primary"],
+        categories_main=lambda d: d["categories"].str["main"],
+    )
+    .loc[:, ["names_primary", "categories_main", "confidence", "geometry"]]
     .explore(tiles="CartoDB.Voyager", zoom_start=9)
+)
 ```
 
 :::
