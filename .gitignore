@@ -32,3 +32,6 @@ renv/staging/
 *_cache/
 README.html
 README_files/
+
+# Quarto/webR scratch folders inside any page directory
+**/.quarto/
