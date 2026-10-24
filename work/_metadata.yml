@@ -1,0 +1,18 @@
+# Summary pages for tools I worked on at my employer (WFRC).
+# The code and apps belong to WFRC; these pages only summarize my contribution
+# and link out, so nothing is hosted here beyond text and a screenshot.
+
+title-block-banner: true
+page-layout: article
+
+format:
+  html:
+    toc: false
+    code-tools: false
+    css: ../assets/css/app-embed.css
+
+execute:
+  eval: false
+
+citation: false
+page-navigation: true

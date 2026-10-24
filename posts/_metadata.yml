@@ -15,6 +15,8 @@ format:
     html-math-method: katex
     code-link: true
     code-tools: true
+    css: ../assets/css/app-embed.css
+    include-after-body: ../_includes/app-embed-js.html
   typst:
     toc: true
     number-sections: true

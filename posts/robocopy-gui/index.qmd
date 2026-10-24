@@ -14,17 +14,22 @@ prefer-html: true
 
 I've developed an interactive web-based tool that simplifies creating robocopy commands through a user-friendly graphical interface. Instead of memorizing complex command-line syntax, users can simply select options and generate commands visually.
 
-<iframe src="https://ar-puuk.github.io/robocopy-gui/" 
-        width="100%" 
-        height="1000px" 
-        style="border: 1px solid #ddd; border-radius: 8px;"
-        title="Robocopy GUI Tool">
-</iframe>
-
-<div style="text-align: center; margin-top: 10px;">
-  <a href="https://ar-puuk.github.io/robocopy-gui/" target="_blank" class="btn btn-primary">Open in New Tab</a>
-  <a href="https://github.com/ar-puuk/robocopy-gui" target="_blank" class="btn btn-outline-secondary">View Source Code</a>
+```{=html}
+<div class="app-embed-wrapper">
+  <div class="app-embed-toolbar">
+    <span class="app-embed-label">Robocopy GUI</span>
+    <button class="app-fullscreen-btn" type="button" title="Toggle fullscreen">Fullscreen</button>
+  </div>
+  <div class="app-embed-frame">
+    <iframe src="https://ar-puuk.github.io/robocopy-gui/" title="Robocopy GUI Tool" allowfullscreen loading="lazy"></iframe>
+  </div>
 </div>
+```
+
+::: {.app-links}
+[{{< fa arrow-up-right-from-square >}} Open app](https://ar-puuk.github.io/robocopy-gui/){.btn .btn-primary target="_blank" rel="noopener"}
+[{{< fa brands github >}} GitHub](https://github.com/ar-puuk/robocopy-gui){.btn .btn-outline-secondary target="_blank" rel="noopener"}
+:::
 
 ## Features
 

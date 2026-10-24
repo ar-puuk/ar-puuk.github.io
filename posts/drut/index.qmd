@@ -1,0 +1,79 @@
+---
+title: "Drut: Linting and Formatting for Cube Voyager Scripts"
+subtitle: A Rust-based toolchain and VS Code extension for travel-demand model control-statement files
+description: Drut is a linter, formatter and editor tooling suite for Cube Voyager scripts (.s / .block), with a CLI, a language server for VS Code, and an MCP server.
+image: "drut.png"
+author:
+  - name: Pukar Bhandari
+    email: pukar.bhandari@outlook.com
+date: "2026-08-20"
+categories: [Rust, Travel Demand Modeling, Developer Tools, Open Source]
+code-annotations: select
+prefer-html: true
+---
+
+::: {.callout-warning}
+## Under active development
+Drut is a work in progress. If you hit a bug, please [open an issue](https://github.com/ar-puuk/drut-dev/issues).
+:::
+
+Travel-demand models are programs. In much of the U.S., the language they are written in is Cube Voyager's control-statement script (`.s` and `.block` files), and the tooling for it is thin: usually no syntax highlighting, no error checking until the model actually runs, and no consistent formatting across a team. A missing `ENDIF` can cost you a full model run to find.
+
+Drut is my attempt to give those scripts the tooling that every mainstream language takes for granted.
+
+## What it does
+
+- **Syntax highlighting** from a static TextMate grammar, so it works even before the language server starts. Control words, function calls, `keyword=value` pairs, data references (`MI`, `MW`, `DBA`, `ZONES`) and user variables are each independently recolorable.
+- **Structural diagnostics**: unmatched `IF`/`LOOP`/`RUN`/`PROCESS` blocks, unclosed comments and similar real mistakes, flagged as you type, before you run the model.
+- **Formatting**: consistent indentation and, optionally, casing for control words, pair keywords, data references and function names, on save, on paste or from the CLI.
+- **Hover, autocomplete and "did you mean" spell-check** for control words and keyword names, plus **code folding** for every block kind.
+- **Shared project configuration** through a `drut.toml`, so a team does not have to agree on CLI flags or editor settings one by one.
+
+A formatter that rewrites model code has to be easy to hold back, so a range can be excluded with markers. Everything between them is left exactly as written:
+
+```text
+; FMT: OFF
+  ... a hand-aligned section you want to keep as is ...
+; FMT: ON
+```
+
+## Three ways in, one engine
+
+| Surface | For |
+|---|---|
+| `drut` CLI | scripting and CI checks |
+| VS Code / Open VSX extension | day-to-day editing (it is a Language Server Protocol server, so any LSP-capable editor can use it) |
+| Model Context Protocol server | AI coding assistants |
+
+All three are built on one shared Rust engine, so the editor, the CI check and the assistant always agree on what is valid.
+
+## Install
+
+The extension resolves a working `drut` language server automatically on first activation:
+
+- **VS Code**: [Drut for Cube Voyager](https://marketplace.visualstudio.com/items?itemName=arpuuk.drut) on the Marketplace.
+- **Cursor, VSCodium and others**: the same extension on [Open VSX](https://open-vsx.org/extension/arpuuk/drut).
+- **CLI only**: build from source with `cargo build --release -p drut-cli` and put the binary on your `PATH`.
+
+## Documentation
+
+The full user guide covers install, getting started, the CLI, editor and MCP references, formatter behavior and a field-by-field `drut.toml` reference.
+
+```{=html}
+<div class="app-embed-wrapper">
+  <div class="app-embed-toolbar">
+    <span class="app-embed-label">Drut User Guide</span>
+    <button class="app-fullscreen-btn" type="button" title="Toggle fullscreen">Fullscreen</button>
+  </div>
+  <div class="app-embed-frame">
+    <iframe src="https://ar-puuk.github.io/drut-dev/" title="Drut user guide" allowfullscreen loading="lazy"></iframe>
+  </div>
+</div>
+```
+
+::: {.app-links}
+[{{< fa arrow-up-right-from-square >}} Open docs](https://ar-puuk.github.io/drut-dev/){.btn .btn-primary target="_blank" rel="noopener"}
+[{{< fa brands github >}} GitHub](https://github.com/ar-puuk/drut-dev){.btn .btn-outline-secondary target="_blank" rel="noopener"}
+:::
+
+Drut is dual-licensed under MIT or Apache 2.0, and the code is on [GitHub](https://github.com/ar-puuk/drut-dev).

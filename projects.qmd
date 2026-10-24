@@ -4,6 +4,7 @@ listing:
   contents:
     - posts/**/*.qmd
     - slides/**/*.qmd
+    - work/**/*.qmd
   sort: "date desc"
   type: default
   categories: true

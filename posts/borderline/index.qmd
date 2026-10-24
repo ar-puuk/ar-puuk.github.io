@@ -1,0 +1,49 @@
+---
+title: "Borderline: A U.S. Geography Guessing Game"
+subtitle: Name a state, click its outline — no interior borders to give it away
+description: A browser geography game for U.S. states and counties, built as plain static HTML, CSS and JavaScript with no build step.
+image: "borderline.png"
+author:
+  - name: Pukar Bhandari
+    email: pukar.bhandari@outlook.com
+date: "2026-09-21"
+categories: [JavaScript, Games, Geography, Open Source]
+prefer-html: true
+---
+
+I spend my days around maps of the U.S., which makes it a little embarrassing how often I cannot place a county. Borderline is the fix: you are given a place name, you click where you think it is on a black outline map, and you find out how close to "borderline" your geography really is.
+
+## Play
+
+```{=html}
+<div class="app-embed-wrapper">
+  <div class="app-embed-toolbar">
+    <span class="app-embed-label">Borderline</span>
+    <button class="app-fullscreen-btn" type="button" title="Toggle fullscreen">Fullscreen</button>
+  </div>
+  <div class="app-embed-frame">
+    <iframe src="https://ar-puuk.github.io/borderline/" title="Borderline geography game" allowfullscreen loading="lazy"></iframe>
+  </div>
+</div>
+```
+
+::: {.app-links}
+[{{< fa arrow-up-right-from-square >}} Open app](https://ar-puuk.github.io/borderline/){.btn .btn-primary target="_blank" rel="noopener"}
+[{{< fa brands github >}} GitHub](https://github.com/ar-puuk/borderline){.btn .btn-outline-secondary target="_blank" rel="noopener"}
+:::
+
+## How it plays
+
+- **States mode**: the outline of the U.S. appears with no interior borders. Click inside the named state to score. Miss, and the correct state is highlighted.
+- **Counties mode**: pick a state and the map zooms to its outline. You get county names, or the locally correct equivalent (parishes, boroughs and so on).
+- **Easy or Hard**: Easy keeps every answered shape colored on the map as a running record; Hard clears it between guesses.
+- **Untimed or Blitz**: choose 10, 25 or all rounds, or race a 60-second clock.
+- **Zoom and pan** for fiddly shapes like tiny islands and thin coastal counties.
+
+The game remembers your best score per mode in `localStorage`, and once you have missed something enough times it surfaces a "you struggle most with" list. At the end, **Retry these** replays just what you got wrong, and **Copy result** puts a Wordle-style summary on your clipboard to share.
+
+## Under the hood
+
+It is pure static HTML, CSS and JavaScript (ES modules): no build step, no server, no CDN, built to live on GitHub Pages. Boundary data comes from the U.S. Census Bureau via [us-atlas](https://github.com/topojson/us-atlas). Keeping it dependency-free means it loads fast and is easy for anyone to read and fork.
+
+The code is on [GitHub](https://github.com/ar-puuk/borderline) — it is still borderline playable, so bug reports are welcome.

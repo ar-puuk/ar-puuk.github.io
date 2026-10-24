@@ -1,0 +1,44 @@
+---
+title: "Commute Flow Explorer"
+subtitle: Place your own analysis points and compare commuter flows between them
+description: A client-side web app for exploring origin-destination commuter flows across the Wasatch Front using H3 cells and DuckDB-WASM. Developed at the Wasatch Front Regional Council.
+image: "commute_explorer.png"
+author:
+  - name: Pukar Bhandari
+    email: pukar.bhandari@wfrc.utah.gov
+    affiliation:
+      - name: Wasatch Front Regional Council
+        url: "https://wfrc.utah.gov/"
+date: "2026-06-26"
+categories: [WFRC, Work, Transportation, JavaScript, DuckDB, Commuting]
+prefer-html: true
+---
+
+::: {.callout-note appearance="simple"}
+**Developed at the Wasatch Front Regional Council (WFRC).** The application and its repository belong to WFRC; this page only summarizes my work.
+:::
+
+![The explorer's region-wide flow map, with the year selector and Select Points button.](commute_explorer.png){.lightbox}
+
+## What it does
+
+Where [Commute Patterns](../commute-patterns/index.qmd) answers questions about named jurisdictions, this app answers site-specific ones: click anywhere on the map to place 2 to 10 analysis points, each capturing a ring of H3 hexagons (about 0.1 km² cells), and compare the commute flows between them.
+
+- An **overview flow map** of the whole eight-county region that disaggregates as you zoom in.
+- An **OD matrix** with wage and industry breakdowns for every origin-destination pair.
+- LEHD LODES data for 2002 to 2023, queried entirely in the browser with DuckDB-WASM, with light and dark themes.
+
+Rule of thumb from the repository: use Commute Patterns for a named city, county or district, and use Commute Flow Explorer to draw your own catchment areas, such as a transit station or an employment center, and compare them.
+
+## What I worked on
+
+The full application: a React and Vite front end, MapLibre with flowmap.gl and deck.gl for the flow layer, and the Parquet data that DuckDB-WASM queries.
+
+My role: developer. I authored all the commits in the repository.
+
+## See it
+
+::: {.app-links}
+[{{< fa arrow-up-right-from-square >}} Open app](https://wfrcanalytics.github.io/APP-Commute-Explorer/){.btn .btn-primary target="_blank" rel="noopener"}
+[{{< fa brands github >}} GitHub](https://github.com/WFRCAnalytics/APP-Commute-Explorer){.btn .btn-outline-secondary target="_blank" rel="noopener"}
+:::

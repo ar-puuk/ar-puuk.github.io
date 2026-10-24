@@ -16,17 +16,22 @@ Following the success of my [RobocopyGUI](https://ar-puuk.github.io/robocopy-gui
 
 Instead of wrestling with dozens of command-line switches like `-r`, `-np`, or `--limit-rate`, you can simply toggle switches and fill in fields to see your command built in real-time.
 
-<iframe src="https://ar-puuk.github.io/wget-gui/" 
-        width="100%" 
-        height="1000px" 
-        style="border: 1px solid #ddd; border-radius: 8px;"
-        title="WgetGUI Ultimate Tool">
-</iframe>
-
-<div style="text-align: center; margin-top: 10px;">
-  <a href="https://ar-puuk.github.io/wget-gui/" target="_blank" class="btn btn-primary">Open in New Tab</a>
-  <a href="https://github.com/ar-puuk/wget-gui" target="_blank" class="btn btn-outline-secondary">View Source Code</a>
+```{=html}
+<div class="app-embed-wrapper">
+  <div class="app-embed-toolbar">
+    <span class="app-embed-label">WgetGUI Ultimate</span>
+    <button class="app-fullscreen-btn" type="button" title="Toggle fullscreen">Fullscreen</button>
+  </div>
+  <div class="app-embed-frame">
+    <iframe src="https://ar-puuk.github.io/wget-gui/" title="WgetGUI Ultimate Tool" allowfullscreen loading="lazy"></iframe>
+  </div>
 </div>
+```
+
+::: {.app-links}
+[{{< fa arrow-up-right-from-square >}} Open app](https://ar-puuk.github.io/wget-gui/){.btn .btn-primary target="_blank" rel="noopener"}
+[{{< fa brands github >}} GitHub](https://github.com/ar-puuk/wget-gui){.btn .btn-outline-secondary target="_blank" rel="noopener"}
+:::
 
 ## Features
 
