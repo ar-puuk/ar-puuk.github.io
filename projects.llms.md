@@ -118,6 +118,16 @@ May 14, 2026
 
 Pukar Bhandari
 
+[![](./slides/activitysim-accessibility/activitysim_accessibility.png)](slides/activitysim-accessibility/index.llms.md)
+
+### [ActivitySim Initialization & Accessibility](slides/activitysim-accessibility/index.llms.md)
+
+[Components Deep Dive for Travel Demand Modelers](slides/activitysim-accessibility/index.llms.md)
+
+Apr 19, 2026
+
+Pukar Bhandari
+
 [![](./posts/parquet-explorer/parquet_explorer.png)](posts/parquet-explorer/index.llms.md)
 
 ### [Building a Client-Side Geo/Parquet File Viewer](posts/parquet-explorer/index.llms.md)
@@ -138,6 +148,16 @@ Apr 11, 2026
 
 Pukar Bhandari
 
+[![](./slides/prompt-engineering/prompt_engineering.png)](slides/prompt-engineering/index.llms.md)
+
+### [Prompt Engineering Best Practices](slides/prompt-engineering/index.llms.md)
+
+[For Analytics & Modeling](slides/prompt-engineering/index.llms.md)
+
+Apr 4, 2026
+
+Pukar Bhandari
+
 [![](./posts/spatial-sql-exporer/spatial_sql_explorer.png)](posts/spatial-sql-exporer/index.llms.md)
 
 ### [Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code](posts/spatial-sql-exporer/index.llms.md)
@@ -150,6 +170,14 @@ Feb 25, 2026
 
 Pukar Bhandari
 
+### [Modernizing Spatial Workflows](slides/spatial-benchmark/index.llms.md)
+
+[Benchmarking DuckDB & Parquet vs. The Legacy Stack](slides/spatial-benchmark/index.llms.md)
+
+Feb 7, 2026
+
+Pukar Bhandari
+
 [![](./posts/wget-gui/wget_gui.png)](posts/wget-gui/index.llms.md)
 
 ### [WgetGUI Ultimate: A Fluent Command Generator](posts/wget-gui/index.llms.md)
@@ -157,6 +185,16 @@ Pukar Bhandari
 A modern, Windows 11-inspired web interface for building complex GNU Wget commands
 
 Jan 25, 2026
+
+Pukar Bhandari
+
+[![](./posts/nepal-election-geojson/nepal_election_geojson.png)](posts/nepal-election-geojson/index.llms.md)
+
+### [Nepal Electoral Constituency GeoJSON](posts/nepal-election-geojson/index.llms.md)
+
+[Scraping SVG, converting to GIS, and Georeferencing data with R](posts/nepal-election-geojson/index.llms.md)
+
+Jan 18, 2026
 
 Pukar Bhandari
 
@@ -172,6 +210,18 @@ Dec 2, 2025
 
 Pukar Bhandari
 
+[![](./posts/utah-bikeways/utah_bikeways.png)](posts/utah-bikeways/index.llms.md)
+
+### [Analyzing the Utah Bikeways data](posts/utah-bikeways/index.llms.md)
+
+[Comparing the bikeways by type with the highway mileage for each city](posts/utah-bikeways/index.llms.md)
+
+This analysis calculates and compares roadway lane miles and bikeway facility miles across Utah municipalities using spatial data from the Utah Geospatial Resource Center (UGRC).
+
+Nov 16, 2025
+
+Pukar Bhandari
+
 [![](./posts/storymap_my_journey/storymap_my_journey.png)](posts/storymap_my_journey/index.llms.md)
 
 ### [Building an Interactive Storymap using {mapgl}](posts/storymap_my_journey/index.llms.md)
@@ -181,6 +231,14 @@ Pukar Bhandari
 Creating an open-source, interactive storymap with the {mapgl} R package to visualize my journey across the world.
 
 Sep 3, 2025
+
+Pukar Bhandari
+
+### [Quantifying Economic Effects of Transportation Investments](slides/quantifying-economic-impacts/index.llms.md)
+
+[Methods and Applications for Regional Planning](slides/quantifying-economic-impacts/index.llms.md)
+
+Aug 7, 2025
 
 Pukar Bhandari
 
@@ -226,8 +284,6 @@ May 23, 2025
 
 Pukar Bhandari
 
-[![](./posts/overture-data-download/overture_data_download.png)](posts/overture-data-download/index.llms.md)
-
 ### [Overture Maps Data Download](posts/overture-data-download/index.llms.md)
 
 [Applying DuckDB in R and Python](posts/overture-data-download/index.llms.md)
@@ -235,8 +291,6 @@ Pukar Bhandari
 May 22, 2024
 
 Pukar Bhandari
-
-[![](./posts/uscensus-dashboard/uscensus_dashboard.png)](posts/uscensus-dashboard/index.llms.md)
 
 ### [Building a U.S. Census Data Explorer](posts/uscensus-dashboard/index.llms.md)
 
@@ -247,8 +301,6 @@ Learn how to build an interactive Shiny dashboard for exploring U.S. Census data
 May 11, 2024
 
 Pukar Bhandari
-
-[![](./posts/nepal-population-density/nepal_population_density.png)](posts/nepal-population-density/index.llms.md)
 
 ### [3D Population Density Mapping of Nepal](posts/nepal-population-density/index.llms.md)
 

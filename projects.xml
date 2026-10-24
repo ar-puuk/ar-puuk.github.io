@@ -140,6 +140,16 @@
   <media:content url="https://ar-puuk.github.io/work/se2025-h3/se2025_h3.png" medium="image" type="image/png" height="91" width="144"/>
 </item>
 <item>
+  <title></title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/slides/activitysim-accessibility/</link>
+  <description><![CDATA[ undefined ]]></description>
+  <category>Travel Demand Modeling</category>
+  <guid>https://ar-puuk.github.io/slides/activitysim-accessibility/</guid>
+  <pubDate>Sun, 19 Apr 2026 06:00:00 GMT</pubDate>
+  <media:content url="https://ar-puuk.github.io/slides/activitysim-accessibility/activitysim_accessibility.png" medium="image" type="image/png" height="81" width="144"/>
+</item>
+<item>
   <title>Building a Client-Side Geo/Parquet File Viewer</title>
   <dc:creator>Pukar Bhandari</dc:creator>
   <link>https://ar-puuk.github.io/posts/parquet-explorer/</link>
@@ -166,6 +176,16 @@
   <media:content url="https://ar-puuk.github.io/posts/omx-viewer/omx_viewer.png" medium="image" type="image/png" height="65" width="144"/>
 </item>
 <item>
+  <title></title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/slides/prompt-engineering/</link>
+  <description><![CDATA[ undefined ]]></description>
+  <category>AI</category>
+  <guid>https://ar-puuk.github.io/slides/prompt-engineering/</guid>
+  <pubDate>Sat, 04 Apr 2026 06:00:00 GMT</pubDate>
+  <media:content url="https://ar-puuk.github.io/slides/prompt-engineering/prompt_engineering.png" medium="image" type="image/png" height="71" width="144"/>
+</item>
+<item>
   <title>Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code</title>
   <dc:creator>Pukar Bhandari</dc:creator>
   <link>https://ar-puuk.github.io/posts/spatial-sql-exporer/</link>
@@ -180,6 +200,18 @@
   <media:content url="https://ar-puuk.github.io/posts/spatial-sql-exporer/spatial_sql_explorer.png" medium="image" type="image/png" height="82" width="144"/>
 </item>
 <item>
+  <title></title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/slides/spatial-benchmark/</link>
+  <description><![CDATA[ undefined ]]></description>
+  <category>R</category>
+  <category>Python</category>
+  <category>GIS</category>
+  <category>Data Science</category>
+  <guid>https://ar-puuk.github.io/slides/spatial-benchmark/</guid>
+  <pubDate>Sat, 07 Feb 2026 07:00:00 GMT</pubDate>
+</item>
+<item>
   <title>WgetGUI Ultimate: A Fluent Command Generator</title>
   <dc:creator>Pukar Bhandari</dc:creator>
   <link>https://ar-puuk.github.io/posts/wget-gui/</link>
@@ -188,6 +220,18 @@
   <guid>https://ar-puuk.github.io/posts/wget-gui/</guid>
   <pubDate>Sun, 25 Jan 2026 07:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/wget-gui/wget_gui.png" medium="image" type="image/png" height="68" width="144"/>
+</item>
+<item>
+  <title>Nepal Electoral Constituency GeoJSON</title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/posts/nepal-election-geojson/</link>
+  <description><![CDATA[ In this workflow, we tackle a common geospatial problem: extracting data from stylized news graphics (like election heatmaps) and converting them into GIS-ready formats. ]]></description>
+  <category>R</category>
+  <category>GIS</category>
+  <category>Data Science</category>
+  <guid>https://ar-puuk.github.io/posts/nepal-election-geojson/</guid>
+  <pubDate>Sun, 18 Jan 2026 07:00:00 GMT</pubDate>
+  <media:content url="https://ar-puuk.github.io/posts/nepal-election-geojson/nepal_election_geojson.png" medium="image" type="image/png" height="85" width="144"/>
 </item>
 <item>
   <title>Housing Site Evaluator</title>
@@ -203,62 +247,16 @@
   <media:content url="https://ar-puuk.github.io/work/housing-site-evaluator/housing_site_evaluator.png" medium="image" type="image/png" height="91" width="144"/>
 </item>
 <item>
-  <title>Building an Interactive Storymap using {mapgl}</title>
+  <title>Analyzing the Utah Bikeways data</title>
   <dc:creator>Pukar Bhandari</dc:creator>
-  <link>https://ar-puuk.github.io/posts/storymap_my_journey/</link>
-  <description><![CDATA[ Creating an open-source, interactive storymap with the {mapgl} R package to visualize my journey across the world. ]]></description>
-  <category>R</category>
-  <category>Web Apps</category>
-  <guid>https://ar-puuk.github.io/posts/storymap_my_journey/</guid>
-  <pubDate>Wed, 03 Sep 2025 06:00:00 GMT</pubDate>
-  <media:content url="https://ar-puuk.github.io/posts/storymap_my_journey/storymap_my_journey.png" medium="image" type="image/png" height="82" width="144"/>
-</item>
-<item>
-  <title>Base Year SE Data Development</title>
-  <dc:creator>Pukar Bhandari</dc:creator>
-  <link>https://ar-puuk.github.io/posts/socioeconomic-demo/</link>
-  <description><![CDATA[ This section establishes the computational environment for processing socioeconomic data inputs for the Lower Savannah Council of Governments regional travel demand model using both R and Python platforms. ]]></description>
-  <category>R</category>
-  <category>Python</category>
-  <category>Data Science</category>
-  <category>Transportation</category>
-  <guid>https://ar-puuk.github.io/posts/socioeconomic-demo/</guid>
-  <pubDate>Sat, 05 Jul 2025 06:00:00 GMT</pubDate>
-  <media:content url="https://ar-puuk.github.io/posts/socioeconomic-demo/lscog_taz.png" medium="image" type="image/png" height="112" width="144"/>
-</item>
-<item>
-  <title>Building an Interactive Population Pyramid Explorer</title>
-  <dc:creator>Pukar Bhandari</dc:creator>
-  <link>https://ar-puuk.github.io/posts/population-pyramid-explorer/</link>
-  <description><![CDATA[ A deep dive into creating a story-driven Shiny application that combines interactive mapping with demographic visualizations using Census data. ]]></description>
-  <category>R</category>
-  <category>Data Science</category>
-  <category>Web Apps</category>
-  <guid>https://ar-puuk.github.io/posts/population-pyramid-explorer/</guid>
-  <pubDate>Wed, 25 Jun 2025 06:00:00 GMT</pubDate>
-  <media:content url="https://ar-puuk.github.io/posts/population-pyramid-explorer/population_pyramid_explorer.png" medium="image" type="image/png" height="74" width="144"/>
-</item>
-<item>
-  <title>Interactive Robocopy GUI Tool</title>
-  <dc:creator>Pukar Bhandari</dc:creator>
-  <link>https://ar-puuk.github.io/posts/robocopy-gui/</link>
-  <description><![CDATA[ A web-based interface for generating Windows robocopy commands with ease ]]></description>
-  <category>Developer Tools</category>
-  <guid>https://ar-puuk.github.io/posts/robocopy-gui/</guid>
-  <pubDate>Sun, 15 Jun 2025 06:00:00 GMT</pubDate>
-  <media:content url="https://ar-puuk.github.io/posts/robocopy-gui/robocopy_gui.png" medium="image" type="image/png" height="68" width="144"/>
-</item>
-<item>
-  <title>pukRhelpers: A Personal Toolbox of R Helpers</title>
-  <dc:creator>Pukar Bhandari</dc:creator>
-  <link>https://ar-puuk.github.io/posts/pukrhelpers/</link>
-  <description><![CDATA[ An R package collecting helper functions from my day-to-day data and GIS work. Maintained lightly. ]]></description>
+  <link>https://ar-puuk.github.io/posts/utah-bikeways/</link>
+  <description><![CDATA[ This analysis calculates and compares roadway lane miles and bikeway facility miles across Utah municipalities using spatial data from the Utah Geospatial Resource Center (UGRC). ]]></description>
   <category>R</category>
   <category>GIS</category>
-  <category>Developer Tools</category>
-  <category>Open Source</category>
-  <guid>https://ar-puuk.github.io/posts/pukrhelpers/</guid>
-  <pubDate>Fri, 23 May 2025 06:00:00 GMT</pubDate>
+  <category>Transportation</category>
+  <guid>https://ar-puuk.github.io/posts/utah-bikeways/</guid>
+  <pubDate>Sun, 16 Nov 2025 07:00:00 GMT</pubDate>
+  <media:content url="https://ar-puuk.github.io/posts/utah-bikeways/utah_bikeways.png" medium="image" type="image/png" height="127" width="144"/>
 </item>
 </channel>
 </rss>
