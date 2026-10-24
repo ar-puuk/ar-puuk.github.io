@@ -20,7 +20,7 @@ Before diving into the code, ensure you have the following dependencies installe
 
 ##  R
 
-``` r
+``` downlit
 # Install required packages
 install.packages(c("tidyverse", "sf", "mapview", "DBI", "duckdb", "arrow"))
 ```
@@ -38,7 +38,7 @@ First, we need to load our libraries and configure the environment for spatial d
 
 ##  R
 
-``` r
+``` downlit
 # Load required libraries
 library(tidyverse)
 library(sf)
@@ -67,7 +67,7 @@ Overture data is organized by themes, and we need to map specific data types to 
 
 ##  R
 
-``` r
+``` downlit
 # Define the theme map
 map_themes <- list(
   "locality" = "admins",
@@ -111,7 +111,7 @@ This function handles the DuckDB connection, S3 configuration, and spatial filte
 
 ##  R
 
-``` r
+``` downlit
 overture_data <- function(bbox, overture_type, dst_parquet) {
 
   # Validate overture_type
@@ -208,7 +208,7 @@ For spatial analysis, you need to define a bounding box for your area of interes
 
 ##  R
 
-``` r
+``` downlit
 # Read existing boundary data (example: Salt Lake County, UT)
 slco_boundary <- sf::read_sf(
   "data/SaltLakeCounty_Boundary.geojson"
@@ -246,7 +246,7 @@ Now we can download specific data types for our study area. The function handles
 
 ##  R
 
-``` r
+``` downlit
 # Download places data for Salt Lake County
 if (!file.exists("output/slco_places_r.parquet")) {
   overture_data(slco_bbox, "place", "output/slco_places_r.parquet")
@@ -267,7 +267,7 @@ After downloading, convert the Parquet files to spatial data formats for analysi
 
 ##  R
 
-``` r
+``` downlit
 # Read the downloaded Parquet file
 slco_places <- arrow::read_parquet("output/slco_places_r.parquet")
 
@@ -284,7 +284,7 @@ print(paste("Downloaded", nrow(slco_places_sf), "places"))
 
     [1] "Downloaded 44355 places"
 
-``` r
+``` downlit
 print(colnames(slco_places_sf))
 ```
 
@@ -324,7 +324,7 @@ Create quick visualizations to explore your downloaded data and verify the resul
 
 ##  R
 
-``` r
+``` downlit
 # Simple quick visualization using mapview
 set.seed(123)
 
