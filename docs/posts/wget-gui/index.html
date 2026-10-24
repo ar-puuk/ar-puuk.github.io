@@ -131,6 +131,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="../../assets/css/index.css">
+<link rel="stylesheet" href="../../assets/css/app-embed.css">
 <meta property="og:title" content="WgetGUI Ultimate: A Fluent Command Generator – Pukar Bhandari">
 <meta property="og:description" content="A modern, Windows 11-inspired web interface for building complex GNU Wget commands">
 <meta property="og:image" content="https://ar-puuk.github.io/posts/wget-gui/wget_gui.png">
@@ -466,10 +467,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="1" class="anchored" data-anchor-id="wget-command-generator"><span class="header-section-number">1</span> Wget Command Generator</h2>
 <p>Following the success of my <a href="https://ar-puuk.github.io/robocopy-gui/">RobocopyGUI</a> tool, I’ve developed <strong>WgetGUI Ultimate</strong>. This interactive web-based interface is designed to demystify the powerful but complex GNU Wget utility, allowing users to build sophisticated download strings through a clean, Fluent-style UI.</p>
 <p>Instead of wrestling with dozens of command-line switches like <code>-r</code>, <code>-np</code>, or <code>--limit-rate</code>, you can simply toggle switches and fill in fields to see your command built in real-time.</p>
-<iframe src="https://ar-puuk.github.io/wget-gui/" width="100%" height="1000px" style="border: 1px solid #ddd; border-radius: 8px;" title="WgetGUI Ultimate Tool">
-</iframe>
-<div style="text-align: center; margin-top: 10px;">
-<p><a href="https://ar-puuk.github.io/wget-gui/" target="_blank" class="btn btn-primary">Open in New Tab</a> <a href="https://github.com/ar-puuk/wget-gui" target="_blank" class="btn btn-outline-secondary">View Source Code</a></p>
+<div class="app-embed-wrapper">
+  <div class="app-embed-toolbar">
+    <span class="app-embed-label">WgetGUI Ultimate</span>
+    <button class="app-fullscreen-btn" type="button" title="Toggle fullscreen">Fullscreen</button>
+  </div>
+  <div class="app-embed-frame">
+    <iframe src="https://ar-puuk.github.io/wget-gui/" title="WgetGUI Ultimate Tool" allowfullscreen="" loading="lazy"></iframe>
+  </div>
+</div>
+<div class="app-links">
+<p><a href="https://ar-puuk.github.io/wget-gui/" class="btn btn-primary" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square" aria-label="arrow-up-right-from-square"></i> Open app</a> <a href="https://github.com/ar-puuk/wget-gui" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
 </div>
 </section>
 <section id="features" class="level2" data-number="2">
@@ -509,6 +517,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 Bhandari, Pukar. 2026. <span>“WgetGUI Ultimate: A Fluent Command
 Generator.”</span> January 25. <a href="https://ar-puuk.github.io/posts/wget-gui/">https://ar-puuk.github.io/posts/wget-gui/</a>.
 </div></div></section></div></main> <!-- /main -->
+<script src="../../assets/js/app-embed.js" defer=""></script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -991,46 +1000,51 @@ Generator.”</span> January 25. <a href="https://ar-puuk.github.io/posts/wget-g
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>Instead of wrestling with dozens of command-line switches like <span class="in">`-r`</span>, <span class="in">`-np`</span>, or <span class="in">`--limit-rate`</span>, you can simply toggle switches and fill in fields to see your command built in real-time.</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">iframe</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://ar-puuk.github.io/wget-gui/"</span><span class="ot"> </span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ot">        width</span><span class="op">=</span><span class="st">"100%"</span><span class="ot"> </span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ot">        height</span><span class="op">=</span><span class="st">"1000px"</span><span class="ot"> </span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ot">        style</span><span class="op">=</span><span class="st">"border: 1px solid #ddd; border-radius: 8px;"</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ot">        title</span><span class="op">=</span><span class="st">"WgetGUI Ultimate Tool"</span><span class="dt">&gt;</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">iframe</span><span class="dt">&gt;</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> style</span><span class="op">=</span><span class="st">"text-align: center; margin-top: 10px;"</span><span class="dt">&gt;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"https://ar-puuk.github.io/wget-gui/"</span><span class="ot"> target</span><span class="op">=</span><span class="st">"_blank"</span><span class="ot"> class</span><span class="op">=</span><span class="st">"btn btn-primary"</span><span class="dt">&gt;</span>Open in New Tab<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">"https://github.com/ar-puuk/wget-gui"</span><span class="ot"> target</span><span class="op">=</span><span class="st">"_blank"</span><span class="ot"> class</span><span class="op">=</span><span class="st">"btn btn-outline-secondary"</span><span class="dt">&gt;</span>View Source Code<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper"&gt;</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;WgetGUI Ultimate&lt;/span&gt;</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/wget-gui/" title="WgetGUI Ultimate Tool" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">## Features</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>The WgetGUI provides a comprehensive suite of options for web scraping and file retrieval:</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Quick Presets**: One-click configurations for common tasks like mirroring an entire website for offline viewing or checking for broken links (Spider mode).</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Recursive &amp; Mirroring**: Easily set recursion depth, convert links for local viewing, and manage page requisites.</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Advanced Throttling**: Control your bandwidth usage with rate limiting and randomized wait intervals to avoid server rate-limits.</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Batch Queue**: Build multiple commands and export them as a single <span class="in">`.bat`</span> file for Windows automation.</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Dark/Light Mode**: A native-feeling Windows 11 (Fluent) aesthetic that respects your system's theme preference.</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="fu">## Technical Details</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>This tool is a pure client-side application built using **vanilla HTML, CSS, and JavaScript**. It uses:</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Fluent UI Design**: CSS variables are utilized to mimic the Windows 11 design language, providing a seamless experience for desktop users.</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**GitHub Pages**: Hosted directly from the <span class="co">[</span><span class="ot">source repository</span><span class="co">](https://github.com/ar-puuk/wget-gui)</span>, ensuring high availability and automatic updates.</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**No Backend Required**: All command generation logic happens locally in your browser, ensuring your URLs and credentials remain private.</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open app</span><span class="co">](https://ar-puuk.github.io/wget-gui/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/wget-gui)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## Features</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>The WgetGUI provides a comprehensive suite of options for web scraping and file retrieval:</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Quick Presets**: One-click configurations for common tasks like mirroring an entire website for offline viewing or checking for broken links (Spider mode).</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Recursive &amp; Mirroring**: Easily set recursion depth, convert links for local viewing, and manage page requisites.</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Advanced Throttling**: Control your bandwidth usage with rate limiting and randomized wait intervals to avoid server rate-limits.</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Batch Queue**: Build multiple commands and export them as a single <span class="in">`.bat`</span> file for Windows automation.</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Dark/Light Mode**: A native-feeling Windows 11 (Fluent) aesthetic that respects your system's theme preference.</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## Technical Details</span></span>
 <span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="fu">## Use Cases</span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>WgetGUI is ideal for:</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Digital Archivists**: Creating offline mirrors of websites before they go offline.</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Developers**: Testing server responses and checking for broken links via the "Spider" feature.</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Bulk Downloaders**: Managing large lists of files by importing URL text files.</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Students**: Learning the syntax of GNU Wget through a visual, trial-and-error environment.</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>*Feedback and contributions are welcome! Check out the project on GitHub:* <span class="ot">&lt;https://github.com/ar-puuk/wget-gui&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>This tool is a pure client-side application built using **vanilla HTML, CSS, and JavaScript**. It uses:</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Fluent UI Design**: CSS variables are utilized to mimic the Windows 11 design language, providing a seamless experience for desktop users.</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**GitHub Pages**: Hosted directly from the <span class="co">[</span><span class="ot">source repository</span><span class="co">](https://github.com/ar-puuk/wget-gui)</span>, ensuring high availability and automatic updates.</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**No Backend Required**: All command generation logic happens locally in your browser, ensuring your URLs and credentials remain private.</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="fu">## Use Cases</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>WgetGUI is ideal for:</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Digital Archivists**: Creating offline mirrors of websites before they go offline.</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Developers**: Testing server responses and checking for broken links via the "Spider" feature.</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Bulk Downloaders**: Managing large lists of files by importing URL text files.</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Students**: Learning the syntax of GNU Wget through a visual, trial-and-error environment.</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>*Feedback and contributions are welcome! Check out the project on GitHub:* <span class="ot">&lt;https://github.com/ar-puuk/wget-gui&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

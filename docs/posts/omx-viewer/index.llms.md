@@ -2,15 +2,19 @@ I spent way too long writing one-off Python scripts everytime I had to check wha
 
 So, I built a browser tool to preview OMX files directly. You can: - Browse individual matrices as separate tabs - Navigate to a specific row/col and see that cell’s value across all matrices at once - Run aggregations (sum, mean, median, etc.) across zones or across matrices - Do basic matrix arithmetic and export results
 
-Built on WebAssembly so it’s fast and works without any backend, right on your browser. Tested up to 120 MB, should handle more than that though I’d cap expectations around ~300 MB for most laptops.
+Built on WebAssembly so it’s fast and works without any backend, right on your browser. Files in the 300 to 700 MB range are supported; the matrix grid only renders the rows and columns on screen and reads chunks on demand, so it never loads a whole matrix into memory.
 
-Still rough around the edges but functional. If you work with travel demand models and want to try it, the live app is embedded below.
+> **TIP:**
+>
+> The same engine now powers an **OMX Viewer extension for VS Code**, so `.omx`, `.h5` and `.hdf5` files open in the viewer straight from the editor, with an *Export Summary as CSV* command. Install it from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=arpuuk.omx-viewer) or [Open VSX](https://open-vsx.org/extension/arpuuk/omx-viewer). The web app and the extension are versioned together, and the extension streams large files to its webview in 32 MB chunks, which lifts the practical size limit well into multi-gigabyte territory.
 
-⬡ OMX File Viewer
+If you work with travel demand models and want to try it, the live app is embedded below.
 
-[↗ Open app](https://ar-puuk.github.io/omx-viewer/ "Open in new tab") [⌥ GitHub](https://github.com/ar-puuk/omx-viewer "View source on GitHub")
+OMX File Viewer
 
-⤢ Fullscreen
+Fullscreen
+
+[ Open app](https://ar-puuk.github.io/omx-viewer/) [ GitHub](https://github.com/ar-puuk/omx-viewer)
 
 If you work with travel demand model and want a quick way to preview the contents of an Open Matrix (OMX) file, give it a try. The code is on [GitHub](https://github.com/ar-puuk/omx-viewer) — issues and PRs welcome.
 

@@ -8,8 +8,9 @@
 
 <meta name="author" content="Pukar Bhandari">
 <meta name="dcterms.date" content="2026-02-25">
+<meta name="description" content="Open a geospatial file, query it with spatial SQL, style it and export it without a desktop GIS. How the project grew from a single-page experiment into a web app and a VS Code extension.">
 
-<title>Building a Client-Side Spatial SQL Explorer – Pukar Bhandari</title>
+<title>Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code – Pukar Bhandari</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -127,23 +128,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <link rel="preload" href="../../assets/fonts/Poppins-Regular.woff2" as="font" type="font/woff2" crossorigin="">
 
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="../../assets/css/index.css">
-<meta property="og:title" content="Building a Client-Side Spatial SQL Explorer – Pukar Bhandari">
-<meta property="og:description" content="DuckDB-WASM, MapLibre GL, and CodeMirror 6 — all in the browser">
+<link rel="stylesheet" href="../../assets/css/app-embed.css">
+<meta property="og:title" content="Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code – Pukar Bhandari">
+<meta property="og:description" content="Open a geospatial file, query it with spatial SQL, style it and export it without a desktop GIS. How the project grew from a single-page experiment into a web app and a VS Code extension.">
 <meta property="og:image" content="https://ar-puuk.github.io/posts/spatial-sql-exporer/spatial_sql_explorer.png">
 <meta property="og:site_name" content="Pukar Bhandari">
-<meta property="og:image:height" content="928">
-<meta property="og:image:width" content="1856">
-<meta name="twitter:title" content="Building a Client-Side Spatial SQL Explorer – Pukar Bhandari">
-<meta name="twitter:description" content="DuckDB-WASM, MapLibre GL, and CodeMirror 6 — all in the browser">
+<meta property="og:image:height" content="785">
+<meta property="og:image:width" content="1384">
+<meta name="twitter:title" content="Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code – Pukar Bhandari">
+<meta name="twitter:description" content="Open a geospatial file, query it with spatial SQL, style it and export it without a desktop GIS. How the project grew from a single-page experiment into a web app and a VS Code extension.">
 <meta name="twitter:image" content="https://ar-puuk.github.io/posts/spatial-sql-exporer/spatial_sql_explorer.png">
 <meta name="twitter:creator" content="@arpuuk">
 <meta name="twitter:site" content="@arpuuk">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image-height" content="928">
-<meta name="twitter:image-width" content="1856">
+<meta name="twitter:image-height" content="785">
+<meta name="twitter:image-width" content="1384">
 </head>
 
 <body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -403,13 +408,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <div class="quarto-title-block"><div><h1 class="title">Building a Client-Side Spatial SQL Explorer</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
-            <p class="subtitle lead">DuckDB-WASM, MapLibre GL, and CodeMirror 6 — all in the browser</p>
-                                <div class="quarto-categories">
-                <div class="quarto-category">JavaScript</div>
+      <div class="quarto-title-block"><div><h1 class="title">Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+            <p class="subtitle lead">DuckDB-WASM, MapLibre GL and Svelte — one codebase, a web app and a VS Code extension, and your files never leave your machine</p>
+                  <div>
+        <div class="description">
+          Open a geospatial file, query it with spatial SQL, style it and export it without a desktop GIS. How the project grew from a single-page experiment into a web app and a VS Code extension.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">TypeScript</div>
                 <div class="quarto-category">GIS</div>
                 <div class="quarto-category">DuckDB</div>
                 <div class="quarto-category">WebAssembly</div>
+                <div class="quarto-category">VS Code</div>
                 <div class="quarto-category">Open Source</div>
               </div>
                   </div>
@@ -432,6 +443,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </div>
     </div>
     
+      <div>
+      <div class="quarto-title-meta-heading">Modified</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date-modified">October 23, 2026</p>
+      </div>
+    </div>
       
     </div>
     
@@ -444,16 +461,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#what-it-is" id="toc-what-it-is" class="nav-link active" data-scroll-target="#what-it-is"><span class="header-section-number">1</span> What it is</a></li>
-  <li><a href="#why-duckdb-in-the-browser" id="toc-why-duckdb-in-the-browser" class="nav-link" data-scroll-target="#why-duckdb-in-the-browser"><span class="header-section-number">2</span> Why DuckDB in the browser?</a></li>
-  <li><a href="#geometry-in-the-query-pipeline" id="toc-geometry-in-the-query-pipeline" class="nav-link" data-scroll-target="#geometry-in-the-query-pipeline"><span class="header-section-number">3</span> Geometry in the query pipeline</a></li>
-  <li><a href="#the-sql-editor" id="toc-the-sql-editor" class="nav-link" data-scroll-target="#the-sql-editor"><span class="header-section-number">4</span> The SQL editor</a></li>
-  <li><a href="#map-styling" id="toc-map-styling" class="nav-link" data-scroll-target="#map-styling"><span class="header-section-number">5</span> Map styling</a></li>
-  <li><a href="#session-persistence-and-url-sharing" id="toc-session-persistence-and-url-sharing" class="nav-link" data-scroll-target="#session-persistence-and-url-sharing"><span class="header-section-number">6</span> Session persistence and URL sharing</a></li>
-  <li><a href="#the-sharedarraybuffer-constraint" id="toc-the-sharedarraybuffer-constraint" class="nav-link" data-scroll-target="#the-sharedarraybuffer-constraint"><span class="header-section-number">7</span> The SharedArrayBuffer constraint</a></li>
-  <li><a href="#demo-data-nepal-districts" id="toc-demo-data-nepal-districts" class="nav-link" data-scroll-target="#demo-data-nepal-districts"><span class="header-section-number">8</span> Demo data: Nepal districts</a></li>
-  <li><a href="#what-id-do-differently" id="toc-what-id-do-differently" class="nav-link" data-scroll-target="#what-id-do-differently"><span class="header-section-number">9</span> What I’d do differently</a></li>
-  <li><a href="#wrapping-up" id="toc-wrapping-up" class="nav-link" data-scroll-target="#wrapping-up"><span class="header-section-number">10</span> Wrapping up</a></li>
+  <li><a href="#try-it" id="toc-try-it" class="nav-link active" data-scroll-target="#try-it"><span class="header-section-number">1</span> Try it</a></li>
+  <li><a href="#what-it-does" id="toc-what-it-does" class="nav-link" data-scroll-target="#what-it-does"><span class="header-section-number">2</span> What it does</a></li>
+  <li><a href="#one-codebase-two-shells" id="toc-one-codebase-two-shells" class="nav-link" data-scroll-target="#one-codebase-two-shells"><span class="header-section-number">3</span> One codebase, two shells</a></li>
+  <li><a href="#running-duckdb-in-a-webview" id="toc-running-duckdb-in-a-webview" class="nav-link" data-scroll-target="#running-duckdb-in-a-webview"><span class="header-section-number">4</span> Running DuckDB in a webview</a></li>
+  <li><a href="#big-data-without-re-querying-on-every-pan" id="toc-big-data-without-re-querying-on-every-pan" class="nav-link" data-scroll-target="#big-data-without-re-querying-on-every-pan"><span class="header-section-number">5</span> Big data without re-querying on every pan</a></li>
+  <li><a href="#the-query-is-the-product" id="toc-the-query-is-the-product" class="nav-link" data-scroll-target="#the-query-is-the-product"><span class="header-section-number">6</span> The query <em>is</em> the product</a></li>
+  <li><a href="#formats-that-fight-back" id="toc-formats-that-fight-back" class="nav-link" data-scroll-target="#formats-that-fight-back"><span class="header-section-number">7</span> Formats that fight back</a></li>
+  <li><a href="#styles-that-travel" id="toc-styles-that-travel" class="nav-link" data-scroll-target="#styles-that-travel"><span class="header-section-number">8</span> Styles that travel</a></li>
+  <li><a href="#what-id-say-about-scope" id="toc-what-id-say-about-scope" class="nav-link" data-scroll-target="#what-id-say-about-scope"><span class="header-section-number">9</span> What I’d say about scope</a></li>
+  <li><a href="#privacy-and-network-use" id="toc-privacy-and-network-use" class="nav-link" data-scroll-target="#privacy-and-network-use"><span class="header-section-number">10</span> Privacy and network use</a></li>
+  <li><a href="#wrapping-up" id="toc-wrapping-up" class="nav-link" data-scroll-target="#wrapping-up"><span class="header-section-number">11</span> Wrapping up</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
     </div>
@@ -465,211 +483,167 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>Most of my day-to-day GIS work happens in R or Python — loading a shapefile, writing a few spatial queries, maybe making a quick map to sanity-check the results. That workflow is fast when you’re already in a scripting environment, but it has real friction when you just want to hand someone a tool to explore a dataset without asking them to install anything, configure a Python environment, or deal with a server.</p>
-<p>I wanted something simpler: drop a file in, write a SQL query, see results on a map. No backend, no dependencies, no accounts. That itch eventually became <a href="https://ar-puuk.github.io/spatial-sql-explorer/">Spatial SQL Explorer</a>.</p>
-<section id="what-it-is" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="what-it-is"><span class="header-section-number">1</span> What it is</h2>
-<p>Spatial SQL Explorer is a single-page application that runs entirely in the browser. You load a GeoJSON, CSV, TSV, or Parquet file; it registers as a DuckDB table; you write SQL against it; results render on a MapLibre GL map alongside a sortable, filterable results table. Everything — the query engine, the spatial extension, the editor, the map — runs client-side via WebAssembly. Your data never leaves your machine.</p>
-<p>The live app is embedded below. Load the demo data (Nepal district boundaries) and try running a few queries to get a feel for it.</p>
+<p>Most of my day-to-day GIS work happens in R or Python: load a shapefile, write a few spatial queries, make a quick map to sanity-check the result. That is fast when you are already in a scripting environment, and annoying when you just want to <em>look</em> at a file, or hand someone a tool without asking them to install anything.</p>
+<p>I wanted something simpler: open a file, write a SQL query, see the answer on a map. No server, no accounts, no desktop GIS. That itch became <strong>Spatial Explorer</strong>. It started in February as a single-page app inspired by <a href="https://personal.tcu.edu/kylewalker/urbangis/sql-explorer/">Kyle Walker’s Spatial SQL Explorer</a>, and it has since been rebuilt into a web app <strong>and</strong> a VS Code extension that share one engine. This post is about what it does now and why it is built the way it is.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Get it
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Web app</strong>: <a href="https://ar-puuk.github.io/spatial-sql-explorer/">ar-puuk.github.io/spatial-sql-explorer</a> (embedded below)</li>
+<li><strong>VS Code extension</strong>: <em>Spatial Explorer: Spatial SQL &amp; Map Viewer</em>, on the <a href="https://marketplace.visualstudio.com/items?itemName=arpuuk.spatial-explorer">VS Code Marketplace</a> or <a href="https://open-vsx.org/extension/arpuuk/spatial-explorer">Open VSX</a> (Cursor, VSCodium and friends)</li>
+</ul>
+</div>
+</div>
+<section id="try-it" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="try-it"><span class="header-section-number">1</span> Try it</h2>
+<p>Use <strong>Try sample data</strong> for US counties, or drop in your own file. Everything runs in your tab.</p>
 <div class="app-embed-wrapper">
   <div class="app-embed-toolbar">
-    <span class="app-embed-label">⬡ Spatial SQL Explorer</span>
-    <div class="app-embed-links">
-      <a href="https://ar-puuk.github.io/spatial-sql-explorer/" target="_blank" rel="noopener" title="Open in new tab">
-        ↗ Open app
-      </a>
-      <a href="https://github.com/ar-puuk/spatial-sql-explorer" target="_blank" rel="noopener" title="View source on GitHub">
-        ⌥ GitHub
-      </a>
-      <button class="app-fullscreen-btn" onclick="toggleFullscreen(this)" title="Toggle fullscreen">⤢ Fullscreen</button>
-    </div>
+    <span class="app-embed-label">Spatial Explorer</span>
+    <button class="app-fullscreen-btn" type="button" title="Toggle fullscreen">Fullscreen</button>
   </div>
-  <div class="app-embed-frame" id="app-embed-frame">
-    <iframe id="spatial-sql-iframe" src="https://ar-puuk.github.io/spatial-sql-explorer/" title="Spatial SQL Explorer" allowfullscreen="" loading="lazy"></iframe>
+  <div class="app-embed-frame">
+    <iframe src="https://ar-puuk.github.io/spatial-sql-explorer/" title="Spatial Explorer" allowfullscreen="" loading="lazy"></iframe>
   </div>
 </div>
-
-<style>
-.app-embed-wrapper {
-  border: 1px solid #2a3f57;
-  border-radius: 8px;
-  overflow: hidden;
-  margin: 1.5rem 0 2rem;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-  background: #0b0f14;
-  font-family: 'JetBrains Mono', monospace;
-}
-.app-embed-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 14px;
-  background: #0f1419;
-  border-bottom: 1px solid #1f2d3d;
-}
-.app-embed-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: #f0a500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-.app-embed-links {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.app-embed-links a {
-  font-size: 11px;
-  color: #6b8099;
-  text-decoration: none;
-  transition: color 0.15s;
-}
-.app-embed-links a:hover { color: #f0a500; }
-.app-fullscreen-btn {
-  font-family: inherit;
-  font-size: 11px;
-  color: #6b8099;
-  background: none;
-  border: 1px solid #2a3f57;
-  border-radius: 4px;
-  padding: 3px 9px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.app-fullscreen-btn:hover { color: #f0a500; border-color: #f0a500; }
-.app-embed-frame {
-  width: 100%;
-  height: 600px;
-  transition: height 0.25s ease;
-}
-.app-embed-frame.fullscreen {
-  position: fixed;
-  inset: 0;
-  height: 100vh !important;
-  z-index: 9999;
-  border-radius: 0;
-}
-.app-embed-frame iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  display: block;
-}
-</style>
-
-<script>
-function toggleFullscreen(btn) {
-  const frame = document.getElementById('app-embed-frame');
-  const isFullscreen = frame.classList.toggle('fullscreen');
-  btn.textContent = isFullscreen ? '✕ Exit' : '⤢ Fullscreen';
-  document.body.style.overflow = isFullscreen ? 'hidden' : '';
-  if (isFullscreen) {
-    // Allow ESC to exit
-    const handler = (e) => {
-      if (e.key === 'Escape') { toggleFullscreen(btn); document.removeEventListener('keydown', handler); }
-    };
-    document.addEventListener('keydown', handler);
-  }
-}
-</script>
+<div class="app-links">
+<p><a href="https://ar-puuk.github.io/spatial-sql-explorer/" class="btn btn-primary" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square" aria-label="arrow-up-right-from-square"></i> Open app</a> <a href="https://github.com/ar-puuk/spatial-sql-explorer" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
+</div>
 </section>
-<section id="why-duckdb-in-the-browser" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="why-duckdb-in-the-browser"><span class="header-section-number">2</span> Why DuckDB in the browser?</h2>
-<p>The core technology here is <a href="https://duckdb.org/docs/api/wasm/overview">DuckDB-WASM</a> — a WebAssembly build of the DuckDB analytical engine. When the app starts, it downloads the WASM binary, spins up a worker thread, and gives you a fully capable SQL engine with support for window functions, CTEs, joins, aggregations, and — critically — the spatial extension that enables geometry operations like <code>ST_Within</code>, <code>ST_Intersects</code>, and <code>ST_AsGeoJSON</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> bundle <span class="op">=</span> <span class="cf">await</span> duckdb<span class="op">.</span><span class="fu">selectBundle</span>(duckdb<span class="op">.</span><span class="fu">getJsDelivrBundles</span>())<span class="op">;</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> worker <span class="op">=</span> <span class="kw">new</span> <span class="bu">Worker</span>(<span class="co">/* inline worker script */</span>)<span class="op">;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> db <span class="op">=</span> <span class="kw">new</span> duckdb<span class="op">.</span><span class="fu">AsyncDuckDB</span>(<span class="kw">new</span> duckdb<span class="op">.</span><span class="fu">VoidLogger</span>()<span class="op">,</span> worker)<span class="op">;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> db<span class="op">.</span><span class="fu">instantiate</span>(bundle<span class="op">.</span><span class="at">mainModule</span><span class="op">,</span> bundle<span class="op">.</span><span class="at">pthreadWorker</span>)<span class="op">;</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> conn <span class="op">=</span> <span class="cf">await</span> db<span class="op">.</span><span class="fu">connect</span>()<span class="op">;</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> conn<span class="op">.</span><span class="fu">query</span>(<span class="vs">`INSTALL spatial; LOAD spatial;`</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>DuckDB can read files registered directly from browser memory — no server upload needed. When you drop a GeoJSON file onto the drop zone, the app reads it as text, registers it with DuckDB, and runs <code>ST_Read</code> on it to parse the geometries into DuckDB’s native binary format:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> db<span class="op">.</span><span class="fu">registerFileText</span>(<span class="vs">`</span><span class="sc">${</span>tableName<span class="sc">}</span><span class="vs">.geojson`</span><span class="op">,</span> text)<span class="op">;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> conn<span class="op">.</span><span class="fu">query</span>(<span class="vs">`</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="vs">  CREATE TABLE "</span><span class="sc">${</span>tableName<span class="sc">}</span><span class="vs">" AS</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="vs">  SELECT * FROM ST_Read('</span><span class="sc">${</span>tableName<span class="sc">}</span><span class="vs">.geojson')</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="vs">`</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Parquet files get the same treatment via <code>registerFileBuffer</code>, which handles the binary format efficiently. The fact that DuckDB can query Parquet in-browser is something I still find genuinely impressive — you can drop a multi-million-row Parquet file and run aggregate queries on it without leaving the browser tab.</p>
+<section id="what-it-does" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="what-it-does"><span class="header-section-number">2</span> What it does</h2>
+<p>The scope is deliberately small: <strong>look</strong> at a file, <strong>query</strong> it, <strong>style</strong> the result, <strong>export</strong> it.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Look</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Query</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">Style</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false" href="">Analyze</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false" href="">Export and print</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<ul>
+<li><strong>Formats</strong>: GeoJSON, GeoPackage (several layers), SQLite/SpatiaLite (Cube 7 networks, for example), FlatGeobuf, Shapefile, GeoParquet, Parquet, GML, CSV, PMTiles and Excel. File Geodatabases (experimental) and GTFS transit feeds open too, and a zip opens like the file inside it.</li>
+<li>A map and an attribute table kept in sync, any source CRS, and <strong>129 basemaps from 26 providers</strong> with real previews, plus a globe view.</li>
+<li>One search box for layer values, coordinates and places.</li>
+<li>Map tools: measure distances and areas, draw shapes to select or filter rows (or to use as a SQL table called <code>drawn</code>), and turn on terrain with hillshade and elevation. These are scratch geometry only; your data is never edited.</li>
+</ul>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>DuckDB spatial SQL runs against the file by its own name, with autocomplete and inline errors. Results replace the map and the table.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="annotated-cell-1" data-llms-code-original="SELECT * FROM us_counties -- <1>
+SELECT * FROM layer -- <2>
+SELECT * FROM us_boundaries.counties -- <3>
+SELECT * FROM ST_Read('data/links.shp') -- <4>"><pre class="sourceCode sql code-annotation-code code-with-copy code-annotated"><code class="sourceCode sql"><button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="1">1</button><span id="annotated-cell-1-1" class="code-annotation-target"><a href="#annotated-cell-1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> us_counties</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="2">2</button><span id="annotated-cell-1-2" class="code-annotation-target"><a href="#annotated-cell-1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="kw">layer</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="3">3</button><span id="annotated-cell-1-3" class="code-annotation-target"><a href="#annotated-cell-1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> us_boundaries.counties</span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-1" data-target-annotation="4">4</button><span id="annotated-cell-1-4" class="code-annotation-target"><a href="#annotated-cell-1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> ST_Read(<span class="st">'data/links.shp'</span>)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-1" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="1" data-code-annotation="1">The open file <code>us-counties.parquet</code> is available under its cleaned-up name.</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="2" data-code-annotation="2">…and always as <code>layer</code>, whatever it is called.</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="3" data-code-annotation="3">A multi-layer file such as a GeoPackage exposes its layers as views in a schema named after the file.</span>
+</dd>
+<dt data-target-cell="annotated-cell-1" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-1" data-code-lines="4" data-code-annotation="4">Other files can be read in the same query: by workspace-relative path in VS Code, or files you have added in the web app.</span>
+</dd>
+</dl>
+<p>There are also <strong>24 ready-made snippets</strong> that fill in the open layer’s own table and column names, and a word search (ranked, with stemming) beside the plain text search.</p>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p>Single, categorized, graduated (by a column or a SQL expression), continuous, as-is, bivariate, rule-based, heatmap and cluster styles, with ramps previewed on the map. Under <strong>Vary by attribute</strong>, several properties can each follow their own column (size, width, outline, shape, pattern, opacity, rotation), so one map can show roads colored by level of service <em>and</em> widened by traffic. Labels, layer opacity and 3D polygon extrusion are there too, and styles are saved as a QGIS <code>.qml</code> sidecar.</p>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<ul>
+<li><strong>Grid cells</strong>: bin any layer into H3 hexagons or A5 equal-area pentagons, counted or averaged per cell, with a live preview and the SQL it writes.</li>
+<li><strong>Dot density</strong>: one dot stands for an amount you choose, placed at random inside its polygons, with up to six columns in their own colors.</li>
+<li>A <strong>time slider</strong> that filters the map and table by a date column and plays across time, and arrows that show the direction of lines.</li>
+</ul>
+</div>
+<div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
+<p>Export all, filtered or selected rows to GeoParquet, GeoPackage, GeoJSON, newline-delimited GeoJSON, FlatGeobuf, Shapefile, KML, CSV, Parquet, Excel or JSON, in any EPSG CRS. <strong>Print</strong> lays the map out as a page (paper size, title, legend, scale bar, north arrow, a table and chart of the rows, even an atlas with a page per feature) and saves PNG, PDF or SVG with editable text.</p>
+</div>
+</div>
+</div>
 </section>
-<section id="geometry-in-the-query-pipeline" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="geometry-in-the-query-pipeline"><span class="header-section-number">3</span> Geometry in the query pipeline</h2>
-<p>One design decision that took some iteration was how to handle geometry columns between DuckDB and MapLibre. DuckDB’s spatial extension stores geometry as WKB (Well-Known Binary), which Arrow serializes as a binary column. MapLibre, on the other hand, expects GeoJSON.</p>
-<p>The approach I landed on: detect WKB columns by their Arrow type ID after the query runs, then re-run the query wrapped in a <code>ST_AsGeoJSON</code> call to convert geometries on the fly:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> geomCols <span class="op">=</span> result<span class="op">.</span><span class="at">schema</span><span class="op">.</span><span class="at">fields</span><span class="op">.</span><span class="fu">filter</span>(f <span class="kw">=&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  f<span class="op">.</span><span class="at">type</span><span class="op">?.</span><span class="fu">toString</span>()<span class="op">.</span><span class="fu">toLowerCase</span>()<span class="op">.</span><span class="fu">includes</span>(<span class="st">'binary'</span>) <span class="op">||</span> f<span class="op">.</span><span class="at">typeId</span> <span class="op">===</span> <span class="dv">12</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>)<span class="op">;</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (geomCols<span class="op">.</span><span class="at">length</span> <span class="op">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> col <span class="op">=</span> geomCols[<span class="dv">0</span>]<span class="op">.</span><span class="at">name</span><span class="op">;</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  result <span class="op">=</span> <span class="cf">await</span> conn<span class="op">.</span><span class="fu">query</span>(</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="vs">`SELECT * EXCLUDE ("</span><span class="sc">${</span>col<span class="sc">}</span><span class="vs">"), ST_AsGeoJSON("</span><span class="sc">${</span>col<span class="sc">}</span><span class="vs">") AS "</span><span class="sc">${</span>col<span class="sc">}</span><span class="vs">"</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="vs">     FROM (</span><span class="sc">${</span>cappedSql<span class="sc">}</span><span class="vs">)`</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  )<span class="op">;</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This keeps the API clean — you write <code>SELECT * FROM districts</code> and get geometry on the map automatically, without having to wrap every query in <code>ST_AsGeoJSON</code> yourself.</p>
+<section id="one-codebase-two-shells" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="one-codebase-two-shells"><span class="header-section-number">3</span> One codebase, two shells</h2>
+<p>The first version was a single page of JavaScript with module-level state, and it showed. It worked, but sharing a link or restoring a session meant threading state through everything. When I wanted a VS Code extension, I rebuilt it so the engine and the interface don’t know which shell they are in.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+  W["apps/web&lt;br&gt;browser shell"] --&gt; UI
+  X["apps/vscode-ext&lt;br&gt;custom editor + webview"] --&gt; UI
+  UI["packages/ui&lt;br&gt;map, table, panels"] --&gt; CORE
+  CORE["packages/core&lt;br&gt;sources, queries, styles, export"] --&gt; DB["DuckDB-WASM"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p><code>packages/core</code> and <code>packages/ui</code> are forbidden (by a lint rule) from importing <code>vscode</code>, touching the File API or using IndexedDB. Anything platform-specific goes through one interface, the <code>HostAdapter</code>: pick the theme, open files, read a file as bytes or a URL for range reads, save a file, persist state, set a status. The web app implements it with the browser; the extension implements it with the VS Code API. Each custom-editor webview gets its own DuckDB instance.</p>
+<p>The stack is Svelte 5, Vite and strict TypeScript, <a href="https://maplibre.org/">MapLibre GL JS</a> for the map, <a href="https://codemirror.net/">CodeMirror 6</a> for the SQL editor, <a href="https://github.com/JamesLMilner/terra-draw">Terra Draw</a> for drawing, and DuckDB-WASM underneath.</p>
 </section>
-<section id="the-sql-editor" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="the-sql-editor"><span class="header-section-number">4</span> The SQL editor</h2>
-<p>The editor is <a href="https://codemirror.net/">CodeMirror 6</a>, which I chose because its extension-based architecture makes it possible to do schema-aware SQL autocomplete with very little boilerplate. Whenever a table is loaded, the schema gets pushed into CodeMirror’s SQL language extension:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> schema <span class="op">=</span> {}<span class="op">;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>loadedTablesMeta<span class="op">.</span><span class="fu">forEach</span>(t <span class="kw">=&gt;</span> { schema[t<span class="op">.</span><span class="at">name</span>] <span class="op">=</span> t<span class="op">.</span><span class="at">columns</span><span class="op">;</span> })<span class="op">;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>editorView<span class="op">.</span><span class="fu">dispatch</span>({</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">effects</span><span class="op">:</span> sqlSchemaCompartment<span class="op">.</span><span class="fu">reconfigure</span>(</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cmSql</span>({ <span class="dt">dialect</span><span class="op">:</span> StandardSQL<span class="op">,</span> schema<span class="op">,</span> <span class="dt">upperCaseKeywords</span><span class="op">:</span> <span class="kw">true</span> })</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The <code>Compartment</code> abstraction here was something I had to dig into. CodeMirror 6’s architecture is immutable-state-first: rather than mutating editor configuration, you replace it via dispatched transactions. The <code>Compartment</code> wraps a specific piece of the extension tree — in this case, the SQL language configuration — so you can hot-swap it without tearing down and rebuilding the entire editor. This keeps the cursor position, undo history, and scroll position intact when a new table is loaded.</p>
-<p>The same pattern is used for the theme: wrapping <code>EditorView.theme(...)</code> in its own <code>Compartment</code> so that toggling between light and dark mode instantly updates gutter colors, selection highlights, and autocomplete styles without a page refresh.</p>
+<section id="running-duckdb-in-a-webview" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="running-duckdb-in-a-webview"><span class="header-section-number">4</span> Running DuckDB in a webview</h2>
+<p>DuckDB-WASM is the heart of it: a WebAssembly build of the DuckDB analytical engine, including the spatial extension that provides <code>ST_Within</code>, <code>ST_Intersects</code>, <code>ST_Transform</code> and friends.</p>
+<p>In the first version I leaned on multi-threading, which needs <code>SharedArrayBuffer</code>, which needs special response headers that GitHub Pages cannot set. A service worker (<code>coi-serviceworker</code>) papered over that. VS Code webviews can’t use that trick, so the rebuild uses the <strong>single-threaded DuckDB-WASM bundle in both shells</strong>. One engine configuration to test is worth more than the speed-up.</p>
+<p>A few decisions followed from taking the engine seriously:</p>
+<ul>
+<li><strong>The engine is not bundled.</strong> DuckDB-WASM, its extensions (spatial, parquet, json, and the optional full-text search, H3 and A5) and sql.js are downloaded once from pinned URLs and <strong>checked against SHA-256 hashes</strong> recorded in the repo, then cached locally (Cache Storage on the web, extension storage in VS Code), so later starts work offline.</li>
+<li><strong>There is a known ceiling.</strong> The engine’s memory limit is about 3.1 GiB in both shells, which I measured rather than assumed, and the design works around it.</li>
+<li><strong>Reads are ranged where possible</strong>, so the whole file is not copied into the webview.</li>
+</ul>
 </section>
-<section id="map-styling" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="map-styling"><span class="header-section-number">5</span> Map styling</h2>
-<p>The style panel supports three modes — Single, Graduated (choropleth), and Categorical — all of which translate into MapLibre GL paint expressions at apply time.</p>
-<p>Graduated styling uses <code>step</code> expressions, which MapLibre evaluates at the tile rendering level rather than in JavaScript. This means the coloring logic runs in the GPU pipeline, not in the main thread, so it scales well to large feature sets:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> stepExpr <span class="op">=</span> [<span class="st">'step'</span><span class="op">,</span> [<span class="st">'get'</span><span class="op">,</span> col]<span class="op">,</span> ramp[<span class="dv">0</span>]]<span class="op">;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++</span>) {</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  stepExpr<span class="op">.</span><span class="fu">push</span>(breaks[i])<span class="op">;</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  stepExpr<span class="op">.</span><span class="fu">push</span>(ramp[i])<span class="op">;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>map<span class="op">.</span><span class="fu">setPaintProperty</span>(<span class="st">'query-polygons'</span><span class="op">,</span> <span class="st">'fill-color'</span><span class="op">,</span> stepExpr)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>For classification, the app supports Quantile, Equal Interval, and Natural Breaks (Jenks). I implemented Jenks from scratch since there’s no obvious lightweight library for it — it’s the standard dynamic programming approach, running in O(n·k²) time where n is the number of values and k is the number of classes. For the sizes of datasets this tool handles, it’s fast enough.</p>
-<p>Categorical styling has one subtle issue worth mentioning: MapLibre’s <code>match</code> expression is strictly typed, so a numeric property value <code>1</code> never matches the string <code>"1"</code>. Since the same column might be typed as integers in DuckDB but come through as numbers in properties, I coerce values at match time:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> match <span class="op">=</span> [<span class="st">'match'</span><span class="op">,</span> [<span class="st">'to-string'</span><span class="op">,</span> [<span class="st">'get'</span><span class="op">,</span> col]]]<span class="op">;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>unique<span class="op">.</span><span class="fu">forEach</span>((v<span class="op">,</span> i) <span class="kw">=&gt;</span> {</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  match<span class="op">.</span><span class="fu">push</span>(<span class="bu">String</span>(v))<span class="op">;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  match<span class="op">.</span><span class="fu">push</span>(CATEGORICAL_PALETTE[i <span class="op">%</span> CATEGORICAL_PALETTE<span class="op">.</span><span class="at">length</span>])<span class="op">;</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>match<span class="op">.</span><span class="fu">push</span>(<span class="st">'#aaaaaa'</span>)<span class="op">;</span> <span class="co">// fallback</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="big-data-without-re-querying-on-every-pan" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="big-data-without-re-querying-on-every-pan"><span class="header-section-number">5</span> Big data without re-querying on every pan</h2>
+<p>Drawing a million features as GeoJSON would freeze any tab, and re-running a query on every pan is slow. The rule is a size threshold:</p>
+<ul>
+<li>Results under <strong>100,000 rows</strong> (and files under 100 MiB) are converted to GeoJSON once and drawn from memory.</li>
+<li>Larger ones are drawn from <strong>vector tiles that DuckDB builds per tile</strong> with <code>ST_AsMVT</code>, served to MapLibre through a custom protocol handler. A “Load all” link is there if you really want everything.</li>
+</ul>
+<p>That is how files with millions of rows and several gigabytes stay pannable.</p>
 </section>
-<section id="session-persistence-and-url-sharing" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="session-persistence-and-url-sharing"><span class="header-section-number">6</span> Session persistence and URL sharing</h2>
-<p>The app uses IndexedDB to persist loaded tables across sessions. When a file is loaded, its raw content is stored in IndexedDB alongside its format. On next visit, the app reads all stored tables back into DuckDB before rendering the UI — so your data and last query are waiting for you when you return.</p>
-<p>URL sharing works by encoding the current SQL query and style settings as a base64 JSON blob in the URL hash:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> state <span class="op">=</span> { sql<span class="op">,</span> <span class="dt">style</span><span class="op">:</span> { <span class="op">...</span>styleSettings }<span class="op">,</span> tables<span class="op">,</span> hasDemo }<span class="op">;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> encoded <span class="op">=</span> <span class="fu">btoa</span>(<span class="pp">unescape</span>(<span class="pp">encodeURIComponent</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>(state))))<span class="op">;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>history<span class="op">.</span><span class="fu">replaceState</span>(<span class="kw">null</span><span class="op">,</span> <span class="st">''</span><span class="op">,</span> <span class="vs">`#state=</span><span class="sc">${</span>encoded<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The share link encodes the <em>query and style</em>, not the data itself — recipients need to load the same file. This is a reasonable tradeoff for a fully client-side tool. For tables that are just the demo dataset, the link includes a <code>hasDemo</code> flag so the app can auto-load the demo data when the link is opened.</p>
+<section id="the-query-is-the-product" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="the-query-is-the-product"><span class="header-section-number">6</span> The query <em>is</em> the product</h2>
+<p>Several features that look like dialogs are really generators of SQL, and show you the SQL.</p>
+<p><strong>Grid cells</strong> bin a layer into H3 or A5 cells with a live preview. The SQL it writes is the same SQL a power user would write, so you can copy it, change it, and run it as a normal query. The result gets the same styling and export as any other.</p>
+<p><strong>Dot density</strong> is the best example. DuckDB has no point-in-polygon generator (<code>ST_GeneratePoints</code> takes a bounding box), so the query samples each polygon’s box with a deterministic <code>hash(feature, column, k)</code> and keeps the first <em>n</em> points that are <code>ST_Within</code> the polygon. Because the hash is deterministic, the map looks the same every time instead of reshuffling the dots on each redraw.</p>
 </section>
-<section id="the-sharedarraybuffer-constraint" class="level2" data-number="7">
-<h2 data-number="7" class="anchored" data-anchor-id="the-sharedarraybuffer-constraint"><span class="header-section-number">7</span> The SharedArrayBuffer constraint</h2>
-<p>DuckDB-WASM uses SharedArrayBuffer for its WASM threading model, which requires the page to be served with <code>Cross-Origin-Embedder-Policy: require-corp</code> and <code>Cross-Origin-Opener-Policy: same-origin</code> headers. GitHub Pages doesn’t let you set custom response headers.</p>
-<p>The workaround is <a href="https://github.com/gzuidhof/coi-serviceworker">coi-serviceworker</a>: a service worker that intercepts the page’s own requests and injects these headers. One constraint that burned me during development: the service worker’s scope is limited to its own directory. <code>coi-serviceworker.min.js</code> must live in the project root alongside <code>index.html</code> — if you move it into a subdirectory, it can’t intercept the root page and DuckDB fails silently with an infinite reload loop.</p>
+<section id="formats-that-fight-back" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="formats-that-fight-back"><span class="header-section-number">7</span> Formats that fight back</h2>
+<p><strong>File Geodatabases</strong> are the format I most wanted and the hardest to read. DuckDB-WASM’s GDAL build has the OpenFileGDB driver turned off for WebAssembly, so the SQL engine cannot open a <code>.gdb</code> at all, and it cannot read inside a zip either. The workaround is <a href="https://gdal3.js.org">gdal3.js</a> (GDAL 3.8.4 compiled to WebAssembly), downloaded only the first time you open a geodatabase, which converts the chosen layer so DuckDB can query it. In a spike on an 818 MB geodatabase it listed layers in 87 ms and converted 4 million parcels to FlatGeobuf in 34 seconds. Compressed (CDF/SDC) geodatabases remain unreadable by any open-source reader, so that format stays marked <em>experimental</em>.</p>
+<p><strong>GTFS feeds</strong> are detected by what is inside the zip (stops, routes, trips, stop times and their columns), never by file name, so <code>GTFS.zip</code>, <code>google_transit.zip</code> and <code>data.zip</code> all work. A feed opens as two layers drawn together, <code>routes</code> (lines, in each route’s own color) and <code>stops</code> (points), each its own table.</p>
 </section>
-<section id="demo-data-nepal-districts" class="level2" data-number="8">
-<h2 data-number="8" class="anchored" data-anchor-id="demo-data-nepal-districts"><span class="header-section-number">8</span> Demo data: Nepal districts</h2>
-<p>The included demo dataset is Nepal’s 77 district boundaries from the Survey Department of Nepal. Nepal has three tiers of administrative boundaries — provinces, districts, and municipalities — and the district level is the one most commonly used for regional analysis. The dataset includes attributes like province, district name, area, and population that make it a reasonable playground for trying graduated and categorical styling.</p>
-<p>It’s also, admittedly, a personal choice. I grew up in Nepal, and most of my professional work is on transportation planning in the US. This project sits in neither domain directly, but it felt right to use a dataset from home for the demo.</p>
+<section id="styles-that-travel" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="styles-that-travel"><span class="header-section-number">8</span> Styles that travel</h2>
+<p>Styles are saved as a <strong>QGIS <code>.qml</code> sidecar</strong>, so a styled file looks right in QGIS too, and the app imports and exports QML, SLD and Mapbox GL style JSON. Labels are drawn with system fonts (nothing is downloaded), saved with the style, and included when you export the map image.</p>
 </section>
-<section id="what-id-do-differently" class="level2" data-number="9">
-<h2 data-number="9" class="anchored" data-anchor-id="what-id-do-differently"><span class="header-section-number">9</span> What I’d do differently</h2>
-<p>A few things I’d reconsider if starting over:</p>
-<p><strong>State management.</strong> Style state, table metadata, selection state, and filter state all live as module-level <code>let</code> variables. It works, but a simple reducer pattern would have made the URL sharing and session restore logic considerably cleaner.</p>
-<p><strong>The <code>demo</code> table name assumption.</strong> The URL-sharing logic has to know that the demo table is called <code>nepal_districts</code> to correctly reconstruct state from a shared link. This name is hardcoded in several places. A better design would treat the demo like any other loaded file and infer the table name dynamically.</p>
+<section id="what-id-say-about-scope" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="what-id-say-about-scope"><span class="header-section-number">9</span> What I’d say about scope</h2>
+<p>The project has an explicit list of things it will <em>not</em> do: feature editing, georeferencing, a processing toolbox, notebooks, plugins, raster analysis, stacked basemaps, multiple map layers. One layer is on the map at a time; multi-file work is done in SQL. Every exception (a globe projection, polygon extrusion, terrain) was a recorded decision. For a tool whose point is “never open QGIS for basic work”, staying a quick-look tool matters more than any one feature.</p>
 </section>
-<section id="wrapping-up" class="level2" data-number="10">
-<h2 data-number="10" class="anchored" data-anchor-id="wrapping-up"><span class="header-section-number">10</span> Wrapping up</h2>
-<p>This was a genuinely fun project to build. Working with DuckDB-WASM pushed me to understand more about the WebAssembly execution model than I expected to, and CodeMirror 6’s architecture — while steep at first — is elegant once you understand the <code>Compartment</code>/transaction model.</p>
-<p>If you’re doing spatial data work and want a scratchpad that doesn’t require spinning up a server, give it a try. The code is on <a href="https://github.com/ar-puuk/spatial-sql-explorer">GitHub</a> — issues and PRs welcome.</p>
+<section id="privacy-and-network-use" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="privacy-and-network-use"><span class="header-section-number">10</span> Privacy and network use</h2>
+<p>Your data stays on your machine. The network is used for the engine’s code (downloaded once, then cached), for basemap tiles, and for an opt-out place search that sends only the text you type.</p>
+</section>
+<section id="wrapping-up" class="level2" data-number="11">
+<h2 data-number="11" class="anchored" data-anchor-id="wrapping-up"><span class="header-section-number">11</span> Wrapping up</h2>
+<p>The code is MIT-licensed on <a href="https://github.com/ar-puuk/spatial-sql-explorer">GitHub</a>, and the <a href="https://github.com/ar-puuk/spatial-sql-explorer/blob/main/CHANGELOG.md">changelog</a> has the details of every release. The project owes a lot to <a href="https://github.com/opengeos/GeoLibre">GeoLibre</a> and <a href="https://github.com/giswqs">Qiusheng Wu</a>, a constant reference for the style panel, basemap picker and data-loading design, and to Kyle Walker’s original Spatial SQL Explorer for the idea. If you work with spatial data and want a scratchpad that doesn’t need a server, give it a try. Issues and PRs welcome.</p>
 
 
 <!-- -->
@@ -678,15 +652,17 @@ function toggleFullscreen(btn) {
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{bhandari2026,
   author = {Bhandari, Pukar},
-  title = {Building a {Client-Side} {Spatial} {SQL} {Explorer}},
+  title = {Spatial {Explorer:} {Spatial} {SQL} for {Maps,} in the
+    {Browser} and in {VS} {Code}},
   date = {2026-02-25},
   url = {https://ar-puuk.github.io/posts/spatial-sql-exporer/},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-bhandari2026" class="csl-entry quarto-appendix-citeas" role="listitem">
-Bhandari, Pukar. 2026. <span>“Building a Client-Side Spatial SQL
-Explorer.”</span> February 25. <a href="https://ar-puuk.github.io/posts/spatial-sql-exporer/">https://ar-puuk.github.io/posts/spatial-sql-exporer/</a>.
+Bhandari, Pukar. 2026. <span>“Spatial Explorer: Spatial SQL for Maps, in
+the Browser and in VS Code.”</span> February 25. <a href="https://ar-puuk.github.io/posts/spatial-sql-exporer/">https://ar-puuk.github.io/posts/spatial-sql-exporer/</a>.
 </div></div></section></div></main> <!-- /main -->
+<script src="../../assets/js/app-embed.js" defer=""></script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -1092,25 +1068,66 @@ Explorer.”</span> February 25. <a href="https://ar-puuk.github.io/posts/spatia
           }
         };
       }
-        // Attach click handler to the DT
-        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-        for (const annoteDlNode of annoteDls) {
-          annoteDlNode.addEventListener('click', (event) => {
-            const clickedEl = event.target;
-            if (clickedEl !== selectedAnnoteEl) {
-              unselectCodeLines();
-              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-              if (activeEl) {
-                activeEl.classList.remove('code-annotation-active');
-              }
-              selectCodeLines(clickedEl);
-              clickedEl.classList.add('code-annotation-active');
-            } else {
-              // Unselect the line
-              unselectCodeLines();
-              clickedEl.classList.remove('code-annotation-active');
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
             }
-          });
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            trigger: 'click',
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            positionFixed: true,
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
         }
     const findCites = (el) => {
       const parentEl = el.parentElement;
@@ -1151,272 +1168,326 @@ Explorer.”</span> February 25. <a href="https://ar-puuk.github.io/posts/spatia
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Building a Client-Side Spatial SQL Explorer"</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> DuckDB-WASM, MapLibre GL, and CodeMirror 6 — all in the browser</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "spatial_sql_explorer.png"</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Pukar Bhandari</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">    email: pukar.bhandari@outlook.com</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2026-02-25"</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [JavaScript, GIS, DuckDB, WebAssembly, Open Source]</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>Most of my day-to-day GIS work happens in R or Python — loading a shapefile, writing a few spatial queries, maybe making a quick map to sanity-check the results. That workflow is fast when you're already in a scripting environment, but it has real friction when you just want to hand someone a tool to explore a dataset without asking them to install anything, configure a Python environment, or deal with a server.</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>I wanted something simpler: drop a file in, write a SQL query, see results on a map. No backend, no dependencies, no accounts. That itch eventually became <span class="co">[</span><span class="ot">Spatial SQL Explorer</span><span class="co">](https://ar-puuk.github.io/spatial-sql-explorer/)</span>.</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## What it is</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>Spatial SQL Explorer is a single-page application that runs entirely in the browser. You load a GeoJSON, CSV, TSV, or Parquet file; it registers as a DuckDB table; you write SQL against it; results render on a MapLibre GL map alongside a sortable, filterable results table. Everything — the query engine, the spatial extension, the editor, the map — runs client-side via WebAssembly. Your data never leaves your machine.</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>The live app is embedded below. Load the demo data (Nepal district boundaries) and try running a few queries to get a feel for it.</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper"&gt;</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;⬡ Spatial SQL Explorer&lt;/span&gt;</span></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;div class="app-embed-links"&gt;</span></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="in">      &lt;a href="https://ar-puuk.github.io/spatial-sql-explorer/" target="_blank" rel="noopener" title="Open in new tab"&gt;</span></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="in">        ↗ Open app</span></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="in">      &lt;/a&gt;</span></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="in">      &lt;a href="https://github.com/ar-puuk/spatial-sql-explorer" target="_blank" rel="noopener" title="View source on GitHub"&gt;</span></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="in">        ⌥ GitHub</span></span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="in">      &lt;/a&gt;</span></span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="in">      &lt;button class="app-fullscreen-btn" onclick="toggleFullscreen(this)" title="Toggle fullscreen"&gt;⤢ Fullscreen&lt;/button&gt;</span></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;/div&gt;</span></span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame" id="app-embed-frame"&gt;</span></span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe</span></span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a><span class="in">      id="spatial-sql-iframe"</span></span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a><span class="in">      src="https://ar-puuk.github.io/spatial-sql-explorer/"</span></span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="in">      title="Spatial SQL Explorer"</span></span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a><span class="in">      allowfullscreen</span></span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="in">      loading="lazy"</span></span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a><span class="in">    &gt;&lt;/iframe&gt;</span></span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;style&gt;</span></span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a><span class="in">.app-embed-wrapper {</span></span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a><span class="in">  border: 1px solid #2a3f57;</span></span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a><span class="in">  border-radius: 8px;</span></span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a><span class="in">  overflow: hidden;</span></span>
-<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="in">  margin: 1.5rem 0 2rem;</span></span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a><span class="in">  box-shadow: 0 4px 24px rgba(0,0,0,0.18);</span></span>
-<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a><span class="in">  background: #0b0f14;</span></span>
-<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a><span class="in">  font-family: 'JetBrains Mono', monospace;</span></span>
-<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a><span class="in">.app-embed-toolbar {</span></span>
-<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a><span class="in">  display: flex;</span></span>
-<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a><span class="in">  align-items: center;</span></span>
-<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a><span class="in">  justify-content: space-between;</span></span>
-<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a><span class="in">  padding: 8px 14px;</span></span>
-<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a><span class="in">  background: #0f1419;</span></span>
-<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a><span class="in">  border-bottom: 1px solid #1f2d3d;</span></span>
-<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a><span class="in">.app-embed-label {</span></span>
-<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a><span class="in">  font-size: 11px;</span></span>
-<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a><span class="in">  font-weight: 600;</span></span>
-<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a><span class="in">  color: #f0a500;</span></span>
-<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a><span class="in">  letter-spacing: 0.06em;</span></span>
-<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a><span class="in">  text-transform: uppercase;</span></span>
-<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a><span class="in">.app-embed-links {</span></span>
-<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a><span class="in">  display: flex;</span></span>
-<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a><span class="in">  align-items: center;</span></span>
-<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a><span class="in">  gap: 12px;</span></span>
-<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a><span class="in">.app-embed-links a {</span></span>
-<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a><span class="in">  font-size: 11px;</span></span>
-<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a><span class="in">  color: #6b8099;</span></span>
-<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a><span class="in">  text-decoration: none;</span></span>
-<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a><span class="in">  transition: color 0.15s;</span></span>
-<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a><span class="in">.app-embed-links a:hover { color: #f0a500; }</span></span>
-<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a><span class="in">.app-fullscreen-btn {</span></span>
-<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a><span class="in">  font-family: inherit;</span></span>
-<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a><span class="in">  font-size: 11px;</span></span>
-<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a><span class="in">  color: #6b8099;</span></span>
-<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a><span class="in">  background: none;</span></span>
-<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a><span class="in">  border: 1px solid #2a3f57;</span></span>
-<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a><span class="in">  border-radius: 4px;</span></span>
-<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a><span class="in">  padding: 3px 9px;</span></span>
-<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a><span class="in">  cursor: pointer;</span></span>
-<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a><span class="in">  transition: all 0.15s;</span></span>
-<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a><span class="in">.app-fullscreen-btn:hover { color: #f0a500; border-color: #f0a500; }</span></span>
-<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a><span class="in">.app-embed-frame {</span></span>
-<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a><span class="in">  width: 100%;</span></span>
-<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a><span class="in">  height: 600px;</span></span>
-<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a><span class="in">  transition: height 0.25s ease;</span></span>
-<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a><span class="in">.app-embed-frame.fullscreen {</span></span>
-<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a><span class="in">  position: fixed;</span></span>
-<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a><span class="in">  inset: 0;</span></span>
-<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a><span class="in">  height: 100vh !important;</span></span>
-<span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a><span class="in">  z-index: 9999;</span></span>
-<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a><span class="in">  border-radius: 0;</span></span>
-<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a><span class="in">.app-embed-frame iframe {</span></span>
-<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a><span class="in">  width: 100%;</span></span>
-<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a><span class="in">  height: 100%;</span></span>
-<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a><span class="in">  border: none;</span></span>
-<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a><span class="in">  display: block;</span></span>
-<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb8-115"><a href="#cb8-115" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/style&gt;</span></span>
-<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;script&gt;</span></span>
-<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a><span class="in">function toggleFullscreen(btn) {</span></span>
-<span id="cb8-119"><a href="#cb8-119" aria-hidden="true" tabindex="-1"></a><span class="in">  const frame = document.getElementById('app-embed-frame');</span></span>
-<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a><span class="in">  const isFullscreen = frame.classList.toggle('fullscreen');</span></span>
-<span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a><span class="in">  btn.textContent = isFullscreen ? '✕ Exit' : '⤢ Fullscreen';</span></span>
-<span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a><span class="in">  document.body.style.overflow = isFullscreen ? 'hidden' : '';</span></span>
-<span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a><span class="in">  if (isFullscreen) {</span></span>
-<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a><span class="in">    // Allow ESC to exit</span></span>
-<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a><span class="in">    const handler = (e) =&gt; {</span></span>
-<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a><span class="in">      if (e.key === 'Escape') { toggleFullscreen(btn); document.removeEventListener('keydown', handler); }</span></span>
-<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a><span class="in">    };</span></span>
-<span id="cb8-128"><a href="#cb8-128" aria-hidden="true" tabindex="-1"></a><span class="in">    document.addEventListener('keydown', handler);</span></span>
-<span id="cb8-129"><a href="#cb8-129" aria-hidden="true" tabindex="-1"></a><span class="in">  }</span></span>
-<span id="cb8-130"><a href="#cb8-130" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb8-131"><a href="#cb8-131" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/script&gt;</span></span>
-<span id="cb8-132"><a href="#cb8-132" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-133"><a href="#cb8-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-134"><a href="#cb8-134" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why DuckDB in the browser?</span></span>
-<span id="cb8-135"><a href="#cb8-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-136"><a href="#cb8-136" aria-hidden="true" tabindex="-1"></a>The core technology here is <span class="co">[</span><span class="ot">DuckDB-WASM</span><span class="co">](https://duckdb.org/docs/api/wasm/overview)</span> — a WebAssembly build of the DuckDB analytical engine. When the app starts, it downloads the WASM binary, spins up a worker thread, and gives you a fully capable SQL engine with support for window functions, CTEs, joins, aggregations, and — critically — the spatial extension that enables geometry operations like <span class="in">`ST_Within`</span>, <span class="in">`ST_Intersects`</span>, and <span class="in">`ST_AsGeoJSON`</span>.</span>
-<span id="cb8-137"><a href="#cb8-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-138"><a href="#cb8-138" aria-hidden="true" tabindex="-1"></a><span class="in">```javascript</span></span>
-<span id="cb8-139"><a href="#cb8-139" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> bundle <span class="op">=</span> await duckdb<span class="op">.</span><span class="fu">selectBundle</span><span class="op">(</span>duckdb<span class="op">.</span><span class="fu">getJsDelivrBundles</span><span class="op">());</span></span>
-<span id="cb8-140"><a href="#cb8-140" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> worker <span class="op">=</span> <span class="kw">new</span> <span class="fu">Worker</span><span class="op">(</span><span class="co">/* inline worker script */</span><span class="op">);</span></span>
-<span id="cb8-141"><a href="#cb8-141" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> db <span class="op">=</span> <span class="kw">new</span> duckdb<span class="op">.</span><span class="fu">AsyncDuckDB</span><span class="op">(</span><span class="kw">new</span> duckdb<span class="op">.</span><span class="fu">VoidLogger</span><span class="op">(),</span> worker<span class="op">);</span></span>
-<span id="cb8-142"><a href="#cb8-142" aria-hidden="true" tabindex="-1"></a>await db<span class="op">.</span><span class="fu">instantiate</span><span class="op">(</span>bundle<span class="op">.</span><span class="fu">mainModule</span><span class="op">,</span> bundle<span class="op">.</span><span class="fu">pthreadWorker</span><span class="op">);</span></span>
-<span id="cb8-143"><a href="#cb8-143" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> conn <span class="op">=</span> await db<span class="op">.</span><span class="fu">connect</span><span class="op">();</span></span>
-<span id="cb8-144"><a href="#cb8-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-145"><a href="#cb8-145" aria-hidden="true" tabindex="-1"></a>await conn<span class="op">.</span><span class="fu">query</span><span class="op">(</span>`INSTALL spatial<span class="op">;</span> LOAD spatial<span class="op">;</span>`<span class="op">);</span></span>
-<span id="cb8-146"><a href="#cb8-146" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-147"><a href="#cb8-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-148"><a href="#cb8-148" aria-hidden="true" tabindex="-1"></a>DuckDB can read files registered directly from browser memory — no server upload needed. When you drop a GeoJSON file onto the drop zone, the app reads it as text, registers it with DuckDB, and runs <span class="in">`ST_Read`</span> on it to parse the geometries into DuckDB's native binary format:</span>
-<span id="cb8-149"><a href="#cb8-149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-150"><a href="#cb8-150" aria-hidden="true" tabindex="-1"></a><span class="in">```javascript</span></span>
-<span id="cb8-151"><a href="#cb8-151" aria-hidden="true" tabindex="-1"></a>await db<span class="op">.</span><span class="fu">registerFileText</span><span class="op">(</span>`$<span class="op">{</span>tableName<span class="op">}.</span><span class="fu">geojson</span>`<span class="op">,</span> text<span class="op">);</span></span>
-<span id="cb8-152"><a href="#cb8-152" aria-hidden="true" tabindex="-1"></a>await conn<span class="op">.</span><span class="fu">query</span><span class="op">(</span>`</span>
-<span id="cb8-153"><a href="#cb8-153" aria-hidden="true" tabindex="-1"></a>  CREATE TABLE <span class="st">"${tableName}"</span> AS</span>
-<span id="cb8-154"><a href="#cb8-154" aria-hidden="true" tabindex="-1"></a>  SELECT <span class="op">*</span> FROM <span class="fu">ST_Read</span><span class="op">(</span><span class="er">'</span>$<span class="op">{</span>tableName<span class="op">}.</span><span class="fu">geojson</span><span class="er">'</span><span class="op">)</span></span>
-<span id="cb8-155"><a href="#cb8-155" aria-hidden="true" tabindex="-1"></a>`<span class="op">);</span></span>
-<span id="cb8-156"><a href="#cb8-156" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-157"><a href="#cb8-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-158"><a href="#cb8-158" aria-hidden="true" tabindex="-1"></a>Parquet files get the same treatment via <span class="in">`registerFileBuffer`</span>, which handles the binary format efficiently. The fact that DuckDB can query Parquet in-browser is something I still find genuinely impressive — you can drop a multi-million-row Parquet file and run aggregate queries on it without leaving the browser tab.</span>
-<span id="cb8-159"><a href="#cb8-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-160"><a href="#cb8-160" aria-hidden="true" tabindex="-1"></a><span class="fu">## Geometry in the query pipeline</span></span>
-<span id="cb8-161"><a href="#cb8-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-162"><a href="#cb8-162" aria-hidden="true" tabindex="-1"></a>One design decision that took some iteration was how to handle geometry columns between DuckDB and MapLibre. DuckDB's spatial extension stores geometry as WKB (Well-Known Binary), which Arrow serializes as a binary column. MapLibre, on the other hand, expects GeoJSON.</span>
-<span id="cb8-163"><a href="#cb8-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-164"><a href="#cb8-164" aria-hidden="true" tabindex="-1"></a>The approach I landed on: detect WKB columns by their Arrow type ID after the query runs, then re-run the query wrapped in a <span class="in">`ST_AsGeoJSON`</span> call to convert geometries on the fly:</span>
-<span id="cb8-165"><a href="#cb8-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-166"><a href="#cb8-166" aria-hidden="true" tabindex="-1"></a><span class="in">```javascript</span></span>
-<span id="cb8-167"><a href="#cb8-167" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> geomCols <span class="op">=</span> result<span class="op">.</span><span class="fu">schema</span><span class="op">.</span><span class="fu">fields</span><span class="op">.</span><span class="fu">filter</span><span class="op">(</span>f <span class="op">=&gt;</span></span>
-<span id="cb8-168"><a href="#cb8-168" aria-hidden="true" tabindex="-1"></a>  f<span class="op">.</span><span class="fu">type</span><span class="op">?.</span><span class="fu">toString</span><span class="op">().</span><span class="fu">toLowerCase</span><span class="op">().</span><span class="fu">includes</span><span class="op">(</span><span class="er">'</span>binary<span class="er">'</span><span class="op">)</span> <span class="op">||</span> f<span class="op">.</span><span class="fu">typeId</span> <span class="op">===</span> <span class="dv">12</span></span>
-<span id="cb8-169"><a href="#cb8-169" aria-hidden="true" tabindex="-1"></a><span class="op">);</span></span>
-<span id="cb8-170"><a href="#cb8-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-171"><a href="#cb8-171" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>geomCols<span class="op">.</span><span class="fu">length</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb8-172"><a href="#cb8-172" aria-hidden="true" tabindex="-1"></a>  <span class="dt">const</span> col <span class="op">=</span> geomCols<span class="op">[</span><span class="dv">0</span><span class="op">].</span><span class="fu">name</span><span class="op">;</span></span>
-<span id="cb8-173"><a href="#cb8-173" aria-hidden="true" tabindex="-1"></a>  result <span class="op">=</span> await conn<span class="op">.</span><span class="fu">query</span><span class="op">(</span></span>
-<span id="cb8-174"><a href="#cb8-174" aria-hidden="true" tabindex="-1"></a>    `SELECT <span class="op">*</span> <span class="fu">EXCLUDE</span> <span class="op">(</span><span class="st">"${col}"</span><span class="op">),</span> <span class="fu">ST_AsGeoJSON</span><span class="op">(</span><span class="st">"${col}"</span><span class="op">)</span> AS <span class="st">"${col}"</span></span>
-<span id="cb8-175"><a href="#cb8-175" aria-hidden="true" tabindex="-1"></a>     <span class="fu">FROM</span> <span class="op">(</span>$<span class="op">{</span>cappedSql<span class="op">})</span>`</span>
-<span id="cb8-176"><a href="#cb8-176" aria-hidden="true" tabindex="-1"></a>  <span class="op">);</span></span>
-<span id="cb8-177"><a href="#cb8-177" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb8-178"><a href="#cb8-178" aria-hidden="true" tabindex="-1"></a>```</span>
-<span id="cb8-179"><a href="#cb8-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-180"><a href="#cb8-180" aria-hidden="true" tabindex="-1"></a>This keeps the API clean — you write `SELECT <span class="op">*</span> FROM districts` and get geometry on the map automatically<span class="op">,</span> without having to wrap every query in `ST_AsGeoJSON` yourself<span class="op">.</span></span>
-<span id="cb8-181"><a href="#cb8-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-182"><a href="#cb8-182" aria-hidden="true" tabindex="-1"></a>## The SQL editor</span>
-<span id="cb8-183"><a href="#cb8-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-184"><a href="#cb8-184" aria-hidden="true" tabindex="-1"></a>The editor is <span class="op">[</span>CodeMirror <span class="dv">6</span><span class="op">](</span>https<span class="op">:</span><span class="co">//codemirror.net/), which I chose because its extension-based architecture makes it possible to do schema-aware SQL autocomplete with very little boilerplate. Whenever a table is loaded, the schema gets pushed into CodeMirror's SQL language extension:</span></span>
-<span id="cb8-185"><a href="#cb8-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-186"><a href="#cb8-186" aria-hidden="true" tabindex="-1"></a>```javascript</span>
-<span id="cb8-187"><a href="#cb8-187" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> schema <span class="op">=</span> <span class="op">{};</span></span>
-<span id="cb8-188"><a href="#cb8-188" aria-hidden="true" tabindex="-1"></a>loadedTablesMeta<span class="op">.</span><span class="fu">forEach</span><span class="op">(</span>t <span class="op">=&gt;</span> <span class="op">{</span> schema<span class="op">[</span>t<span class="op">.</span><span class="fu">name</span><span class="op">]</span> <span class="op">=</span> t<span class="op">.</span><span class="fu">columns</span><span class="op">;</span> <span class="op">});</span></span>
-<span id="cb8-189"><a href="#cb8-189" aria-hidden="true" tabindex="-1"></a>editorView<span class="op">.</span><span class="fu">dispatch</span><span class="op">({</span></span>
-<span id="cb8-190"><a href="#cb8-190" aria-hidden="true" tabindex="-1"></a>  effects<span class="op">:</span> sqlSchemaCompartment<span class="op">.</span><span class="fu">reconfigure</span><span class="op">(</span></span>
-<span id="cb8-191"><a href="#cb8-191" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cmSql</span><span class="op">({</span> dialect<span class="op">:</span> StandardSQL<span class="op">,</span> schema<span class="op">,</span> upperCaseKeywords<span class="op">:</span> <span class="kw">true</span> <span class="op">})</span></span>
-<span id="cb8-192"><a href="#cb8-192" aria-hidden="true" tabindex="-1"></a>  <span class="op">)</span></span>
-<span id="cb8-193"><a href="#cb8-193" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span>
-<span id="cb8-194"><a href="#cb8-194" aria-hidden="true" tabindex="-1"></a>```</span>
-<span id="cb8-195"><a href="#cb8-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-196"><a href="#cb8-196" aria-hidden="true" tabindex="-1"></a>The `Compartment` abstraction here was something I had to dig into<span class="op">.</span> <span class="fu">CodeMirror</span> <span class="dv">6</span><span class="er">'</span>s architecture is immutable<span class="op">-</span>state<span class="op">-</span>first<span class="op">:</span> rather than mutating editor configuration<span class="op">,</span> you replace it via dispatched transactions<span class="op">.</span> <span class="fu">The</span> `Compartment` wraps a specific piece of the extension tree — in <span class="kw">this</span> <span class="cf">case</span><span class="op">,</span> the SQL language configuration — so you can hot<span class="op">-</span>swap it without tearing down and rebuilding the entire editor<span class="op">.</span> <span class="fu">This</span> keeps the cursor position<span class="op">,</span> undo history<span class="op">,</span> and scroll position intact when a <span class="kw">new</span> table is loaded<span class="op">.</span></span>
-<span id="cb8-197"><a href="#cb8-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-198"><a href="#cb8-198" aria-hidden="true" tabindex="-1"></a><span class="fu">The</span> same pattern is used <span class="cf">for</span> the theme<span class="op">:</span> wrapping `EditorView<span class="op">.</span><span class="fu">theme</span><span class="op">(</span><span class="kw">...</span><span class="op">)</span>` in its own `Compartment` so that toggling between light and dark mode instantly updates gutter colors<span class="op">,</span> selection highlights<span class="op">,</span> and autocomplete styles without a page refresh<span class="op">.</span></span>
-<span id="cb8-199"><a href="#cb8-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-200"><a href="#cb8-200" aria-hidden="true" tabindex="-1"></a>## <span class="bu">Map</span> styling</span>
-<span id="cb8-201"><a href="#cb8-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-202"><a href="#cb8-202" aria-hidden="true" tabindex="-1"></a>The style panel supports three modes — Single<span class="op">,</span> <span class="fu">Graduated</span> <span class="op">(</span>choropleth<span class="op">),</span> and Categorical — all of which translate into MapLibre GL paint expressions at apply time<span class="op">.</span></span>
-<span id="cb8-203"><a href="#cb8-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-204"><a href="#cb8-204" aria-hidden="true" tabindex="-1"></a><span class="fu">Graduated</span> styling uses `step` expressions<span class="op">,</span> which MapLibre evaluates at the tile rendering level rather than in JavaScript<span class="op">.</span> <span class="fu">This</span> means the coloring logic runs in the GPU pipeline<span class="op">,</span> not in the main thread<span class="op">,</span> so it scales well to large feature sets<span class="op">:</span></span>
-<span id="cb8-205"><a href="#cb8-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-206"><a href="#cb8-206" aria-hidden="true" tabindex="-1"></a>```javascript</span>
-<span id="cb8-207"><a href="#cb8-207" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> stepExpr <span class="op">=</span> <span class="op">[</span><span class="er">'</span>step<span class="er">'</span><span class="op">,</span> <span class="op">[</span><span class="er">'</span>get<span class="er">'</span><span class="op">,</span> col<span class="op">],</span> ramp<span class="op">[</span><span class="dv">0</span><span class="op">]];</span></span>
-<span id="cb8-208"><a href="#cb8-208" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span>let i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb8-209"><a href="#cb8-209" aria-hidden="true" tabindex="-1"></a>  stepExpr<span class="op">.</span><span class="fu">push</span><span class="op">(</span>breaks<span class="op">[</span>i<span class="op">]);</span></span>
-<span id="cb8-210"><a href="#cb8-210" aria-hidden="true" tabindex="-1"></a>  stepExpr<span class="op">.</span><span class="fu">push</span><span class="op">(</span>ramp<span class="op">[</span>i<span class="op">]);</span></span>
-<span id="cb8-211"><a href="#cb8-211" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb8-212"><a href="#cb8-212" aria-hidden="true" tabindex="-1"></a>map<span class="op">.</span><span class="fu">setPaintProperty</span><span class="op">(</span><span class="er">'</span>query<span class="op">-</span>polygons<span class="er">'</span><span class="op">,</span> <span class="er">'</span>fill<span class="op">-</span>color<span class="er">'</span><span class="op">,</span> stepExpr<span class="op">);</span></span>
-<span id="cb8-213"><a href="#cb8-213" aria-hidden="true" tabindex="-1"></a>```</span>
-<span id="cb8-214"><a href="#cb8-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-215"><a href="#cb8-215" aria-hidden="true" tabindex="-1"></a>For classification<span class="op">,</span> the app supports Quantile<span class="op">,</span> Equal Interval<span class="op">,</span> and Natural <span class="fu">Breaks</span> <span class="op">(</span>Jenks<span class="op">).</span> <span class="fu">I</span> implemented Jenks from scratch since there<span class="er">'</span>s no obvious lightweight library <span class="cf">for</span> it — it<span class="er">'</span>s the standard dynamic programming approach<span class="op">,</span> running in <span class="fu">O</span><span class="op">(</span>n·k²<span class="op">)</span> time where n is the number of values and k is the number of classes<span class="op">.</span> <span class="fu">For</span> the sizes of datasets <span class="kw">this</span> tool handles<span class="op">,</span> it<span class="er">'</span>s fast enough<span class="op">.</span></span>
-<span id="cb8-216"><a href="#cb8-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-217"><a href="#cb8-217" aria-hidden="true" tabindex="-1"></a><span class="fu">Categorical</span> styling has one subtle issue worth mentioning<span class="op">:</span> MapLibre<span class="er">'</span>s `match` expression is strictly typed<span class="op">,</span> so a numeric property value `<span class="dv">1</span>` never matches the string `<span class="st">"1"</span>`<span class="op">.</span> <span class="fu">Since</span> the same column might be typed as integers in DuckDB but come through as numbers in properties<span class="op">,</span> I coerce values at match time<span class="op">:</span></span>
-<span id="cb8-218"><a href="#cb8-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-219"><a href="#cb8-219" aria-hidden="true" tabindex="-1"></a>```javascript</span>
-<span id="cb8-220"><a href="#cb8-220" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> match <span class="op">=</span> <span class="op">[</span><span class="er">'</span>match<span class="er">'</span><span class="op">,</span> <span class="op">[</span><span class="er">'</span>to<span class="op">-</span>string<span class="er">'</span><span class="op">,</span> <span class="op">[</span><span class="er">'</span>get<span class="er">'</span><span class="op">,</span> col<span class="op">]]];</span></span>
-<span id="cb8-221"><a href="#cb8-221" aria-hidden="true" tabindex="-1"></a>unique<span class="op">.</span><span class="fu">forEach</span><span class="op">((</span>v<span class="op">,</span> i<span class="op">)</span> <span class="op">=&gt;</span> <span class="op">{</span></span>
-<span id="cb8-222"><a href="#cb8-222" aria-hidden="true" tabindex="-1"></a>  match<span class="op">.</span><span class="fu">push</span><span class="op">(</span><span class="bu">String</span><span class="op">(</span>v<span class="op">));</span></span>
-<span id="cb8-223"><a href="#cb8-223" aria-hidden="true" tabindex="-1"></a>  match<span class="op">.</span><span class="fu">push</span><span class="op">(</span>CATEGORICAL_PALETTE<span class="op">[</span>i <span class="op">%</span> CATEGORICAL_PALETTE<span class="op">.</span><span class="fu">length</span><span class="op">]);</span></span>
-<span id="cb8-224"><a href="#cb8-224" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span>
-<span id="cb8-225"><a href="#cb8-225" aria-hidden="true" tabindex="-1"></a>match<span class="op">.</span><span class="fu">push</span><span class="op">(</span><span class="er">'</span>#aaaaaa<span class="er">'</span><span class="op">);</span> <span class="co">// fallback</span></span>
-<span id="cb8-226"><a href="#cb8-226" aria-hidden="true" tabindex="-1"></a>```</span>
-<span id="cb8-227"><a href="#cb8-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-228"><a href="#cb8-228" aria-hidden="true" tabindex="-1"></a>## Session persistence and <span class="bu">URL</span> sharing</span>
-<span id="cb8-229"><a href="#cb8-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-230"><a href="#cb8-230" aria-hidden="true" tabindex="-1"></a>The app uses IndexedDB to persist loaded tables across sessions<span class="op">.</span> <span class="fu">When</span> a file is loaded<span class="op">,</span> its raw content is stored in IndexedDB alongside its format<span class="op">.</span> <span class="fu">On</span> next visit<span class="op">,</span> the app reads all stored tables back into DuckDB before rendering the UI — so your data and last query are waiting <span class="cf">for</span> you when you <span class="cf">return</span><span class="op">.</span></span>
-<span id="cb8-231"><a href="#cb8-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-232"><a href="#cb8-232" aria-hidden="true" tabindex="-1"></a><span class="fu">URL</span> sharing works by encoding the current SQL query and style settings as a base64 JSON blob in the <span class="bu">URL</span> hash<span class="op">:</span></span>
-<span id="cb8-233"><a href="#cb8-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-234"><a href="#cb8-234" aria-hidden="true" tabindex="-1"></a>```javascript</span>
-<span id="cb8-235"><a href="#cb8-235" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> state <span class="op">=</span> <span class="op">{</span> sql<span class="op">,</span> style<span class="op">:</span> <span class="op">{</span> <span class="kw">...</span>styleSettings <span class="op">},</span> tables<span class="op">,</span> hasDemo <span class="op">};</span></span>
-<span id="cb8-236"><a href="#cb8-236" aria-hidden="true" tabindex="-1"></a><span class="dt">const</span> encoded <span class="op">=</span> <span class="fu">btoa</span><span class="op">(</span><span class="fu">unescape</span><span class="op">(</span><span class="fu">encodeURIComponent</span><span class="op">(</span>JSON<span class="op">.</span><span class="fu">stringify</span><span class="op">(</span>state<span class="op">))));</span></span>
-<span id="cb8-237"><a href="#cb8-237" aria-hidden="true" tabindex="-1"></a>history<span class="op">.</span><span class="fu">replaceState</span><span class="op">(</span><span class="kw">null</span><span class="op">,</span> <span class="er">''</span><span class="op">,</span> `#state<span class="op">=</span>$<span class="op">{</span>encoded<span class="op">}</span>`<span class="op">);</span></span>
-<span id="cb8-238"><a href="#cb8-238" aria-hidden="true" tabindex="-1"></a>```</span>
-<span id="cb8-239"><a href="#cb8-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-240"><a href="#cb8-240" aria-hidden="true" tabindex="-1"></a>The share link encodes the <span class="op">*</span>query and style<span class="op">*,</span> not the data itself — recipients need to load the same file<span class="op">.</span> <span class="fu">This</span> is a reasonable tradeoff <span class="cf">for</span> a fully client<span class="op">-</span>side tool<span class="op">.</span> <span class="fu">For</span> tables that are just the demo dataset<span class="op">,</span> the link includes a `hasDemo` flag so the app can auto<span class="op">-</span>load the demo data when the link is opened<span class="op">.</span></span>
-<span id="cb8-241"><a href="#cb8-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-242"><a href="#cb8-242" aria-hidden="true" tabindex="-1"></a>## The SharedArrayBuffer constraint</span>
-<span id="cb8-243"><a href="#cb8-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-244"><a href="#cb8-244" aria-hidden="true" tabindex="-1"></a>DuckDB<span class="op">-</span>WASM uses SharedArrayBuffer <span class="cf">for</span> its WASM threading model<span class="op">,</span> which requires the page to be served with `Cross<span class="op">-</span>Origin<span class="op">-</span>Embedder<span class="op">-</span><span class="bu">Policy</span><span class="op">:</span> require<span class="op">-</span>corp` and `Cross<span class="op">-</span>Origin<span class="op">-</span>Opener<span class="op">-</span><span class="bu">Policy</span><span class="op">:</span> same<span class="op">-</span>origin` headers<span class="op">.</span> <span class="fu">GitHub</span> Pages doesn<span class="er">'</span>t let you set custom response headers<span class="op">.</span></span>
-<span id="cb8-245"><a href="#cb8-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-246"><a href="#cb8-246" aria-hidden="true" tabindex="-1"></a><span class="fu">The</span> workaround is <span class="op">[</span>coi<span class="op">-</span>serviceworker<span class="op">](</span>https<span class="op">:</span><span class="co">//github.com/gzuidhof/coi-serviceworker): a service worker that intercepts the page's own requests and injects these headers. One constraint that burned me during development: the service worker's scope is limited to its own directory. `coi-serviceworker.min.js` must live in the project root alongside `index.html` — if you move it into a subdirectory, it can't intercept the root page and DuckDB fails silently with an infinite reload loop.</span></span>
-<span id="cb8-247"><a href="#cb8-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-248"><a href="#cb8-248" aria-hidden="true" tabindex="-1"></a>## Demo data<span class="op">:</span> Nepal districts</span>
-<span id="cb8-249"><a href="#cb8-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-250"><a href="#cb8-250" aria-hidden="true" tabindex="-1"></a>The included demo dataset is Nepal<span class="er">'</span>s <span class="dv">77</span> district boundaries from the Survey Department of Nepal<span class="op">.</span> <span class="fu">Nepal</span> has three tiers of administrative boundaries — provinces<span class="op">,</span> districts<span class="op">,</span> and municipalities — and the district level is the one most commonly used <span class="cf">for</span> regional analysis<span class="op">.</span> <span class="fu">The</span> dataset includes attributes like province<span class="op">,</span> district name<span class="op">,</span> area<span class="op">,</span> and population that make it a reasonable playground <span class="cf">for</span> trying graduated and categorical styling<span class="op">.</span></span>
-<span id="cb8-251"><a href="#cb8-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-252"><a href="#cb8-252" aria-hidden="true" tabindex="-1"></a><span class="fu">It</span><span class="er">'</span>s also<span class="op">,</span> admittedly<span class="op">,</span> a personal choice<span class="op">.</span> <span class="fu">I</span> grew up in Nepal<span class="op">,</span> and most of my professional work is on transportation planning in the US<span class="op">.</span> <span class="fu">This</span> project sits in neither domain directly<span class="op">,</span> but it felt right to use a dataset from home <span class="cf">for</span> the demo<span class="op">.</span></span>
-<span id="cb8-253"><a href="#cb8-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-254"><a href="#cb8-254" aria-hidden="true" tabindex="-1"></a>## What I<span class="er">'</span>d <span class="cf">do</span> differently</span>
-<span id="cb8-255"><a href="#cb8-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-256"><a href="#cb8-256" aria-hidden="true" tabindex="-1"></a>A few things I<span class="er">'</span>d reconsider <span class="cf">if</span> starting over<span class="op">:</span></span>
-<span id="cb8-257"><a href="#cb8-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-258"><a href="#cb8-258" aria-hidden="true" tabindex="-1"></a><span class="op">**</span><span class="bu">State</span> management<span class="op">.**</span> <span class="bu">Style</span> state<span class="op">,</span> table metadata<span class="op">,</span> selection state<span class="op">,</span> and filter state all live as module<span class="op">-</span>level `let` variables<span class="op">.</span> <span class="fu">It</span> works<span class="op">,</span> but a simple reducer pattern would have made the <span class="bu">URL</span> sharing and session restore logic considerably cleaner<span class="op">.</span></span>
-<span id="cb8-259"><a href="#cb8-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-260"><a href="#cb8-260" aria-hidden="true" tabindex="-1"></a><span class="op">**</span>The `demo` table name assumption<span class="op">.**</span> The <span class="bu">URL</span><span class="op">-</span>sharing logic has to know that the demo table is called `nepal_districts` to correctly reconstruct state from a shared link<span class="op">.</span> <span class="fu">This</span> name is hardcoded in several places<span class="op">.</span> <span class="fu">A</span> better design would treat the demo like any other loaded file and infer the table name dynamically<span class="op">.</span></span>
-<span id="cb8-261"><a href="#cb8-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-262"><a href="#cb8-262" aria-hidden="true" tabindex="-1"></a>## Wrapping up</span>
-<span id="cb8-263"><a href="#cb8-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-264"><a href="#cb8-264" aria-hidden="true" tabindex="-1"></a>This was a genuinely fun project to build<span class="op">.</span> <span class="fu">Working</span> with DuckDB<span class="op">-</span>WASM pushed me to understand more about the WebAssembly execution model than I expected to<span class="op">,</span> and CodeMirror <span class="dv">6</span><span class="er">'</span>s architecture — <span class="cf">while</span> steep at first — is elegant once you understand the `Compartment`<span class="op">/</span>transaction model<span class="op">.</span></span>
-<span id="cb8-265"><a href="#cb8-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-266"><a href="#cb8-266" aria-hidden="true" tabindex="-1"></a><span class="fu">If</span> you<span class="er">'</span>re doing spatial data work and want a scratchpad that doesn<span class="er">'</span>t require spinning up a server<span class="op">,</span> give it a <span class="cf">try</span><span class="op">.</span> <span class="fu">The</span> code is on <span class="op">[</span>GitHub<span class="op">](</span>https<span class="op">:</span><span class="co">//github.com/ar-puuk/spatial-sql-explorer) — issues and PRs welcome.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false" data-llms-code-original="---
+title: &quot;Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code&quot;
+subtitle: DuckDB-WASM, MapLibre GL and Svelte — one codebase, a web app and a VS Code extension, and your files never leave your machine
+description: Open a geospatial file, query it with spatial SQL, style it and export it without a desktop GIS. How the project grew from a single-page experiment into a web app and a VS Code extension.
+image: &quot;spatial_sql_explorer.png&quot;
+author:
+  - name: Pukar Bhandari
+    email: pukar.bhandari@outlook.com
+date: &quot;2026-02-25&quot;
+date-modified: &quot;2026-10-23&quot;
+categories: [TypeScript, GIS, DuckDB, WebAssembly, VS Code, Open Source]
+code-annotations: select
+prefer-html: true
+---
+
+Most of my day-to-day GIS work happens in R or Python: load a shapefile, write a few spatial queries, make a quick map to sanity-check the result. That is fast when you are already in a scripting environment, and annoying when you just want to *look* at a file, or hand someone a tool without asking them to install anything.
+
+I wanted something simpler: open a file, write a SQL query, see the answer on a map. No server, no accounts, no desktop GIS. That itch became **Spatial Explorer**. It started in February as a single-page app inspired by [Kyle Walker's Spatial SQL Explorer](https://personal.tcu.edu/kylewalker/urbangis/sql-explorer/), and it has since been rebuilt into a web app **and** a VS Code extension that share one engine. This post is about what it does now and why it is built the way it is.
+
+::: {.callout-tip}
+## Get it
+- **Web app**: [ar-puuk.github.io/spatial-sql-explorer](https://ar-puuk.github.io/spatial-sql-explorer/) (embedded below)
+- **VS Code extension**: *Spatial Explorer: Spatial SQL &amp; Map Viewer*, on the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=arpuuk.spatial-explorer) or [Open VSX](https://open-vsx.org/extension/arpuuk/spatial-explorer) (Cursor, VSCodium and friends)
+:::
+
+## Try it
+
+Use **Try sample data** for US counties, or drop in your own file. Everything runs in your tab.
+
+```{=html}
+<div class=&quot;app-embed-wrapper&quot;>
+  <div class=&quot;app-embed-toolbar&quot;>
+    <span class=&quot;app-embed-label&quot;>Spatial Explorer</span>
+    <button class=&quot;app-fullscreen-btn&quot; type=&quot;button&quot; title=&quot;Toggle fullscreen&quot;>Fullscreen</button>
+  </div>
+  <div class=&quot;app-embed-frame&quot;>
+    <iframe src=&quot;https://ar-puuk.github.io/spatial-sql-explorer/&quot; title=&quot;Spatial Explorer&quot; allowfullscreen loading=&quot;lazy&quot;></iframe>
+  </div>
+</div>
+```
+
+::: {.app-links}
+[{{< fa arrow-up-right-from-square >}} Open app](https://ar-puuk.github.io/spatial-sql-explorer/){.btn .btn-primary target=&quot;_blank&quot; rel=&quot;noopener&quot;}
+[{{< fa brands github >}} GitHub](https://github.com/ar-puuk/spatial-sql-explorer){.btn .btn-outline-secondary target=&quot;_blank&quot; rel=&quot;noopener&quot;}
+:::
+
+## What it does
+
+The scope is deliberately small: **look** at a file, **query** it, **style** the result, **export** it.
+
+::: {.panel-tabset}
+
+### Look
+
+- **Formats**: GeoJSON, GeoPackage (several layers), SQLite/SpatiaLite (Cube 7 networks, for example), FlatGeobuf, Shapefile, GeoParquet, Parquet, GML, CSV, PMTiles and Excel. File Geodatabases (experimental) and GTFS transit feeds open too, and a zip opens like the file inside it.
+- A map and an attribute table kept in sync, any source CRS, and **129 basemaps from 26 providers** with real previews, plus a globe view.
+- One search box for layer values, coordinates and places.
+- Map tools: measure distances and areas, draw shapes to select or filter rows (or to use as a SQL table called `drawn`), and turn on terrain with hillshade and elevation. These are scratch geometry only; your data is never edited.
+
+### Query
+
+DuckDB spatial SQL runs against the file by its own name, with autocomplete and inline errors. Results replace the map and the table.
+
+```sql
+SELECT * FROM us_counties -- <1>
+SELECT * FROM layer -- <2>
+SELECT * FROM us_boundaries.counties -- <3>
+SELECT * FROM ST_Read('data/links.shp') -- <4>
+```
+
+1. The open file `us-counties.parquet` is available under its cleaned-up name.
+2. ...and always as `layer`, whatever it is called.
+3. A multi-layer file such as a GeoPackage exposes its layers as views in a schema named after the file.
+4. Other files can be read in the same query: by workspace-relative path in VS Code, or files you have added in the web app.
+
+There are also **24 ready-made snippets** that fill in the open layer's own table and column names, and a word search (ranked, with stemming) beside the plain text search.
+
+### Style
+
+Single, categorized, graduated (by a column or a SQL expression), continuous, as-is, bivariate, rule-based, heatmap and cluster styles, with ramps previewed on the map. Under **Vary by attribute**, several properties can each follow their own column (size, width, outline, shape, pattern, opacity, rotation), so one map can show roads colored by level of service *and* widened by traffic. Labels, layer opacity and 3D polygon extrusion are there too, and styles are saved as a QGIS `.qml` sidecar.
+
+### Analyze
+
+- **Grid cells**: bin any layer into H3 hexagons or A5 equal-area pentagons, counted or averaged per cell, with a live preview and the SQL it writes.
+- **Dot density**: one dot stands for an amount you choose, placed at random inside its polygons, with up to six columns in their own colors.
+- A **time slider** that filters the map and table by a date column and plays across time, and arrows that show the direction of lines.
+
+### Export and print
+
+Export all, filtered or selected rows to GeoParquet, GeoPackage, GeoJSON, newline-delimited GeoJSON, FlatGeobuf, Shapefile, KML, CSV, Parquet, Excel or JSON, in any EPSG CRS. **Print** lays the map out as a page (paper size, title, legend, scale bar, north arrow, a table and chart of the rows, even an atlas with a page per feature) and saves PNG, PDF or SVG with editable text.
+
+:::
+
+## One codebase, two shells
+
+The first version was a single page of JavaScript with module-level state, and it showed. It worked, but sharing a link or restoring a session meant threading state through everything. When I wanted a VS Code extension, I rebuilt it so the engine and the interface don't know which shell they are in.
+
+quarto-executable-code-5450563D
+
+```mermaid
+flowchart TD
+  W[&quot;apps/web<br>browser shell&quot;] --> UI
+  X[&quot;apps/vscode-ext<br>custom editor + webview&quot;] --> UI
+  UI[&quot;packages/ui<br>map, table, panels&quot;] --> CORE
+  CORE[&quot;packages/core<br>sources, queries, styles, export&quot;] --> DB[&quot;DuckDB-WASM&quot;]
+```
+
+`packages/core` and `packages/ui` are forbidden (by a lint rule) from importing `vscode`, touching the File API or using IndexedDB. Anything platform-specific goes through one interface, the `HostAdapter`: pick the theme, open files, read a file as bytes or a URL for range reads, save a file, persist state, set a status. The web app implements it with the browser; the extension implements it with the VS Code API. Each custom-editor webview gets its own DuckDB instance.
+
+The stack is Svelte 5, Vite and strict TypeScript, [MapLibre GL JS](https://maplibre.org/) for the map, [CodeMirror 6](https://codemirror.net/) for the SQL editor, [Terra Draw](https://github.com/JamesLMilner/terra-draw) for drawing, and DuckDB-WASM underneath.
+
+## Running DuckDB in a webview
+
+DuckDB-WASM is the heart of it: a WebAssembly build of the DuckDB analytical engine, including the spatial extension that provides `ST_Within`, `ST_Intersects`, `ST_Transform` and friends.
+
+In the first version I leaned on multi-threading, which needs `SharedArrayBuffer`, which needs special response headers that GitHub Pages cannot set. A service worker (`coi-serviceworker`) papered over that. VS Code webviews can't use that trick, so the rebuild uses the **single-threaded DuckDB-WASM bundle in both shells**. One engine configuration to test is worth more than the speed-up.
+
+A few decisions followed from taking the engine seriously:
+
+- **The engine is not bundled.** DuckDB-WASM, its extensions (spatial, parquet, json, and the optional full-text search, H3 and A5) and sql.js are downloaded once from pinned URLs and **checked against SHA-256 hashes** recorded in the repo, then cached locally (Cache Storage on the web, extension storage in VS Code), so later starts work offline.
+- **There is a known ceiling.** The engine's memory limit is about 3.1 GiB in both shells, which I measured rather than assumed, and the design works around it.
+- **Reads are ranged where possible**, so the whole file is not copied into the webview.
+
+## Big data without re-querying on every pan
+
+Drawing a million features as GeoJSON would freeze any tab, and re-running a query on every pan is slow. The rule is a size threshold:
+
+- Results under **100,000 rows** (and files under 100 MiB) are converted to GeoJSON once and drawn from memory.
+- Larger ones are drawn from **vector tiles that DuckDB builds per tile** with `ST_AsMVT`, served to MapLibre through a custom protocol handler. A &quot;Load all&quot; link is there if you really want everything.
+
+That is how files with millions of rows and several gigabytes stay pannable.
+
+## The query *is* the product
+
+Several features that look like dialogs are really generators of SQL, and show you the SQL.
+
+**Grid cells** bin a layer into H3 or A5 cells with a live preview. The SQL it writes is the same SQL a power user would write, so you can copy it, change it, and run it as a normal query. The result gets the same styling and export as any other.
+
+**Dot density** is the best example. DuckDB has no point-in-polygon generator (`ST_GeneratePoints` takes a bounding box), so the query samples each polygon's box with a deterministic `hash(feature, column, k)` and keeps the first *n* points that are `ST_Within` the polygon. Because the hash is deterministic, the map looks the same every time instead of reshuffling the dots on each redraw.
+
+## Formats that fight back
+
+**File Geodatabases** are the format I most wanted and the hardest to read. DuckDB-WASM's GDAL build has the OpenFileGDB driver turned off for WebAssembly, so the SQL engine cannot open a `.gdb` at all, and it cannot read inside a zip either. The workaround is [gdal3.js](https://gdal3.js.org) (GDAL 3.8.4 compiled to WebAssembly), downloaded only the first time you open a geodatabase, which converts the chosen layer so DuckDB can query it. In a spike on an 818 MB geodatabase it listed layers in 87 ms and converted 4 million parcels to FlatGeobuf in 34 seconds. Compressed (CDF/SDC) geodatabases remain unreadable by any open-source reader, so that format stays marked *experimental*.
+
+**GTFS feeds** are detected by what is inside the zip (stops, routes, trips, stop times and their columns), never by file name, so `GTFS.zip`, `google_transit.zip` and `data.zip` all work. A feed opens as two layers drawn together, `routes` (lines, in each route's own color) and `stops` (points), each its own table.
+
+## Styles that travel
+
+Styles are saved as a **QGIS `.qml` sidecar**, so a styled file looks right in QGIS too, and the app imports and exports QML, SLD and Mapbox GL style JSON. Labels are drawn with system fonts (nothing is downloaded), saved with the style, and included when you export the map image.
+
+## What I'd say about scope
+
+The project has an explicit list of things it will *not* do: feature editing, georeferencing, a processing toolbox, notebooks, plugins, raster analysis, stacked basemaps, multiple map layers. One layer is on the map at a time; multi-file work is done in SQL. Every exception (a globe projection, polygon extrusion, terrain) was a recorded decision. For a tool whose point is &quot;never open QGIS for basic work&quot;, staying a quick-look tool matters more than any one feature.
+
+## Privacy and network use
+
+Your data stays on your machine. The network is used for the engine's code (downloaded once, then cached), for basemap tiles, and for an opt-out place search that sends only the text you type.
+
+## Wrapping up
+
+The code is MIT-licensed on [GitHub](https://github.com/ar-puuk/spatial-sql-explorer), and the [changelog](https://github.com/ar-puuk/spatial-sql-explorer/blob/main/CHANGELOG.md) has the details of every release. The project owes a lot to [GeoLibre](https://github.com/opengeos/GeoLibre) and [Qiusheng Wu](https://github.com/giswqs), a constant reference for the style panel, basemap picker and data-loading design, and to Kyle Walker's original Spatial SQL Explorer for the idea. If you work with spatial data and want a scratchpad that doesn't need a server, give it a try. Issues and PRs welcome."><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> DuckDB-WASM, MapLibre GL and Svelte — one codebase, a web app and a VS Code extension, and your files never leave your machine</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> Open a geospatial file, query it with spatial SQL, style it and export it without a desktop GIS. How the project grew from a single-page experiment into a web app and a VS Code extension.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "spatial_sql_explorer.png"</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Pukar Bhandari</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">    email: pukar.bhandari@outlook.com</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2026-02-25"</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="an">date-modified:</span><span class="co"> "2026-10-23"</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [TypeScript, GIS, DuckDB, WebAssembly, VS Code, Open Source]</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="an">code-annotations:</span><span class="co"> select</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>Most of my day-to-day GIS work happens in R or Python: load a shapefile, write a few spatial queries, make a quick map to sanity-check the result. That is fast when you are already in a scripting environment, and annoying when you just want to *look* at a file, or hand someone a tool without asking them to install anything.</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>I wanted something simpler: open a file, write a SQL query, see the answer on a map. No server, no accounts, no desktop GIS. That itch became **Spatial Explorer**. It started in February as a single-page app inspired by [Kyle Walker's Spatial SQL Explorer](https://personal.tcu.edu/kylewalker/urbangis/sql-explorer/), and it has since been rebuilt into a web app **and** a VS Code extension that share one engine. This post is about what it does now and why it is built the way it is.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Get it</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Web app**: <span class="co">[</span><span class="ot">ar-puuk.github.io/spatial-sql-explorer</span><span class="co">](https://ar-puuk.github.io/spatial-sql-explorer/)</span> (embedded below)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**VS Code extension**: *Spatial Explorer: Spatial SQL &amp; Map Viewer*, on the <span class="co">[</span><span class="ot">VS Code Marketplace</span><span class="co">](https://marketplace.visualstudio.com/items?itemName=arpuuk.spatial-explorer)</span> or <span class="co">[</span><span class="ot">Open VSX</span><span class="co">](https://open-vsx.org/extension/arpuuk/spatial-explorer)</span> (Cursor, VSCodium and friends)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## Try it</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>Use **Try sample data** for US counties, or drop in your own file. Everything runs in your tab.</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper"&gt;</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;Spatial Explorer&lt;/span&gt;</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/spatial-sql-explorer/" title="Spatial Explorer" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open app</span><span class="co">](https://ar-puuk.github.io/spatial-sql-explorer/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/spatial-sql-explorer)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## What it does</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>The scope is deliberately small: **look** at a file, **query** it, **style** the result, **export** it.</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="fu">### Look</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Formats**: GeoJSON, GeoPackage (several layers), SQLite/SpatiaLite (Cube 7 networks, for example), FlatGeobuf, Shapefile, GeoParquet, Parquet, GML, CSV, PMTiles and Excel. File Geodatabases (experimental) and GTFS transit feeds open too, and a zip opens like the file inside it.</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A map and an attribute table kept in sync, any source CRS, and **129 basemaps from 26 providers** with real previews, plus a globe view.</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>One search box for layer values, coordinates and places.</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Map tools: measure distances and areas, draw shapes to select or filter rows (or to use as a SQL table called <span class="in">`drawn`</span>), and turn on terrain with hillshade and elevation. These are scratch geometry only; your data is never edited.</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="fu">### Query</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>DuckDB spatial SQL runs against the file by its own name, with autocomplete and inline errors. Results replace the map and the table.</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="in">```sql</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> us_counties <span class="co">-- &lt;1&gt;</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> layer <span class="co">-- &lt;2&gt;</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> us_boundaries<span class="ch">.</span>counties <span class="co">-- &lt;3&gt;</span></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> ST_Read(<span class="st">'data/links.shp'</span>) <span class="co">-- &lt;4&gt;</span></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>The open file <span class="in">`us-counties.parquet`</span> is available under its cleaned-up name.</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>...and always as <span class="in">`layer`</span>, whatever it is called.</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>A multi-layer file such as a GeoPackage exposes its layers as views in a schema named after the file.</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Other files can be read in the same query: by workspace-relative path in VS Code, or files you have added in the web app.</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>There are also **24 ready-made snippets** that fill in the open layer's own table and column names, and a word search (ranked, with stemming) beside the plain text search.</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="fu">### Style</span></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>Single, categorized, graduated (by a column or a SQL expression), continuous, as-is, bivariate, rule-based, heatmap and cluster styles, with ramps previewed on the map. Under **Vary by attribute**, several properties can each follow their own column (size, width, outline, shape, pattern, opacity, rotation), so one map can show roads colored by level of service *and* widened by traffic. Labels, layer opacity and 3D polygon extrusion are there too, and styles are saved as a QGIS <span class="in">`.qml`</span> sidecar.</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a><span class="fu">### Analyze</span></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Grid cells**: bin any layer into H3 hexagons or A5 equal-area pentagons, counted or averaged per cell, with a live preview and the SQL it writes.</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Dot density**: one dot stands for an amount you choose, placed at random inside its polygons, with up to six columns in their own colors.</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A **time slider** that filters the map and table by a date column and plays across time, and arrows that show the direction of lines.</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="fu">### Export and print</span></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>Export all, filtered or selected rows to GeoParquet, GeoPackage, GeoJSON, newline-delimited GeoJSON, FlatGeobuf, Shapefile, KML, CSV, Parquet, Excel or JSON, in any EPSG CRS. **Print** lays the map out as a page (paper size, title, legend, scale bar, north arrow, a table and chart of the rows, even an atlas with a page per feature) and saves PNG, PDF or SVG with editable text.</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="fu">## One codebase, two shells</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>The first version was a single page of JavaScript with module-level state, and it showed. It worked, but sharing a link or restoring a session meant threading state through everything. When I wanted a VS Code extension, I rebuilt it so the engine and the interface don't know which shell they are in.</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a><span class="in">```{mermaid}</span></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>flowchart TD</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>  W[<span class="ot">"</span><span class="st">apps/web&lt;br&gt;browser shell</span><span class="ot">"</span>] --&gt; UI</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>  X[<span class="ot">"</span><span class="st">apps/vscode-ext&lt;br&gt;custom editor + webview</span><span class="ot">"</span>] --&gt; UI</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>  UI[<span class="ot">"</span><span class="st">packages/ui&lt;br&gt;map, table, panels</span><span class="ot">"</span>] --&gt; CORE</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>  CORE[<span class="ot">"</span><span class="st">packages/core&lt;br&gt;sources, queries, styles, export</span><span class="ot">"</span>] --&gt; DB[<span class="ot">"</span><span class="st">DuckDB-WASM</span><span class="ot">"</span>]</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="in">`packages/core`</span> and <span class="in">`packages/ui`</span> are forbidden (by a lint rule) from importing <span class="in">`vscode`</span>, touching the File API or using IndexedDB. Anything platform-specific goes through one interface, the <span class="in">`HostAdapter`</span>: pick the theme, open files, read a file as bytes or a URL for range reads, save a file, persist state, set a status. The web app implements it with the browser; the extension implements it with the VS Code API. Each custom-editor webview gets its own DuckDB instance.</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>The stack is Svelte 5, Vite and strict TypeScript, <span class="co">[</span><span class="ot">MapLibre GL JS</span><span class="co">](https://maplibre.org/)</span> for the map, <span class="co">[</span><span class="ot">CodeMirror 6</span><span class="co">](https://codemirror.net/)</span> for the SQL editor, <span class="co">[</span><span class="ot">Terra Draw</span><span class="co">](https://github.com/JamesLMilner/terra-draw)</span> for drawing, and DuckDB-WASM underneath.</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a><span class="fu">## Running DuckDB in a webview</span></span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>DuckDB-WASM is the heart of it: a WebAssembly build of the DuckDB analytical engine, including the spatial extension that provides <span class="in">`ST_Within`</span>, <span class="in">`ST_Intersects`</span>, <span class="in">`ST_Transform`</span> and friends.</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>In the first version I leaned on multi-threading, which needs <span class="in">`SharedArrayBuffer`</span>, which needs special response headers that GitHub Pages cannot set. A service worker (<span class="in">`coi-serviceworker`</span>) papered over that. VS Code webviews can't use that trick, so the rebuild uses the **single-threaded DuckDB-WASM bundle in both shells**. One engine configuration to test is worth more than the speed-up.</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>A few decisions followed from taking the engine seriously:</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**The engine is not bundled.** DuckDB-WASM, its extensions (spatial, parquet, json, and the optional full-text search, H3 and A5) and sql.js are downloaded once from pinned URLs and **checked against SHA-256 hashes** recorded in the repo, then cached locally (Cache Storage on the web, extension storage in VS Code), so later starts work offline.</span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**There is a known ceiling.** The engine's memory limit is about 3.1 GiB in both shells, which I measured rather than assumed, and the design works around it.</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Reads are ranged where possible**, so the whole file is not copied into the webview.</span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a><span class="fu">## Big data without re-querying on every pan</span></span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>Drawing a million features as GeoJSON would freeze any tab, and re-running a query on every pan is slow. The rule is a size threshold:</span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Results under **100,000 rows** (and files under 100 MiB) are converted to GeoJSON once and drawn from memory.</span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Larger ones are drawn from **vector tiles that DuckDB builds per tile** with <span class="in">`ST_AsMVT`</span>, served to MapLibre through a custom protocol handler. A "Load all" link is there if you really want everything.</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>That is how files with millions of rows and several gigabytes stay pannable.</span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a><span class="fu">## The query *is* the product</span></span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>Several features that look like dialogs are really generators of SQL, and show you the SQL.</span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>**Grid cells** bin a layer into H3 or A5 cells with a live preview. The SQL it writes is the same SQL a power user would write, so you can copy it, change it, and run it as a normal query. The result gets the same styling and export as any other.</span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>**Dot density** is the best example. DuckDB has no point-in-polygon generator (<span class="in">`ST_GeneratePoints`</span> takes a bounding box), so the query samples each polygon's box with a deterministic <span class="in">`hash(feature, column, k)`</span> and keeps the first *n* points that are <span class="in">`ST_Within`</span> the polygon. Because the hash is deterministic, the map looks the same every time instead of reshuffling the dots on each redraw.</span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a><span class="fu">## Formats that fight back</span></span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>**File Geodatabases** are the format I most wanted and the hardest to read. DuckDB-WASM's GDAL build has the OpenFileGDB driver turned off for WebAssembly, so the SQL engine cannot open a <span class="in">`.gdb`</span> at all, and it cannot read inside a zip either. The workaround is <span class="co">[</span><span class="ot">gdal3.js</span><span class="co">](https://gdal3.js.org)</span> (GDAL 3.8.4 compiled to WebAssembly), downloaded only the first time you open a geodatabase, which converts the chosen layer so DuckDB can query it. In a spike on an 818 MB geodatabase it listed layers in 87 ms and converted 4 million parcels to FlatGeobuf in 34 seconds. Compressed (CDF/SDC) geodatabases remain unreadable by any open-source reader, so that format stays marked *experimental*.</span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>**GTFS feeds** are detected by what is inside the zip (stops, routes, trips, stop times and their columns), never by file name, so <span class="in">`GTFS.zip`</span>, <span class="in">`google_transit.zip`</span> and <span class="in">`data.zip`</span> all work. A feed opens as two layers drawn together, <span class="in">`routes`</span> (lines, in each route's own color) and <span class="in">`stops`</span> (points), each its own table.</span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a><span class="fu">## Styles that travel</span></span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>Styles are saved as a **QGIS `.qml` sidecar**, so a styled file looks right in QGIS too, and the app imports and exports QML, SLD and Mapbox GL style JSON. Labels are drawn with system fonts (nothing is downloaded), saved with the style, and included when you export the map image.</span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a><span class="fu">## What I'd say about scope</span></span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>The project has an explicit list of things it will *not* do: feature editing, georeferencing, a processing toolbox, notebooks, plugins, raster analysis, stacked basemaps, multiple map layers. One layer is on the map at a time; multi-file work is done in SQL. Every exception (a globe projection, polygon extrusion, terrain) was a recorded decision. For a tool whose point is "never open QGIS for basic work", staying a quick-look tool matters more than any one feature.</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a><span class="fu">## Privacy and network use</span></span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>Your data stays on your machine. The network is used for the engine's code (downloaded once, then cached), for basemap tiles, and for an opt-out place search that sends only the text you type.</span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a><span class="fu">## Wrapping up</span></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>The code is MIT-licensed on <span class="co">[</span><span class="ot">GitHub</span><span class="co">](https://github.com/ar-puuk/spatial-sql-explorer)</span>, and the <span class="co">[</span><span class="ot">changelog</span><span class="co">](https://github.com/ar-puuk/spatial-sql-explorer/blob/main/CHANGELOG.md)</span> has the details of every release. The project owes a lot to <span class="co">[</span><span class="ot">GeoLibre</span><span class="co">](https://github.com/opengeos/GeoLibre)</span> and <span class="co">[</span><span class="ot">Qiusheng Wu</span><span class="co">](https://github.com/giswqs)</span>, a constant reference for the style panel, basemap picker and data-loading design, and to Kyle Walker's original Spatial SQL Explorer for the idea. If you work with spatial data and want a scratchpad that doesn't need a server, give it a try. Issues and PRs welcome.</span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

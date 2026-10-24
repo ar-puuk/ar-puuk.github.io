@@ -316,7 +316,7 @@ print(f"Downloaded {len(slco_places_gdf)} places")
 print(slco_places_gdf.columns.tolist())
 ```
 
-    ['id', 'version', 'update_time', 'sources', 'confidence', 'websites', 'socials', 'emails', 'phones', 'addresses', 'filename', 'theme', 'type', 'bbox.xmin', 'bbox.xmax', 'bbox.ymin', 'bbox.ymax', 'names.primary', 'names.common', 'names.rules', 'categories.main', 'categories.alternate', 'brand.wikidata', 'brand.names.primary', 'brand.names.common', 'brand.names.rules', 'geometry']
+    ['id', 'bbox', 'version', 'update_time', 'sources', 'names', 'categories', 'confidence', 'websites', 'socials', 'emails', 'phones', 'brand', 'addresses', 'filename', 'theme', 'type', 'geometry']
 
 ## 1.9 Data Visualization
 
@@ -343,14 +343,16 @@ slco_places_sf |>
 
 ``` python
 # Simple quick visualization using GeoPandas
-slco_places_gdf \
-    .sample(n=1000, random_state=123) \
-    .rename(columns={
-        "names.primary": "names_primary",
-        "categories.main": "categories_main"
-    }) \
-    [['names_primary', 'categories_main', 'confidence', 'geometry']] \
+(
+    slco_places_gdf
+    .sample(n=1000, random_state=123)
+    .assign(  # names and categories are struct columns, read back as dicts
+        names_primary=lambda d: d["names"].str["primary"],
+        categories_main=lambda d: d["categories"].str["main"],
+    )
+    .loc[:, ["names_primary", "categories_main", "confidence", "geometry"]]
     .explore(tiles="CartoDB.Voyager", zoom_start=9)
+)
 ```
 
 Make this Notebook Trusted to load map: File -\> Trust Notebook

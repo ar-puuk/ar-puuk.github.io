@@ -1,0 +1,91 @@
+/*
+  Shared styling for project pages (posts/ and work/):
+  - .app-embed-wrapper: a live app embedded in an iframe
+  - .app-links: the "Open app" / "GitHub" button pair
+
+  Colors follow the site theme (assets/theme/_colors.scss): the orange accent
+  and Bootstrap's theme-aware border/background variables, so both adapt to
+  light and dark mode.
+*/
+
+.app-embed-wrapper {
+  --app-accent: #d96e34;
+  --app-accent-hover: #a23e02;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 1.5rem 0 1rem;
+  background: var(--bs-body-bg);
+}
+
+.app-embed-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.9rem;
+  background: rgba(127, 127, 127, 0.1);
+  border-bottom: 1px solid var(--bs-border-color);
+}
+
+.app-embed-label,
+.app-fullscreen-btn {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--app-accent);
+}
+
+.app-embed-label {
+  font-weight: 500;
+}
+
+.app-fullscreen-btn {
+  font-family: inherit;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  padding: 0 0.1rem;
+  cursor: pointer;
+}
+
+.app-fullscreen-btn:hover {
+  color: var(--app-accent-hover);
+  border-bottom-color: currentColor;
+}
+
+.app-embed-frame {
+  width: 100%;
+  height: min(var(--embed-height, 720px), 85vh);
+}
+
+.app-embed-frame.fullscreen {
+  position: fixed;
+  inset: 0;
+  height: 100vh !important;
+  z-index: 9999;
+  background: var(--bs-body-bg);
+}
+
+.app-embed-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* The shared "Open app" / "GitHub" button pair, used under every embed and on
+   employer summary pages. Buttons inherit the theme's .btn colors. */
+.app-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0 0 2rem;
+}
+
+.app-links .btn {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}

@@ -1,152 +1,131 @@
-Most of my day-to-day GIS work happens in R or Python — loading a shapefile, writing a few spatial queries, maybe making a quick map to sanity-check the results. That workflow is fast when you’re already in a scripting environment, but it has real friction when you just want to hand someone a tool to explore a dataset without asking them to install anything, configure a Python environment, or deal with a server.
+Most of my day-to-day GIS work happens in R or Python: load a shapefile, write a few spatial queries, make a quick map to sanity-check the result. That is fast when you are already in a scripting environment, and annoying when you just want to *look* at a file, or hand someone a tool without asking them to install anything.
 
-I wanted something simpler: drop a file in, write a SQL query, see results on a map. No backend, no dependencies, no accounts. That itch eventually became [Spatial SQL Explorer](https://ar-puuk.github.io/spatial-sql-explorer/).
+I wanted something simpler: open a file, write a SQL query, see the answer on a map. No server, no accounts, no desktop GIS. That itch became **Spatial Explorer**. It started in February as a single-page app inspired by [Kyle Walker’s Spatial SQL Explorer](https://personal.tcu.edu/kylewalker/urbangis/sql-explorer/), and it has since been rebuilt into a web app **and** a VS Code extension that share one engine. This post is about what it does now and why it is built the way it is.
 
-## 1 What it is
+> **TIP:**
+>
+> - **Web app**: [ar-puuk.github.io/spatial-sql-explorer](https://ar-puuk.github.io/spatial-sql-explorer/) (embedded below)
+> - **VS Code extension**: *Spatial Explorer: Spatial SQL & Map Viewer*, on the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=arpuuk.spatial-explorer) or [Open VSX](https://open-vsx.org/extension/arpuuk/spatial-explorer) (Cursor, VSCodium and friends)
 
-Spatial SQL Explorer is a single-page application that runs entirely in the browser. You load a GeoJSON, CSV, TSV, or Parquet file; it registers as a DuckDB table; you write SQL against it; results render on a MapLibre GL map alongside a sortable, filterable results table. Everything — the query engine, the spatial extension, the editor, the map — runs client-side via WebAssembly. Your data never leaves your machine.
+## 1 Try it
 
-The live app is embedded below. Load the demo data (Nepal district boundaries) and try running a few queries to get a feel for it.
+Use **Try sample data** for US counties, or drop in your own file. Everything runs in your tab.
 
-⬡ Spatial SQL Explorer
+Spatial Explorer
 
-[↗ Open app](https://ar-puuk.github.io/spatial-sql-explorer/ "Open in new tab") [⌥ GitHub](https://github.com/ar-puuk/spatial-sql-explorer "View source on GitHub")
+Fullscreen
 
-⤢ Fullscreen
+[ Open app](https://ar-puuk.github.io/spatial-sql-explorer/) [ GitHub](https://github.com/ar-puuk/spatial-sql-explorer)
 
-## 2 Why DuckDB in the browser?
+## 2 What it does
 
-The core technology here is [DuckDB-WASM](https://duckdb.org/docs/api/wasm/overview) — a WebAssembly build of the DuckDB analytical engine. When the app starts, it downloads the WASM binary, spins up a worker thread, and gives you a fully capable SQL engine with support for window functions, CTEs, joins, aggregations, and — critically — the spatial extension that enables geometry operations like `ST_Within`, `ST_Intersects`, and `ST_AsGeoJSON`.
+The scope is deliberately small: **look** at a file, **query** it, **style** the result, **export** it.
 
-``` javascript
-const bundle = await duckdb.selectBundle(duckdb.getJsDelivrBundles());
-const worker = new Worker(/* inline worker script */);
-const db = new duckdb.AsyncDuckDB(new duckdb.VoidLogger(), worker);
-await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
-const conn = await db.connect();
+## Look
 
-await conn.query(`INSTALL spatial; LOAD spatial;`);
+- **Formats**: GeoJSON, GeoPackage (several layers), SQLite/SpatiaLite (Cube 7 networks, for example), FlatGeobuf, Shapefile, GeoParquet, Parquet, GML, CSV, PMTiles and Excel. File Geodatabases (experimental) and GTFS transit feeds open too, and a zip opens like the file inside it.
+- A map and an attribute table kept in sync, any source CRS, and **129 basemaps from 26 providers** with real previews, plus a globe view.
+- One search box for layer values, coordinates and places.
+- Map tools: measure distances and areas, draw shapes to select or filter rows (or to use as a SQL table called `drawn`), and turn on terrain with hillshade and elevation. These are scratch geometry only; your data is never edited.
+
+## Query
+
+DuckDB spatial SQL runs against the file by its own name, with autocomplete and inline errors. Results replace the map and the table.
+
+``` sql
+SELECT * FROM us_counties -- <1>
+SELECT * FROM layer -- <2>
+SELECT * FROM us_boundaries.counties -- <3>
+SELECT * FROM ST_Read('data/links.shp') -- <4>
 ```
 
-DuckDB can read files registered directly from browser memory — no server upload needed. When you drop a GeoJSON file onto the drop zone, the app reads it as text, registers it with DuckDB, and runs `ST_Read` on it to parse the geometries into DuckDB’s native binary format:
+1.  The open file `us-counties.parquet` is available under its cleaned-up name.
+2.  …and always as `layer`, whatever it is called.
+3.  A multi-layer file such as a GeoPackage exposes its layers as views in a schema named after the file.
+4.  Other files can be read in the same query: by workspace-relative path in VS Code, or files you have added in the web app.
 
-``` javascript
-await db.registerFileText(`${tableName}.geojson`, text);
-await conn.query(`
-  CREATE TABLE "${tableName}" AS
-  SELECT * FROM ST_Read('${tableName}.geojson')
-`);
+There are also **24 ready-made snippets** that fill in the open layer’s own table and column names, and a word search (ranked, with stemming) beside the plain text search.
+
+## Style
+
+Single, categorized, graduated (by a column or a SQL expression), continuous, as-is, bivariate, rule-based, heatmap and cluster styles, with ramps previewed on the map. Under **Vary by attribute**, several properties can each follow their own column (size, width, outline, shape, pattern, opacity, rotation), so one map can show roads colored by level of service *and* widened by traffic. Labels, layer opacity and 3D polygon extrusion are there too, and styles are saved as a QGIS `.qml` sidecar.
+
+## Analyze
+
+- **Grid cells**: bin any layer into H3 hexagons or A5 equal-area pentagons, counted or averaged per cell, with a live preview and the SQL it writes.
+- **Dot density**: one dot stands for an amount you choose, placed at random inside its polygons, with up to six columns in their own colors.
+- A **time slider** that filters the map and table by a date column and plays across time, and arrows that show the direction of lines.
+
+## Export and print
+
+Export all, filtered or selected rows to GeoParquet, GeoPackage, GeoJSON, newline-delimited GeoJSON, FlatGeobuf, Shapefile, KML, CSV, Parquet, Excel or JSON, in any EPSG CRS. **Print** lays the map out as a page (paper size, title, legend, scale bar, north arrow, a table and chart of the rows, even an atlas with a page per feature) and saves PNG, PDF or SVG with editable text.
+
+## 3 One codebase, two shells
+
+The first version was a single page of JavaScript with module-level state, and it showed. It worked, but sharing a link or restoring a session meant threading state through everything. When I wanted a VS Code extension, I rebuilt it so the engine and the interface don’t know which shell they are in.
+
+``` mermaid
+flowchart TD
+  W["apps/web<br>browser shell"] --> UI
+  X["apps/vscode-ext<br>custom editor + webview"] --> UI
+  UI["packages/ui<br>map, table, panels"] --> CORE
+  CORE["packages/core<br>sources, queries, styles, export"] --> DB["DuckDB-WASM"]
 ```
 
-Parquet files get the same treatment via `registerFileBuffer`, which handles the binary format efficiently. The fact that DuckDB can query Parquet in-browser is something I still find genuinely impressive — you can drop a multi-million-row Parquet file and run aggregate queries on it without leaving the browser tab.
+`packages/core` and `packages/ui` are forbidden (by a lint rule) from importing `vscode`, touching the File API or using IndexedDB. Anything platform-specific goes through one interface, the `HostAdapter`: pick the theme, open files, read a file as bytes or a URL for range reads, save a file, persist state, set a status. The web app implements it with the browser; the extension implements it with the VS Code API. Each custom-editor webview gets its own DuckDB instance.
 
-## 3 Geometry in the query pipeline
+The stack is Svelte 5, Vite and strict TypeScript, [MapLibre GL JS](https://maplibre.org/) for the map, [CodeMirror 6](https://codemirror.net/) for the SQL editor, [Terra Draw](https://github.com/JamesLMilner/terra-draw) for drawing, and DuckDB-WASM underneath.
 
-One design decision that took some iteration was how to handle geometry columns between DuckDB and MapLibre. DuckDB’s spatial extension stores geometry as WKB (Well-Known Binary), which Arrow serializes as a binary column. MapLibre, on the other hand, expects GeoJSON.
+## 4 Running DuckDB in a webview
 
-The approach I landed on: detect WKB columns by their Arrow type ID after the query runs, then re-run the query wrapped in a `ST_AsGeoJSON` call to convert geometries on the fly:
+DuckDB-WASM is the heart of it: a WebAssembly build of the DuckDB analytical engine, including the spatial extension that provides `ST_Within`, `ST_Intersects`, `ST_Transform` and friends.
 
-``` javascript
-const geomCols = result.schema.fields.filter(f =>
-  f.type?.toString().toLowerCase().includes('binary') || f.typeId === 12
-);
+In the first version I leaned on multi-threading, which needs `SharedArrayBuffer`, which needs special response headers that GitHub Pages cannot set. A service worker (`coi-serviceworker`) papered over that. VS Code webviews can’t use that trick, so the rebuild uses the **single-threaded DuckDB-WASM bundle in both shells**. One engine configuration to test is worth more than the speed-up.
 
-if (geomCols.length > 0) {
-  const col = geomCols[0].name;
-  result = await conn.query(
-    `SELECT * EXCLUDE ("${col}"), ST_AsGeoJSON("${col}") AS "${col}"
-     FROM (${cappedSql})`
-  );
-}
-```
+A few decisions followed from taking the engine seriously:
 
-This keeps the API clean — you write `SELECT * FROM districts` and get geometry on the map automatically, without having to wrap every query in `ST_AsGeoJSON` yourself.
+- **The engine is not bundled.** DuckDB-WASM, its extensions (spatial, parquet, json, and the optional full-text search, H3 and A5) and sql.js are downloaded once from pinned URLs and **checked against SHA-256 hashes** recorded in the repo, then cached locally (Cache Storage on the web, extension storage in VS Code), so later starts work offline.
+- **There is a known ceiling.** The engine’s memory limit is about 3.1 GiB in both shells, which I measured rather than assumed, and the design works around it.
+- **Reads are ranged where possible**, so the whole file is not copied into the webview.
 
-## 4 The SQL editor
+## 5 Big data without re-querying on every pan
 
-The editor is [CodeMirror 6](https://codemirror.net/), which I chose because its extension-based architecture makes it possible to do schema-aware SQL autocomplete with very little boilerplate. Whenever a table is loaded, the schema gets pushed into CodeMirror’s SQL language extension:
+Drawing a million features as GeoJSON would freeze any tab, and re-running a query on every pan is slow. The rule is a size threshold:
 
-``` javascript
-const schema = {};
-loadedTablesMeta.forEach(t => { schema[t.name] = t.columns; });
-editorView.dispatch({
-  effects: sqlSchemaCompartment.reconfigure(
-    cmSql({ dialect: StandardSQL, schema, upperCaseKeywords: true })
-  )
-});
-```
+- Results under **100,000 rows** (and files under 100 MiB) are converted to GeoJSON once and drawn from memory.
+- Larger ones are drawn from **vector tiles that DuckDB builds per tile** with `ST_AsMVT`, served to MapLibre through a custom protocol handler. A “Load all” link is there if you really want everything.
 
-The `Compartment` abstraction here was something I had to dig into. CodeMirror 6’s architecture is immutable-state-first: rather than mutating editor configuration, you replace it via dispatched transactions. The `Compartment` wraps a specific piece of the extension tree — in this case, the SQL language configuration — so you can hot-swap it without tearing down and rebuilding the entire editor. This keeps the cursor position, undo history, and scroll position intact when a new table is loaded.
+That is how files with millions of rows and several gigabytes stay pannable.
 
-The same pattern is used for the theme: wrapping `EditorView.theme(...)` in its own `Compartment` so that toggling between light and dark mode instantly updates gutter colors, selection highlights, and autocomplete styles without a page refresh.
+## 6 The query *is* the product
 
-## 5 Map styling
+Several features that look like dialogs are really generators of SQL, and show you the SQL.
 
-The style panel supports three modes — Single, Graduated (choropleth), and Categorical — all of which translate into MapLibre GL paint expressions at apply time.
+**Grid cells** bin a layer into H3 or A5 cells with a live preview. The SQL it writes is the same SQL a power user would write, so you can copy it, change it, and run it as a normal query. The result gets the same styling and export as any other.
 
-Graduated styling uses `step` expressions, which MapLibre evaluates at the tile rendering level rather than in JavaScript. This means the coloring logic runs in the GPU pipeline, not in the main thread, so it scales well to large feature sets:
+**Dot density** is the best example. DuckDB has no point-in-polygon generator (`ST_GeneratePoints` takes a bounding box), so the query samples each polygon’s box with a deterministic `hash(feature, column, k)` and keeps the first *n* points that are `ST_Within` the polygon. Because the hash is deterministic, the map looks the same every time instead of reshuffling the dots on each redraw.
 
-``` javascript
-const stepExpr = ['step', ['get', col], ramp[0]];
-for (let i = 1; i < n; i++) {
-  stepExpr.push(breaks[i]);
-  stepExpr.push(ramp[i]);
-}
-map.setPaintProperty('query-polygons', 'fill-color', stepExpr);
-```
+## 7 Formats that fight back
 
-For classification, the app supports Quantile, Equal Interval, and Natural Breaks (Jenks). I implemented Jenks from scratch since there’s no obvious lightweight library for it — it’s the standard dynamic programming approach, running in O(n·k²) time where n is the number of values and k is the number of classes. For the sizes of datasets this tool handles, it’s fast enough.
+**File Geodatabases** are the format I most wanted and the hardest to read. DuckDB-WASM’s GDAL build has the OpenFileGDB driver turned off for WebAssembly, so the SQL engine cannot open a `.gdb` at all, and it cannot read inside a zip either. The workaround is [gdal3.js](https://gdal3.js.org) (GDAL 3.8.4 compiled to WebAssembly), downloaded only the first time you open a geodatabase, which converts the chosen layer so DuckDB can query it. In a spike on an 818 MB geodatabase it listed layers in 87 ms and converted 4 million parcels to FlatGeobuf in 34 seconds. Compressed (CDF/SDC) geodatabases remain unreadable by any open-source reader, so that format stays marked *experimental*.
 
-Categorical styling has one subtle issue worth mentioning: MapLibre’s `match` expression is strictly typed, so a numeric property value `1` never matches the string `"1"`. Since the same column might be typed as integers in DuckDB but come through as numbers in properties, I coerce values at match time:
+**GTFS feeds** are detected by what is inside the zip (stops, routes, trips, stop times and their columns), never by file name, so `GTFS.zip`, `google_transit.zip` and `data.zip` all work. A feed opens as two layers drawn together, `routes` (lines, in each route’s own color) and `stops` (points), each its own table.
 
-``` javascript
-const match = ['match', ['to-string', ['get', col]]];
-unique.forEach((v, i) => {
-  match.push(String(v));
-  match.push(CATEGORICAL_PALETTE[i % CATEGORICAL_PALETTE.length]);
-});
-match.push('#aaaaaa'); // fallback
-```
+## 8 Styles that travel
 
-## 6 Session persistence and URL sharing
+Styles are saved as a **QGIS `.qml` sidecar**, so a styled file looks right in QGIS too, and the app imports and exports QML, SLD and Mapbox GL style JSON. Labels are drawn with system fonts (nothing is downloaded), saved with the style, and included when you export the map image.
 
-The app uses IndexedDB to persist loaded tables across sessions. When a file is loaded, its raw content is stored in IndexedDB alongside its format. On next visit, the app reads all stored tables back into DuckDB before rendering the UI — so your data and last query are waiting for you when you return.
+## 9 What I’d say about scope
 
-URL sharing works by encoding the current SQL query and style settings as a base64 JSON blob in the URL hash:
+The project has an explicit list of things it will *not* do: feature editing, georeferencing, a processing toolbox, notebooks, plugins, raster analysis, stacked basemaps, multiple map layers. One layer is on the map at a time; multi-file work is done in SQL. Every exception (a globe projection, polygon extrusion, terrain) was a recorded decision. For a tool whose point is “never open QGIS for basic work”, staying a quick-look tool matters more than any one feature.
 
-``` javascript
-const state = { sql, style: { ...styleSettings }, tables, hasDemo };
-const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
-history.replaceState(null, '', `#state=${encoded}`);
-```
+## 10 Privacy and network use
 
-The share link encodes the *query and style*, not the data itself — recipients need to load the same file. This is a reasonable tradeoff for a fully client-side tool. For tables that are just the demo dataset, the link includes a `hasDemo` flag so the app can auto-load the demo data when the link is opened.
+Your data stays on your machine. The network is used for the engine’s code (downloaded once, then cached), for basemap tiles, and for an opt-out place search that sends only the text you type.
 
-## 7 The SharedArrayBuffer constraint
+## 11 Wrapping up
 
-DuckDB-WASM uses SharedArrayBuffer for its WASM threading model, which requires the page to be served with `Cross-Origin-Embedder-Policy: require-corp` and `Cross-Origin-Opener-Policy: same-origin` headers. GitHub Pages doesn’t let you set custom response headers.
-
-The workaround is [coi-serviceworker](https://github.com/gzuidhof/coi-serviceworker): a service worker that intercepts the page’s own requests and injects these headers. One constraint that burned me during development: the service worker’s scope is limited to its own directory. `coi-serviceworker.min.js` must live in the project root alongside `index.html` — if you move it into a subdirectory, it can’t intercept the root page and DuckDB fails silently with an infinite reload loop.
-
-## 8 Demo data: Nepal districts
-
-The included demo dataset is Nepal’s 77 district boundaries from the Survey Department of Nepal. Nepal has three tiers of administrative boundaries — provinces, districts, and municipalities — and the district level is the one most commonly used for regional analysis. The dataset includes attributes like province, district name, area, and population that make it a reasonable playground for trying graduated and categorical styling.
-
-It’s also, admittedly, a personal choice. I grew up in Nepal, and most of my professional work is on transportation planning in the US. This project sits in neither domain directly, but it felt right to use a dataset from home for the demo.
-
-## 9 What I’d do differently
-
-A few things I’d reconsider if starting over:
-
-**State management.** Style state, table metadata, selection state, and filter state all live as module-level `let` variables. It works, but a simple reducer pattern would have made the URL sharing and session restore logic considerably cleaner.
-
-**The `demo` table name assumption.** The URL-sharing logic has to know that the demo table is called `nepal_districts` to correctly reconstruct state from a shared link. This name is hardcoded in several places. A better design would treat the demo like any other loaded file and infer the table name dynamically.
-
-## 10 Wrapping up
-
-This was a genuinely fun project to build. Working with DuckDB-WASM pushed me to understand more about the WebAssembly execution model than I expected to, and CodeMirror 6’s architecture — while steep at first — is elegant once you understand the `Compartment`/transaction model.
-
-If you’re doing spatial data work and want a scratchpad that doesn’t require spinning up a server, give it a try. The code is on [GitHub](https://github.com/ar-puuk/spatial-sql-explorer) — issues and PRs welcome.
+The code is MIT-licensed on [GitHub](https://github.com/ar-puuk/spatial-sql-explorer), and the [changelog](https://github.com/ar-puuk/spatial-sql-explorer/blob/main/CHANGELOG.md) has the details of every release. The project owes a lot to [GeoLibre](https://github.com/opengeos/GeoLibre) and [Qiusheng Wu](https://github.com/giswqs), a constant reference for the style panel, basemap picker and data-loading design, and to Kyle Walker’s original Spatial SQL Explorer for the idea. If you work with spatial data and want a scratchpad that doesn’t need a server, give it a try. Issues and PRs welcome.
 
 ## Citation
 
@@ -155,7 +134,8 @@ BibTeX citation:
 ``` quarto-appendix-bibtex
 @online{bhandari2026,
   author = {Bhandari, Pukar},
-  title = {Building a {Client-Side} {Spatial} {SQL} {Explorer}},
+  title = {Spatial {Explorer:} {Spatial} {SQL} for {Maps,} in the
+    {Browser} and in {VS} {Code}},
   date = {2026-02-25},
   url = {https://ar-puuk.github.io/posts/spatial-sql-exporer/},
   langid = {en}
@@ -164,4 +144,4 @@ BibTeX citation:
 
 For attribution, please cite this work as:
 
-Bhandari, Pukar. 2026. “Building a Client-Side Spatial SQL Explorer.” February 25. <https://ar-puuk.github.io/posts/spatial-sql-exporer/>.
+Bhandari, Pukar. 2026. “Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code.” February 25. <https://ar-puuk.github.io/posts/spatial-sql-exporer/>.

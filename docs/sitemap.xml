@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://ar-puuk.github.io/work/se2025-h3/index.html</loc>
+    <lastmod>2026-10-23T20:44:42.777Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/work/housing-site-evaluator/index.html</loc>
+    <lastmod>2026-10-23T20:44:42.777Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/work/commute-patterns/index.html</loc>
+    <lastmod>2026-10-23T20:44:42.776Z</lastmod>
+  </url>
+  <url>
     <loc>https://ar-puuk.github.io/resume.html</loc>
     <lastmod>2026-10-23T16:35:43.498Z</lastmod>
   </url>
@@ -10,27 +22,39 @@
   </url>
   <url>
     <loc>https://ar-puuk.github.io/posts/wget-gui/index.html</loc>
-    <lastmod>2026-10-23T16:35:43.478Z</lastmod>
+    <lastmod>2026-10-23T20:44:42.775Z</lastmod>
   </url>
   <url>
     <loc>https://ar-puuk.github.io/posts/uscensus-dashboard/index.html</loc>
     <lastmod>2026-10-23T16:35:43.172Z</lastmod>
   </url>
   <url>
-    <loc>https://ar-puuk.github.io/posts/spatial-sql-exporer/index.html</loc>
-    <lastmod>2026-10-23T16:35:42.984Z</lastmod>
+    <loc>https://ar-puuk.github.io/posts/storymap_my_journey/index.html</loc>
+    <lastmod>2026-10-23T19:53:10.905Z</lastmod>
   </url>
   <url>
-    <loc>https://ar-puuk.github.io/posts/robocopy-gui/index.html</loc>
-    <lastmod>2026-10-23T16:35:41.609Z</lastmod>
+    <loc>https://ar-puuk.github.io/posts/socioeconomic-demo/index.html</loc>
+    <lastmod>2026-10-23T22:39:57.673Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/posts/pukrhelpers/index.html</loc>
+    <lastmod>2026-10-23T20:44:42.778Z</lastmod>
   </url>
   <url>
     <loc>https://ar-puuk.github.io/posts/parquet-explorer/index.html</loc>
-    <lastmod>2026-10-23T16:35:41.588Z</lastmod>
+    <lastmod>2026-10-23T20:44:42.773Z</lastmod>
   </url>
   <url>
     <loc>https://ar-puuk.github.io/posts/omx-viewer/index.html</loc>
-    <lastmod>2026-10-23T16:35:41.431Z</lastmod>
+    <lastmod>2026-10-23T20:44:42.773Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/posts/education-explorer/index.html</loc>
+    <lastmod>2026-10-23T20:44:42.771Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/posts/borderline/index.html</loc>
+    <lastmod>2026-10-23T20:44:42.769Z</lastmod>
   </url>
   <url>
     <loc>https://ar-puuk.github.io/index.html</loc>
@@ -53,31 +77,55 @@
     <lastmod>2026-10-23T16:35:40.255Z</lastmod>
   </url>
   <url>
+    <loc>https://ar-puuk.github.io/posts/drut/index.html</loc>
+    <lastmod>2026-10-23T20:44:42.770Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/posts/freight-explorer/index.html</loc>
+    <lastmod>2026-10-23T20:44:42.771Z</lastmod>
+  </url>
+  <url>
     <loc>https://ar-puuk.github.io/posts/nepal-population-density/index.html</loc>
     <lastmod>2026-10-23T16:35:41.406Z</lastmod>
   </url>
   <url>
     <loc>https://ar-puuk.github.io/posts/overture-data-download/index.html</loc>
-    <lastmod>2026-10-23T16:35:41.437Z</lastmod>
+    <lastmod>2026-10-23T22:07:51.273Z</lastmod>
   </url>
   <url>
     <loc>https://ar-puuk.github.io/posts/population-pyramid-explorer/index.html</loc>
     <lastmod>2026-10-23T16:35:41.596Z</lastmod>
   </url>
   <url>
-    <loc>https://ar-puuk.github.io/posts/socioeconomic-demo/index.html</loc>
-    <lastmod>2026-10-23T16:35:41.695Z</lastmod>
+    <loc>https://ar-puuk.github.io/posts/robocopy-gui/index.html</loc>
+    <lastmod>2026-10-23T20:44:42.776Z</lastmod>
   </url>
   <url>
-    <loc>https://ar-puuk.github.io/posts/storymap_my_journey/index.html</loc>
-    <lastmod>2026-10-23T19:53:10.905Z</lastmod>
+    <loc>https://ar-puuk.github.io/posts/spatial-sql-exporer/index.html</loc>
+    <lastmod>2026-10-23T20:44:42.774Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/posts/ugrc-styles/index.html</loc>
+    <lastmod>2026-10-23T20:44:42.775Z</lastmod>
   </url>
   <url>
     <loc>https://ar-puuk.github.io/projects.html</loc>
-    <lastmod>2026-10-23T16:35:43.479Z</lastmod>
+    <lastmod>2026-10-23T20:36:37.216Z</lastmod>
   </url>
   <url>
     <loc>https://ar-puuk.github.io/research/index.html</loc>
     <lastmod>2026-10-23T16:35:43.498Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/work/commute-explorer/index.html</loc>
+    <lastmod>2026-10-23T20:44:42.776Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/work/gtfs-vs-tdm/index.html</loc>
+    <lastmod>2026-10-23T20:44:42.777Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ar-puuk.github.io/work/opportunity-zones-info-sheets/index.html</loc>
+    <lastmod>2026-10-23T20:44:42.777Z</lastmod>
   </url>
 </urlset>

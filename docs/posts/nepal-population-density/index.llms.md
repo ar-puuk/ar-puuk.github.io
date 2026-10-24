@@ -246,9 +246,9 @@ outfile <- here::here("posts/nepal-population-density/plots/final_plot.png")
 }
 ```
 
-    Rendering started: 2025-08-31 10:04:56.995696 
+    Rendering started: 2026-10-23 15:25:58.679565 
 
-    Rendering completed in: 5.36727086702983 
+    Rendering completed in: 11.3688627680143 
 
 ## 7 Post-Processing and Annotation
 

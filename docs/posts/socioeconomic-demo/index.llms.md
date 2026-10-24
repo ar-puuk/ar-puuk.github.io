@@ -91,13 +91,13 @@ dir.create(output_spatial, showWarnings = FALSE, recursive = TRUE)
 print(paste("Data Directory:", data_dir))
 ```
 
-    [1] "Data Directory: C:/Users/Pukar.Bhandari/Documents/GitHub/ar-puuk.github.io/posts/socioeconomic-demo/data"
+    [1] "Data Directory: D:/GitHub/ar-puuk.github.io/posts/socioeconomic-demo/data"
 
 ``` r
 print(paste("Output Directory:", output_dir))
 ```
 
-    [1] "Output Directory: C:/Users/Pukar.Bhandari/Documents/GitHub/ar-puuk.github.io/posts/socioeconomic-demo/output"
+    [1] "Output Directory: D:/GitHub/ar-puuk.github.io/posts/socioeconomic-demo/output"
 
 ##  Python
 
@@ -123,13 +123,13 @@ output_spatial.mkdir(parents=True, exist_ok=True)
 print(f"Data Directory: {data_dir.resolve()}")
 ```
 
-    Data Directory: C:\Users\Pukar.Bhandari\Documents\GitHub\ar-puuk.github.io\posts\socioeconomic-demo\data
+    Data Directory: D:\GitHub\ar-puuk.github.io\posts\socioeconomic-demo\data
 
 ``` python
 print(f"Output Directory: {output_dir.resolve()}")
 ```
 
-    Output Directory: C:\Users\Pukar.Bhandari\Documents\GitHub\ar-puuk.github.io\posts\socioeconomic-demo\output
+    Output Directory: D:\GitHub\ar-puuk.github.io\posts\socioeconomic-demo\output
 
 ## 1.3 Set global options and parameters
 
@@ -167,19 +167,13 @@ API authentication enables access to detailed demographic and economic datasets 
 >
 > Get one for free at [census.gov/developers](https://www.census.gov/developers/)
 
-##  R
+Put the key in a file named `_environment.local` at the project root. Quarto loads it for both the R and Python engines, and the repository’s `.gitignore` already excludes `_*.local` files, so the key is stored in one place and never committed:
 
-``` r
-# Set your API key into environment
-tidycensus::census_api_key("your_api_key_here", install = TRUE)
+``` text
+CENSUS_API_KEY=your_api_key_here
 ```
 
-##  Python
-
-``` python
-# Set your API key into environment
-os.environ['CENSUS_API_KEY'] = 'your_api_key_here'
-```
+`tidycensus` reads `CENSUS_API_KEY` on its own, and the Python code below passes `os.getenv("CENSUS_API_KEY")` to the API.
 
 # 2 Define study area
 
@@ -417,7 +411,7 @@ lscog_dec <- tidycensus::get_decennial(
   cb = FALSE,
   geometry = TRUE,
   keep_geo_vars = TRUE,
-  # key = Sys.getenv('CENSUS_API_KEY'),
+  key = Sys.getenv('CENSUS_API_KEY'),
   variables = dec_variables
 ) |>
   sf::st_transform(project_crs) |>
@@ -484,7 +478,7 @@ lscog_dec = get_census(
     variables=list(dec_variables.keys()),
     params={
         "for": f"block:*",
-        # "key": f"{os.getenv('CENSUS_API_KEY')}",
+        "key": os.getenv('CENSUS_API_KEY'),
         "in": f"state:{state_fips} county:{','.join(county_fips)}"
     },
     return_geoid=True,
@@ -566,7 +560,7 @@ lscog_acs <- tidycensus::get_acs(
   output = "wide",
   cb = FALSE,
   geometry = TRUE,
-  # key = Sys.getenv('CENSUS_API_KEY'),
+  key = Sys.getenv('CENSUS_API_KEY'),
   variables = acs_variables
 ) |>
   sf::st_transform(project_crs) |>
@@ -654,7 +648,7 @@ lscog_acs = get_census(
     variables=list(acs_variables.keys()),
     params={
         "for": f"block group:*",
-        # "key": f"{os.getenv('CENSUS_API_KEY')}",
+        "key": os.getenv('CENSUS_API_KEY'),
         "in": f"state:{state_fips} county:{','.join(county_fips)}"
     },
     return_geoid=True,
