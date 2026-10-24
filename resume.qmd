@@ -39,7 +39,10 @@ cv:
 <div class="embed-container">
   <iframe
   src="assets/pdfs/Resume_PukarBhandari_April2026.pdf"
-  style="border: 0.5px"></iframe>
+  title="Resume (PDF)"
+  style="border: 0.5px">
+  <p>Your browser cannot display the embedded PDF. <a href="assets/pdfs/Resume_PukarBhandari_April2026.pdf">Open the resume as a PDF</a>.</p>
+  </iframe>
 </div>
 ```
 

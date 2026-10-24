@@ -30,6 +30,9 @@ If you have questions about transportation planning methodologies, want to discu
 ::: {.g-col-6 #form}
 
 <form action="https://formspree.io/f/xpwljwar" method="POST" accept-charset="utf-8">
+<!-- redirect after a successful send (Formspree) and a honeypot field that real visitors never see -->
+<input type="hidden" name="_next" value="https://ar-puuk.github.io/thanks.html">
+<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px;">
 
 
 <label for="full-name">Full Name</label>
@@ -43,6 +46,8 @@ If you have questions about transportation planning methodologies, want to discu
 
 <button type="submit" class="btn btn-primary mt-4">Send message</button>
 </form>
+
+Prefer email? Write to <a href="mailto:pukar.bhandari@outlook.com">pukar.bhandari@outlook.com</a>.
 :::
 
 :::
