@@ -1,311 +1,221 @@
-[![](./posts/education-explorer/education_explorer.png)](posts/education-explorer/index.llms.md)
+[![Utah Education Explorer map of public schools, private schools and colleges as clustered markers, with a layers panel and a year timeline.](./posts/education-explorer/education_explorer.png)](posts/education-explorer/index.llms.md)
 
 ### [An Education Explorer for Public NCES Data](posts/education-explorer/index.llms.md)
 
-[Schools, colleges and district boundaries on one map, with 25+ years of history](posts/education-explorer/index.llms.md)
-
 A static, map-first dashboard for publicly available NCES data (CCD, PSS, IPEDS) for one U.S. state at a time, powered by DuckDB-WASM.
 
-Oct 19, 2026
+Oct 2026
 
-Pukar Bhandari
-
-[![](./posts/freight-explorer/freight_explorer.jpg)](posts/freight-explorer/index.llms.md)
+[![Freight Explorer dashboard for Utah with freight flow lines on a map, summary tonnage and value figures, and mode and direction charts.](./posts/freight-explorer/freight_explorer.jpg)](posts/freight-explorer/index.llms.md)
 
 ### [A Zero-Cost Freight Flow Explorer for Utah](posts/freight-explorer/index.llms.md)
 
-[FAF origin-destination flows, DuckDB-WASM, and deck.gl — no backend required](posts/freight-explorer/index.llms.md)
-
 A map-first explorer for the public Freight Analysis Framework (FAF) data, built as a static site that queries Parquet files directly in the browser.
 
-Oct 19, 2026
+Oct 2026
 
-Pukar Bhandari
-
-[![](./posts/ugrc-styles/ugrc_styles.png)](posts/ugrc-styles/index.llms.md)
+[![UGRC Vector Map Tile Styles editor showing a dark Salt Lake City basemap and a layer list.](./posts/ugrc-styles/ugrc_styles.png)](posts/ugrc-styles/index.llms.md)
 
 ### [Restyling Utah’s Vector Basemap for MapLibre](posts/ugrc-styles/index.llms.md)
 
-[Dark and warm-light themes for UGRC’s Lite basemap, plus a browser-based style editor](posts/ugrc-styles/index.llms.md)
-
 Alternate MapLibre styles for UGRC’s Lite vector basemap, generated from live upstream sources, and a visual editor to tweak, compare and download them.
 
-Sep 29, 2026
+Sep 2026
 
-Pukar Bhandari
-
-[![](./posts/borderline/borderline.png)](posts/borderline/index.llms.md)
+[![Borderline game start screen with mode, difficulty, timing and round options and a Play button, in a dark theme.](./posts/borderline/borderline.png)](posts/borderline/index.llms.md)
 
 ### [Borderline: A U.S. Geography Guessing Game](posts/borderline/index.llms.md)
 
-[Name a state, click its outline — no interior borders to give it away](posts/borderline/index.llms.md)
-
 A browser geography game for U.S. states and counties, built as plain static HTML, CSS and JavaScript with no build step.
 
-Sep 21, 2026
+Sep 2026
 
-Pukar Bhandari
-
-[![](./posts/drut/drut.png)](posts/drut/index.llms.md)
+[![Drut documentation page introducing the Cube Voyager script linter, formatter and editor tooling suite.](./posts/drut/drut.png)](posts/drut/index.llms.md)
 
 ### [Drut: Linting and Formatting for Cube Voyager Scripts](posts/drut/index.llms.md)
 
-[A Rust-based toolchain and VS Code extension for travel-demand model control-statement files](posts/drut/index.llms.md)
-
 Drut is a linter, formatter and editor tooling suite for Cube Voyager scripts (.s / .block), with a CLI, a language server for VS Code, and an MCP server.
 
-Aug 20, 2026
+Aug 2026
 
-Pukar Bhandari
-
-[![](./work/gtfs-vs-tdm/gtfs_vs_tdm.png)](work/gtfs-vs-tdm/index.llms.md)
+[![Map comparing GTFS transit lines and stops with travel demand model transit lines along the Wasatch Front.](./work/gtfs-vs-tdm/gtfs_vs_tdm.png)](work/gtfs-vs-tdm/index.llms.md)
 
 ### [GTFS vs. TDM Transit Network Comparison](work/gtfs-vs-tdm/index.llms.md)
 
-[Visually checking the travel demand model’s transit network against published GTFS](work/gtfs-vs-tdm/index.llms.md)
-
 A web map for comparing the base-year transit network in the Wasatch Front travel demand model with GTFS transit data. Developed at the Wasatch Front Regional Council.
 
-Jul 2, 2026
+Jul 2026
 
-Pukar Bhandari
-
-[![](./work/commute-explorer/commute_explorer.png)](work/commute-explorer/index.llms.md)
+[![Commute Flow Explorer map of the Wasatch Front with commute flow lines scaled by volume.](./work/commute-explorer/commute_explorer.png)](work/commute-explorer/index.llms.md)
 
 ### [Commute Flow Explorer](work/commute-explorer/index.llms.md)
 
-[Place your own analysis points and compare commuter flows between them](work/commute-explorer/index.llms.md)
-
 A client-side web app for exploring origin-destination commuter flows across the Wasatch Front using H3 cells and DuckDB-WASM. Developed at the Wasatch Front Regional Council.
 
-Jun 26, 2026
+Jun 2026
 
-Pukar Bhandari
-
-[![](./work/opportunity-zones-info-sheets/oz_tract_map.png)](work/opportunity-zones-info-sheets/index.llms.md)
+[![Map of a census tract outlined in dark blue with transit and land-use context.](./work/opportunity-zones-info-sheets/oz_tract_map.png)](work/opportunity-zones-info-sheets/index.llms.md)
 
 ### [Opportunity Zones 2.0 Tract Info Sheets](work/opportunity-zones-info-sheets/index.llms.md)
 
-[Auto-generated PDF info sheets for every eligible census tract in the WFRC and MAG region](work/opportunity-zones-info-sheets/index.llms.md)
-
 A Quarto and R pipeline that builds county summary and per-tract detail PDFs for Utah’s Opportunity Zones 2.0 eligible list. Developed at the Wasatch Front Regional Council.
 
-May 28, 2026
+May 2026
 
-Pukar Bhandari
-
-[![](./work/commute-patterns/commute_patterns.png)](work/commute-patterns/index.llms.md)
+[![Utah Commuter Flow Patterns dashboard with a map of Salt Lake City inflow, top flow bars and a commute length chart.](./work/commute-patterns/commute_patterns.png)](work/commute-patterns/index.llms.md)
 
 ### [Utah Commuter Flow Patterns](work/commute-patterns/index.llms.md)
 
-[An open-source rebuild of WFRC’s Regional Commuter Flows map](work/commute-patterns/index.llms.md)
-
 An interactive, client-side map of commute flows across Utah, built on LEHD LODES data and open-source tools. Developed at the Wasatch Front Regional Council.
 
-May 17, 2026
+May 2026
 
-Pukar Bhandari
-
-[![](./work/se2025-h3/se2025_h3.png)](work/se2025-h3/index.llms.md)
+[![Map of H3 hexagons on the Wasatch Front shaded by population and employment density, with a smoothed versus raw swipe divider.](./work/se2025-h3/se2025_h3.png)](work/se2025-h3/index.llms.md)
 
 ### [SE 2025 Urban Form D Variables (H3)](work/se2025-h3/index.llms.md)
 
-[Six urban-form measures on H3 hexagons for the WFRC and MAG region](work/se2025-h3/index.llms.md)
-
 Calculates the D variables of urban form (density, diversity, design, destinations, demographics, distance to transit) for the Wasatch Front region at H3 resolution. Developed at the Wasatch Front Regional Council.
 
-May 14, 2026
+May 2026
 
-Pukar Bhandari
-
-[![](./slides/activitysim-accessibility/activitysim_accessibility.png)](slides/activitysim-accessibility/index.llms.md)
+[![Title slide: Initialization and Accessibility, an ActivitySim deep dive for travel demand modelers.](./slides/activitysim-accessibility/activitysim_accessibility.png)](slides/activitysim-accessibility/index.llms.md)
 
 ### [ActivitySim Initialization & Accessibility](slides/activitysim-accessibility/index.llms.md)
 
-[Components Deep Dive for Travel Demand Modelers](slides/activitysim-accessibility/index.llms.md)
+A deep dive for travel demand modelers on how ActivitySim loads data, validates inputs, and computes its first aggregate measure, accessibility.
 
-Apr 19, 2026
+Apr 2026
 
-Pukar Bhandari
-
-[![](./posts/parquet-explorer/parquet_explorer.png)](posts/parquet-explorer/index.llms.md)
+[![Parquet Explorer with a column list, a map of points, a data table and a schema panel for a Nodes.parquet file.](./posts/parquet-explorer/parquet_explorer.png)](posts/parquet-explorer/index.llms.md)
 
 ### [Building a Client-Side Geo/Parquet File Viewer](posts/parquet-explorer/index.llms.md)
 
-[Built on webassembly, works in browser, and data never leaves your computer](posts/parquet-explorer/index.llms.md)
+A browser-based viewer for GeoParquet and Parquet files with SQL and map views. It runs on WebAssembly, so the data stays on your computer.
 
-Apr 12, 2026
+Apr 2026
 
-Pukar Bhandari
-
-[![](./posts/omx-viewer/omx_viewer.png)](posts/omx-viewer/index.llms.md)
+[![OMX Viewer showing a 3,629 by 3,629 trip matrix as a scrollable table with a file info side panel.](./posts/omx-viewer/omx_viewer.png)](posts/omx-viewer/index.llms.md)
 
 ### [Building a Client-Side Open Matrix (OMX) File Viewer](posts/omx-viewer/index.llms.md)
 
-[Built on webassembly, works in browser, and data never leaves your computer](posts/omx-viewer/index.llms.md)
+A browser-based viewer for OMX matrix files from travel demand models. It runs on WebAssembly, so the data never leaves your computer.
 
-Apr 11, 2026
+Apr 2026
 
-Pukar Bhandari
-
-[![](./slides/prompt-engineering/prompt_engineering.png)](slides/prompt-engineering/index.llms.md)
+[![Title slide for Prompt Engineering Best Practices over a darkened photo of a humanoid robot reading.](./slides/prompt-engineering/prompt_engineering.png)](slides/prompt-engineering/index.llms.md)
 
 ### [Prompt Engineering Best Practices](slides/prompt-engineering/index.llms.md)
 
-[For Analytics & Modeling](slides/prompt-engineering/index.llms.md)
+Slides on prompt engineering best practices for analytics and modeling work, presented in WFRC’s Tech, Skills, and Beyond series.
 
-Apr 4, 2026
+Apr 2026
 
-Pukar Bhandari
-
-[![](./posts/spatial-sql-exporer/spatial_sql_explorer.png)](posts/spatial-sql-exporer/index.llms.md)
+[![Spatial Explorer landing page, \&#039;Open a map file. Query it like a database.', with a SQL query over a hex-binned world map.](./posts/spatial-sql-exporer/spatial_sql_explorer.png)](posts/spatial-sql-exporer/index.llms.md)
 
 ### [Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code](posts/spatial-sql-exporer/index.llms.md)
 
-[DuckDB-WASM, MapLibre GL and Svelte — one codebase, a web app and a VS Code extension, and your files never leave your machine](posts/spatial-sql-exporer/index.llms.md)
-
 Open a geospatial file, query it with spatial SQL, style it and export it without a desktop GIS. How the project grew from a single-page experiment into a web app and a VS Code extension.
 
-Feb 25, 2026
+Feb 2026
 
-Pukar Bhandari
+[![Cartoon contrasting CSV, which checks every box of mixed fruit, with Parquet, which opens only the box of apples.](./slides/spatial-benchmark/csv_vs_parquet.jpg)](slides/spatial-benchmark/index.llms.md)
 
 ### [Modernizing Spatial Workflows](slides/spatial-benchmark/index.llms.md)
 
-[Benchmarking DuckDB & Parquet vs. The Legacy Stack](slides/spatial-benchmark/index.llms.md)
+Benchmarks of DuckDB, SedonaDB and GeoParquet against sf and GeoPandas on Utah address and county data, in R and Python.
 
-Feb 7, 2026
+Feb 2026
 
-Pukar Bhandari
-
-[![](./posts/wget-gui/wget_gui.png)](posts/wget-gui/index.llms.md)
+[![WgetGUI Ultimate window with target URL and output fields and the generated wget command.](./posts/wget-gui/wget_gui.png)](posts/wget-gui/index.llms.md)
 
 ### [WgetGUI Ultimate: A Fluent Command Generator](posts/wget-gui/index.llms.md)
 
 A modern, Windows 11-inspired web interface for building complex GNU Wget commands
 
-Jan 25, 2026
+Jan 2026
 
-Pukar Bhandari
-
-[![](./posts/nepal-election-geojson/nepal_election_geojson.png)](posts/nepal-election-geojson/index.llms.md)
+[![Map of Nepal\&#039;s electoral constituencies in grey with national parks highlighted in green.](./posts/nepal-election-geojson/nepal_election_geojson.png)](posts/nepal-election-geojson/index.llms.md)
 
 ### [Nepal Electoral Constituency GeoJSON](posts/nepal-election-geojson/index.llms.md)
 
-[Scraping SVG, converting to GIS, and Georeferencing data with R](posts/nepal-election-geojson/index.llms.md)
+Scraping a constituency map from an election results site, converting its SVG paths to GIS geometry, and georeferencing it against ward boundaries in R.
 
-Jan 18, 2026
+Jan 2026
 
-Pukar Bhandari
-
-[![](./work/housing-site-evaluator/housing_site_evaluator.png)](work/housing-site-evaluator/index.llms.md)
+[![Wasatch Front Housing Site Evaluator welcome dialog explaining how to select communities, filter by land use and set priorities.](./work/housing-site-evaluator/housing_site_evaluator.png)](work/housing-site-evaluator/index.llms.md)
 
 ### [Housing Site Evaluator](work/housing-site-evaluator/index.llms.md)
 
-[A rebuilt scoring pipeline for WFRC’s Housing Access-to-Opportunity (ATO) Calculator](work/housing-site-evaluator/index.llms.md)
-
 Scores every parcel and H3 hexagon in the Wasatch Front region on access to jobs, transit and everyday necessities. Developed at the Wasatch Front Regional Council.
 
-Dec 2, 2025
+Dec 2025
 
-Pukar Bhandari
-
-[![](./posts/utah-bikeways/utah_bikeways.png)](posts/utah-bikeways/index.llms.md)
+[![Scatter plot of bikeway miles against total road miles for Utah cities, colored above and below the statewide average.](./posts/utah-bikeways/utah_bikeways.png)](posts/utah-bikeways/index.llms.md)
 
 ### [Analyzing the Utah Bikeways data](posts/utah-bikeways/index.llms.md)
 
-[Comparing the bikeways by type with the highway mileage for each city](posts/utah-bikeways/index.llms.md)
-
 This analysis calculates and compares roadway lane miles and bikeway facility miles across Utah municipalities using spatial data from the Utah Geospatial Resource Center (UGRC).
 
-Nov 16, 2025
+Nov 2025
 
-Pukar Bhandari
-
-[![](./posts/storymap_my_journey/storymap_my_journey.png)](posts/storymap_my_journey/index.llms.md)
+[![Globe view centered on Africa with an introduction card for a personal story map.](./posts/storymap_my_journey/storymap_my_journey.png)](posts/storymap_my_journey/index.llms.md)
 
 ### [Building an Interactive Storymap using {mapgl}](posts/storymap_my_journey/index.llms.md)
 
-[A Visual Journey Through My Life.](posts/storymap_my_journey/index.llms.md)
-
 Creating an open-source, interactive storymap with the {mapgl} R package to visualize my journey across the world.
 
-Sep 3, 2025
-
-Pukar Bhandari
+Sep 2025
 
 ### [Quantifying Economic Effects of Transportation Investments](slides/quantifying-economic-impacts/index.llms.md)
 
-[Methods and Applications for Regional Planning](slides/quantifying-economic-impacts/index.llms.md)
+Slides on methods and applications for quantifying the economic effects of transportation investments in regional planning.
 
-Aug 7, 2025
+Aug 2025
 
-Pukar Bhandari
-
-[![](./posts/socioeconomic-demo/lscog_taz.png)](posts/socioeconomic-demo/index.llms.md)
+[![Map of six South Carolina counties in the Lower Savannah region divided into colored traffic analysis zones.](./posts/socioeconomic-demo/lscog_taz.png)](posts/socioeconomic-demo/index.llms.md)
 
 ### [Base Year SE Data Development](posts/socioeconomic-demo/index.llms.md)
 
-[Lower Savannah Council of Governments (LSCOG) 2050 Long Range Transportation Plan](posts/socioeconomic-demo/index.llms.md)
+Developing base-year socioeconomic data by traffic analysis zone for the Lower Savannah COG 2050 Long Range Transportation Plan, using R and Python.
 
-Jul 5, 2025
+Jul 2025
 
-Pukar Bhandari
-
-[![](./posts/population-pyramid-explorer/population_pyramid_explorer.png)](posts/population-pyramid-explorer/index.llms.md)
+[![Population pyramid for Autauga County, Alabama, beside a tract-level map of Alabama.](./posts/population-pyramid-explorer/population_pyramid_explorer.png)](posts/population-pyramid-explorer/index.llms.md)
 
 ### [Building an Interactive Population Pyramid Explorer](posts/population-pyramid-explorer/index.llms.md)
 
-[Exploring demographic patterns across US counties through interactive visualization using {R-Shiny} and {mapgl}](posts/population-pyramid-explorer/index.llms.md)
-
 A deep dive into creating a story-driven Shiny application that combines interactive mapping with demographic visualizations using Census data.
 
-Jun 25, 2025
+Jun 2025
 
-Pukar Bhandari
-
-[![](./posts/robocopy-gui/robocopy_gui.png)](posts/robocopy-gui/index.llms.md)
+[![RoboGUI Ultimate window with source and destination fields, quick presets and the generated robocopy command.](./posts/robocopy-gui/robocopy_gui.png)](posts/robocopy-gui/index.llms.md)
 
 ### [Interactive Robocopy GUI Tool](posts/robocopy-gui/index.llms.md)
 
 A web-based interface for generating Windows robocopy commands with ease
 
-Jun 15, 2025
-
-Pukar Bhandari
+Jun 2025
 
 ### [pukRhelpers: A Personal Toolbox of R Helpers](posts/pukrhelpers/index.llms.md)
 
-[Small utilities for ArcGIS services, UGRC data, KML and sf that I reused across projects](posts/pukrhelpers/index.llms.md)
-
 An R package collecting helper functions from my day-to-day data and GIS work. Maintained lightly.
 
-May 23, 2025
-
-Pukar Bhandari
+May 2025
 
 ### [Overture Maps Data Download](posts/overture-data-download/index.llms.md)
 
-[Applying DuckDB in R and Python](posts/overture-data-download/index.llms.md)
+Downloading Overture Maps data for an area of interest with DuckDB, in both R and Python.
 
-May 22, 2024
-
-Pukar Bhandari
+May 2024
 
 ### [Building a U.S. Census Data Explorer](posts/uscensus-dashboard/index.llms.md)
 
-[A Shiny Dashboard for ACS, Decennial Census, and LEHD Data](posts/uscensus-dashboard/index.llms.md)
-
 Learn how to build an interactive Shiny dashboard for exploring U.S. Census data including ACS, Decennial Census, and LEHD datasets with integrated mapping capabilities.
 
-May 11, 2024
-
-Pukar Bhandari
+May 2024
 
 ### [3D Population Density Mapping of Nepal](posts/nepal-population-density/index.llms.md)
 
-[Using Rayshader for Advanced Geospatial Visualization](posts/nepal-population-density/index.llms.md)
+A 3D population density map of Nepal built in R with rayshader and Kontur population data.
 
-Jan 3, 2023
-
-Pukar Bhandari
+Jan 2023

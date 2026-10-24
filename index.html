@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head>
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.10.19">
@@ -62,11 +62,8 @@ ul.task-list li input[type="checkbox"] {
   "type": "overlay",
   "limit": 50,
   "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
+    "/"
   ],
-  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -81,6 +78,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<style>html{ scroll-behavior: smooth; }</style>
 <!-- Optimized Font Preloading -->
 
 
@@ -357,6 +355,11 @@ ul.task-list li input[type="checkbox"] {
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -377,7 +380,12 @@ ul.task-list li input[type="checkbox"] {
 <p>I am a Transportation Analyst with a Master’s in City &amp; Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning.</p>
 <!-- [Learn more about me &rarr;](/about.html) -->
 <div id="landing-icons">
-<p><a href="https://www.linkedin.com/in/arpuuk/" target="_blank"><i class="fa-brands fa-linkedin" title="linkedin" aria-label="linkedin"></i></a> &nbsp; <a href="https://github.com/ar-puuk" target="_blank"><i class="fa-brands fa-github" title="github" aria-label="github"></i></a> &nbsp; <a href="https://bsky.app/profile/arpuuk.bsky.social" target="_blank"><i class="fa-brands fa-bluesky" title="bluesky" aria-label="bluesky"></i></a> &nbsp; <a href="mailto:pukar.bhandari@outlook.com"><i class="fa-solid fa-envelope" title="envelope" aria-label="envelope"></i></a></p>
+<p><a href="https://www.linkedin.com/in/arpuuk/" target="_blank"><i class="fa-brands fa-linkedin" title="linkedin" aria-label="linkedin"></i></a> &nbsp; <a href="https://github.com/ar-puuk" target="_blank"><i class="fa-brands fa-github" title="github" aria-label="github"></i></a> &nbsp; <a href="https://bsky.app/profile/arpuuk.bsky.social" target="_blank"><i class="fa-brands fa-bluesky" title="bluesky" aria-label="bluesky"></i></a> &nbsp; <script type="text/javascript">
+<!--
+h='&#x6f;&#x75;&#116;&#108;&#x6f;&#x6f;&#x6b;&#46;&#x63;&#x6f;&#x6d;';a='&#64;';n='&#112;&#x75;&#x6b;&#x61;&#114;&#46;&#98;&#104;&#x61;&#110;&#100;&#x61;&#114;&#x69;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+'&#60;&#x69;&#32;&#x63;&#108;&#x61;&#x73;&#x73;&#x3d;&#34;&#102;&#x61;&#x2d;&#x73;&#x6f;&#108;&#x69;&#100;&#32;&#102;&#x61;&#x2d;&#x65;&#110;&#118;&#x65;&#108;&#x6f;&#112;&#x65;&#34;&#32;&#116;&#x69;&#116;&#108;&#x65;&#x3d;&#34;&#x65;&#110;&#118;&#x65;&#108;&#x6f;&#112;&#x65;&#34;&#32;&#x61;&#114;&#x69;&#x61;&#x2d;&#108;&#x61;&#98;&#x65;&#108;&#x3d;&#34;&#x65;&#110;&#118;&#x65;&#108;&#x6f;&#112;&#x65;&#34;&#62;&#60;&#x2f;&#x69;&#62;'+'<\/'+'a'+'>');
+// -->
+</script><noscript>&amp;lt;i class="fa-solid fa-envelope" title="envelope" aria-label="envelope"&amp;gt;&amp;lt;/i&amp;gt; (pukar.bhandari at outlook dot com)</noscript></p>
 </div>
 </section>
 </div>
@@ -386,6 +394,13 @@ ul.task-list li input[type="checkbox"] {
 </main>  
 </div>
  <!-- /main -->
+<script>
+  // keep the footer copyright range current without editing _quarto.yml each year
+  document.addEventListener("DOMContentLoaded", function () {
+    var el = document.getElementById("footer-year");
+    if (el) el.textContent = new Date().getFullYear();
+  });
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -479,6 +494,13 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            // default icon
+            link.classList.add("external");
         }
       }
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
@@ -796,11 +818,11 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>2025 Pukar Bhandari ∙ Made with <a href="https://www.r-project.org/about.html" target="_blank"><i class="fa-brands fa-r-project" title="R Project" aria-label="r-project"></i></a>, <a href="https://quarto.org/" target="_blank"><img src="https://quarto.org/favicon.png" width="14"></a>, <a href="https://git-scm.com/" target="_blank"><i class="fa-brands fa-git-alt" title="Git alt logo" aria-label="git-alt"></i></a> and <a href="https://github.com/" target="_blank"><i class="fa-brands fa-github" title="GitHub octocat logo" aria-label="github"></i></a></p>
+<p>© 2025–<span id="footer-year">2026</span> Pukar Bhandari ∙ Made with <a href="https://www.r-project.org/about.html" target="_blank"><i class="fa-brands fa-r-project" title="R Project" aria-label="r-project"></i></a>, <a href="https://quarto.org/" target="_blank"><img src="https://quarto.org/favicon.png" width="14"></a>, <a href="https://git-scm.com/" target="_blank"><i class="fa-brands fa-git-alt" title="Git alt logo" aria-label="git-alt"></i></a> and <a href="https://github.com/" target="_blank"><i class="fa-brands fa-github" title="GitHub octocat logo" aria-label="github"></i></a></p>
 </div>   
     <div class="nav-footer-center">
 <p><a href="https://www.linkedin.com/in/arpuuk" title="LinkedIn" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" aria-label="linkedin"></i></a> &nbsp; <a href="https://github.com/ar-puuk/" title="github" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i></a> &nbsp; <a href="https://bsky.app/profile/arpuuk.bsky.social" title="Bluesky" target="_blank" rel="noopener"><i class="fa-brands fa-bluesky" aria-label="bluesky"></i></a> &nbsp; <a href="https://urbanists.social/@arpuuk" title="Mastodon" target="_blank" rel="noopener"><i class="fa-brands fa-mastodon" aria-label="mastodon"></i></a> &nbsp; <a href="https://orcid.org/0000-0002-1043-2937" title="orcid" target="_blank" rel="noopener"><i class="ai  ai-orcid" aria-label="orcid"></i></a> &nbsp; <a href="https://scholar.google.com/citations?user=vnwRlAsAAAAJ&amp;hl=en" title="Google Scholar" target="_blank" rel="noopener"><i class="ai  ai-google-scholar" aria-label="google-scholar"></i></a> &nbsp; <a href="mailto:pukar.bhandari@outlook.com" title="E-mail" target="_blank" rel="noopener"><i class="fa-solid fa-envelope" aria-label="envelope"></i></a></p>
-</div>
+<div class="toc-actions"><ul><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/blob/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
@@ -821,4 +843,5 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

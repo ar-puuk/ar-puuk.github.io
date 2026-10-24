@@ -138,7 +138,7 @@ BibTeX citation:
     {Browser} and in {VS} {Code}},
   date = {2026-02-25},
   url = {https://ar-puuk.github.io/posts/spatial-sql-exporer/},
-  langid = {en}
+  langid = {en-US}
 }
 ```
 

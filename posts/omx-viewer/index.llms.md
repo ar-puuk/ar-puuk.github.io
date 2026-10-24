@@ -29,7 +29,7 @@ BibTeX citation:
     {Viewer}},
   date = {2026-04-11},
   url = {https://ar-puuk.github.io/posts/omx-viewer/},
-  langid = {en}
+  langid = {en-US}
 }
 ```
 

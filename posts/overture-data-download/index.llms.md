@@ -397,7 +397,7 @@ BibTeX citation:
   title = {Overture {Maps} {Data} {Download}},
   date = {2024-05-22},
   url = {https://ar-puuk.github.io/posts/overture-data-download/},
-  langid = {en}
+  langid = {en-US}
 }
 ```
 

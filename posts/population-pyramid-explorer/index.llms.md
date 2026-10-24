@@ -239,7 +239,7 @@ BibTeX citation:
   title = {Building an {Interactive} {Population} {Pyramid} {Explorer}},
   date = {2025-06-25},
   url = {https://ar-puuk.github.io/posts/population-pyramid-explorer/},
-  langid = {en}
+  langid = {en-US}
 }
 ```
 

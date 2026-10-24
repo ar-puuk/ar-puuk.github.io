@@ -29,7 +29,7 @@ BibTeX citation:
   title = {Building a {Client-Side} {Geo/Parquet} {File} {Viewer}},
   date = {2026-04-12},
   url = {https://ar-puuk.github.io/posts/parquet-explorer/},
-  langid = {en}
+  langid = {en-US}
 }
 ```
 

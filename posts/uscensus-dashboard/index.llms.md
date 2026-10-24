@@ -288,7 +288,7 @@ BibTeX citation:
   title = {Building a {U.S.} {Census} {Data} {Explorer}},
   date = {2024-05-11},
   url = {https://ar-puuk.github.io/posts/uscensus-dashboard/},
-  langid = {en}
+  langid = {en-US}
 }
 ```
 

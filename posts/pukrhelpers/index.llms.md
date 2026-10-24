@@ -40,7 +40,7 @@ BibTeX citation:
   title = {pukRhelpers: {A} {Personal} {Toolbox} of {R} {Helpers}},
   date = {2025-05-23},
   url = {https://ar-puuk.github.io/posts/pukrhelpers/},
-  langid = {en}
+  langid = {en-US}
 }
 ```
 

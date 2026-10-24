@@ -284,7 +284,7 @@ BibTeX citation:
   title = {Nepal {Electoral} {Constituency} {GeoJSON}},
   date = {2026-01-18},
   url = {https://ar-puuk.github.io/posts/nepal-election-geojson/},
-  langid = {en}
+  langid = {en-US}
 }
 ```
 

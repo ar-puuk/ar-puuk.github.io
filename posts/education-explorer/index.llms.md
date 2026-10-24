@@ -67,7 +67,7 @@ BibTeX citation:
   title = {An {Education} {Explorer} for {Public} {NCES} {Data}},
   date = {2026-10-19},
   url = {https://ar-puuk.github.io/posts/education-explorer/},
-  langid = {en}
+  langid = {en-US}
 }
 ```
 

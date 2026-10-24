@@ -246,9 +246,9 @@ outfile <- here::here("posts/nepal-population-density/plots/final_plot.png")
 }
 ```
 
-    Rendering started: 2026-10-23 23:06:10.681258 
+    Rendering started: 2026-10-24 00:40:45.231615 
 
-    Rendering completed in: 2.70863980054855 
+    Rendering completed in: 11.3233206470807 
 
 ## 7 Post-Processing and Annotation
 
@@ -453,7 +453,7 @@ BibTeX citation:
   title = {3D {Population} {Density} {Mapping} of {Nepal}},
   date = {2023-01-03},
   url = {https://ar-puuk.github.io/posts/nepal-population-density/},
-  langid = {en}
+  langid = {en-US}
 }
 ```
 

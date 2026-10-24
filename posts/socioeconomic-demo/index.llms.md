@@ -2639,7 +2639,7 @@ BibTeX citation:
   title = {Base {Year} {SE} {Data} {Development}},
   date = {2025-07-05},
   url = {https://ar-puuk.github.io/posts/socioeconomic-demo/},
-  langid = {en}
+  langid = {en-US}
 }
 ```
 

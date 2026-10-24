@@ -157,12 +157,7 @@ if (!fs::file_exists(path_ut_roads)) {
   sf_ut_roads |>
     sf::st_write(path_ut_roads, layer = "UtahRoads", append = FALSE)
 }
-```
 
-    Writing layer `UtahRoads' to data source `_data/UtahRoads.gpkg' using driver `GPKG'
-    Writing 414082 features with 88 fields and geometry type Multi Line String.
-
-``` downlit
 # Always read from the local copy, so the geometry column is the same
 # whether the file was just downloaded or already existed
 sf_ut_roads <- sf::st_read(path_ut_roads, quiet = TRUE) |>
@@ -717,7 +712,7 @@ BibTeX citation:
   title = {Analyzing the {Utah} {Bikeways} Data},
   date = {2025-11-16},
   url = {https://ar-puuk.github.io/posts/utah-bikeways/},
-  langid = {en}
+  langid = {en-US}
 }
 ```
 

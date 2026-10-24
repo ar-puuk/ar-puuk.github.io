@@ -97,7 +97,7 @@ BibTeX citation:
     {Scripts}},
   date = {2026-08-20},
   url = {https://ar-puuk.github.io/posts/drut/},
-  langid = {en}
+  langid = {en-US}
 }
 ```
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head>
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.10.19">
@@ -65,11 +65,8 @@ ul.task-list li input[type="checkbox"] {
   "type": "overlay",
   "limit": 50,
   "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
+    "/"
   ],
-  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -94,7 +91,7 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-subtitle','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-image','listing-date','listing-title','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       page: 25,
     pagination: { item: "<li class='page-item'><a class='page page-link' href='#'></a></li>" },
       searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description","listing-categories"],
@@ -114,6 +111,7 @@ ul.task-list li input[type="checkbox"] {
     }
   })
   </script>
+<style>html{ scroll-behavior: smooth; }</style>
 <!-- Optimized Font Preloading -->
 
 
@@ -157,6 +155,7 @@ window.Quarto = {
 <link rel="alternate" type="application/rss+xml" title="Pukar Bhandari" href="projects.xml" data-external="1"><meta property="og:title" content="Projects">
 <meta property="og:image" content="https://ar-puuk.github.io/posts/education-explorer/education_explorer.png">
 <meta property="og:site_name" content="Pukar Bhandari">
+<meta property="og:image:alt" content="Utah Education Explorer map of public schools, private schools and colleges as clustered markers, with a layers panel and a year timeline.">
 <meta property="og:image:height" content="880">
 <meta property="og:image:width" content="1400">
 <meta name="twitter:title" content="Projects">
@@ -164,6 +163,7 @@ window.Quarto = {
 <meta name="twitter:creator" content="@arpuuk">
 <meta name="twitter:site" content="@arpuuk">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image:alt" content="Utah Education Explorer map of public schools, private schools and colleges as clustered markers, with a layers panel and a year timeline.">
 <meta name="twitter:image-height" content="880">
 <meta name="twitter:image-width" content="1400">
 </head>
@@ -417,6 +417,11 @@ window.Quarto = {
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -455,9 +460,6 @@ window.Quarto = {
       <option value="listing-date-sort" data-direction="desc">
         Date - Newest
       </option>
-      <option value="listing-author" data-direction="asc">
-        Author
-      </option>
     </select>
   </div>
     <div class="input-group input-group-sm quarto-listing-filter">
@@ -466,19 +468,16 @@ window.Quarto = {
     </div>
 </div>
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="SmF2YVNjcmlwdCUyQ1B5dGhvbiUyQ0RhdGElMjBTY2llbmNlJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1792389600000" data-listing-file-modified-sort="1792807343943" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="525">
+<div class="quarto-post image-right" data-index="0" data-categories="SmF2YVNjcmlwdCUyQ1B5dGhvbiUyQ0RhdGElMjBTY2llbmNlJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1792389600000" data-listing-file-modified-sort="1792823857071" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="525">
 <div class="thumbnail"><a href="./posts/education-explorer/index.html" class="no-external">
 
-<img loading="lazy" src="./posts/education-explorer/education_explorer.png" class="thumbnail-image">
+<img loading="lazy" src="./posts/education-explorer/education_explorer.png" class="thumbnail-image" alt="Utah Education Explorer map of public schools, private schools and colleges as clustered markers, with a layers panel and a year timeline.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/education-explorer/index.html" class="no-external">An Education Explorer for Public NCES Data</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/education-explorer/index.html" class="no-external">Schools, colleges and district boundaries on one map, with 25+ years of history</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('SmF2YVNjcmlwdA=='); return false;">JavaScript</div>
@@ -499,27 +498,21 @@ window.Quarto = {
 <div class="metadata">
 <a href="./posts/education-explorer/index.html" class="no-external">
 <div class="listing-date">
-Oct 19, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Oct 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="SmF2YVNjcmlwdCUyQ1B5dGhvbiUyQ1RyYW5zcG9ydGF0aW9uJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1792389600000" data-listing-file-modified-sort="1792807343946" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="604">
+<div class="quarto-post image-right" data-index="1" data-categories="SmF2YVNjcmlwdCUyQ1B5dGhvbiUyQ1RyYW5zcG9ydGF0aW9uJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1792389600000" data-listing-file-modified-sort="1792823857071" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="604">
 <div class="thumbnail"><a href="./posts/freight-explorer/index.html" class="no-external">
 
-<img loading="lazy" src="./posts/freight-explorer/freight_explorer.jpg" class="thumbnail-image">
+<img loading="lazy" src="./posts/freight-explorer/freight_explorer.jpg" class="thumbnail-image" alt="Freight Explorer dashboard for Utah with freight flow lines on a map, summary tonnage and value figures, and mode and direction charts.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/freight-explorer/index.html" class="no-external">A Zero-Cost Freight Flow Explorer for Utah</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/freight-explorer/index.html" class="no-external">FAF origin-destination flows, DuckDB-WASM, and deck.gl — no backend required</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('SmF2YVNjcmlwdA=='); return false;">JavaScript</div>
@@ -540,27 +533,21 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./posts/freight-explorer/index.html" class="no-external">
 <div class="listing-date">
-Oct 19, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Oct 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="SmF2YVNjcmlwdCUyQ1B5dGhvbiUyQ0dJUyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1790661600000" data-listing-file-modified-sort="1792807345927" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="654">
+<div class="quarto-post image-right" data-index="2" data-categories="SmF2YVNjcmlwdCUyQ1B5dGhvbiUyQ0dJUyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1790661600000" data-listing-file-modified-sort="1792823857075" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="654">
 <div class="thumbnail"><a href="./posts/ugrc-styles/index.html" class="no-external">
 
-<img loading="lazy" src="./posts/ugrc-styles/ugrc_styles.png" class="thumbnail-image">
+<img loading="lazy" src="./posts/ugrc-styles/ugrc_styles.png" class="thumbnail-image" alt="UGRC Vector Map Tile Styles editor showing a dark Salt Lake City basemap and a layer list.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/ugrc-styles/index.html" class="no-external">Restyling Utah’s Vector Basemap for MapLibre</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/ugrc-styles/index.html" class="no-external">Dark and warm-light themes for UGRC’s Lite basemap, plus a browser-based style editor</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('SmF2YVNjcmlwdA=='); return false;">JavaScript</div>
@@ -579,27 +566,21 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./posts/ugrc-styles/index.html" class="no-external">
 <div class="listing-date">
-Sep 29, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Sep 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="SmF2YVNjcmlwdCUyQ1dlYiUyMEFwcHMlMkNPcGVuJTIwU291cmNl" data-listing-date-sort="1789970400000" data-listing-file-modified-sort="1792807343934" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="324">
+<div class="quarto-post image-right" data-index="3" data-categories="SmF2YVNjcmlwdCUyQ1dlYiUyMEFwcHMlMkNPcGVuJTIwU291cmNl" data-listing-date-sort="1789970400000" data-listing-file-modified-sort="1792823857070" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="324">
 <div class="thumbnail"><a href="./posts/borderline/index.html" class="no-external">
 
-<img loading="lazy" src="./posts/borderline/borderline.png" class="thumbnail-image">
+<img loading="lazy" src="./posts/borderline/borderline.png" class="thumbnail-image" alt="Borderline game start screen with mode, difficulty, timing and round options and a Play button, in a dark theme.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/borderline/index.html" class="no-external">Borderline: A U.S. Geography Guessing Game</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/borderline/index.html" class="no-external">Name a state, click its outline — no interior borders to give it away</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('SmF2YVNjcmlwdA=='); return false;">JavaScript</div>
@@ -616,27 +597,21 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./posts/borderline/index.html" class="no-external">
 <div class="listing-date">
-Sep 21, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Sep 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="RGV2ZWxvcGVyJTIwVG9vbHMlMkNUcmF2ZWwlMjBEZW1hbmQlMjBNb2RlbGluZyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1787205600000" data-listing-file-modified-sort="1792807343943" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="471">
+<div class="quarto-post image-right" data-index="4" data-categories="RGV2ZWxvcGVyJTIwVG9vbHMlMkNUcmF2ZWwlMjBEZW1hbmQlMjBNb2RlbGluZyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1787205600000" data-listing-file-modified-sort="1792823857070" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="471">
 <div class="thumbnail"><a href="./posts/drut/index.html" class="no-external">
 
-<img loading="lazy" src="./posts/drut/drut.png" class="thumbnail-image">
+<img loading="lazy" src="./posts/drut/drut.png" class="thumbnail-image" alt="Drut documentation page introducing the Cube Voyager script linter, formatter and editor tooling suite.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/drut/index.html" class="no-external">Drut: Linting and Formatting for Cube Voyager Scripts</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/drut/index.html" class="no-external">A Rust-based toolchain and VS Code extension for travel-demand model control-statement files</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('RGV2ZWxvcGVyJTIwVG9vbHM='); return false;">Developer Tools</div>
@@ -653,27 +628,21 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./posts/drut/index.html" class="no-external">
 <div class="listing-date">
-Aug 20, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Aug 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="V0ZSQyUyQ1RyYW5zcG9ydGF0aW9uJTJDVHJhdmVsJTIwRGVtYW5kJTIwTW9kZWxpbmc=" data-listing-date-sort="1782972000000" data-listing-file-modified-sort="1792807346914" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="236">
+<div class="quarto-post image-right" data-index="5" data-categories="V0ZSQyUyQ1RyYW5zcG9ydGF0aW9uJTJDVHJhdmVsJTIwRGVtYW5kJTIwTW9kZWxpbmc=" data-listing-date-sort="1782972000000" data-listing-file-modified-sort="1792823857079" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="236">
 <div class="thumbnail"><a href="./work/gtfs-vs-tdm/index.html" class="no-external">
 
-<img loading="lazy" src="./work/gtfs-vs-tdm/gtfs_vs_tdm.png" class="thumbnail-image">
+<img loading="lazy" src="./work/gtfs-vs-tdm/gtfs_vs_tdm.png" class="thumbnail-image" alt="Map comparing GTFS transit lines and stops with travel demand model transit lines along the Wasatch Front.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./work/gtfs-vs-tdm/index.html" class="no-external">GTFS vs.&nbsp;TDM Transit Network Comparison</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./work/gtfs-vs-tdm/index.html" class="no-external">Visually checking the travel demand model’s transit network against published GTFS</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('V0ZSQw=='); return false;">WFRC</div>
@@ -690,27 +659,21 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./work/gtfs-vs-tdm/index.html" class="no-external">
 <div class="listing-date">
-Jul 2, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Jul 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="V0ZSQyUyQ0phdmFTY3JpcHQlMkNUcmFuc3BvcnRhdGlvbiUyQ1dlYiUyMEFwcHM=" data-listing-date-sort="1782453600000" data-listing-file-modified-sort="1792807346910" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="219">
+<div class="quarto-post image-right" data-index="6" data-categories="V0ZSQyUyQ0phdmFTY3JpcHQlMkNUcmFuc3BvcnRhdGlvbiUyQ1dlYiUyMEFwcHM=" data-listing-date-sort="1782453600000" data-listing-file-modified-sort="1792823857078" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="219">
 <div class="thumbnail"><a href="./work/commute-explorer/index.html" class="no-external">
 
-<img loading="lazy" src="./work/commute-explorer/commute_explorer.png" class="thumbnail-image">
+<img loading="lazy" src="./work/commute-explorer/commute_explorer.png" class="thumbnail-image" alt="Commute Flow Explorer map of the Wasatch Front with commute flow lines scaled by volume.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./work/commute-explorer/index.html" class="no-external">Commute Flow Explorer</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./work/commute-explorer/index.html" class="no-external">Place your own analysis points and compare commuter flows between them</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('V0ZSQw=='); return false;">WFRC</div>
@@ -729,27 +692,21 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./work/commute-explorer/index.html" class="no-external">
 <div class="listing-date">
-Jun 26, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Jun 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="V0ZSQyUyQ1IlMkNHSVM=" data-listing-date-sort="1779948000000" data-listing-file-modified-sort="1792807346914" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="270">
+<div class="quarto-post image-right" data-index="7" data-categories="V0ZSQyUyQ1IlMkNHSVM=" data-listing-date-sort="1779948000000" data-listing-file-modified-sort="1792823876981" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="270">
 <div class="thumbnail"><a href="./work/opportunity-zones-info-sheets/index.html" class="no-external">
 
-<img loading="lazy" src="./work/opportunity-zones-info-sheets/oz_tract_map.png" class="thumbnail-image">
+<img loading="lazy" src="./work/opportunity-zones-info-sheets/oz_tract_map.png" class="thumbnail-image" alt="Map of a census tract outlined in dark blue with transit and land-use context.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./work/opportunity-zones-info-sheets/index.html" class="no-external">Opportunity Zones 2.0 Tract Info Sheets</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./work/opportunity-zones-info-sheets/index.html" class="no-external">Auto-generated PDF info sheets for every eligible census tract in the WFRC and MAG region</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('V0ZSQw=='); return false;">WFRC</div>
@@ -766,27 +723,21 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./work/opportunity-zones-info-sheets/index.html" class="no-external">
 <div class="listing-date">
-May 28, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+May 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="V0ZSQyUyQ0phdmFTY3JpcHQlMkNUcmFuc3BvcnRhdGlvbiUyQ1dlYiUyMEFwcHM=" data-listing-date-sort="1778997600000" data-listing-file-modified-sort="1792807346910" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="244">
+<div class="quarto-post image-right" data-index="8" data-categories="V0ZSQyUyQ0phdmFTY3JpcHQlMkNUcmFuc3BvcnRhdGlvbiUyQ1dlYiUyMEFwcHM=" data-listing-date-sort="1778997600000" data-listing-file-modified-sort="1792823857079" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="244">
 <div class="thumbnail"><a href="./work/commute-patterns/index.html" class="no-external">
 
-<img loading="lazy" src="./work/commute-patterns/commute_patterns.png" class="thumbnail-image">
+<img loading="lazy" src="./work/commute-patterns/commute_patterns.png" class="thumbnail-image" alt="Utah Commuter Flow Patterns dashboard with a map of Salt Lake City inflow, top flow bars and a commute length chart.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./work/commute-patterns/index.html" class="no-external">Utah Commuter Flow Patterns</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./work/commute-patterns/index.html" class="no-external">An open-source rebuild of WFRC’s Regional Commuter Flows map</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('V0ZSQw=='); return false;">WFRC</div>
@@ -805,27 +756,21 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./work/commute-patterns/index.html" class="no-external">
 <div class="listing-date">
-May 17, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+May 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-categories="V0ZSQyUyQ1IlMkNHSVMlMkNXZWIlMjBBcHBz" data-listing-date-sort="1778738400000" data-listing-file-modified-sort="1792807346914" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="241">
+<div class="quarto-post image-right" data-index="9" data-categories="V0ZSQyUyQ1IlMkNHSVMlMkNXZWIlMjBBcHBz" data-listing-date-sort="1778738400000" data-listing-file-modified-sort="1792823857079" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="241">
 <div class="thumbnail"><a href="./work/se2025-h3/index.html" class="no-external">
 
-<img loading="lazy" src="./work/se2025-h3/se2025_h3.png" class="thumbnail-image">
+<img loading="lazy" src="./work/se2025-h3/se2025_h3.png" class="thumbnail-image" alt="Map of H3 hexagons on the Wasatch Front shaded by population and employment density, with a smoothed versus raw swipe divider.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./work/se2025-h3/index.html" class="no-external">SE 2025 Urban Form D Variables (H3)</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./work/se2025-h3/index.html" class="no-external">Six urban-form measures on H3 hexagons for the WFRC and MAG region</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('V0ZSQw=='); return false;">WFRC</div>
@@ -844,60 +789,48 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./work/se2025-h3/index.html" class="no-external">
 <div class="listing-date">
-May 14, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+May 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-categories="VHJhdmVsJTIwRGVtYW5kJTIwTW9kZWxpbmc=" data-listing-date-sort="1776578400000" data-listing-file-modified-sort="1792807346165" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+<div class="quarto-post image-right" data-index="10" data-categories="VHJhdmVsJTIwRGVtYW5kJTIwTW9kZWxpbmc=" data-listing-date-sort="1776578400000" data-listing-file-modified-sort="1792823857076" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
 <div class="thumbnail"><a href="./slides/activitysim-accessibility/index.html" class="no-external">
 
-<img loading="lazy" src="./slides/activitysim-accessibility/activitysim_accessibility.png" class="thumbnail-image">
+<img loading="lazy" src="./slides/activitysim-accessibility/activitysim_accessibility.png" class="thumbnail-image" alt="Title slide: Initialization and Accessibility, an ActivitySim deep dive for travel demand modelers.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./slides/activitysim-accessibility/index.html" class="no-external">ActivitySim Initialization &amp; Accessibility</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./slides/activitysim-accessibility/index.html" class="no-external">Components Deep Dive for Travel Demand Modelers</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('VHJhdmVsJTIwRGVtYW5kJTIwTW9kZWxpbmc='); return false;">Travel Demand Modeling</div>
 
 </div>
 <div class="delink listing-description"><a href="./slides/activitysim-accessibility/index.html" class="no-external">
-
+<p>A deep dive for travel demand modelers on how ActivitySim loads data, validates inputs, and computes its first aggregate measure, accessibility.</p>
 </a></div>
 </div>
 <div class="metadata">
 <a href="./slides/activitysim-accessibility/index.html" class="no-external">
 <div class="listing-date">
-Apr 19, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Apr 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="11" data-categories="SmF2YVNjcmlwdCUyQ0RhdGElMjBTY2llbmNlJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1775973600000" data-listing-file-modified-sort="1792807344804" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="266">
+<div class="quarto-post image-right" data-index="11" data-categories="SmF2YVNjcmlwdCUyQ0RhdGElMjBTY2llbmNlJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1775973600000" data-listing-file-modified-sort="1792823857073" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="266">
 <div class="thumbnail"><a href="./posts/parquet-explorer/index.html" class="no-external">
 
-<img loading="lazy" src="./posts/parquet-explorer/parquet_explorer.png" class="thumbnail-image">
+<img loading="lazy" src="./posts/parquet-explorer/parquet_explorer.png" class="thumbnail-image" alt="Parquet Explorer with a column list, a map of points, a data table and a schema panel for a Nodes.parquet file.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/parquet-explorer/index.html" class="no-external">Building a Client-Side Geo/Parquet File Viewer</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/parquet-explorer/index.html" class="no-external">Built on webassembly, works in browser, and data never leaves your computer</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('SmF2YVNjcmlwdA=='); return false;">JavaScript</div>
@@ -910,33 +843,27 @@ Pukar Bhandari
 
 </div>
 <div class="delink listing-description"><a href="./posts/parquet-explorer/index.html" class="no-external">
-Want a quick way to preview what is inside your parquet file? This is a browser-based, zero-backend viewer for Parquet and GeoParquet, built on DuckDB-WASM. Nothing is…
+<p>A browser-based viewer for GeoParquet and Parquet files with SQL and map views. It runs on WebAssembly, so the data stays on your computer.</p>
 </a></div>
 </div>
 <div class="metadata">
 <a href="./posts/parquet-explorer/index.html" class="no-external">
 <div class="listing-date">
-Apr 12, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Apr 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="12" data-categories="SmF2YVNjcmlwdCUyQ1RyYXZlbCUyMERlbWFuZCUyME1vZGVsaW5nJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1775887200000" data-listing-file-modified-sort="1792807344677" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="308">
+<div class="quarto-post image-right" data-index="12" data-categories="SmF2YVNjcmlwdCUyQ1RyYXZlbCUyMERlbWFuZCUyME1vZGVsaW5nJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1775887200000" data-listing-file-modified-sort="1792823857072" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="308">
 <div class="thumbnail"><a href="./posts/omx-viewer/index.html" class="no-external">
 
-<img loading="lazy" src="./posts/omx-viewer/omx_viewer.png" class="thumbnail-image">
+<img loading="lazy" src="./posts/omx-viewer/omx_viewer.png" class="thumbnail-image" alt="OMX Viewer showing a 3,629 by 3,629 trip matrix as a scrollable table with a file info side panel.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/omx-viewer/index.html" class="no-external">Building a Client-Side Open Matrix (OMX) File Viewer</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/omx-viewer/index.html" class="no-external">Built on webassembly, works in browser, and data never leaves your computer</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('SmF2YVNjcmlwdA=='); return false;">JavaScript</div>
@@ -949,66 +876,54 @@ Pukar Bhandari
 
 </div>
 <div class="delink listing-description"><a href="./posts/omx-viewer/index.html" class="no-external">
-I spent way too long writing one-off Python scripts everytime I had to check what’s inside an OMX (Open Matrix Format) file. There had to be a better way.
+<p>A browser-based viewer for OMX matrix files from travel demand models. It runs on WebAssembly, so the data never leaves your computer.</p>
 </a></div>
 </div>
 <div class="metadata">
 <a href="./posts/omx-viewer/index.html" class="no-external">
 <div class="listing-date">
-Apr 11, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Apr 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="13" data-categories="QUk=" data-listing-date-sort="1775282400000" data-listing-file-modified-sort="1792807346245" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2997">
+<div class="quarto-post image-right" data-index="13" data-categories="QUk=" data-listing-date-sort="1775282400000" data-listing-file-modified-sort="1792823857076" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2997">
 <div class="thumbnail"><a href="./slides/prompt-engineering/index.html" class="no-external">
 
-<img loading="lazy" src="./slides/prompt-engineering/prompt_engineering.png" class="thumbnail-image">
+<img loading="lazy" src="./slides/prompt-engineering/prompt_engineering.png" class="thumbnail-image" alt="Title slide for Prompt Engineering Best Practices over a darkened photo of a humanoid robot reading.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./slides/prompt-engineering/index.html" class="no-external">Prompt Engineering Best Practices</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./slides/prompt-engineering/index.html" class="no-external">For Analytics &amp; Modeling</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('QUk='); return false;">AI</div>
 
 </div>
 <div class="delink listing-description"><a href="./slides/prompt-engineering/index.html" class="no-external">
-
+<p>Slides on prompt engineering best practices for analytics and modeling work, presented in WFRC’s Tech, Skills, and Beyond series.</p>
 </a></div>
 </div>
 <div class="metadata">
 <a href="./slides/prompt-engineering/index.html" class="no-external">
 <div class="listing-date">
-Apr 4, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Apr 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="14" data-categories="SmF2YVNjcmlwdCUyQ0dJUyUyQ0RldmVsb3BlciUyMFRvb2xzJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1772002800000" data-listing-file-modified-sort="1792807345789" data-listing-date-modified-sort="1792735200000" data-listing-reading-time-sort="9" data-listing-word-count-sort="1723">
+<div class="quarto-post image-right" data-index="14" data-categories="SmF2YVNjcmlwdCUyQ0dJUyUyQ0RldmVsb3BlciUyMFRvb2xzJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1772002800000" data-listing-file-modified-sort="1792823857075" data-listing-date-modified-sort="1792735200000" data-listing-reading-time-sort="9" data-listing-word-count-sort="1723">
 <div class="thumbnail"><a href="./posts/spatial-sql-exporer/index.html" class="no-external">
 
-<img loading="lazy" src="./posts/spatial-sql-exporer/spatial_sql_explorer.png" class="thumbnail-image">
+<img loading="lazy" src="./posts/spatial-sql-exporer/spatial_sql_explorer.png" class="thumbnail-image" alt="Spatial Explorer landing page, &amp;#039;Open a map file. Query it like a database.', with a SQL query over a hex-binned world map.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/spatial-sql-exporer/index.html" class="no-external">Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/spatial-sql-exporer/index.html" class="no-external">DuckDB-WASM, MapLibre GL and Svelte — one codebase, a web app and a VS Code extension, and your files never leave your machine</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('SmF2YVNjcmlwdA=='); return false;">JavaScript</div>
@@ -1029,27 +944,21 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./posts/spatial-sql-exporer/index.html" class="no-external">
 <div class="listing-date">
-Feb 25, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Feb 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="15" data-categories="UiUyQ1B5dGhvbiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1770447600000" data-listing-file-modified-sort="1792807346904" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2165">
+<div class="quarto-post image-right" data-index="15" data-categories="UiUyQ1B5dGhvbiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1770447600000" data-listing-file-modified-sort="1792823857078" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2165">
 <div class="thumbnail"><a href="./slides/spatial-benchmark/index.html" class="no-external">
 
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<img loading="lazy" src="./slides/spatial-benchmark/csv_vs_parquet.jpg" class="thumbnail-image" alt="Cartoon contrasting CSV, which checks every box of mixed fruit, with Parquet, which opens only the box of apples.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./slides/spatial-benchmark/index.html" class="no-external">Modernizing Spatial Workflows</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./slides/spatial-benchmark/index.html" class="no-external">Benchmarking DuckDB &amp; Parquet vs.&nbsp;The Legacy Stack</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
@@ -1062,33 +971,27 @@ Pukar Bhandari
 
 </div>
 <div class="delink listing-description"><a href="./slides/spatial-benchmark/index.html" class="no-external">
-
+<p>Benchmarks of DuckDB, SedonaDB and GeoParquet against sf and GeoPandas on Utah address and county data, in R and Python.</p>
 </a></div>
 </div>
 <div class="metadata">
 <a href="./slides/spatial-benchmark/index.html" class="no-external">
 <div class="listing-date">
-Feb 7, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Feb 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="16" data-categories="RGV2ZWxvcGVyJTIwVG9vbHM=" data-listing-date-sort="1769324400000" data-listing-file-modified-sort="1792807346133" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="352">
+<div class="quarto-post image-right" data-index="16" data-categories="RGV2ZWxvcGVyJTIwVG9vbHM=" data-listing-date-sort="1769324400000" data-listing-file-modified-sort="1792823857076" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="352">
 <div class="thumbnail"><a href="./posts/wget-gui/index.html" class="no-external">
 
-<img loading="lazy" src="./posts/wget-gui/wget_gui.png" class="thumbnail-image">
+<img loading="lazy" src="./posts/wget-gui/wget_gui.png" class="thumbnail-image" alt="WgetGUI Ultimate window with target URL and output fields and the generated wget command.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/wget-gui/index.html" class="no-external">WgetGUI Ultimate: A Fluent Command Generator</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/wget-gui/index.html" class="no-external"></a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('RGV2ZWxvcGVyJTIwVG9vbHM='); return false;">Developer Tools</div>
@@ -1101,27 +1004,21 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./posts/wget-gui/index.html" class="no-external">
 <div class="listing-date">
-Jan 25, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Jan 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="17" data-categories="UiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1768719600000" data-listing-file-modified-sort="1792823255522" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1243">
+<div class="quarto-post image-right" data-index="17" data-categories="UiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1768719600000" data-listing-file-modified-sort="1792823857072" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1243">
 <div class="thumbnail"><a href="./posts/nepal-election-geojson/index.html" class="no-external">
 
-<img loading="lazy" src="./posts/nepal-election-geojson/nepal_election_geojson.png" class="thumbnail-image">
+<img loading="lazy" src="./posts/nepal-election-geojson/nepal_election_geojson.png" class="thumbnail-image" alt="Map of Nepal&amp;#039;s electoral constituencies in grey with national parks highlighted in green.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/nepal-election-geojson/index.html" class="no-external">Nepal Electoral Constituency GeoJSON</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/nepal-election-geojson/index.html" class="no-external">Scraping SVG, converting to GIS, and Georeferencing data with R</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
@@ -1132,33 +1029,27 @@ Pukar Bhandari
 
 </div>
 <div class="delink listing-description"><a href="./posts/nepal-election-geojson/index.html" class="no-external">
-In this workflow, we tackle a common geospatial problem: extracting data from stylized news graphics (like election heatmaps) and converting them into GIS-ready formats.
+<p>Scraping a constituency map from an election results site, converting its SVG paths to GIS geometry, and georeferencing it against ward boundaries in R.</p>
 </a></div>
 </div>
 <div class="metadata">
 <a href="./posts/nepal-election-geojson/index.html" class="no-external">
 <div class="listing-date">
-Jan 18, 2026
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Jan 2026
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="18" data-categories="V0ZSQyUyQ1IlMkNUcmFuc3BvcnRhdGlvbiUyQ1dlYiUyMEFwcHM=" data-listing-date-sort="1764658800000" data-listing-file-modified-sort="1792807346914" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="266">
+<div class="quarto-post image-right" data-index="18" data-categories="V0ZSQyUyQ1IlMkNUcmFuc3BvcnRhdGlvbiUyQ1dlYiUyMEFwcHM=" data-listing-date-sort="1764658800000" data-listing-file-modified-sort="1792823857079" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="266">
 <div class="thumbnail"><a href="./work/housing-site-evaluator/index.html" class="no-external">
 
-<img loading="lazy" src="./work/housing-site-evaluator/housing_site_evaluator.png" class="thumbnail-image">
+<img loading="lazy" src="./work/housing-site-evaluator/housing_site_evaluator.png" class="thumbnail-image" alt="Wasatch Front Housing Site Evaluator welcome dialog explaining how to select communities, filter by land use and set priorities.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./work/housing-site-evaluator/index.html" class="no-external">Housing Site Evaluator</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./work/housing-site-evaluator/index.html" class="no-external">A rebuilt scoring pipeline for WFRC’s Housing Access-to-Opportunity (ATO) Calculator</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('V0ZSQw=='); return false;">WFRC</div>
@@ -1177,27 +1068,21 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./work/housing-site-evaluator/index.html" class="no-external">
 <div class="listing-date">
-Dec 2, 2025
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Dec 2025
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="19" data-categories="UiUyQ0dJUyUyQ1RyYW5zcG9ydGF0aW9u" data-listing-date-sort="1763276400000" data-listing-file-modified-sort="1792813238338" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3312">
+<div class="quarto-post image-right" data-index="19" data-categories="UiUyQ0dJUyUyQ1RyYW5zcG9ydGF0aW9u" data-listing-date-sort="1763276400000" data-listing-file-modified-sort="1792823857076" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3312">
 <div class="thumbnail"><a href="./posts/utah-bikeways/index.html" class="no-external">
 
-<img loading="lazy" src="./posts/utah-bikeways/utah_bikeways.png" class="thumbnail-image">
+<img loading="lazy" src="./posts/utah-bikeways/utah_bikeways.png" class="thumbnail-image" alt="Scatter plot of bikeway miles against total road miles for Utah cities, colored above and below the statewide average.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/utah-bikeways/index.html" class="no-external">Analyzing the Utah Bikeways data</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/utah-bikeways/index.html" class="no-external">Comparing the bikeways by type with the highway mileage for each city</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
@@ -1214,27 +1099,21 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./posts/utah-bikeways/index.html" class="no-external">
 <div class="listing-date">
-Nov 16, 2025
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Nov 2025
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="20" data-categories="UiUyQ1dlYiUyMEFwcHM=" data-listing-date-sort="1756879200000" data-listing-file-modified-sort="1792808730153" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1122">
+<div class="quarto-post image-right" data-index="20" data-categories="UiUyQ1dlYiUyMEFwcHM=" data-listing-date-sort="1756879200000" data-listing-file-modified-sort="1792823857075" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1122">
 <div class="thumbnail"><a href="./posts/storymap_my_journey/index.html" class="no-external">
 
-<img loading="lazy" src="./posts/storymap_my_journey/storymap_my_journey.png" class="thumbnail-image">
+<img loading="lazy" src="./posts/storymap_my_journey/storymap_my_journey.png" class="thumbnail-image" alt="Globe view centered on Africa with an introduction card for a personal story map.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/storymap_my_journey/index.html" class="no-external">Building an Interactive Storymap using {mapgl}</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/storymap_my_journey/index.html" class="no-external">A Visual Journey Through My Life.</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
@@ -1249,15 +1128,12 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./posts/storymap_my_journey/index.html" class="no-external">
 <div class="listing-date">
-Sep 3, 2025
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Sep 2025
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="21" data-categories="VHJhbnNwb3J0YXRpb24lMkNEYXRhJTIwU2NpZW5jZQ==" data-listing-date-sort="1754546400000" data-listing-file-modified-sort="1792807346258" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1948">
+<div class="quarto-post image-right" data-index="21" data-categories="VHJhbnNwb3J0YXRpb24lMkNEYXRhJTIwU2NpZW5jZQ==" data-listing-date-sort="1754546400000" data-listing-file-modified-sort="1792823857078" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1948">
 <div class="thumbnail"><a href="./slides/quantifying-economic-impacts/index.html" class="no-external">
 
 <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
@@ -1267,9 +1143,6 @@ Pukar Bhandari
 <h3 class="no-anchor listing-title">
 <a href="./slides/quantifying-economic-impacts/index.html" class="no-external">Quantifying Economic Effects of Transportation Investments</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./slides/quantifying-economic-impacts/index.html" class="no-external">Methods and Applications for Regional Planning</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('VHJhbnNwb3J0YXRpb24='); return false;">Transportation</div>
@@ -1278,33 +1151,27 @@ Pukar Bhandari
 
 </div>
 <div class="delink listing-description"><a href="./slides/quantifying-economic-impacts/index.html" class="no-external">
-
+<p>Slides on methods and applications for quantifying the economic effects of transportation investments in regional planning.</p>
 </a></div>
 </div>
 <div class="metadata">
 <a href="./slides/quantifying-economic-impacts/index.html" class="no-external">
 <div class="listing-date">
-Aug 7, 2025
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Aug 2025
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="22" data-categories="UiUyQ1B5dGhvbiUyQ0RhdGElMjBTY2llbmNlJTJDVHJhbnNwb3J0YXRpb24=" data-listing-date-sort="1751695200000" data-listing-file-modified-sort="1792822670141" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="53" data-listing-word-count-sort="10416">
+<div class="quarto-post image-right" data-index="22" data-categories="UiUyQ1B5dGhvbiUyQ0RhdGElMjBTY2llbmNlJTJDVHJhbnNwb3J0YXRpb24=" data-listing-date-sort="1751695200000" data-listing-file-modified-sort="1792823857075" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="53" data-listing-word-count-sort="10416">
 <div class="thumbnail"><a href="./posts/socioeconomic-demo/index.html" class="no-external">
 
-<img loading="lazy" src="./posts/socioeconomic-demo/lscog_taz.png" class="thumbnail-image">
+<img loading="lazy" src="./posts/socioeconomic-demo/lscog_taz.png" class="thumbnail-image" alt="Map of six South Carolina counties in the Lower Savannah region divided into colored traffic analysis zones.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/socioeconomic-demo/index.html" class="no-external">Base Year SE Data Development</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/socioeconomic-demo/index.html" class="no-external">Lower Savannah Council of Governments (LSCOG) 2050 Long Range Transportation Plan</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
@@ -1317,33 +1184,27 @@ Pukar Bhandari
 
 </div>
 <div class="delink listing-description"><a href="./posts/socioeconomic-demo/index.html" class="no-external">
-This section establishes the computational environment for processing socioeconomic data inputs for the Lower Savannah Council of Governments regional travel demand model…
+<p>Developing base-year socioeconomic data by traffic analysis zone for the Lower Savannah COG 2050 Long Range Transportation Plan, using R and Python.</p>
 </a></div>
 </div>
 <div class="metadata">
 <a href="./posts/socioeconomic-demo/index.html" class="no-external">
 <div class="listing-date">
-Jul 5, 2025
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Jul 2025
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="23" data-categories="UiUyQ0RhdGElMjBTY2llbmNlJTJDV2ViJTIwQXBwcw==" data-listing-date-sort="1750831200000" data-listing-file-modified-sort="1792807344804" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="965">
+<div class="quarto-post image-right" data-index="23" data-categories="UiUyQ0RhdGElMjBTY2llbmNlJTJDV2ViJTIwQXBwcw==" data-listing-date-sort="1750831200000" data-listing-file-modified-sort="1792823857073" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="965">
 <div class="thumbnail"><a href="./posts/population-pyramid-explorer/index.html" class="no-external">
 
-<img loading="lazy" src="./posts/population-pyramid-explorer/population_pyramid_explorer.png" class="thumbnail-image">
+<img loading="lazy" src="./posts/population-pyramid-explorer/population_pyramid_explorer.png" class="thumbnail-image" alt="Population pyramid for Autauga County, Alabama, beside a tract-level map of Alabama.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/population-pyramid-explorer/index.html" class="no-external">Building an Interactive Population Pyramid Explorer</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/population-pyramid-explorer/index.html" class="no-external">Exploring demographic patterns across US counties through interactive visualization using {R-Shiny} and {mapgl}</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
@@ -1360,27 +1221,21 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./posts/population-pyramid-explorer/index.html" class="no-external">
 <div class="listing-date">
-Jun 25, 2025
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Jun 2025
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="24" data-categories="RGV2ZWxvcGVyJTIwVG9vbHM=" data-listing-date-sort="1749967200000" data-listing-file-modified-sort="1792807344821" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="242">
+<div class="quarto-post image-right" data-index="24" data-categories="RGV2ZWxvcGVyJTIwVG9vbHM=" data-listing-date-sort="1749967200000" data-listing-file-modified-sort="1792823857073" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="242">
 <div class="thumbnail"><a href="./posts/robocopy-gui/index.html" class="no-external">
 
-<img loading="lazy" src="./posts/robocopy-gui/robocopy_gui.png" class="thumbnail-image">
+<img loading="lazy" src="./posts/robocopy-gui/robocopy_gui.png" class="thumbnail-image" alt="RoboGUI Ultimate window with source and destination fields, quick presets and the generated robocopy command.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/robocopy-gui/index.html" class="no-external">Interactive Robocopy GUI Tool</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/robocopy-gui/index.html" class="no-external"></a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('RGV2ZWxvcGVyJTIwVG9vbHM='); return false;">Developer Tools</div>
@@ -1393,10 +1248,7 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./posts/robocopy-gui/index.html" class="no-external">
 <div class="listing-date">
-Jun 15, 2025
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Jun 2025
 </div>
 </a>
 </div>
@@ -1411,9 +1263,6 @@ Pukar Bhandari
 <h3 class="no-anchor listing-title">
 <a href="./posts/pukrhelpers/index.html" class="no-external">pukRhelpers: A Personal Toolbox of R Helpers</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/pukrhelpers/index.html" class="no-external">Small utilities for ArcGIS services, UGRC data, KML and sf that I reused across projects</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
@@ -1432,27 +1281,21 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./posts/pukrhelpers/index.html" class="no-external">
 <div class="listing-date">
-May 23, 2025
-</div>
-<div class="listing-author">
-Pukar Bhandari
+May 2025
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="26" data-categories="UiUyQ1B5dGhvbiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1716357600000" data-listing-file-modified-sort="1792808906380" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1537">
+<div class="quarto-post image-right" data-index="26" data-categories="UiUyQ1B5dGhvbiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1716357600000" data-listing-file-modified-sort="1792823857072" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1537">
 <div class="thumbnail"><a href="./posts/overture-data-download/index.html" class="no-external">
 
-<img loading="lazy" data-src="./posts/overture-data-download/overture_data_download.png" class="thumbnail-image">
+<img loading="lazy" data-src="./posts/overture-data-download/overture_data_download.png" class="thumbnail-image" alt="Interactive map of the Salt Lake City area covered with clustered purple points from Overture Maps data.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/overture-data-download/index.html" class="no-external">Overture Maps Data Download</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/overture-data-download/index.html" class="no-external">Applying DuckDB in R and Python</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
@@ -1465,33 +1308,27 @@ Pukar Bhandari
 
 </div>
 <div class="delink listing-description"><a href="./posts/overture-data-download/index.html" class="no-external">
-Overture Maps Foundation provides a collaborative, open-source initiative to create the world’s most comprehensive and interoperable geospatial dataset. As transportation…
+<p>Downloading Overture Maps data for an area of interest with DuckDB, in both R and Python.</p>
 </a></div>
 </div>
 <div class="metadata">
 <a href="./posts/overture-data-download/index.html" class="no-external">
 <div class="listing-date">
-May 22, 2024
-</div>
-<div class="listing-author">
-Pukar Bhandari
+May 2024
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="27" data-categories="UiUyQ0RhdGElMjBTY2llbmNlJTJDV2ViJTIwQXBwcw==" data-listing-date-sort="1715407200000" data-listing-file-modified-sort="1792807345927" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1418">
+<div class="quarto-post image-right" data-index="27" data-categories="UiUyQ0RhdGElMjBTY2llbmNlJTJDV2ViJTIwQXBwcw==" data-listing-date-sort="1715407200000" data-listing-file-modified-sort="1792823857075" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1418">
 <div class="thumbnail"><a href="./posts/uscensus-dashboard/index.html" class="no-external">
 
-<img loading="lazy" data-src="./posts/uscensus-dashboard/uscensus_dashboard.png" class="thumbnail-image">
+<img loading="lazy" data-src="./posts/uscensus-dashboard/uscensus_dashboard.png" class="thumbnail-image" alt="Census Data Explorer with year, state and county filters, a map of Utah counties and a table of block group data.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/uscensus-dashboard/index.html" class="no-external">Building a U.S. Census Data Explorer</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/uscensus-dashboard/index.html" class="no-external">A Shiny Dashboard for ACS, Decennial Census, and LEHD Data</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
@@ -1508,27 +1345,21 @@ Pukar Bhandari
 <div class="metadata">
 <a href="./posts/uscensus-dashboard/index.html" class="no-external">
 <div class="listing-date">
-May 11, 2024
-</div>
-<div class="listing-author">
-Pukar Bhandari
+May 2024
 </div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="28" data-categories="UiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1672729200000" data-listing-file-modified-sort="1792807344667" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3047">
+<div class="quarto-post image-right" data-index="28" data-categories="UiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1672729200000" data-listing-file-modified-sort="1792823857072" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3047">
 <div class="thumbnail"><a href="./posts/nepal-population-density/index.html" class="no-external">
 
-<img loading="lazy" data-src="./posts/nepal-population-density/nepal_population_density.png" class="thumbnail-image">
+<img loading="lazy" data-src="./posts/nepal-population-density/nepal_population_density.png" class="thumbnail-image" alt="3D population density map of Nepal with tall orange columns marking Kathmandu and other cities.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
 <a href="./posts/nepal-population-density/index.html" class="no-external">3D Population Density Mapping of Nepal</a>
 </h3>
-<div class="listing-subtitle">
-<a href="./posts/nepal-population-density/index.html" class="no-external">Using Rayshader for Advanced Geospatial Visualization</a>
-</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
@@ -1539,16 +1370,13 @@ Pukar Bhandari
 
 </div>
 <div class="delink listing-description"><a href="./posts/nepal-population-density/index.html" class="no-external">
-This analysis demonstrates advanced geospatial visualization techniques using R’s rayshader package to create a stunning 3D population density map of Nepal. The project…
+<p>A 3D population density map of Nepal built in R with rayshader and Kontur population data.</p>
 </a></div>
 </div>
 <div class="metadata">
 <a href="./posts/nepal-population-density/index.html" class="no-external">
 <div class="listing-date">
-Jan 3, 2023
-</div>
-<div class="listing-author">
-Pukar Bhandari
+Jan 2023
 </div>
 </a>
 </div>
@@ -1559,6 +1387,13 @@ Pukar Bhandari
   <ul class="pagination"></ul>
 </nav>
 </div></main> <!-- /main -->
+<script>
+  // keep the footer copyright range current without editing _quarto.yml each year
+  document.addEventListener("DOMContentLoaded", function () {
+    var el = document.getElementById("footer-year");
+    if (el) el.textContent = new Date().getFullYear();
+  });
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -1659,6 +1494,13 @@ Pukar Bhandari
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            // default icon
+            link.classList.add("external");
         }
       }
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
@@ -1976,11 +1818,11 @@ Pukar Bhandari
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>2025 Pukar Bhandari ∙ Made with <a href="https://www.r-project.org/about.html" target="_blank"><i class="fa-brands fa-r-project" title="R Project" aria-label="r-project"></i></a>, <a href="https://quarto.org/" target="_blank"><img src="https://quarto.org/favicon.png" width="14"></a>, <a href="https://git-scm.com/" target="_blank"><i class="fa-brands fa-git-alt" title="Git alt logo" aria-label="git-alt"></i></a> and <a href="https://github.com/" target="_blank"><i class="fa-brands fa-github" title="GitHub octocat logo" aria-label="github"></i></a></p>
+<p>© 2025–<span id="footer-year">2026</span> Pukar Bhandari ∙ Made with <a href="https://www.r-project.org/about.html" target="_blank"><i class="fa-brands fa-r-project" title="R Project" aria-label="r-project"></i></a>, <a href="https://quarto.org/" target="_blank"><img src="https://quarto.org/favicon.png" width="14"></a>, <a href="https://git-scm.com/" target="_blank"><i class="fa-brands fa-git-alt" title="Git alt logo" aria-label="git-alt"></i></a> and <a href="https://github.com/" target="_blank"><i class="fa-brands fa-github" title="GitHub octocat logo" aria-label="github"></i></a></p>
 </div>   
     <div class="nav-footer-center">
 <p><a href="https://www.linkedin.com/in/arpuuk" title="LinkedIn" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" aria-label="linkedin"></i></a> &nbsp; <a href="https://github.com/ar-puuk/" title="github" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i></a> &nbsp; <a href="https://bsky.app/profile/arpuuk.bsky.social" title="Bluesky" target="_blank" rel="noopener"><i class="fa-brands fa-bluesky" aria-label="bluesky"></i></a> &nbsp; <a href="https://urbanists.social/@arpuuk" title="Mastodon" target="_blank" rel="noopener"><i class="fa-brands fa-mastodon" aria-label="mastodon"></i></a> &nbsp; <a href="https://orcid.org/0000-0002-1043-2937" title="orcid" target="_blank" rel="noopener"><i class="ai  ai-orcid" aria-label="orcid"></i></a> &nbsp; <a href="https://scholar.google.com/citations?user=vnwRlAsAAAAJ&amp;hl=en" title="Google Scholar" target="_blank" rel="noopener"><i class="ai  ai-google-scholar" aria-label="google-scholar"></i></a> &nbsp; <a href="mailto:pukar.bhandari@outlook.com" title="E-mail" target="_blank" rel="noopener"><i class="fa-solid fa-envelope" aria-label="envelope"></i></a></p>
-</div>
+<div class="toc-actions"><ul><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/blob/main/projects.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
@@ -2001,4 +1843,5 @@ Pukar Bhandari
 
 
 
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

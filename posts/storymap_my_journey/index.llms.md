@@ -390,7 +390,7 @@ BibTeX citation:
   title = {Building an {Interactive} {Storymap} Using \{Mapgl\}},
   date = {2025-09-03},
   url = {https://ar-puuk.github.io/posts/storymap_my_journey/},
-  langid = {en}
+  langid = {en-US}
 }
 ```
 

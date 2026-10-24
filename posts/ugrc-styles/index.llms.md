@@ -77,7 +77,7 @@ BibTeX citation:
   title = {Restyling {Utah’s} {Vector} {Basemap} for {MapLibre}},
   date = {2026-09-29},
   url = {https://ar-puuk.github.io/posts/ugrc-styles/},
-  langid = {en}
+  langid = {en-US}
 }
 ```
 

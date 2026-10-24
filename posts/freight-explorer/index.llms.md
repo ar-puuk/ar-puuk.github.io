@@ -80,7 +80,7 @@ BibTeX citation:
   title = {A {Zero-Cost} {Freight} {Flow} {Explorer} for {Utah}},
   date = {2026-10-19},
   url = {https://ar-puuk.github.io/posts/freight-explorer/},
-  langid = {en}
+  langid = {en-US}
 }
 ```
 

@@ -128,7 +128,7 @@ BibTeX citation:
   title = {Borderline: {A} {U.S.} {Geography} {Guessing} {Game}},
   date = {2026-09-21},
   url = {https://ar-puuk.github.io/posts/borderline/},
-  langid = {en}
+  langid = {en-US}
 }
 ```
 
