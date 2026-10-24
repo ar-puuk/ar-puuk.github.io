@@ -1,4 +1,4 @@
-=== run_all.R log: 2026-10-24 11:30:52.81122 ===
+=== run_all.R log: 2026-10-24 13:28:11.863833 ===
 Working directory: D:/GitHub/ar-puuk.github.io/slides/spatial-benchmark
 Result: success
 
@@ -101,8 +101,8 @@ One or more parsing issues, call `problems()` on your data frame for details,
 e.g.:
   dat <- vroom(...)
   problems(dat) 
-  Load Data: 8.690s | 1043.3 MB RSS delta
-  Load Data: 8.690s | 1043.3 MB RSS delta
+  Load Data: 8.640s | 1043.4 MB RSS delta
+  Load Data: 8.640s | 1043.4 MB RSS delta
 Warning message:
 Warning message:
 One or more parsing issues, call `problems()` on your data frame for details,
@@ -113,19 +113,19 @@ One or more parsing issues, call `problems()` on your data frame for details,
 e.g.:
   dat <- vroom(...)
   problems(dat) 
-  Validation (Join): 11.330s | 1477.0 MB RSS delta
-  Validation (Join): 11.330s | 1477.0 MB RSS delta
+  Validation (Join): 11.250s | 1614.2 MB RSS delta
+  Validation (Join): 11.250s | 1614.2 MB RSS delta
 Warning messages:
 1: In rm(pts, cnt, res_attr, res_spatial) : object 'res_attr' not found
 2: In rm(pts, cnt, res_attr, res_spatial) : object 'res_spatial' not found
-────────────────────────────────────────────────────────────
 Warning messages:
 1: In rm(pts, cnt, res_attr, res_spatial) : object 'res_attr' not found
 2: In rm(pts, cnt, res_attr, res_spatial) : object 'res_spatial' not found
 ────────────────────────────────────────────────────────────
 BENCHMARK 01 Complete!
-BENCHMARK 01 Complete!
 ────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────
+BENCHMARK 01 Complete!
 ────────────────────────────────────────────────────────────
 Loading required package: DBI
 Loading required package: DBI
@@ -159,8 +159,8 @@ Phase 2a: Benchmarking data ingest (no indexing)...
 Running: BENCHMARK 02 - R (DuckDB) Modern Stack
 ────────────────────────────────────────────────────────────
 Phase 2a: Benchmarking data ingest (no indexing)...
-  Load Data: 0.900s | 112.9 MB RSS delta
-  Load Data: 0.900s | 112.9 MB RSS delta
+  Load Data: 0.900s | 105.8 MB RSS delta
+  Load Data: 0.900s | 105.8 MB RSS delta
 Phase 2b: Benchmarking RTREE index creation...
 Phase 2b: Benchmarking RTREE index creation...
 [1] 0
@@ -169,14 +169,14 @@ Phase 2b: Benchmarking RTREE index creation...
 [1] 1501132
 [1] 29
 [1] 29
-  Build Index: 0.180s | 148.1 MB RSS delta
-  Build Index: 0.180s | 148.1 MB RSS delta
+  Build Index: 0.190s | 146.7 MB RSS delta
+  Build Index: 0.190s | 146.7 MB RSS delta
 Running warmup query (not timed)...
 Running warmup query (not timed)...
 Warmup complete. Starting timed benchmark...
 Warmup complete. Starting timed benchmark...
-  Validation (Join): 9.320s | 0.5 MB RSS delta
-  Validation (Join): 9.320s | 0.5 MB RSS delta
+  Validation (Join): 9.420s | 0.8 MB RSS delta
+  Validation (Join): 9.420s | 0.8 MB RSS delta
 Generating validation statistics...
 Generating validation statistics...
 Validation stats saved to: _results/validation_stats.csv
@@ -190,8 +190,8 @@ BENCHMARK 02 Complete!
 ────────────────────────────────────────────────────────────
 Running: BENCHMARK 03 - Python (GeoPandas) Legacy Stack
 ────────────────────────────────────────────────────────────
-  Load Data: 5.892s | 964.6 MB RSS delta
-  Validation (Join): 1.187s | 597.5 MB RSS delta
+  Load Data: 5.978s | 964.4 MB RSS delta
+  Validation (Join): 1.181s | 597.1 MB RSS delta
 ────────────────────────────────────────────────────────────
 BENCHMARK 03 Complete!
 ────────────────────────────────────────────────────────────
@@ -200,11 +200,11 @@ Running: BENCHMARK 04 - Python (DuckDB) Modern Stack
 ────────────────────────────────────────────────────────────
 Installing spatial extension (one-time, not timed)...
 Spatial extension ready.
-  Load Data: 0.942s | 16.3 MB RSS delta
-  Build Index: 0.238s | 13.4 MB RSS delta
+  Load Data: 0.940s | 16.3 MB RSS delta
+  Build Index: 0.236s | 13.3 MB RSS delta
 Running warmup query (not timed)...
 Warmup complete. Starting timed benchmark...
-  Validation (Join): 29.679s | 50.6 MB RSS delta
+  Validation (Join): 28.546s | 52.6 MB RSS delta
 ────────────────────────────────────────────────────────────
 BENCHMARK 04 Complete!
 ────────────────────────────────────────────────────────────
@@ -242,8 +242,8 @@ Running warmup query (not timed)...
 Running warmup query (not timed)...
 Warmup complete. Starting timed benchmark...
 Warmup complete. Starting timed benchmark...
-  Validation (Join): 0.080s | 0.3 MB RSS delta
-  Validation (Join): 0.080s | 0.3 MB RSS delta
+  Validation (Join): 0.100s | -0.1 MB RSS delta
+  Validation (Join): 0.100s | -0.1 MB RSS delta
 ────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 BENCHMARK 05 Complete!

@@ -9,7 +9,6 @@ author: "Pukar Bhandari"
 date: "2026-02-07"
 format:
   revealjs:
-    theme: simple
     css: style.css
     transition: slide
     background-transition: fade
