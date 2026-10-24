@@ -29,7 +29,25 @@ if (!exists("ITERATIONS")) {
 # because the child process inherits knitr's captured R connections.
 # callr::rscript() runs in a completely separate R session with its own
 # stdout/stderr handling, avoiding this issue entirely.
-run_r_script <- function(script_path) {
+run_r_script <- function(script_path, tries = 1L) {
+  for (i in seq_len(tries)) {
+    ok <- tryCatch(
+      {
+        run_r_script_once(script_path)
+        TRUE
+      },
+      error = function(e) {
+        if (i == tries) stop(e)
+        message("--- ", script_path, " failed (attempt ", i, " of ", tries, "), retrying ---")
+        FALSE
+      }
+    )
+    if (ok) break
+  }
+  invisible(NULL)
+}
+
+run_r_script_once <- function(script_path) {
   message(paste("--- Running R:", script_path, "---"))
 
   if (!requireNamespace("callr", quietly = TRUE)) {
@@ -92,7 +110,9 @@ message("[Init] Results CSV initialized: ", results_csv, "\n")
 
 # Setup Data (if script exists — skips download if files already present)
 if (file.exists("_scripts/00_setup_data.R")) {
-  run_r_script("_scripts/00_setup_data.R")
+  # The setup script skips files that already exist, so a retry is safe. Large
+  # UGRC downloads occasionally crash the R subprocess outright.
+  run_r_script("_scripts/00_setup_data.R", tries = 3L)
 }
 
 # Run Benchmarks

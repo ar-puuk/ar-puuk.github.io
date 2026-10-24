@@ -83,6 +83,18 @@ All spatial datasets are downloaded from UGRC's ArcGIS REST services. To improve
 # set data folder
 dir_data <- "_data"
 fs::dir_create(dir_data) # Create a directory if it doesnt exist
+
+# UGRC downloads are paged (the roads layer is over 200 pages), so one dropped
+# connection fails the whole read. Retry a few times before giving up.
+arc_read_retry <- function(url, ..., tries = 5) {
+  for (i in seq_len(tries)) {
+    out <- tryCatch(arcgislayers::arc_read(url, ...), error = function(e) e)
+    if (!inherits(out, "error")) return(out)
+    if (i == tries) stop(out)
+    message("Download failed (attempt ", i, " of ", tries, "), retrying...")
+    Sys.sleep(5 * i)
+  }
+}
 ```
 
 ## Utah City Boundaries
@@ -96,7 +108,7 @@ path_ut_cities <- file.path(dir_data, "UtahMunicipalBoundaries.gpkg")
 # Download if not exists
 if (!fs::file_exists(path_ut_cities)) {
   # Read data using arcgis package
-  sf_ut_cities <- arcgislayers::arc_read(
+  sf_ut_cities <- arc_read_retry(
     "https://services1.arcgis.com/99lidPhWCzftIe9K/ArcGIS/rest/services/UtahMunicipalBoundaries/FeatureServer/0",
     crs = PROJECT_CRS
   ) |> janitor::clean_names()
@@ -127,7 +139,7 @@ path_ut_counties <- file.path(dir_data, "UtahCountyBoundaries.gpkg")
 # Download if not exists
 if (!fs::file_exists(path_ut_counties)) {
   # Read data using arcgis package
-  sf_ut_counties <- arcgislayers::arc_read(
+  sf_ut_counties <- arc_read_retry(
     "https://services1.arcgis.com/99lidPhWCzftIe9K/ArcGIS/rest/services/UtahCountyBoundaries/FeatureServer/0",
     crs = PROJECT_CRS
   ) |> janitor::clean_names()
@@ -158,7 +170,7 @@ path_ut_roads <- file.path(dir_data, "UtahRoads.gpkg")
 # Download if not exists
 if (!fs::file_exists(path_ut_roads)) {
   # Read data using arcgis package
-  sf_ut_roads <- arcgislayers::arc_read(
+  sf_ut_roads <- arc_read_retry(
     "https://services1.arcgis.com/99lidPhWCzftIe9K/ArcGIS/rest/services/UtahRoads/FeatureServer/0",
     crs = PROJECT_CRS
   ) |> janitor::clean_names()
@@ -189,7 +201,7 @@ path_ut_bikeways <- file.path(dir_data, "Bikeways.gpkg")
 # Download if not exists
 if (!fs::file_exists(path_ut_bikeways)) {
   # Read data using arcgis package
-  sf_ut_bikeways <- arcgislayers::arc_read(
+  sf_ut_bikeways <- arc_read_retry(
     "https://services1.arcgis.com/99lidPhWCzftIe9K/ArcGIS/rest/services/Bikeways/FeatureServer/0",
     crs = PROJECT_CRS
   ) |> janitor::clean_names()

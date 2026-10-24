@@ -82,7 +82,7 @@ message("Phase 2a: Benchmarking data ingest (no indexing)...")
 
 res_ingest <- measure_rss(
   function() {
-    con_i <- dbConnect(duckdb())
+    con_i <- dbConnect(duckdb(shared_home = TRUE))
     dbExecute(con_i, "LOAD spatial;")
 
     dbExecute(
@@ -126,7 +126,7 @@ message(sprintf(
 message("Phase 2b: Benchmarking RTREE index creation...")
 
 # Persistent connection for analysis phase — tables stay in memory
-con <- dbConnect(duckdb())
+con <- dbConnect(duckdb(shared_home = TRUE))
 dbExecute(con, "LOAD spatial;")
 dbExecute(
   con,

@@ -24,6 +24,19 @@ if (!dir.exists(data_dir)) {
   dir.create(data_dir)
 }
 
+# UGRC downloads are paged, so one dropped connection fails the whole read.
+# Retry a few times before giving up.
+arc_select_retry <- function(url, ..., tries = 5) {
+  layer <- arcgislayers::arc_open(url)
+  for (i in seq_len(tries)) {
+    out <- tryCatch(arcgislayers::arc_select(layer, ...), error = function(e) e)
+    if (!inherits(out, "error")) return(out)
+    if (i == tries) stop(out)
+    message("Download failed (attempt ", i, " of ", tries, "), retrying...")
+    Sys.sleep(5 * i)
+  }
+}
+
 # --- File Paths ---
 
 addr_parquet <- file.path(data_dir, "utah_addresses.parquet")
@@ -38,14 +51,17 @@ if (!file.exists(addr_parquet) || !file.exists(addr_csv)) {
 
   addr_url <- "https://services1.arcgis.com/99lidPhWCzftIe9K/ArcGIS/rest/services/UtahAddressPoints/FeatureServer/0"
 
-  utah_addresses <- addr_url |>
-    arcgislayers::arc_open() |>
-    arcgislayers::arc_select(crs = 4326)
+  utah_addresses <- arc_select_retry(addr_url, crs = 4326)
 
   # The live layer contains points with no geometry; every benchmark builds
   # points from coordinates, so drop them up front
   utah_addresses <- utah_addresses |>
     dplyr::filter(!sf::st_is_empty(geometry))
+
+  # Write to a temporary name and rename at the end, so an interrupted write
+  # never leaves a half-written file that looks complete
+  addr_csv_tmp <- paste0(addr_csv, ".tmp")
+  addr_parquet_tmp <- paste0(addr_parquet, ".tmp")
 
   message("Exporting Address Points to CSV...")
   utah_addresses |>
@@ -54,14 +70,16 @@ if (!file.exists(addr_parquet) || !file.exists(addr_csv)) {
       y = sf::st_coordinates(geometry)[, 2]
     ) |>
     sf::st_drop_geometry() |>
-    readr::write_csv(addr_csv, append = FALSE)
+    readr::write_csv(addr_csv_tmp, append = FALSE)
 
   message("Exporting Address Points to GeoParquet...")
   utah_addresses |>
     tibble::as_tibble() |>
     dplyr::mutate(geometry = sf::st_as_binary(geometry) |> unclass()) |>
-    arrow::write_parquet(addr_parquet)
+    arrow::write_parquet(addr_parquet_tmp)
 
+  file.rename(addr_csv_tmp, addr_csv)
+  file.rename(addr_parquet_tmp, addr_parquet)
   rm(utah_addresses)
 } else {
   message("Success: All Address Point formats (CSV/Parquet) found locally.")
@@ -74,9 +92,7 @@ if (!file.exists(county_parquet) || !file.exists(county_shp)) {
 
   county_url <- "https://services1.arcgis.com/99lidPhWCzftIe9K/ArcGIS/rest/services/UtahCountyBoundaries/FeatureServer/0"
 
-  utah_counties <- county_url |>
-    arcgislayers::arc_open() |>
-    arcgislayers::arc_select(crs = 4326)
+  utah_counties <- arc_select_retry(county_url, crs = 4326)
 
   message("Exporting County Boundaries to SHP...")
   utah_counties |>
@@ -97,8 +113,11 @@ if (!file.exists(county_parquet) || !file.exists(county_shp)) {
 # use LOAD spatial (fast, no network check) rather than INSTALL spatial
 # (slow, makes a network version-check every time). INSTALL is idempotent.
 
+# shared_home = TRUE keeps extensions in ~/.duckdb. The default is a temporary
+# folder, which the benchmark scripts (separate R sessions) would not see, so
+# on a machine without ~/.duckdb LOAD spatial would fail there.
 message("Pre-installing DuckDB spatial extension (if not already cached)...")
-con <- dbConnect(duckdb())
+con <- dbConnect(duckdb(shared_home = TRUE))
 dbExecute(con, "INSTALL spatial;")
 dbExecute(con, "LOAD spatial;")
 dbDisconnect(con)
