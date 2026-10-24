@@ -1,0 +1,60 @@
+# Single source of truth for the site's identity. Quarto applies it to HTML,
+# Revealjs and Typst output. The site's SCSS (assets/theme/_colors.scss) keeps
+# the same values; change a colour in both places.
+meta:
+  name: Pukar Bhandari
+  link: https://ar-puuk.github.io
+
+color:
+  palette:
+    navy: "#0E171E"
+    navy-light: "#1A2B35"
+    cream: "#FFFBF2"
+    cream-dark: "#F8F6ED"
+    orange: "#D96E34"
+    orange-dark: "#A23E02"
+    blue: "#4a90a4"
+    teal: "#007EA7"
+    teal-dark: "#005577"
+    muted: "#6C757D"
+  foreground: navy
+  background: cream
+  primary: blue
+  secondary: orange
+  tertiary: teal
+  info: teal
+  success: "#198754"
+  warning: "#FFC107"
+  danger: "#DC3545"
+  light: cream-dark
+  dark: navy
+  link: orange
+
+logo:
+  images:
+    mark:
+      path: ../images/pb-logo.svg
+      alt: Pukar Bhandari logo
+    mark-light:
+      path: ../images/pb-logo-light.svg
+      alt: Pukar Bhandari logo
+    mark-dark:
+      path: ../images/pb-logo-dark.svg
+      alt: Pukar Bhandari logo
+  small: mark
+  medium: mark
+
+typography:
+  fonts:
+    - family: Poppins
+      source: google
+      weight: [400, 500, 700]
+      style: [normal, italic]
+    - family: Fira Code
+      source: google
+      weight: [400, 500]
+  base: Poppins
+  headings:
+    family: Poppins
+    weight: 700
+  monospace: Fira Code

@@ -10,6 +10,7 @@ title-block-banner: false
 # Full page layout
 page-layout: full
 
+
 # Specify slide format
 format:
   revealjs:
@@ -21,7 +22,6 @@ format:
     transition: slide
     background-transition: fade
     highlight-style: ayu-mirage
-    mainfont: "Atkinson Hyperlegible"
     fontsize: "20px"
     chalkboard: false
     preview-links: auto
