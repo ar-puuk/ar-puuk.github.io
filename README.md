@@ -67,7 +67,14 @@ We use `renv` to manage R packages. The library folder is ignored by Git, so you
 
 3.  **Package versions are pinned to a dated Posit Package Manager snapshot** (see `.Rprofile`), so installs get prebuilt Windows binaries and are reproducible. To update packages, change the date in `.Rprofile`, then run `renv::update()` and `renv::snapshot()`.
 
-    > `sedonadb` comes from r-universe, which only keeps its latest build, so it is not date-pinned. Its `renv.lock` record has the `Remote*` GitHub fields removed (they break `renv::restore()`), so `renv::status()` reports it as out of sync. This is harmless; `renv::snapshot()` re-adds the fields, so delete them again afterwards.
+    > **If `renv::restore()` fails on `sedonadb`** (used only by `slides/spatial-benchmark`) with `DESCRIPTION file ... renv/staging/1/sedonadb/DESCRIPTION does not exist`, fix its record in `renv.lock`. It comes from r-universe, which only keeps its latest build, so it cannot be date-pinned, and `renv::snapshot()` records it with GitHub fields that renv cannot restore. Find the `"sedonadb": {` record and:
+    >
+    > 1. change `"Source": "unknown"` back to `"Source": "Repository"`, and
+    > 2. delete the `RemoteType`, `RemoteUrl`, `RemoteRef`, `RemoteSha` and `RemoteSubdir` lines (and the trailing comma on the line above them).
+    >
+    > Then run `renv::restore()` again. You only need this after a snapshot has re-added those fields. Note that a plain `renv::snapshot()` refuses because of sedonadb's "unknown source"; use `renv::snapshot(force = TRUE)`. `renv::status()` reports sedonadb as out of sync even with the fixed record; that is harmless.
+    >
+    > If sedonadb itself later fails to install (r-universe moved on), build the version this site was benchmarked with from source (needs Rust, Rtools and libclang): `pak::pkg_install('apache/sedona-db/r/sedonadb@751453f')`.
 
     > Packages used only by Quarto extensions are loaded in a hidden chunk (e.g. `library(shinylive)` in `posts/storymap_my_journey/index.qmd`) so `renv::snapshot()` records them.
 
