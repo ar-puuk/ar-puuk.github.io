@@ -109,3 +109,20 @@ To build the website locally:
 ```bash
 quarto render
 ```
+
+Drafts: pages with `draft: true` are shown with a "Draft" banner because `draft-mode: visible` is set in `_quarto.yml`. Set it to `gone` to hide them (they become 404 pages and drop out of listings, search and the sitemap).
+
+## 9. Publishing the Site
+The built site (`docs/`) is not tracked in git. It is published to the `gh-pages` branch, which GitHub Pages serves (Settings > Pages > Deploy from a branch > `gh-pages` / root).
+
+Render first, then publish what you just rendered:
+
+```bash
+quarto render
+quarto publish gh-pages --no-render
+```
+
+* `--no-render` uploads the existing `docs/` as is. Without it, `quarto publish` renders the whole site again.
+* Publishing goes live after a few minutes. Check `draft-mode` in `_quarto.yml` before you publish, since it decides whether `draft: true` pages go public.
+* The first publish on a new clone needs the `gh-pages` branch to exist on the remote (it does now). Run the commands from a clone with push access.
+* Source changes go to `master` as usual (`git add`, `git commit`, `git push`). `_freeze/` stays tracked so a re-render skips unchanged pages.
