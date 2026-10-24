@@ -1,5 +1,6 @@
 ---
 title: "Quantifying Economic Effects of Transportation Investments"
+brand: ../../assets/brand/_brand.yml
 description: "Slides on methods and applications for quantifying the economic effects of transportation investments in regional planning."
 subtitle: "Methods and Applications for Regional Planning"
 author: "Pukar Bhandari"
@@ -119,7 +120,7 @@ flowchart TB
     E --> F
     F --> G["Jobs Created"] & H["Household Income"] & I["Business Output"] & J["GDP Growth"]
 
-    style A fill:#1f5582,color:#ffffff
+    style A fill:#005577,color:#ffffff
     style F fill:#e8f5e8
     style B fill:#fff3e0
     style C fill:#e1f5fe
@@ -196,7 +197,7 @@ flowchart TD
     E -.-> E1[("Jobs, income,<br/>output impacts")]
     F -.-> F1[("Dashboards, reports,<br/>visualizations")]
 
-    style A fill:#1f5582,color:#ffffff
+    style A fill:#005577,color:#ffffff
     style B fill:#e8f5e8
     style C fill:#fff3e0
     style D fill:#e1f5fe
@@ -213,7 +214,7 @@ flowchart TD
 classDef default font-size:14px;
 ```
 
-![](_charts/Presentation%20_%20Mermaid%20Chart-2025-08-03-004921.svg){style="height: 70vh;"}
+![](_charts/Presentation%20_%20Mermaid%20Chart-2025-08-03-004921.svg){style="height: 520px;"}
 
 <!-- *Reproducible, automated pipeline* -->
 :::
