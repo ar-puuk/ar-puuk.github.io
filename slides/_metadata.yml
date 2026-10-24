@@ -26,7 +26,9 @@ format:
     chalkboard: false
     preview-links: auto
     logo: ""
-    css: style.css
+    css:
+      - /assets/css/slides.css
+      - style.css
     embed-resources: true
     mermaid:
       theme: neutral
