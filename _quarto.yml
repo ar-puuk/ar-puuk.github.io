@@ -11,6 +11,8 @@ website:
   favicon: "assets/images/pb-logo.svg"
   site-url: "https://ar-puuk.github.io"
   llms-txt: true
+  # render draft: true pages and list them while previewing; set to "gone" (default) to hide
+  draft-mode: visible
 
   # repo-url: "https://github.com/ar-puuk/ar-puuk.github.io"
   # repo-actions: [source, issue]
@@ -108,7 +110,6 @@ website:
       - text: License
         aria-label: License Details
         href: license.qmd
-cookie-consent: true
 format:
   html:
     respect-user-color-scheme: true
