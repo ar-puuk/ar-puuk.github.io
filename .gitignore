@@ -35,3 +35,6 @@ README_files/
 
 # Quarto/webR scratch folders inside any page directory
 **/.quarto/
+
+# built site is published to the gh-pages branch with `quarto publish gh-pages`
+/docs/

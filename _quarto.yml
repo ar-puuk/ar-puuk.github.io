@@ -11,7 +11,7 @@ website:
   favicon: "assets/images/pb-logo.svg"
   site-url: "https://ar-puuk.github.io"
   llms-txt: true
-  # render draft: true pages and list them while previewing; set to "gone" (default) to hide
+  # show draft: true pages (flagged with a Draft banner); use "gone" to hide them
   draft-mode: visible
 
   # repo-url: "https://github.com/ar-puuk/ar-puuk.github.io"
