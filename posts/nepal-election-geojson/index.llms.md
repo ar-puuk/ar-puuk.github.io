@@ -247,8 +247,13 @@ final_map <- st_transform(final_map_utm, 4326)
 ```
 
 ``` downlit
-# Create interactive map
-mapview::mapview(final_map)
+# Create interactive map. The widget embeds every vertex in the page, so map a
+# simplified copy (200 m tolerance). The exported GeoJSON below stays full resolution.
+final_map_preview <- final_map_utm |>
+  sf::st_simplify(preserveTopology = TRUE, dTolerance = 200) |>
+  st_transform(4326)
+
+mapview::mapview(final_map_preview)
 ```
 
 ``` downlit
