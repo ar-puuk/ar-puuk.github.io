@@ -43,6 +43,14 @@ pub-info:
       url: https://www.zotero.org/save?type=doi&q=10.1177/03611981231170005
       icon: ai ai-zotero
 doi: 10.1177/03611981231170005
+citation:
+  type: article-journal
+  container-title: Transportation Research Record
+  volume: 2677
+  issue: 12
+  page: 806-814
+  publisher: SAGE Publications
+  issued: 2023
 ---
 
 ## Abstract

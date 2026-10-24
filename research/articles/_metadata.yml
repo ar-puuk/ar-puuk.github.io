@@ -1,0 +1,8 @@
+# options specified here apply to every journal article in this folder
+
+# emit Google Scholar citation_* meta tags
+google-scholar: true
+
+# "Cite this article" block (BibTeX/APA) at the end of the page; authors, title and
+# date come from each article's front matter
+citation: true
