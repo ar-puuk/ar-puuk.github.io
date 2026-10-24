@@ -1,5 +1,6 @@
 ---
 title: "Modernizing Spatial Workflows"
+brand: ../../assets/brand/_brand.yml
 image: "csv_vs_parquet.jpg"
 description: "Benchmarks of DuckDB, SedonaDB and GeoParquet against sf and GeoPandas on Utah address and county data, in R and Python."
 image-alt: "Cartoon contrasting CSV, which checks every box of mixed fruit, with Parquet, which opens only the box of apples."
@@ -172,7 +173,7 @@ if (!dir.exists("_results")) dir.create("_results")
 write_csv(sizes, "_results/file_sizes.csv")
 ```
 
-## The Challenge: Data Validation {background-color="#f0f0f0"}
+## The Challenge: Data Validation {background-color="#F8F6ED"}
 
 ::: {.incremental}
 * **The Task**: We have **1.2 Million** address points in Utah.
@@ -199,7 +200,7 @@ write_csv(sizes, "_results/file_sizes.csv")
 </div>
 
 <div class="column" width="40%">
-![Parquet Structure](csv_vs_parquet.jpg){width="80%"}
+![Parquet Structure](csv_vs_parquet.jpg){width="60%"}
 </div>
 </div>
 
@@ -489,7 +490,7 @@ if (file.exists("_results/validation_stats.csv")) {
 
 ---
 
-## Understanding the Results {background-color="#f0f0f0"}
+## Understanding the Results {background-color="#F8F6ED"}
 
 ### What the numbers actually show
 
@@ -523,7 +524,7 @@ includes full I/O — yet still beats everything else.
 
 ---
 
-## Why does this matter?
+## Why does this matter? {.smaller}
 
 ### 1. Scalability
 * **Legacy**: Fails when Data > RAM.
@@ -557,7 +558,7 @@ includes full I/O — yet still beats everything else.
 
 ---
 
-## Conclusion
+## Conclusion {.smaller}
 
 | Feature | Legacy (sf/GeoPandas) | DuckDB | SedonaDB |
 |:---|:---:|:---:|:---:|
