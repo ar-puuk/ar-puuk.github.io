@@ -16,6 +16,8 @@ website:
     location: navbar
     type: overlay
     keyboard-shortcut: ["/"]
+    copy-button: true
+    show-item-context: true
   # show draft: true pages (flagged with a Draft banner); use "gone" to hide them
   draft-mode: visible
 
@@ -43,6 +45,7 @@ website:
 
   navbar:
     logo: assets/images/pb-logo.svg
+    collapse-below: xl
     # left:
     #   - href: about.qmd
     #     # icon: person-circle
