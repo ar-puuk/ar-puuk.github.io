@@ -13,7 +13,6 @@ prefer-html: true
 resources:
         - "_output/*.geojson"
         - "_output/*.svg"
-draft: true
 ---
 
 ## Introduction

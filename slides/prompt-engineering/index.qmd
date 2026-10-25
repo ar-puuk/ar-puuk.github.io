@@ -23,7 +23,6 @@ format:
     code-line-numbers: false
     highlight-style: monokai
     incremental: true
-draft: true
 categories: [AI]
 ---
 

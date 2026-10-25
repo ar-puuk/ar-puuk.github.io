@@ -15,7 +15,6 @@ categories: [R, GIS, Transportation]
 prefer-html: true
 resources:
         - "_output/*.csv"
-draft: true
 ---
 
 # Introduction
