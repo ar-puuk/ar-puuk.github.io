@@ -1,4 +1,4 @@
-=== run_all.R log: 2026-10-24 13:28:11.863833 ===
+=== run_all.R log: 2026-10-24 21:39:52.678946 ===
 Working directory: D:/GitHub/ar-puuk.github.io/slides/spatial-benchmark
 Result: success
 
@@ -29,13 +29,13 @@ The following objects are masked from 'package:stats':
 
     filter, lag
 
-The following objects are masked from 'package:base':
-
-    intersect, setdiff, setequal, union
-
 The following objects are masked from 'package:stats':
 
     filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
 
 The following objects are masked from 'package:base':
 
@@ -101,8 +101,8 @@ One or more parsing issues, call `problems()` on your data frame for details,
 e.g.:
   dat <- vroom(...)
   problems(dat) 
-  Load Data: 8.640s | 1043.4 MB RSS delta
-  Load Data: 8.640s | 1043.4 MB RSS delta
+  Load Data: 8.700s | 1043.1 MB RSS delta
+  Load Data: 8.700s | 1043.1 MB RSS delta
 Warning message:
 Warning message:
 One or more parsing issues, call `problems()` on your data frame for details,
@@ -113,17 +113,17 @@ One or more parsing issues, call `problems()` on your data frame for details,
 e.g.:
   dat <- vroom(...)
   problems(dat) 
-  Validation (Join): 11.250s | 1614.2 MB RSS delta
-  Validation (Join): 11.250s | 1614.2 MB RSS delta
+  Validation (Join): 11.720s | 1770.3 MB RSS delta
+  Validation (Join): 11.720s | 1770.3 MB RSS delta
+Warning messages:
 Warning messages:
 1: In rm(pts, cnt, res_attr, res_spatial) : object 'res_attr' not found
 2: In rm(pts, cnt, res_attr, res_spatial) : object 'res_spatial' not found
-Warning messages:
+────────────────────────────────────────────────────────────
 1: In rm(pts, cnt, res_attr, res_spatial) : object 'res_attr' not found
 2: In rm(pts, cnt, res_attr, res_spatial) : object 'res_spatial' not found
 ────────────────────────────────────────────────────────────
 BENCHMARK 01 Complete!
-────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 BENCHMARK 01 Complete!
 ────────────────────────────────────────────────────────────
@@ -159,8 +159,8 @@ Phase 2a: Benchmarking data ingest (no indexing)...
 Running: BENCHMARK 02 - R (DuckDB) Modern Stack
 ────────────────────────────────────────────────────────────
 Phase 2a: Benchmarking data ingest (no indexing)...
-  Load Data: 0.900s | 105.8 MB RSS delta
-  Load Data: 0.900s | 105.8 MB RSS delta
+  Load Data: 0.900s | 112.4 MB RSS delta
+  Load Data: 0.900s | 112.4 MB RSS delta
 Phase 2b: Benchmarking RTREE index creation...
 Phase 2b: Benchmarking RTREE index creation...
 [1] 0
@@ -169,14 +169,14 @@ Phase 2b: Benchmarking RTREE index creation...
 [1] 1501132
 [1] 29
 [1] 29
-  Build Index: 0.190s | 146.7 MB RSS delta
-  Build Index: 0.190s | 146.7 MB RSS delta
+  Build Index: 0.170s | 147.4 MB RSS delta
+  Build Index: 0.170s | 147.4 MB RSS delta
 Running warmup query (not timed)...
 Running warmup query (not timed)...
 Warmup complete. Starting timed benchmark...
 Warmup complete. Starting timed benchmark...
-  Validation (Join): 9.420s | 0.8 MB RSS delta
-  Validation (Join): 9.420s | 0.8 MB RSS delta
+  Validation (Join): 9.300s | -0.8 MB RSS delta
+  Validation (Join): 9.300s | -0.8 MB RSS delta
 Generating validation statistics...
 Generating validation statistics...
 Validation stats saved to: _results/validation_stats.csv
@@ -190,8 +190,8 @@ BENCHMARK 02 Complete!
 ────────────────────────────────────────────────────────────
 Running: BENCHMARK 03 - Python (GeoPandas) Legacy Stack
 ────────────────────────────────────────────────────────────
-  Load Data: 5.978s | 964.4 MB RSS delta
-  Validation (Join): 1.181s | 597.1 MB RSS delta
+  Load Data: 5.985s | 964.3 MB RSS delta
+  Validation (Join): 1.187s | 596.9 MB RSS delta
 ────────────────────────────────────────────────────────────
 BENCHMARK 03 Complete!
 ────────────────────────────────────────────────────────────
@@ -200,11 +200,11 @@ Running: BENCHMARK 04 - Python (DuckDB) Modern Stack
 ────────────────────────────────────────────────────────────
 Installing spatial extension (one-time, not timed)...
 Spatial extension ready.
-  Load Data: 0.940s | 16.3 MB RSS delta
-  Build Index: 0.236s | 13.3 MB RSS delta
+  Load Data: 0.947s | 16.0 MB RSS delta
+  Build Index: 0.238s | 15.1 MB RSS delta
 Running warmup query (not timed)...
 Warmup complete. Starting timed benchmark...
-  Validation (Join): 28.546s | 52.6 MB RSS delta
+  Validation (Join): 28.999s | 52.2 MB RSS delta
 ────────────────────────────────────────────────────────────
 BENCHMARK 04 Complete!
 ────────────────────────────────────────────────────────────
@@ -236,14 +236,14 @@ Running: BENCHMARK 05 - R (SedonaDB) Modern Stack
 ────────────────────────────────────────────────────────────
 Running: BENCHMARK 05 - R (SedonaDB) Modern Stack
 ────────────────────────────────────────────────────────────
-  Load Data: 0.010s | 10.6 MB RSS delta
-  Load Data: 0.010s | 10.6 MB RSS delta
+  Load Data: 0.000s | 10.7 MB RSS delta
+  Load Data: 0.000s | 10.7 MB RSS delta
 Running warmup query (not timed)...
 Running warmup query (not timed)...
 Warmup complete. Starting timed benchmark...
 Warmup complete. Starting timed benchmark...
-  Validation (Join): 0.100s | -0.1 MB RSS delta
-  Validation (Join): 0.100s | -0.1 MB RSS delta
+  Validation (Join): 0.080s | 3.6 MB RSS delta
+  Validation (Join): 0.080s | 3.6 MB RSS delta
 ────────────────────────────────────────────────────────────
 ────────────────────────────────────────────────────────────
 BENCHMARK 05 Complete!
