@@ -29,6 +29,18 @@ body.quarto-dark .card > .card-header {
 body.quarto-dark .bslib-value-box:nth-child(4) { background: #005577 !important; }
 .bslib-value-box { overflow: hidden; }
 .bslib-value-box .value-box-value { overflow: visible; }
+.bslib-value-box .cell-output-display { overflow: hidden; }
+/* Same size and weight for every value, whether OJS returns a number or HTML, and no wrapping.
+   (The OJS output sits in a sibling of the empty .value-box-value paragraph.) */
+.bslib-value-box .value-box-area .value-box-value,
+.bslib-value-box .value-box-area .cell-output-display,
+.bslib-value-box .value-box-area .cell-output-display * {
+  font-size: clamp(1.4rem, 2.3vw, 2rem);
+  font-weight: 400;
+  line-height: 1.15;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 
 /* The "expand" button that appears on hover. */
 .bslib-full-screen-enter {
@@ -44,4 +56,76 @@ body.quarto-dark .bslib-value-box:nth-child(4) { background: #005577 !important;
    its inherited light text is white on white. Use the dark surface colour. */
 body.quarto-dark g[aria-label="tip"] {
   fill: #1A2B35;
+}
+
+/* Tooltips (e.g. "Expand" on the card button): the dark theme sets their text to the dark
+   page colour while the box stays black, so the text is unreadable. Keep it light. */
+body.quarto-dark .tooltip {
+  --bs-tooltip-color: #FFFBF2;
+}
+
+/* Map cards: the map fills the card body. */
+.cell-output-display:has(> .map-fill) {
+  position: relative;
+}
+.map-fill {
+  position: absolute;
+  inset: 0;
+}
+
+/* Charts scale to their card (the SVG has a viewBox), so they never need a scrollbar. */
+.card .cell-output-display .observablehq {
+  height: 100%;
+}
+.card .cell-output-display .observablehq > svg {
+  width: 100%;
+  height: 100%;
+}
+/* Plots with a legend are wrapped in a figure: legend on top, the chart takes the rest. */
+.card .cell-output-display .observablehq > figure {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0;
+}
+.card .cell-output-display .observablehq > figure > svg {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+.map-fill .maplibregl-popup-content {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  padding: 0.45rem 0.65rem;
+  color: #0E171E;
+}
+
+/* Colour swatches next to the category checkboxes (same colours as the map). */
+.swatch {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-right: 0.45rem;
+  border-radius: 50%;
+  vertical-align: -0.05rem;
+}
+
+/* Sidebar inputs: Observable Inputs forms default to a fixed width wider than the sidebar,
+   which causes a horizontal scrollbar. Let them fill the sidebar instead. */
+.bslib-sidebar-layout > .sidebar form {
+  width: 100%;
+  max-width: 100%;
+}
+.bslib-sidebar-layout > .sidebar form > div:not(:first-child) {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.bslib-sidebar-layout > .sidebar form label {
+  display: flex !important;
+  align-items: center;
+  width: auto;
+}
+.bslib-sidebar-layout > .sidebar form input[type="range"] {
+  max-width: 100%;
 }
