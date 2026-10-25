@@ -3,11 +3,25 @@ title: Resume # Curriculum vitæ
 pagetitle: Resume
 published-title: Last Updated
 date: 2026-04-04
-format: html
+format:
+  html: default
+  typst:
+    output-file: Resume_PukarBhandari_April2026
+    papersize: us-letter
+    margin:
+      x: 0pt
+      y: 0pt
+    font-paths:
+      - _cv/fonts
+    mainfont: "Source Sans 3"
+    fontsize: 9.96pt
+    include-in-header: _cv/template.typ
 engine: knitr
 cv:
-  pdf: "assets/pdfs/Resume_PukarBhandari_April2026.pdf"
+  pdf: "Resume_PukarBhandari_April2026.pdf"
 ---
+
+::: {.content-visible when-format="html"}
 
 ```{css echo=FALSE}
 .embed-container {
@@ -31,18 +45,25 @@ cv:
 
 ```{=html}
 <div style="text-align: center; margin-top: 10px;">
-  <a href="assets/pdfs/Resume_PukarBhandari_April2026.pdf" target="_blank" class="btn btn-outline-secondary">Download Latest Resume</a>
+  <a href="Resume_PukarBhandari_April2026.pdf" target="_blank" class="btn btn-outline-secondary">Download Latest Resume</a>
 </div>
 
 <br>
 
 <div class="embed-container">
   <iframe
-  src="assets/pdfs/Resume_PukarBhandari_April2026.pdf"
+  src="Resume_PukarBhandari_April2026.pdf"
   title="Resume (PDF)"
   style="border: 0.5px">
-  <p>Your browser cannot display the embedded PDF. <a href="assets/pdfs/Resume_PukarBhandari_April2026.pdf">Open the resume as a PDF</a>.</p>
+  <p>Your browser cannot display the embedded PDF. <a href="Resume_PukarBhandari_April2026.pdf">Open the resume as a PDF</a>.</p>
   </iframe>
 </div>
 ```
 
+:::
+
+::: {.content-visible when-format="typst"}
+
+{{< include _cv/content.qmd >}}
+
+:::
