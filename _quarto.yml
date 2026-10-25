@@ -22,7 +22,6 @@ website:
   draft-mode: visible
 
   repo-url: "https://github.com/ar-puuk/ar-puuk.github.io"
-  repo-actions: [source, issue]
 
   # page-navigation: false
   # back-to-top-navigation: false
