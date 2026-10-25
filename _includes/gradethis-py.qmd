@@ -1,0 +1,589 @@
+```{pyodide}
+#| context: setup
+#| include: false
+"""A Python port of the code-checking half of the R gradethis package.
+
+`grade_this_code()` mirrors gradethis::grade_this_code(): it compares the
+student's code with the solution code statement by statement and call by call
+(a port of gradethis::detect_mistakes()), and reports the first difference with
+the same wording, praise and encouragement phrases that gradethis uses.
+
+Python code is mapped onto R-style calls so the same algorithm applies:
+  * `obj.method(a)` is treated like a piped call `method(obj, a)`,
+  * operators (`a / b`), subscripts (`a[i]`) and assignments (`x = v`) are
+    treated as calls to `/`, `[` and `=`.
+"""
+import ast
+import html as _html
+import inspect
+import random
+import re
+import types
+from collections import ChainMap
+
+PRAISE = [
+    "Absolutely fabulous!", "Amazing!", "Awesome!", "Beautiful!", "Bravo!",
+    "Cool job!", "Delightful!", "Excellent!", "Fantastic!", "Great work!",
+    "I couldn't have done it better myself.", "Impressive work!", "Lovely job!",
+    "Magnificent!", "Nice job!", "Out of this world!", "Resplendent!",
+    "Smashing!", "Someone knows what they're doing :)", "Spectacular job!",
+    "Splendid!", "Success!", "Super job!", "Superb work!", "Swell job!",
+    "Terrific!", "That's a first-class answer!", "That's glorious!",
+    "That's marvelous!", "Very good!", "Well done!", "What first-rate work!",
+    "Wicked smaht!", "Wonderful!", "You aced it!", "You rock!",
+    "You should be proud.",
+]
+ENCOURAGEMENT = [
+    "Please try again.", "Give it another try.", "Let's try it again.",
+    "Try it again; next time's the charm!",
+    "Don't give up now, try it one more time.",
+    "But no need to fret, try it again.",
+    "Try it again. I have a good feeling about this.",
+    "Try it again. You get better each time.",
+    "Try it again. Perseverance is the key to success.",
+    "That's okay: you learn more from mistakes than successes. "
+    "Let's do it one more time.",
+]
+
+
+# ---------------------------------------------------------------- node model
+class Atom:
+    def __init__(self, text, key):
+        self.text, self.key = text, key
+
+
+class Call:
+    """fn(args...) where args is a list of (name_or_None, node)."""
+
+    def __init__(self, fn, args, src, infix=False, assign=False, ref=None,
+                 method=False):
+        self.fn, self.args, self.src = fn, args, src
+        self.infix, self.assign, self.ref, self.method = infix, assign, ref, method
+
+
+def key(n):
+    if isinstance(n, Call):
+        return ("call", key(n.fn), tuple((a, key(b)) for a, b in n.args))
+    return n.key
+
+
+def is_call(n):
+    return isinstance(n, Call)
+
+
+def rlen(n):
+    return 1 + len(n.args) if isinstance(n, Call) else 1
+
+
+_BINOPS = {ast.Add: "+", ast.Sub: "-", ast.Mult: "*", ast.Div: "/",
+           ast.FloorDiv: "//", ast.Mod: "%", ast.Pow: "**", ast.MatMult: "@",
+           ast.BitAnd: "&", ast.BitOr: "|", ast.BitXor: "^",
+           ast.LShift: "<<", ast.RShift: ">>"}
+_CMPOPS = {ast.Eq: "==", ast.NotEq: "!=", ast.Lt: "<", ast.LtE: "<=",
+           ast.Gt: ">", ast.GtE: ">=", ast.Is: "is", ast.IsNot: "is not",
+           ast.In: "in", ast.NotIn: "not in"}
+_UNOPS = {ast.USub: "-", ast.UAdd: "+", ast.Not: "not", ast.Invert: "~"}
+
+
+def _src(node):
+    return " ".join(ast.unparse(node).split())
+
+
+def _atom(text, key_):
+    return Atom(text, key_)
+
+
+def _op(sym):
+    return Atom(sym, ("op", sym))
+
+
+def _module_path(node, env):
+    """Dotted name if `node` is an attribute chain rooted in a module."""
+    parts, cur = [], node
+    while isinstance(cur, ast.Attribute):
+        parts.append(cur.attr)
+        cur = cur.value
+    if isinstance(cur, ast.Name):
+        obj = env.get(cur.id)
+        if isinstance(obj, types.ModuleType):
+            obj2 = obj
+            for p in reversed(parts):
+                obj2 = getattr(obj2, p, None)
+            return ".".join([cur.id] + parts[::-1]), obj2
+    return None, None
+
+
+def _root_name(node):
+    while isinstance(node, (ast.Attribute, ast.Call, ast.Subscript)):
+        node = node.func if isinstance(node, ast.Call) else node.value
+    return node.id if isinstance(node, ast.Name) else None
+
+
+def _resolve_method(receiver, attr, env):
+    """Best-effort lookup of the callable behind `receiver.attr(...)`."""
+    root = _root_name(receiver)
+    if root is None or root not in env:
+        return None
+    obj = env[root]
+    if isinstance(receiver, ast.Name):
+        fn = getattr(obj, attr, None)
+        return fn if callable(fn) else None
+    fn = getattr(type(obj), attr, None)  # chained call: assume the same type
+    if callable(fn):
+        return ("unbound", fn)
+    return None
+
+
+def conv(node, env):
+    if isinstance(node, ast.Constant):
+        return _atom(_src(node), ("const", repr(node.value)))
+    if isinstance(node, ast.Name):
+        return _atom(node.id, ("name", node.id))
+    if isinstance(node, ast.Attribute):
+        path, _ = _module_path(node, env)
+        if path:
+            return _atom(path, ("name", path))
+        return Call(_op("."), [(None, conv(node.value, env)),
+                               (None, _atom(node.attr, ("name", node.attr)))],
+                    _src(node), infix=True)
+    if isinstance(node, ast.BinOp):
+        return Call(_op(_BINOPS[type(node.op)]),
+                    [(None, conv(node.left, env)), (None, conv(node.right, env))],
+                    _src(node), infix=True)
+    if isinstance(node, ast.BoolOp):
+        sym = "and" if isinstance(node.op, ast.And) else "or"
+        return Call(_op(sym), [(None, conv(v, env)) for v in node.values],
+                    _src(node), infix=True)
+    if isinstance(node, ast.UnaryOp):
+        return Call(_op(_UNOPS[type(node.op)]), [(None, conv(node.operand, env))],
+                    _src(node), infix=True)
+    if isinstance(node, ast.Compare):
+        syms = " ".join(_CMPOPS[type(o)] for o in node.ops)
+        return Call(_op(syms),
+                    [(None, conv(node.left, env))] +
+                    [(None, conv(c, env)) for c in node.comparators],
+                    _src(node), infix=True)
+    if isinstance(node, ast.Subscript):
+        return Call(_op("["), [(None, conv(node.value, env)),
+                               (None, conv(node.slice, env))],
+                    _src(node), infix=True)
+    if isinstance(node, (ast.List, ast.Tuple, ast.Set)):
+        sym = {ast.List: "[]", ast.Tuple: "()", ast.Set: "{}"}[type(node)]
+        return Call(_op(sym), [(None, conv(e, env)) for e in node.elts],
+                    _src(node), infix=True)
+    if isinstance(node, ast.Dict):
+        args = []
+        for k, v in zip(node.keys, node.values):
+            if isinstance(k, ast.Constant) and isinstance(k.value, str):
+                args.append((k.value, conv(v, env)))
+            else:
+                args.append((None, conv(v, env)))
+        return Call(_op("{}"), args, _src(node), infix=True)
+    if isinstance(node, ast.Slice):
+        parts = [conv(p, env) if p is not None else _atom("", ("none",))
+                 for p in (node.lower, node.upper, node.step)]
+        return Call(_op(":"), [(None, p) for p in parts], _src(node), infix=True)
+    if isinstance(node, ast.Call):
+        return _conv_call(node, env)
+    return _atom(_src(node), ("dump", ast.dump(node)))
+
+
+def _conv_call(node, env):
+    func = node.func
+    args = [(None, conv(a.value if isinstance(a, ast.Starred) else a, env))
+            for a in node.args]
+    kws = [(k.arg, conv(k.value, env)) for k in node.keywords]
+    src = _src(node)
+    ref, method, fn = None, False, None
+    if isinstance(func, ast.Name):
+        fn = _atom(func.id, ("name", func.id))
+        ref = env.get(func.id)
+    elif isinstance(func, ast.Attribute):
+        path, obj = _module_path(func, env)
+        if path:
+            fn = _atom(path, ("name", path))
+            ref = obj
+        else:
+            method = True
+            fn = _atom(func.attr, ("name", func.attr))
+            args = [(None, conv(func.value, env))] + args
+            r = _resolve_method(func.value, func.attr, env)
+            ref = r
+    else:
+        fn = conv(func, env)
+    return Call(fn, args + kws, src, ref=ref, method=method)
+
+
+def conv_stmt(node, env):
+    if isinstance(node, ast.Expr):
+        return conv(node.value, env)
+    if isinstance(node, ast.Assign):
+        target = node.targets[0]
+        return Call(_op("="), [(None, conv(target, env)),
+                               (None, conv(node.value, env))],
+                    _src(node), infix=True, assign=True)
+    if isinstance(node, ast.AugAssign):
+        sym = _BINOPS[type(node.op)] + "="
+        return Call(_op(sym), [(None, conv(node.target, env)),
+                               (None, conv(node.value, env))],
+                    _src(node), infix=True, assign=True)
+    if isinstance(node, (ast.Import, ast.ImportFrom)):
+        names = [(None, _atom(a.name + (" as " + a.asname if a.asname else ""),
+                              ("name", a.name, a.asname))) for a in node.names]
+        mod = getattr(node, "module", None)
+        head = "from" if isinstance(node, ast.ImportFrom) else "import"
+        args = ([(None, _atom(mod, ("name", mod)))] if mod else []) + names
+        return Call(_atom(head, ("name", head)), args, _src(node))
+    return _atom(_src(node), ("dump", ast.dump(node)))
+
+
+def parse_code(code, env):
+    tree = ast.parse(code)
+    return [conv_stmt(s, env) for s in tree.body]
+
+
+# -------------------------------------------------------------- standardising
+_EMPTY = inspect.Parameter.empty
+
+
+def _default_atom(v):
+    return _atom(repr(v), ("const", repr(v)))
+
+
+def standardize(call, defaults=False):
+    """Name arguments after the callee's formals (R's match.call())."""
+    ref = call.ref
+    if ref is None:
+        return list(call.args)
+    unbound = isinstance(ref, tuple)
+    fn = ref[1] if unbound else ref
+    try:
+        sig = inspect.signature(fn)
+        params = list(sig.parameters.values())
+        if unbound and params:
+            params = params[1:]
+        sig = sig.replace(parameters=params)
+    except (TypeError, ValueError):
+        return list(call.args)
+    head = []
+    rest = list(call.args)
+    if call.method and rest:
+        head, rest = [rest[0]], rest[1:]
+    pos = [n for nm, n in rest if nm is None]
+    kws = {nm: n for nm, n in rest if nm is not None}
+    try:
+        bound = sig.bind_partial(*pos, **kws)
+    except TypeError:
+        return list(call.args)
+    out = list(head)
+    for p in params:
+        if p.name in bound.arguments:
+            val = bound.arguments[p.name]
+            if p.kind == p.VAR_POSITIONAL:
+                out.extend((None, v) for v in val)
+            elif p.kind == p.VAR_KEYWORD:
+                out.extend(val.items())
+            else:
+                out.append((p.name, val))
+        elif defaults and p.default is not _EMPTY:
+            out.append((p.name, _default_atom(p.default)))
+    return out
+
+
+def _named(args):
+    return [(n, v) for n, v in args if n]
+
+
+def _names(args):
+    return [n for n, _ in args if n]
+
+
+def _lookup(args, name):
+    for n, v in args:
+        if n == name:
+            return v
+    return None
+
+
+def _remove(args, name):
+    for i, (n, _) in enumerate(args):
+        if n == name:
+            return args[:i] + args[i + 1:]
+    return args
+
+
+# ------------------------------------------------------------------ messages
+def prep(n):
+    if isinstance(n, str):
+        return "`" + n + "`"
+    if isinstance(n, Call):
+        if n.infix:
+            t = n.fn.text
+        else:
+            t = (n.fn.text if isinstance(n.fn, Atom) else n.fn.src) + "()"
+    else:
+        t = n.text
+    return "`" + t + "`"
+
+
+def build_intro(call=None, arg=None, open_="In ", close=", "):
+    if call is None:
+        return ""
+    s = call.src if isinstance(call, (Call,)) else call.text
+    if arg:
+        s = arg + "=" + s
+    if len(s) > 80:
+        return ""
+    return open_ + "`" + s + "`" + close
+
+
+def md_code_prepend(prefix, x):
+    if x.startswith("`"):
+        x = x[1:]
+        if not prefix.startswith("`"):
+            prefix = "`" + prefix
+    return prefix + x
+
+
+def message_extra_answer(this_line):
+    return ("I didn't expect the call " + prep(this_line) +
+            " in your answer. Please remove it and resubmit your work.")
+
+
+def message_missing_answer(prior_line):
+    return ("I expected another call after " + prep(prior_line) +
+            ". Did you forget to write one?")
+
+
+def message_missing_argument(submitted_call, solution_name, enc_call, enc_arg):
+    intro = build_intro(enc_call, enc_arg)
+    your = "Y" if intro == "" else "y"
+    sc = prep(submitted_call)
+    sn = prep(solution_name)
+    if "()" in sn:
+        sn = "an argument, possibly unnamed, that calls " + sn + "."
+    else:
+        sn = sn + " as one of its arguments."
+    return (intro + your + "our call to " + sc + " should include " + sn +
+            " You may have misspelled an argument name, "
+            "or left out an important argument.")
+
+
+def message_surplus_argument(submitted_call, submitted, submitted_name,
+                             enc_call, enc_arg):
+    intro = build_intro(enc_call, enc_arg)
+    sc = prep(submitted_call)
+    sub = prep(submitted)
+    if submitted_name:
+        sub = md_code_prepend(submitted_name + "=", sub)
+    return (intro + "I did not expect your call to " + sc + " to include " +
+            sub + ". You may have included an unnecessary argument, or you "
+            "may have left out or misspelled an important argument name.")
+
+
+def message_wrong_call(submitted, solution, submitted_name, enc_call):
+    intro = build_intro(enc_call)
+    sol_orig = solution
+    sub = prep(submitted)
+    sol = prep(solution)
+    if submitted_name:
+        sol = md_code_prepend(submitted_name + "=", sol)
+        sub = md_code_prepend(submitted_name + "=", sub)
+    action = ("assign something to something else with"
+              if isinstance(sol_orig, Call) and sol_orig.assign else "call")
+    return (intro + "I expected you to " + action + " " + sol +
+            " where you called " + sub + ".")
+
+
+def message_wrong_value(submitted, solution, submitted_name, enc_call):
+    intro = build_intro(enc_call)
+    expected = "expected"
+    if rlen(submitted) > rlen(solution):
+        expected = "didn't expect"
+        solution, submitted = submitted, None
+    where = " where you wrote "
+    sol_orig = solution
+    sol = prep(solution)
+    if submitted is None:
+        intro = ""
+        sub = build_intro(enc_call if enc_call is not None else sol_orig,
+                          None, "", "")
+    else:
+        sub = prep(submitted)
+    if submitted_name:
+        sol = md_code_prepend(submitted_name + "=", sol)
+        sub = md_code_prepend(submitted_name + "=", sub)
+    if isinstance(sol_orig, Call) and sol_orig.assign:
+        action = "you to assign something to something else with "
+    elif "()" in sol:
+        action = "you to call "
+    else:
+        action = ""
+    return (intro + "I " + expected + " " + action + sol +
+            (where if sub != "" else "") + sub + ".")
+
+
+# -------------------------------------------------------------- detect_mistakes
+def detect_mistakes(user, sol, enc_call=None, enc_arg=None):
+    submitted = user
+
+    # a bare value must match the solution exactly
+    if not (is_call(user) and is_call(sol)):
+        if key(user) == key(sol):
+            return None
+        return message_wrong_value(user, sol, enc_arg, enc_call)
+
+    # same call?
+    if key(user.fn) != key(sol.fn):
+        return message_wrong_call(user, sol, enc_arg, enc_call)
+
+    sol_std = Call(sol.fn, standardize(sol, False), sol.src, sol.infix,
+                   sol.assign, sol.ref, sol.method)
+    sol_def_args = standardize(sol, True)
+
+    # name problems: surplus named arguments, then surplus positional ones
+    user_args = list(user.args)
+    sol_args = list(sol_def_args)
+    for nm in _names(user.args):
+        if nm in _names(sol_args):
+            user_args = _remove(user_args, nm)
+            sol_args = _remove(sol_args, nm)
+    remaining_user_names = _names(user_args)
+    remaining_sol_names = _names(sol_args)
+    unused = [n for n in remaining_user_names if n not in remaining_sol_names]
+    if unused:
+        return message_surplus_argument(user, _lookup(user.args, unused[0]),
+                                        unused[0], enc_call, enc_arg)
+    if len(user_args) > len(sol_args):
+        node = user_args[len(sol_args)][1]
+        return message_surplus_argument(user, node, "", enc_call, enc_arg)
+
+    # every named argument in the solution must appear in the user's code
+    user_std_args = standardize(user, False)
+    sol_std_names = _names(sol_std.args)
+    missing = [n for n in sol_std_names if n not in _names(user_std_args)]
+    if missing:
+        return message_missing_argument(sol_std, missing[0], enc_call, enc_arg)
+
+    user_def_args = standardize(user, True)
+    user_std = Call(user.fn, user_std_args, user.src, user.infix, user.assign,
+                    user.ref, user.method)
+
+    # named arguments that are not in the solution (passed on through ...)
+    unmatched = [n for n in _names(user_std_args) if n not in _names(sol_def_args)]
+    if unmatched:
+        return message_surplus_argument(user_std, _lookup(user_std_args, unmatched[0]),
+                                        unmatched[0], enc_call, enc_arg)
+
+    # compare the arguments
+    u_args = list(user_std_args)
+    s_args = list(sol_std.args)
+    u_def = list(user_def_args)
+    s_def = list(sol_def_args)
+    submitted_names = _names(submitted.args)
+    name = None
+    for name in _names(s_args):
+        pass
+    for nm in _names(sol_std.args):
+        name = nm
+        if key(_lookup(u_def, nm) or _atom("", ("missing",))) != key(_lookup(sol_std.args, nm)):
+            arg_name = nm if nm in submitted_names else ""
+            res = detect_mistakes(_lookup(user_std_args, nm),
+                                  _lookup(sol_std.args, nm),
+                                  submitted, arg_name)
+            if res is not None:
+                return res
+        u_args = _remove(u_args, nm)
+        s_args = _remove(s_args, nm)
+        u_def = _remove(u_def, nm)
+        s_def = _remove(s_def, nm)
+
+    n = max(len(u_args), len(s_args))
+    for i in range(n):
+        if i >= len(u_def):
+            if not name:
+                name = s_args[i][1]
+            return message_missing_argument(sol, name, enc_call, enc_arg)
+        this_user = u_args[i][1]
+        name = u_args[i][0] or ""
+        if i >= len(s_def):
+            if name not in submitted_names:
+                name = ""
+            return message_surplus_argument(user, this_user, name, enc_call, enc_arg)
+        this_sol = s_args[i][1] if name == "" else _lookup(s_def, name)
+        if this_sol is None or key(this_user) != key(this_sol):
+            if name not in submitted_names:
+                name = ""
+            res = detect_mistakes(this_user, this_sol, submitted, name)
+            if res is not None:
+                return res
+    return None
+
+
+def detect_mistakes_expression(user, sol):
+    for i in range(max(len(user), len(sol))):
+        if i >= len(user):
+            return message_missing_answer(user[-1])
+        if i >= len(sol):
+            return message_extra_answer(user[i])
+        res = detect_mistakes(user[i], sol[i])
+        if res is not None:
+            return res
+    return None
+
+
+def code_feedback(user_code, solution_code, env):
+    user = parse_code(user_code, env)
+    sol = parse_code(solution_code, env)
+    if [key(u) for u in user] == [key(s) for s in sol]:
+        return None
+    return detect_mistakes_expression(user, sol)
+
+
+# ----------------------------------------------------------- markdown -> html
+def _md_inline(text):
+    out, pos = [], 0
+    for m in re.finditer(r"`([^`]*)`", text):
+        out.append(_smart(_html.escape(text[pos:m.start()], quote=False)))
+        out.append("<code>" + _html.escape(m.group(1), quote=False) + "</code>")
+        pos = m.end()
+    out.append(_smart(_html.escape(text[pos:], quote=False)))
+    return "".join(out)
+
+
+def _smart(s):
+    return s.replace("'", "’")
+
+
+def message_html(text):
+    return "<p>" + _md_inline(text) + "</p>\n"
+
+
+# ------------------------------------------------------------------ grading
+def _feedback(message, correct, type_):
+    return {"message": message, "correct": correct, "type": type_,
+            "location": "append"}
+
+
+def grade_code(user_code, solution_code, env):
+    if not user_code or not str(user_code).strip():
+        return _feedback("I didn't receive your code. Did you write any?",
+                         False, "info")
+    try:
+        msg = code_feedback(user_code, solution_code, env)
+    except Exception:
+        return _feedback("A problem occurred grading this exercise.", False,
+                         "warning")
+    if msg is None:
+        return _feedback(message_html(random.choice(PRAISE) + " Correct!"),
+                         True, "success")
+    return _feedback(message_html(msg + " " + random.choice(ENCOURAGEMENT)),
+                     False, "error")
+
+
+def grade_this_code():
+    """Call from a Quarto Live `check: true` block, like gradethis::grade_this_code()."""
+    caller = inspect.currentframe().f_back.f_locals
+    env = ChainMap(dict(caller.get("envir_result", {}) or {}), globals())
+    return grade_code(caller.get("user_code"), caller.get("solution_code"), env)
+```

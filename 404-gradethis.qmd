@@ -10,6 +10,11 @@ format:
       cell-options:
         completion: true
       render-df: gt-interactive
+    pyodide:
+      packages:
+        - pandas
+        - numpy
+        - matplotlib
     live:
       show-solutions: true
       show-grading: true
@@ -98,6 +103,46 @@ los_data <- data.frame(
 )
 ```
 
+```{pyodide}
+#| context: setup
+#| include: false
+import numpy as np
+import pandas as pd
+
+traffic_data = pd.DataFrame({
+    "location": ["Main St", "Oak Ave", "Park Rd", "First St", "Center Blvd", "Highway 101"],
+    "aadt": [15000, 8500, 12000, 6800, 22000, 45000],
+    "speed_limit": [35, 25, 30, 25, 45, 65],
+    "lanes": [4, 2, 3, 2, 6, 8],
+    "accidents_2023": [12, 3, 8, 2, 18, 35],
+    "congestion_hours": [4, 2, 3, 1, 6, 8],
+})
+
+bike_data = pd.DataFrame({
+    "station": ["Station " + c for c in "ABCDEF"],
+    "daily_trips": [45, 78, 23, 56, 89, 34],
+    "distance_downtown_km": [0.5, 2.1, 4.2, 1.8, 0.8, 3.5],
+    "bike_capacity": [20, 30, 15, 25, 35, 20],
+})
+
+transit_data = pd.DataFrame({
+    "route": ["Route " + str(i) for i in range(1, 6)],
+    "daily_riders": [1200, 850, 2100, 650, 1800],
+    "route_length_miles": [12.5, 8.2, 18.3, 6.1, 15.7],
+    "frequency_minutes": [15, 20, 10, 30, 12],
+})
+
+los_data = pd.DataFrame({
+    "intersection": list("ABCDE"),
+    "delay_seconds": [10, 25, 45, 75, 120],
+    "volume": [800, 1200, 1600, 1800, 2000],
+    "capacity": [1800] * 5,
+})
+
+```
+
+{{< include ./_includes/gradethis-py.qmd >}}
+
 ---
 
 ## 🧠 **Knowledge Test**
@@ -107,6 +152,10 @@ los_data <- data.frame(
 ### Question 1: Traffic Signal Timing ⏱️
 
 If a traffic light has a 90-second cycle and the green light lasts 60 seconds, how many cars can pass through if each car takes 3 seconds to clear the intersection?
+
+::: {.panel-tabset group="lang"}
+
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: know_1
@@ -143,9 +192,52 @@ cars_per_cycle
 gradethis::grade_this_code()
 ```
 
+## {{< fa brands python >}} Python
+
+```{pyodide}
+#| exercise: know_1_py
+#| envir: global
+#| caption: "Knowledge Question 1"
+# Calculate how many cars can pass in one green phase
+green_time = 60  # seconds
+time_per_car = 3  # seconds
+
+# Your calculation:
+cars_per_cycle = ______
+
+cars_per_cycle
+```
+
+::: {.solution exercise="know_1_py"}
+```{pyodide}
+#| exercise: know_1_py
+#| solution: true
+# Calculate how many cars can pass in one green phase
+green_time = 60  # seconds
+time_per_car = 3  # seconds
+
+# Divide green time by time per car
+cars_per_cycle = green_time / time_per_car
+
+cars_per_cycle
+```
+:::
+
+```{pyodide}
+#| exercise: know_1_py
+#| check: true
+grade_this_code()
+```
+
+:::
+
 ### Question 2: Level of Service 🚦
 
 Calculate the volume-to-capacity (V/C) ratio for an intersection with 1,600 vehicles/hour and capacity of 1,800 vehicles/hour. What LOS category does this represent? (A-C: ≤0.8, D: 0.8-0.9, E-F: >0.9)
+
+::: {.panel-tabset group="lang"}
+
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: know_2
@@ -191,9 +283,61 @@ list(vc_ratio = vc_ratio, los_category = los_category)
 gradethis::grade_this_code()
 ```
 
+## {{< fa brands python >}} Python
+
+```{pyodide}
+#| exercise: know_2_py
+#| envir: global
+#| caption: "Knowledge Question 2"
+volume = 1600
+capacity = 1800
+
+# Calculate V/C ratio
+vc_ratio = ______
+
+# Determine LOS category
+los_category = ______  # Should be "A-C", "D", or "E-F"
+
+{"vc_ratio": vc_ratio, "los_category": los_category}
+```
+
+::: {.solution exercise="know_2_py"}
+```{pyodide}
+#| exercise: know_2_py
+#| solution: true
+volume = 1600
+capacity = 1800
+
+# Calculate V/C ratio
+vc_ratio = volume / capacity
+
+# Determine LOS category based on thresholds
+if vc_ratio <= 0.8:
+    los_category = "A-C"
+elif vc_ratio <= 0.9:
+    los_category = "D"
+else:
+    los_category = "E-F"
+
+{"vc_ratio": vc_ratio, "los_category": los_category}
+```
+:::
+
+```{pyodide}
+#| exercise: know_2_py
+#| check: true
+grade_this_code()
+```
+
+:::
+
 ### Question 3: Modal Split 🚌🚲🚗
 
 In a city where 40% of trips are by car, 25% by transit, 20% by walking, and 15% by cycling, what percentage of non-car trips are made by transit?
+
+::: {.panel-tabset group="lang"}
+
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: know_3
@@ -233,9 +377,56 @@ transit_share_of_non_car
 gradethis::grade_this_code()
 ```
 
+## {{< fa brands python >}} Python
+
+```{pyodide}
+#| exercise: know_3_py
+#| envir: global
+#| caption: "Knowledge Question 3"
+car_percent = 40
+transit_percent = 25
+walking_percent = 20
+cycling_percent = 15
+
+# Calculate percentage of non-car trips that are transit
+non_car_total = ______
+transit_share_of_non_car = ______
+
+transit_share_of_non_car
+```
+
+::: {.solution exercise="know_3_py"}
+```{pyodide}
+#| exercise: know_3_py
+#| solution: true
+car_percent = 40
+transit_percent = 25
+walking_percent = 20
+cycling_percent = 15
+
+# Calculate percentage of non-car trips that are transit
+non_car_total = 100 - car_percent  # 60%
+transit_share_of_non_car = (transit_percent / non_car_total) * 100
+
+transit_share_of_non_car
+```
+:::
+
+```{pyodide}
+#| exercise: know_3_py
+#| check: true
+grade_this_code()
+```
+
+:::
+
 ### Question 4: Trip Generation 🏠
 
 A residential development has 200 housing units. Using ITE trip generation rate of 9.5 trips per dwelling unit per day, calculate total daily trips. If 15% occur during PM peak hour, how many PM peak trips?
+
+::: {.panel-tabset group="lang"}
+
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: know_4
@@ -277,9 +468,58 @@ list(daily = total_daily_trips, pm_peak = pm_peak_trips)
 gradethis::grade_this_code()
 ```
 
+## {{< fa brands python >}} Python
+
+```{pyodide}
+#| exercise: know_4_py
+#| envir: global
+#| caption: "Knowledge Question 4"
+housing_units = 200
+trip_rate = 9.5
+pm_peak_percent = 15
+
+# Calculate total daily trips
+total_daily_trips = ______
+
+# Calculate PM peak hour trips
+pm_peak_trips = ______
+
+{"daily": total_daily_trips, "pm_peak": pm_peak_trips}
+```
+
+::: {.solution exercise="know_4_py"}
+```{pyodide}
+#| exercise: know_4_py
+#| solution: true
+housing_units = 200
+trip_rate = 9.5
+pm_peak_percent = 15
+
+# Calculate total daily trips
+total_daily_trips = housing_units * trip_rate
+
+# Calculate PM peak hour trips
+pm_peak_trips = total_daily_trips * (pm_peak_percent / 100)
+
+{"daily": total_daily_trips, "pm_peak": pm_peak_trips}
+```
+:::
+
+```{pyodide}
+#| exercise: know_4_py
+#| check: true
+grade_this_code()
+```
+
+:::
+
 ### Question 5: Transit Frequency 🚍
 
 A bus route operates every 12 minutes during peak hours. How many buses pass a given stop in one hour? If each bus has 40-passenger capacity and average load is 75%, what's the hourly passenger capacity past that stop?
+
+::: {.panel-tabset group="lang"}
+
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: know_5
@@ -321,6 +561,51 @@ list(buses_per_hour = buses_per_hour, hourly_capacity = hourly_passenger_capacit
 gradethis::grade_this_code()
 ```
 
+## {{< fa brands python >}} Python
+
+```{pyodide}
+#| exercise: know_5_py
+#| envir: global
+#| caption: "Knowledge Question 5"
+frequency_minutes = 12
+bus_capacity = 40
+load_factor = 0.75
+
+# Calculate buses per hour
+buses_per_hour = ______
+
+# Calculate hourly passenger capacity
+hourly_passenger_capacity = ______
+
+{"buses_per_hour": buses_per_hour, "hourly_capacity": hourly_passenger_capacity}
+```
+
+::: {.solution exercise="know_5_py"}
+```{pyodide}
+#| exercise: know_5_py
+#| solution: true
+frequency_minutes = 12
+bus_capacity = 40
+load_factor = 0.75
+
+# Calculate buses per hour
+buses_per_hour = 60 / frequency_minutes
+
+# Calculate hourly passenger capacity
+hourly_passenger_capacity = buses_per_hour * bus_capacity * load_factor
+
+{"buses_per_hour": buses_per_hour, "hourly_capacity": hourly_passenger_capacity}
+```
+:::
+
+```{pyodide}
+#| exercise: know_5_py
+#| check: true
+grade_this_code()
+```
+
+:::
+
 ---
 
 ## 🚀 **Skills Test**
@@ -336,6 +621,10 @@ Using the `traffic_data` dataset, filter for locations with AADT > 15,000 and co
 #| include: false
 library(dplyr)
 ```
+
+::: {.panel-tabset group="lang"}
+
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| autorun: true
@@ -378,9 +667,57 @@ count_high_traffic
 gradethis::grade_this_code()
 ```
 
+## {{< fa brands python >}} Python
+
+```{pyodide}
+#| autorun: true
+#| caption: "Traffic Data"
+# First, let's see the data
+traffic_data
+```
+
+```{pyodide}
+#| exercise: skill_1_py
+#| envir: global
+#| caption: "Skill Question 1"
+# Filter for high-traffic locations and count them
+high_traffic = traffic_data[______]
+
+# Count the results
+count_high_traffic = ______
+
+count_high_traffic
+```
+
+::: {.solution exercise="skill_1_py"}
+```{pyodide}
+#| exercise: skill_1_py
+#| solution: true
+# Filter for high-traffic locations and count them
+high_traffic = traffic_data[traffic_data["aadt"] > 15000]
+
+# Count the results
+count_high_traffic = len(high_traffic)
+
+count_high_traffic
+```
+:::
+
+```{pyodide}
+#| exercise: skill_1_py
+#| check: true
+grade_this_code()
+```
+
+:::
+
 ### Question 2: Safety Rate Calculation 🔍
 
 Calculate the accident rate per 1,000 AADT for each location. Create a new column called `accident_rate` and arrange by highest rate.
+
+::: {.panel-tabset group="lang"}
+
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: skill_2
@@ -414,9 +751,54 @@ safety_analysis
 gradethis::grade_this_code()
 ```
 
+## {{< fa brands python >}} Python
+
+```{pyodide}
+#| exercise: skill_2_py
+#| envir: global
+#| caption: "Skill Question 2"
+# Calculate accident rates and arrange
+safety_analysis = (
+    traffic_data
+    .assign(accident_rate=______)
+    .sort_values(______, ascending=False)
+)
+
+# Show the results
+safety_analysis
+```
+
+::: {.solution exercise="skill_2_py"}
+```{pyodide}
+#| exercise: skill_2_py
+#| solution: true
+# Calculate accident rates and arrange
+safety_analysis = (
+    traffic_data
+    .assign(accident_rate=(traffic_data["accidents_2023"] / traffic_data["aadt"]) * 1000)
+    .sort_values("accident_rate", ascending=False)
+)
+
+# Show the results
+safety_analysis
+```
+:::
+
+```{pyodide}
+#| exercise: skill_2_py
+#| check: true
+grade_this_code()
+```
+
+:::
+
 ### Question 3: Transit Efficiency Analysis 🚌
 
 Calculate riders per mile for each transit route and identify the most efficient route (highest riders per mile).
+
+::: {.panel-tabset group="lang"}
+
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| autorun: true
@@ -465,6 +847,58 @@ most_efficient
 gradethis::grade_this_code()
 ```
 
+## {{< fa brands python >}} Python
+
+```{pyodide}
+#| autorun: true
+#| caption: "Transit Data"
+# Look at transit data first
+transit_data
+```
+
+```{pyodide}
+#| exercise: skill_3_py
+#| envir: global
+#| caption: "Skill Question 3"
+# Calculate efficiency and find the best route
+transit_efficiency = (
+    transit_data
+    .assign(riders_per_mile=______)
+    .sort_values(______, ascending=False)
+)
+
+# Get the most efficient route name
+most_efficient = transit_efficiency.iloc[0][______]
+
+most_efficient
+```
+
+::: {.solution exercise="skill_3_py"}
+```{pyodide}
+#| exercise: skill_3_py
+#| solution: true
+# Calculate efficiency and find the best route
+transit_efficiency = (
+    transit_data
+    .assign(riders_per_mile=transit_data["daily_riders"] / transit_data["route_length_miles"])
+    .sort_values("riders_per_mile", ascending=False)
+)
+
+# Get the most efficient route name
+most_efficient = transit_efficiency.iloc[0]["route"]
+
+most_efficient
+```
+:::
+
+```{pyodide}
+#| exercise: skill_3_py
+#| check: true
+grade_this_code()
+```
+
+:::
+
 ### Question 4: Bike Share Visualization 📈
 
 Create a scatter plot showing the relationship between distance from downtown and daily trips for bike share stations. Add a smooth trend line.
@@ -474,6 +908,10 @@ Create a scatter plot showing the relationship between distance from downtown an
 #| include: false
 library(ggplot2)
 ```
+
+::: {.panel-tabset group="lang"}
+
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| autorun: true
@@ -524,9 +962,73 @@ bike_plot
 gradethis::grade_this_code()
 ```
 
+## {{< fa brands python >}} Python
+
+```{pyodide}
+#| autorun: true
+#| caption: "Bike Data"
+# Look at bike data first
+bike_data
+```
+
+```{pyodide}
+#| exercise: skill_4_py
+#| envir: global
+#| caption: "Skill Question 4"
+import matplotlib.pyplot as plt
+
+# Create the bike share analysis plot
+fig, ax = plt.subplots(figsize=(6, 4))
+ax.scatter(bike_data[______], bike_data[______], s=50, alpha=0.7, color="steelblue")
+
+# Add a linear trend line
+slope, intercept = np.polyfit(bike_data["distance_downtown_km"], bike_data["daily_trips"], 1)
+x_line = np.linspace(bike_data["distance_downtown_km"].min(), bike_data["distance_downtown_km"].max(), 50)
+ax.plot(x_line, slope * x_line + intercept, color="red")
+
+ax.set_title("Bike Share Usage vs Distance from Downtown")
+ax.set_xlabel("Distance from Downtown (km)")
+ax.set_ylabel("Daily Trips")
+plt.show()
+```
+
+::: {.solution exercise="skill_4_py"}
+```{pyodide}
+#| exercise: skill_4_py
+#| solution: true
+import matplotlib.pyplot as plt
+
+# Create the bike share analysis plot
+fig, ax = plt.subplots(figsize=(6, 4))
+ax.scatter(bike_data["distance_downtown_km"], bike_data["daily_trips"], s=50, alpha=0.7, color="steelblue")
+
+# Add a linear trend line
+slope, intercept = np.polyfit(bike_data["distance_downtown_km"], bike_data["daily_trips"], 1)
+x_line = np.linspace(bike_data["distance_downtown_km"].min(), bike_data["distance_downtown_km"].max(), 50)
+ax.plot(x_line, slope * x_line + intercept, color="red")
+
+ax.set_title("Bike Share Usage vs Distance from Downtown")
+ax.set_xlabel("Distance from Downtown (km)")
+ax.set_ylabel("Daily Trips")
+plt.show()
+```
+:::
+
+```{pyodide}
+#| exercise: skill_4_py
+#| check: true
+grade_this_code()
+```
+
+:::
+
 ### Question 5: Comprehensive Performance Summary 🏆
 
 Create a summary table showing for each location: total daily volume, accidents per 1000 vehicles, and congestion level (Low: <3hrs, Medium: 3-5hrs, High: >5hrs).
+
+::: {.panel-tabset group="lang"}
+
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: skill_5
@@ -573,6 +1075,61 @@ performance_summary
 #| check: true
 gradethis::grade_this_code()
 ```
+
+## {{< fa brands python >}} Python
+
+```{pyodide}
+#| exercise: skill_5_py
+#| envir: global
+#| caption: "Skill Question 5"
+# Create comprehensive performance summary
+performance_summary = (
+    traffic_data
+    .assign(
+        daily_volume=______,
+        accidents_per_1000=______,
+        congestion_level=np.select(
+            [______ < 3, ______ <= 5],
+            ["Low", "Medium"],
+            default="High",
+        ),
+    )
+    [["location", "daily_volume", "accidents_per_1000", "congestion_level"]]
+)
+
+performance_summary
+```
+
+::: {.solution exercise="skill_5_py"}
+```{pyodide}
+#| exercise: skill_5_py
+#| solution: true
+# Create comprehensive performance summary
+performance_summary = (
+    traffic_data
+    .assign(
+        daily_volume=traffic_data["aadt"],
+        accidents_per_1000=(traffic_data["accidents_2023"] / traffic_data["aadt"]) * 1000,
+        congestion_level=np.select(
+            [traffic_data["congestion_hours"] < 3, traffic_data["congestion_hours"] <= 5],
+            ["Low", "Medium"],
+            default="High",
+        ),
+    )
+    [["location", "daily_volume", "accidents_per_1000", "congestion_level"]]
+)
+
+performance_summary
+```
+:::
+
+```{pyodide}
+#| exercise: skill_5_py
+#| check: true
+grade_this_code()
+```
+
+:::
 
 ---
 

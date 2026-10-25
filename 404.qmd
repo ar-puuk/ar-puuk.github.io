@@ -149,7 +149,7 @@ If a traffic light has a 90-second cycle and the green light lasts 60 seconds, h
 
 ::: {.panel-tabset group="lang"}
 
-## R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: know_1
@@ -181,7 +181,7 @@ if (!exists("cars_per_cycle")) {
 }
 ```
 
-## Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| exercise: know_1_py
@@ -218,7 +218,7 @@ Calculate the volume-to-capacity (V/C) ratio for an intersection with 1,600 vehi
 
 ::: {.panel-tabset group="lang"}
 
-## R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: know_2
@@ -256,7 +256,7 @@ if (!exists("vc_ratio") || !exists("los_category")) {
 }
 ```
 
-## Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| exercise: know_2_py
@@ -300,7 +300,7 @@ In a city where 40% of trips are by car, 25% by transit, 20% by walking, and 15%
 
 ::: {.panel-tabset group="lang"}
 
-## R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: know_3
@@ -333,7 +333,7 @@ if (!exists("transit_share_of_non_car")) {
 }
 ```
 
-## Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| exercise: know_3_py
@@ -376,7 +376,7 @@ A residential development has 200 housing units. Using ITE trip generation rate 
 
 ::: {.panel-tabset group="lang"}
 
-## R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: know_4
@@ -415,7 +415,7 @@ if (!exists("total_daily_trips") || !exists("pm_peak_trips")) {
 }
 ```
 
-## Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| exercise: know_4_py
@@ -460,7 +460,7 @@ A bus route operates every 12 minutes during peak hours. How many buses pass a g
 
 ::: {.panel-tabset group="lang"}
 
-## R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: know_5
@@ -500,7 +500,7 @@ if (!exists("buses_per_hour") || !exists("hourly_passenger_capacity")) {
 }
 ```
 
-## Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| exercise: know_5_py
@@ -557,7 +557,7 @@ library(dplyr)
 
 ::: {.panel-tabset group="lang"}
 
-## R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| autorun: true
@@ -603,7 +603,7 @@ if (!exists("high_traffic") || !exists("count_high_traffic")) {
 }
 ```
 
-## Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| autorun: true
@@ -654,7 +654,7 @@ Calculate the accident rate per 1,000 AADT for each location. Create a new colum
 
 ::: {.panel-tabset group="lang"}
 
-## R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: skill_2
@@ -697,7 +697,7 @@ if (!exists("safety_analysis")) {
 }
 ```
 
-## Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| exercise: skill_2_py
@@ -744,7 +744,7 @@ Calculate riders per mile for each transit route and identify the most efficient
 
 ::: {.panel-tabset group="lang"}
 
-## R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| autorun: true
@@ -796,7 +796,7 @@ if (!exists("transit_efficiency") || !exists("most_efficient")) {
 }
 ```
 
-## Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| autorun: true
@@ -861,7 +861,7 @@ library(ggplot2)
 
 ::: {.panel-tabset group="lang"}
 
-## R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| autorun: true
@@ -912,7 +912,7 @@ if (!exists("bike_plot")) {
 }
 ```
 
-## Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| autorun: true
@@ -974,7 +974,7 @@ Create a summary table showing for each location: total daily volume, accidents 
 
 ::: {.panel-tabset group="lang"}
 
-## R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: skill_5
@@ -1040,7 +1040,7 @@ if (!exists("performance_summary")) {
 }
 ```
 
-## Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| exercise: skill_5_py
