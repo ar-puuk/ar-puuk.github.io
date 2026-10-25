@@ -1,3 +1,23 @@
+[![Map of places in Salt Lake County downloaded from Overture Maps.](./posts/overture-data-download/overture_data_download.png)](dashboards/slco-places.llms.md)
+
+### [Salt Lake County Places Dashboard](dashboards/slco-places.llms.md)
+
+Interactive dashboard of Overture Maps places in Salt Lake County: filter by category and confidence, see where they cluster and which cities have the most.
+
+Oct 2026
+
+2 min
+
+[![Scatter plot of bikeway miles against total road miles for Utah cities.](./posts/utah-bikeways/utah_bikeways.png)](dashboards/utah-bikeways.llms.md)
+
+### [Utah Bikeways Dashboard](dashboards/utah-bikeways.llms.md)
+
+Interactive dashboard comparing bikeway miles with road miles for every Utah municipality, filterable by facility type.
+
+Oct 2026
+
+3 min
+
 [![Utah Education Explorer map of public schools, private schools and colleges as clustered markers, with a layers panel and a year timeline.](./posts/education-explorer/education_explorer.png)](posts/education-explorer/index.llms.md)
 
 ### [An Education Explorer for Public NCES Data](posts/education-explorer/index.llms.md)
@@ -226,8 +246,6 @@ Jul 2025
 
 53 min
 
-[![Population pyramid for Autauga County, Alabama, beside a tract-level map of Alabama.](./posts/population-pyramid-explorer/population_pyramid_explorer.png)](posts/population-pyramid-explorer/index.llms.md)
-
 ### [Building an Interactive Population Pyramid Explorer](posts/population-pyramid-explorer/index.llms.md)
 
 A deep dive into creating a story-driven Shiny application that combines interactive mapping with demographic visualizations using Census data.
@@ -235,8 +253,6 @@ A deep dive into creating a story-driven Shiny application that combines interac
 Jun 2025
 
 5 min
-
-[![RoboGUI Ultimate window with source and destination fields, quick presets and the generated robocopy command.](./posts/robocopy-gui/robocopy_gui.png)](posts/robocopy-gui/index.llms.md)
 
 ### [Interactive Robocopy GUI Tool](posts/robocopy-gui/index.llms.md)
 

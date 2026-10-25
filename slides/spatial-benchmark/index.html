@@ -26711,10 +26711,10 @@ Pukar Bhandari
 <h2>Results: Execution Time</h2>
 <div class="layout-sidebar layout-sidebar-left">
 <div class="cell panel-sidebar">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="355" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 354;"><span id="cb7-355"><a aria-label="355"></a>viewof opFilter <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>(</span>
-<span id="cb7-356"><a aria-label="356"></a>  [<span class="st">&quot;Load Data&quot;</span><span class="op">,</span> <span class="st">&quot;Validation (Join)&quot;</span>]<span class="op">,</span></span>
-<span id="cb7-357"><a aria-label="357"></a>  { <span class="dt">value</span><span class="op">:</span> [<span class="st">&quot;Load Data&quot;</span><span class="op">,</span> <span class="st">&quot;Validation (Join)&quot;</span>]<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">&quot;Toggle Steps:&quot;</span> }</span>
-<span id="cb7-358"><a aria-label="358"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="354" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 353;"><span id="cb7-354"><a aria-label="354"></a>viewof opFilter <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">checkbox</span>(</span>
+<span id="cb7-355"><a aria-label="355"></a>  [<span class="st">&quot;Load Data&quot;</span><span class="op">,</span> <span class="st">&quot;Validation (Join)&quot;</span>]<span class="op">,</span></span>
+<span id="cb7-356"><a aria-label="356"></a>  { <span class="dt">value</span><span class="op">:</span> [<span class="st">&quot;Load Data&quot;</span><span class="op">,</span> <span class="st">&quot;Validation (Join)&quot;</span>]<span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">&quot;Toggle Steps:&quot;</span> }</span>
+<span id="cb7-357"><a aria-label="357"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-1" data-nodetype="declaration">
 
@@ -26723,32 +26723,32 @@ Pukar Bhandari
 </div>
 <div class="panel-fill">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb8" data-startfrom="365" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 364;"><span id="cb8-365"><a aria-label="365"></a>data <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">&quot;_results/benchmark_results.csv&quot;</span>)<span class="op">.</span><span class="fu">csv</span>({ <span class="dt">typed</span><span class="op">:</span> <span class="kw">true</span> })</span>
-<span id="cb8-366"><a aria-label="366"></a></span>
-<span id="cb8-367"><a aria-label="367"></a>filteredData <span class="op">=</span> data<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> opFilter<span class="op">.</span><span class="fu">includes</span>(d<span class="op">.</span><span class="at">operation</span>))</span>
-<span id="cb8-368"><a aria-label="368"></a></span>
-<span id="cb8-369"><a aria-label="369"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb8-370"><a aria-label="370"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">500</span><span class="op">,</span></span>
-<span id="cb8-371"><a aria-label="371"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">200</span><span class="op">,</span></span>
-<span id="cb8-372"><a aria-label="372"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
-<span id="cb8-373"><a aria-label="373"></a>  <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">&quot;Total Seconds&quot;</span> }<span class="op">,</span></span>
-<span id="cb8-374"><a aria-label="374"></a>  <span class="dt">y</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="kw">null</span> }<span class="op">,</span></span>
-<span id="cb8-375"><a aria-label="375"></a>  <span class="dt">color</span><span class="op">:</span> {</span>
-<span id="cb8-376"><a aria-label="376"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="st">&quot;Load Data&quot;</span><span class="op">,</span> <span class="st">&quot;Build Index&quot;</span><span class="op">,</span> <span class="st">&quot;Validation (Join)&quot;</span>]<span class="op">,</span></span>
-<span id="cb8-377"><a aria-label="377"></a>    <span class="dt">range</span><span class="op">:</span> [<span class="st">&quot;#A0CBE8&quot;</span><span class="op">,</span> <span class="st">&quot;#5BA3C9&quot;</span><span class="op">,</span> <span class="st">&quot;#006DAE&quot;</span>]<span class="op">,</span></span>
-<span id="cb8-378"><a aria-label="378"></a>    <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span></span>
-<span id="cb8-379"><a aria-label="379"></a>  }<span class="op">,</span></span>
-<span id="cb8-380"><a aria-label="380"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb8-381"><a aria-label="381"></a>    Plot<span class="op">.</span><span class="fu">barX</span>(filteredData<span class="op">,</span> {</span>
-<span id="cb8-382"><a aria-label="382"></a>      <span class="dt">y</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">system</span><span class="sc">}</span><span class="vs"> (</span><span class="sc">${</span>d<span class="op">.</span><span class="at">language</span><span class="sc">}</span><span class="vs">)`</span><span class="op">,</span></span>
-<span id="cb8-383"><a aria-label="383"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">&quot;time_sec&quot;</span><span class="op">,</span></span>
-<span id="cb8-384"><a aria-label="384"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">&quot;operation&quot;</span><span class="op">,</span></span>
-<span id="cb8-385"><a aria-label="385"></a>      <span class="dt">sort</span><span class="op">:</span> { <span class="dt">y</span><span class="op">:</span> <span class="st">&quot;x&quot;</span><span class="op">,</span> <span class="dt">reverse</span><span class="op">:</span> <span class="kw">true</span> }<span class="op">,</span></span>
-<span id="cb8-386"><a aria-label="386"></a>      <span class="dt">tip</span><span class="op">:</span> <span class="kw">true</span></span>
-<span id="cb8-387"><a aria-label="387"></a>    })<span class="op">,</span></span>
-<span id="cb8-388"><a aria-label="388"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span>])</span>
-<span id="cb8-389"><a aria-label="389"></a>  ]</span>
-<span id="cb8-390"><a aria-label="390"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb8" data-startfrom="364" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 363;"><span id="cb8-364"><a aria-label="364"></a>data <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">&quot;_results/benchmark_results.csv&quot;</span>)<span class="op">.</span><span class="fu">csv</span>({ <span class="dt">typed</span><span class="op">:</span> <span class="kw">true</span> })</span>
+<span id="cb8-365"><a aria-label="365"></a></span>
+<span id="cb8-366"><a aria-label="366"></a>filteredData <span class="op">=</span> data<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> opFilter<span class="op">.</span><span class="fu">includes</span>(d<span class="op">.</span><span class="at">operation</span>))</span>
+<span id="cb8-367"><a aria-label="367"></a></span>
+<span id="cb8-368"><a aria-label="368"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb8-369"><a aria-label="369"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">500</span><span class="op">,</span></span>
+<span id="cb8-370"><a aria-label="370"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">200</span><span class="op">,</span></span>
+<span id="cb8-371"><a aria-label="371"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb8-372"><a aria-label="372"></a>  <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">&quot;Total Seconds&quot;</span> }<span class="op">,</span></span>
+<span id="cb8-373"><a aria-label="373"></a>  <span class="dt">y</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="kw">null</span> }<span class="op">,</span></span>
+<span id="cb8-374"><a aria-label="374"></a>  <span class="dt">color</span><span class="op">:</span> {</span>
+<span id="cb8-375"><a aria-label="375"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="st">&quot;Load Data&quot;</span><span class="op">,</span> <span class="st">&quot;Build Index&quot;</span><span class="op">,</span> <span class="st">&quot;Validation (Join)&quot;</span>]<span class="op">,</span></span>
+<span id="cb8-376"><a aria-label="376"></a>    <span class="dt">range</span><span class="op">:</span> [<span class="st">&quot;#A0CBE8&quot;</span><span class="op">,</span> <span class="st">&quot;#5BA3C9&quot;</span><span class="op">,</span> <span class="st">&quot;#006DAE&quot;</span>]<span class="op">,</span></span>
+<span id="cb8-377"><a aria-label="377"></a>    <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb8-378"><a aria-label="378"></a>  }<span class="op">,</span></span>
+<span id="cb8-379"><a aria-label="379"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb8-380"><a aria-label="380"></a>    Plot<span class="op">.</span><span class="fu">barX</span>(filteredData<span class="op">,</span> {</span>
+<span id="cb8-381"><a aria-label="381"></a>      <span class="dt">y</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">system</span><span class="sc">}</span><span class="vs"> (</span><span class="sc">${</span>d<span class="op">.</span><span class="at">language</span><span class="sc">}</span><span class="vs">)`</span><span class="op">,</span></span>
+<span id="cb8-382"><a aria-label="382"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">&quot;time_sec&quot;</span><span class="op">,</span></span>
+<span id="cb8-383"><a aria-label="383"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">&quot;operation&quot;</span><span class="op">,</span></span>
+<span id="cb8-384"><a aria-label="384"></a>      <span class="dt">sort</span><span class="op">:</span> { <span class="dt">y</span><span class="op">:</span> <span class="st">&quot;x&quot;</span><span class="op">,</span> <span class="dt">reverse</span><span class="op">:</span> <span class="kw">true</span> }<span class="op">,</span></span>
+<span id="cb8-385"><a aria-label="385"></a>      <span class="dt">tip</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb8-386"><a aria-label="386"></a>    })<span class="op">,</span></span>
+<span id="cb8-387"><a aria-label="387"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span>])</span>
+<span id="cb8-388"><a aria-label="388"></a>  ]</span>
+<span id="cb8-389"><a aria-label="389"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-2-1" data-nodetype="declaration">
@@ -26778,32 +26778,32 @@ Pukar Bhandari
 <section id="results-peak-memory-usage" class="slide level2">
 <h2>Results: Peak Memory Usage</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb9" data-startfrom="398" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 397;"><span id="cb9-398"><a aria-label="398"></a><span class="co">// FIX: Use filteredData (respects opFilter checkbox) and fill by operation —</span></span>
-<span id="cb9-399"><a aria-label="399"></a><span class="co">// consistent with the timing chart. The previous version used raw `data`</span></span>
-<span id="cb9-400"><a aria-label="400"></a><span class="co">// with fill by system, which caused multiple overlapping bars per system</span></span>
-<span id="cb9-401"><a aria-label="401"></a><span class="co">// (last drawn wins) once &quot;Build Index&quot; was added as a third operation.</span></span>
-<span id="cb9-402"><a aria-label="402"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb9-403"><a aria-label="403"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">500</span><span class="op">,</span></span>
-<span id="cb9-404"><a aria-label="404"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">200</span><span class="op">,</span></span>
-<span id="cb9-405"><a aria-label="405"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
-<span id="cb9-406"><a aria-label="406"></a>  <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">&quot;Megabytes (MB) — Process RSS Delta&quot;</span> }<span class="op">,</span></span>
-<span id="cb9-407"><a aria-label="407"></a>  <span class="dt">y</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="kw">null</span> }<span class="op">,</span></span>
-<span id="cb9-408"><a aria-label="408"></a>  <span class="dt">color</span><span class="op">:</span> {</span>
-<span id="cb9-409"><a aria-label="409"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="st">&quot;Load Data&quot;</span><span class="op">,</span> <span class="st">&quot;Build Index&quot;</span><span class="op">,</span> <span class="st">&quot;Validation (Join)&quot;</span>]<span class="op">,</span></span>
-<span id="cb9-410"><a aria-label="410"></a>    <span class="dt">range</span><span class="op">:</span> [<span class="st">&quot;#A0CBE8&quot;</span><span class="op">,</span> <span class="st">&quot;#5BA3C9&quot;</span><span class="op">,</span> <span class="st">&quot;#006DAE&quot;</span>]<span class="op">,</span></span>
-<span id="cb9-411"><a aria-label="411"></a>    <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span></span>
-<span id="cb9-412"><a aria-label="412"></a>  }<span class="op">,</span></span>
-<span id="cb9-413"><a aria-label="413"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb9-414"><a aria-label="414"></a>    Plot<span class="op">.</span><span class="fu">barX</span>(filteredData<span class="op">,</span> {</span>
-<span id="cb9-415"><a aria-label="415"></a>      <span class="dt">y</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">system</span><span class="sc">}</span><span class="vs"> (</span><span class="sc">${</span>d<span class="op">.</span><span class="at">language</span><span class="sc">}</span><span class="vs">)`</span><span class="op">,</span></span>
-<span id="cb9-416"><a aria-label="416"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">&quot;memory_mb&quot;</span><span class="op">,</span></span>
-<span id="cb9-417"><a aria-label="417"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">&quot;operation&quot;</span><span class="op">,</span></span>
-<span id="cb9-418"><a aria-label="418"></a>      <span class="dt">sort</span><span class="op">:</span> { <span class="dt">y</span><span class="op">:</span> <span class="st">&quot;x&quot;</span><span class="op">,</span> <span class="dt">reverse</span><span class="op">:</span> <span class="kw">true</span> }<span class="op">,</span></span>
-<span id="cb9-419"><a aria-label="419"></a>      <span class="dt">tip</span><span class="op">:</span> <span class="kw">true</span></span>
-<span id="cb9-420"><a aria-label="420"></a>    })<span class="op">,</span></span>
-<span id="cb9-421"><a aria-label="421"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span>])</span>
-<span id="cb9-422"><a aria-label="422"></a>  ]</span>
-<span id="cb9-423"><a aria-label="423"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb9" data-startfrom="397" data-source-offset="0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 396;"><span id="cb9-397"><a aria-label="397"></a><span class="co">// FIX: Use filteredData (respects opFilter checkbox) and fill by operation —</span></span>
+<span id="cb9-398"><a aria-label="398"></a><span class="co">// consistent with the timing chart. The previous version used raw `data`</span></span>
+<span id="cb9-399"><a aria-label="399"></a><span class="co">// with fill by system, which caused multiple overlapping bars per system</span></span>
+<span id="cb9-400"><a aria-label="400"></a><span class="co">// (last drawn wins) once &quot;Build Index&quot; was added as a third operation.</span></span>
+<span id="cb9-401"><a aria-label="401"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb9-402"><a aria-label="402"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">500</span><span class="op">,</span></span>
+<span id="cb9-403"><a aria-label="403"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">200</span><span class="op">,</span></span>
+<span id="cb9-404"><a aria-label="404"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb9-405"><a aria-label="405"></a>  <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">&quot;Megabytes (MB) — Process RSS Delta&quot;</span> }<span class="op">,</span></span>
+<span id="cb9-406"><a aria-label="406"></a>  <span class="dt">y</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="kw">null</span> }<span class="op">,</span></span>
+<span id="cb9-407"><a aria-label="407"></a>  <span class="dt">color</span><span class="op">:</span> {</span>
+<span id="cb9-408"><a aria-label="408"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="st">&quot;Load Data&quot;</span><span class="op">,</span> <span class="st">&quot;Build Index&quot;</span><span class="op">,</span> <span class="st">&quot;Validation (Join)&quot;</span>]<span class="op">,</span></span>
+<span id="cb9-409"><a aria-label="409"></a>    <span class="dt">range</span><span class="op">:</span> [<span class="st">&quot;#A0CBE8&quot;</span><span class="op">,</span> <span class="st">&quot;#5BA3C9&quot;</span><span class="op">,</span> <span class="st">&quot;#006DAE&quot;</span>]<span class="op">,</span></span>
+<span id="cb9-410"><a aria-label="410"></a>    <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb9-411"><a aria-label="411"></a>  }<span class="op">,</span></span>
+<span id="cb9-412"><a aria-label="412"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb9-413"><a aria-label="413"></a>    Plot<span class="op">.</span><span class="fu">barX</span>(filteredData<span class="op">,</span> {</span>
+<span id="cb9-414"><a aria-label="414"></a>      <span class="dt">y</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">system</span><span class="sc">}</span><span class="vs"> (</span><span class="sc">${</span>d<span class="op">.</span><span class="at">language</span><span class="sc">}</span><span class="vs">)`</span><span class="op">,</span></span>
+<span id="cb9-415"><a aria-label="415"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">&quot;memory_mb&quot;</span><span class="op">,</span></span>
+<span id="cb9-416"><a aria-label="416"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">&quot;operation&quot;</span><span class="op">,</span></span>
+<span id="cb9-417"><a aria-label="417"></a>      <span class="dt">sort</span><span class="op">:</span> { <span class="dt">y</span><span class="op">:</span> <span class="st">&quot;x&quot;</span><span class="op">,</span> <span class="dt">reverse</span><span class="op">:</span> <span class="kw">true</span> }<span class="op">,</span></span>
+<span id="cb9-418"><a aria-label="418"></a>      <span class="dt">tip</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb9-419"><a aria-label="419"></a>    })<span class="op">,</span></span>
+<span id="cb9-420"><a aria-label="420"></a>    Plot<span class="op">.</span><span class="fu">ruleX</span>([<span class="dv">0</span>])</span>
+<span id="cb9-421"><a aria-label="421"></a>  ]</span>
+<span id="cb9-422"><a aria-label="422"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-3" data-nodetype="expression">
 
@@ -26815,32 +26815,32 @@ Pukar Bhandari
 <h2>Storage Efficiency</h2>
 <p>How much disk space do we save?</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb10" data-startfrom="435" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 434;"><span id="cb10-435"><a aria-label="435"></a>fileData <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">&quot;_results/file_sizes.csv&quot;</span>)<span class="op">.</span><span class="fu">csv</span>({ <span class="dt">typed</span><span class="op">:</span> <span class="kw">true</span> })</span>
-<span id="cb10-436"><a aria-label="436"></a></span>
-<span id="cb10-437"><a aria-label="437"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb10-438"><a aria-label="438"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">400</span><span class="op">,</span></span>
-<span id="cb10-439"><a aria-label="439"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
-<span id="cb10-440"><a aria-label="440"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
-<span id="cb10-441"><a aria-label="441"></a>  <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">&quot;Size (MB)&quot;</span> }<span class="op">,</span></span>
-<span id="cb10-442"><a aria-label="442"></a>  <span class="dt">y</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="kw">null</span> }<span class="op">,</span></span>
-<span id="cb10-443"><a aria-label="443"></a>  <span class="dt">fx</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">&quot;Dataset&quot;</span> }<span class="op">,</span></span>
-<span id="cb10-444"><a aria-label="444"></a>  <span class="dt">color</span><span class="op">:</span> {</span>
-<span id="cb10-445"><a aria-label="445"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="st">&quot;CSV&quot;</span><span class="op">,</span> <span class="st">&quot;Shapefile&quot;</span><span class="op">,</span> <span class="st">&quot;Parquet&quot;</span>]<span class="op">,</span></span>
-<span id="cb10-446"><a aria-label="446"></a>    <span class="dt">range</span><span class="op">:</span> [<span class="st">&quot;#999999&quot;</span><span class="op">,</span> <span class="st">&quot;#666666&quot;</span><span class="op">,</span> <span class="st">&quot;#006DAE&quot;</span>]<span class="op">,</span></span>
-<span id="cb10-447"><a aria-label="447"></a>    <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span></span>
-<span id="cb10-448"><a aria-label="448"></a>  }<span class="op">,</span></span>
-<span id="cb10-449"><a aria-label="449"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb10-450"><a aria-label="450"></a>    Plot<span class="op">.</span><span class="fu">barY</span>(fileData<span class="op">,</span> {</span>
-<span id="cb10-451"><a aria-label="451"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">&quot;Format&quot;</span><span class="op">,</span></span>
-<span id="cb10-452"><a aria-label="452"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">&quot;SizeMB&quot;</span><span class="op">,</span></span>
-<span id="cb10-453"><a aria-label="453"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">&quot;Format&quot;</span><span class="op">,</span></span>
-<span id="cb10-454"><a aria-label="454"></a>      <span class="dt">fx</span><span class="op">:</span> <span class="st">&quot;Dataset&quot;</span><span class="op">,</span></span>
-<span id="cb10-455"><a aria-label="455"></a>      <span class="dt">tip</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
-<span id="cb10-456"><a aria-label="456"></a>      <span class="dt">sort</span><span class="op">:</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">&quot;y&quot;</span><span class="op">,</span> <span class="dt">reverse</span><span class="op">:</span> <span class="kw">true</span> }</span>
-<span id="cb10-457"><a aria-label="457"></a>    })<span class="op">,</span></span>
-<span id="cb10-458"><a aria-label="458"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])</span>
-<span id="cb10-459"><a aria-label="459"></a>  ]</span>
-<span id="cb10-460"><a aria-label="460"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb10" data-startfrom="434" data-source-offset="-0"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 433;"><span id="cb10-434"><a aria-label="434"></a>fileData <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">&quot;_results/file_sizes.csv&quot;</span>)<span class="op">.</span><span class="fu">csv</span>({ <span class="dt">typed</span><span class="op">:</span> <span class="kw">true</span> })</span>
+<span id="cb10-435"><a aria-label="435"></a></span>
+<span id="cb10-436"><a aria-label="436"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb10-437"><a aria-label="437"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">400</span><span class="op">,</span></span>
+<span id="cb10-438"><a aria-label="438"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">100</span><span class="op">,</span></span>
+<span id="cb10-439"><a aria-label="439"></a>  <span class="dt">grid</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb10-440"><a aria-label="440"></a>  <span class="dt">x</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">&quot;Size (MB)&quot;</span> }<span class="op">,</span></span>
+<span id="cb10-441"><a aria-label="441"></a>  <span class="dt">y</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="kw">null</span> }<span class="op">,</span></span>
+<span id="cb10-442"><a aria-label="442"></a>  <span class="dt">fx</span><span class="op">:</span> { <span class="dt">label</span><span class="op">:</span> <span class="st">&quot;Dataset&quot;</span> }<span class="op">,</span></span>
+<span id="cb10-443"><a aria-label="443"></a>  <span class="dt">color</span><span class="op">:</span> {</span>
+<span id="cb10-444"><a aria-label="444"></a>    <span class="dt">domain</span><span class="op">:</span> [<span class="st">&quot;CSV&quot;</span><span class="op">,</span> <span class="st">&quot;Shapefile&quot;</span><span class="op">,</span> <span class="st">&quot;Parquet&quot;</span>]<span class="op">,</span></span>
+<span id="cb10-445"><a aria-label="445"></a>    <span class="dt">range</span><span class="op">:</span> [<span class="st">&quot;#999999&quot;</span><span class="op">,</span> <span class="st">&quot;#666666&quot;</span><span class="op">,</span> <span class="st">&quot;#006DAE&quot;</span>]<span class="op">,</span></span>
+<span id="cb10-446"><a aria-label="446"></a>    <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb10-447"><a aria-label="447"></a>  }<span class="op">,</span></span>
+<span id="cb10-448"><a aria-label="448"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb10-449"><a aria-label="449"></a>    Plot<span class="op">.</span><span class="fu">barY</span>(fileData<span class="op">,</span> {</span>
+<span id="cb10-450"><a aria-label="450"></a>      <span class="dt">x</span><span class="op">:</span> <span class="st">&quot;Format&quot;</span><span class="op">,</span></span>
+<span id="cb10-451"><a aria-label="451"></a>      <span class="dt">y</span><span class="op">:</span> <span class="st">&quot;SizeMB&quot;</span><span class="op">,</span></span>
+<span id="cb10-452"><a aria-label="452"></a>      <span class="dt">fill</span><span class="op">:</span> <span class="st">&quot;Format&quot;</span><span class="op">,</span></span>
+<span id="cb10-453"><a aria-label="453"></a>      <span class="dt">fx</span><span class="op">:</span> <span class="st">&quot;Dataset&quot;</span><span class="op">,</span></span>
+<span id="cb10-454"><a aria-label="454"></a>      <span class="dt">tip</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></span>
+<span id="cb10-455"><a aria-label="455"></a>      <span class="dt">sort</span><span class="op">:</span> { <span class="dt">x</span><span class="op">:</span> <span class="st">&quot;y&quot;</span><span class="op">,</span> <span class="dt">reverse</span><span class="op">:</span> <span class="kw">true</span> }</span>
+<span id="cb10-456"><a aria-label="456"></a>    })<span class="op">,</span></span>
+<span id="cb10-457"><a aria-label="457"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])</span>
+<span id="cb10-458"><a aria-label="458"></a>  ]</span>
+<span id="cb10-459"><a aria-label="459"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-4-1" data-nodetype="declaration">
@@ -26873,16 +26873,16 @@ Pukar Bhandari
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">49015</td>
-<td style="text-align: center;">6743</td>
-<td style="text-align: center;">6700</td>
-<td style="text-align: center;">43</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">49019</td>
 <td style="text-align: center;">6943</td>
 <td style="text-align: center;">6986</td>
 <td style="text-align: center;">-43</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">49015</td>
+<td style="text-align: center;">6743</td>
+<td style="text-align: center;">6700</td>
+<td style="text-align: center;">43</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">49003</td>
@@ -28317,7 +28317,7 @@ window.QuartoSupport = function () {
     eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6Ilxudmlld29mIG9wRmlsdGVyID0gSW5wdXRzLmNoZWNrYm94KFxuICBbXCJMb2FkIERhdGFcIiwgXCJWYWxpZGF0aW9uIChKb2luKVwiXSxcbiAgeyB2YWx1ZTogW1wiTG9hZCBEYXRhXCIsIFwiVmFsaWRhdGlvbiAoSm9pbilcIl0sIGxhYmVsOiBcIlRvZ2dsZSBTdGVwczpcIiB9XG4pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJkYXRhID0gRmlsZUF0dGFjaG1lbnQoXCJfcmVzdWx0cy9iZW5jaG1hcmtfcmVzdWx0cy5jc3ZcIikuY3N2KHsgdHlwZWQ6IHRydWUgfSlcblxuZmlsdGVyZWREYXRhID0gZGF0YS5maWx0ZXIoZCA9PiBvcEZpbHRlci5pbmNsdWRlcyhkLm9wZXJhdGlvbikpXG5cblBsb3QucGxvdCh7XG4gIGhlaWdodDogNTAwLFxuICBtYXJnaW5MZWZ0OiAyMDAsXG4gIGdyaWQ6IHRydWUsXG4gIHg6IHsgbGFiZWw6IFwiVG90YWwgU2Vjb25kc1wiIH0sXG4gIHk6IHsgbGFiZWw6IG51bGwgfSxcbiAgY29sb3I6IHtcbiAgICBkb21haW46IFtcIkxvYWQgRGF0YVwiLCBcIkJ1aWxkIEluZGV4XCIsIFwiVmFsaWRhdGlvbiAoSm9pbilcIl0sXG4gICAgcmFuZ2U6IFtcIiNBMENCRThcIiwgXCIjNUJBM0M5XCIsIFwiIzAwNkRBRVwiXSxcbiAgICBsZWdlbmQ6IHRydWVcbiAgfSxcbiAgbWFya3M6IFtcbiAgICBQbG90LmJhclgoZmlsdGVyZWREYXRhLCB7XG4gICAgICB5OiBkID0+IGAke2Quc3lzdGVtfSAoJHtkLmxhbmd1YWdlfSlgLFxuICAgICAgeDogXCJ0aW1lX3NlY1wiLFxuICAgICAgZmlsbDogXCJvcGVyYXRpb25cIixcbiAgICAgIHNvcnQ6IHsgeTogXCJ4XCIsIHJldmVyc2U6IHRydWUgfSxcbiAgICAgIHRpcDogdHJ1ZVxuICAgIH0pLFxuICAgIFBsb3QucnVsZVgoWzBdKVxuICBdXG59KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiLy8gRklYOiBVc2UgZmlsdGVyZWREYXRhIChyZXNwZWN0cyBvcEZpbHRlciBjaGVja2JveCkgYW5kIGZpbGwgYnkgb3BlcmF0aW9uIOKAlFxuLy8gY29uc2lzdGVudCB3aXRoIHRoZSB0aW1pbmcgY2hhcnQuIFRoZSBwcmV2aW91cyB2ZXJzaW9uIHVzZWQgcmF3IGBkYXRhYFxuLy8gd2l0aCBmaWxsIGJ5IHN5c3RlbSwgd2hpY2ggY2F1c2VkIG11bHRpcGxlIG92ZXJsYXBwaW5nIGJhcnMgcGVyIHN5c3RlbVxuLy8gKGxhc3QgZHJhd24gd2lucykgb25jZSBcIkJ1aWxkIEluZGV4XCIgd2FzIGFkZGVkIGFzIGEgdGhpcmQgb3BlcmF0aW9uLlxuUGxvdC5wbG90KHtcbiAgaGVpZ2h0OiA1MDAsXG4gIG1hcmdpbkxlZnQ6IDIwMCxcbiAgZ3JpZDogdHJ1ZSxcbiAgeDogeyBsYWJlbDogXCJNZWdhYnl0ZXMgKE1CKSDigJQgUHJvY2VzcyBSU1MgRGVsdGFcIiB9LFxuICB5OiB7IGxhYmVsOiBudWxsIH0sXG4gIGNvbG9yOiB7XG4gICAgZG9tYWluOiBbXCJMb2FkIERhdGFcIiwgXCJCdWlsZCBJbmRleFwiLCBcIlZhbGlkYXRpb24gKEpvaW4pXCJdLFxuICAgIHJhbmdlOiBbXCIjQTBDQkU4XCIsIFwiIzVCQTNDOVwiLCBcIiMwMDZEQUVcIl0sXG4gICAgbGVnZW5kOiB0cnVlXG4gIH0sXG4gIG1hcmtzOiBbXG4gICAgUGxvdC5iYXJYKGZpbHRlcmVkRGF0YSwge1xuICAgICAgeTogZCA9PiBgJHtkLnN5c3RlbX0gKCR7ZC5sYW5ndWFnZX0pYCxcbiAgICAgIHg6IFwibWVtb3J5X21iXCIsXG4gICAgICBmaWxsOiBcIm9wZXJhdGlvblwiLFxuICAgICAgc29ydDogeyB5OiBcInhcIiwgcmV2ZXJzZTogdHJ1ZSB9LFxuICAgICAgdGlwOiB0cnVlXG4gICAgfSksXG4gICAgUGxvdC5ydWxlWChbMF0pXG4gIF1cbn0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTQiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJmaWxlRGF0YSA9IEZpbGVBdHRhY2htZW50KFwiX3Jlc3VsdHMvZmlsZV9zaXplcy5jc3ZcIikuY3N2KHsgdHlwZWQ6IHRydWUgfSlcblxuUGxvdC5wbG90KHtcbiAgaGVpZ2h0OiA0MDAsXG4gIG1hcmdpbkxlZnQ6IDEwMCxcbiAgZ3JpZDogdHJ1ZSxcbiAgeDogeyBsYWJlbDogXCJTaXplIChNQilcIiB9LFxuICB5OiB7IGxhYmVsOiBudWxsIH0sXG4gIGZ4OiB7IGxhYmVsOiBcIkRhdGFzZXRcIiB9LFxuICBjb2xvcjoge1xuICAgIGRvbWFpbjogW1wiQ1NWXCIsIFwiU2hhcGVmaWxlXCIsIFwiUGFycXVldFwiXSxcbiAgICByYW5nZTogW1wiIzk5OTk5OVwiLCBcIiM2NjY2NjZcIiwgXCIjMDA2REFFXCJdLFxuICAgIGxlZ2VuZDogdHJ1ZVxuICB9LFxuICBtYXJrczogW1xuICAgIFBsb3QuYmFyWShmaWxlRGF0YSwge1xuICAgICAgeDogXCJGb3JtYXRcIixcbiAgICAgIHk6IFwiU2l6ZU1CXCIsXG4gICAgICBmaWxsOiBcIkZvcm1hdFwiLFxuICAgICAgZng6IFwiRGF0YXNldFwiLFxuICAgICAgdGlwOiB0cnVlLFxuICAgICAgc29ydDogeyB4OiBcInlcIiwgcmV2ZXJzZTogdHJ1ZSB9XG4gICAgfSksXG4gICAgUGxvdC5ydWxlWShbMF0pXG4gIF1cbn0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ29wRmlsdGVyJykifV19
     </script>
     <script type="module">
-    window._ojs.runtime.setLocalResolver({"_results/benchmark_results.csv":"data:text/csv;base64,c3lzdGVtLGxhbmd1YWdlLG9wZXJhdGlvbix0aW1lX3NlYyxtZW1vcnlfbWINCnNmLFIsTG9hZCBEYXRhLDguNjQwMCwxMDQzLjQxDQpzZixSLFZhbGlkYXRpb24gKEpvaW4pLDExLjI1MDAsMTYxNC4xNg0KZHVja2RiLFIsTG9hZCBEYXRhLDAuOTAwMCwxMDUuNzcNCmR1Y2tkYixSLEJ1aWxkIEluZGV4LDAuMTkwMCwxNDYuNzMNCmR1Y2tkYixSLFZhbGlkYXRpb24gKEpvaW4pLDkuNDIwMCwwLjgwDQpnZW9wYW5kYXMsUHl0aG9uLExvYWQgRGF0YSw1Ljk3NzksOTY0LjM5DQpnZW9wYW5kYXMsUHl0aG9uLFZhbGlkYXRpb24gKEpvaW4pLDEuMTgwNyw1OTcuMTINCmR1Y2tkYixQeXRob24sTG9hZCBEYXRhLDAuOTQwMywxNi4zMg0KZHVja2RiLFB5dGhvbixCdWlsZCBJbmRleCwwLjIzNTksMTMuMzINCmR1Y2tkYixQeXRob24sVmFsaWRhdGlvbiAoSm9pbiksMjguNTQ1OSw1Mi42NA0Kc2Vkb25hZGIsUixMb2FkIERhdGEsMC4wMTAwLDEwLjYzDQpzZWRvbmFkYixSLFZhbGlkYXRpb24gKEpvaW4pLDAuMTAwMCwtMC4xNQ0K","_results/file_sizes.csv":"data:text/csv;base64,RGF0YXNldCxGb3JtYXQsU2l6ZU1CCkFkZHJlc3NlcyxDU1YsMzM5LjA5ODI3ODA0NTY1NDMKQWRkcmVzc2VzLFBhcnF1ZXQsNzIuMTE5ODEyMDExNzE4NzUKQ291bnRpZXMsU2hhcGVmaWxlLDIuMzk2MTQ4NjgxNjQwNjI1CkNvdW50aWVzLFBhcnF1ZXQsMi4zMTM1MTM3NTU3OTgzNAo="});
+    window._ojs.runtime.setLocalResolver({"_results/benchmark_results.csv":"data:text/csv;base64,c3lzdGVtLGxhbmd1YWdlLG9wZXJhdGlvbix0aW1lX3NlYyxtZW1vcnlfbWINCnNmLFIsTG9hZCBEYXRhLDguNzAwMCwxMDQzLjExDQpzZixSLFZhbGlkYXRpb24gKEpvaW4pLDExLjcyMDAsMTc3MC4zMw0KZHVja2RiLFIsTG9hZCBEYXRhLDAuOTAwMCwxMTIuNDMNCmR1Y2tkYixSLEJ1aWxkIEluZGV4LDAuMTcwMCwxNDcuNDMNCmR1Y2tkYixSLFZhbGlkYXRpb24gKEpvaW4pLDkuMzAwMCwtMC43OQ0KZ2VvcGFuZGFzLFB5dGhvbixMb2FkIERhdGEsNS45ODUwLDk2NC4zNA0KZ2VvcGFuZGFzLFB5dGhvbixWYWxpZGF0aW9uIChKb2luKSwxLjE4NzAsNTk2Ljg3DQpkdWNrZGIsUHl0aG9uLExvYWQgRGF0YSwwLjk0NjcsMTYuMDANCmR1Y2tkYixQeXRob24sQnVpbGQgSW5kZXgsMC4yMzc5LDE1LjEwDQpkdWNrZGIsUHl0aG9uLFZhbGlkYXRpb24gKEpvaW4pLDI4Ljk5OTIsNTIuMTYNCnNlZG9uYWRiLFIsTG9hZCBEYXRhLDAuMDAwMCwxMC42Nw0Kc2Vkb25hZGIsUixWYWxpZGF0aW9uIChKb2luKSwwLjA4MDAsMy41OA0K","_results/file_sizes.csv":"data:text/csv;base64,RGF0YXNldCxGb3JtYXQsU2l6ZU1CCkFkZHJlc3NlcyxDU1YsMzM5LjA5ODI3ODA0NTY1NDMKQWRkcmVzc2VzLFBhcnF1ZXQsNzIuMTE5ODEyMDExNzE4NzUKQ291bnRpZXMsU2hhcGVmaWxlLDIuMzk2MTQ4NjgxNjQwNjI1CkNvdW50aWVzLFBhcnF1ZXQsMi4zMTM1MTM3NTU3OTgzNAo="});
     if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
     window._ojs.paths.runtimeToDoc = "../../slides/spatial-benchmark";
     window._ojs.paths.runtimeToRoot = "../..";

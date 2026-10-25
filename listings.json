@@ -8,6 +8,8 @@
   {
     "listing": "/projects.html",
     "items": [
+      "/dashboards/slco-places.html",
+      "/dashboards/utah-bikeways.html",
       "/posts/education-explorer/index.html",
       "/posts/freight-explorer/index.html",
       "/posts/ugrc-styles/index.html",
