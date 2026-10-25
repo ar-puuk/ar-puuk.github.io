@@ -1,0 +1,129 @@
+---
+title: "Salt Lake County Places Dashboard"
+description: "Interactive dashboard of Overture Maps places in Salt Lake County: filter by category and confidence, see where they cluster and which cities have the most."
+image: ../posts/overture-data-download/overture_data_download.png
+image-alt: "Map of places in Salt Lake County downloaded from Overture Maps."
+date: "2026-10-25"
+categories: [Dashboard, OJS, Overture Maps]
+format:
+  dashboard:
+    scrolling: false
+    css: ../assets/css/dashboard.css
+---
+
+```{ojs}
+//| output: false
+db = DuckDBClient.of({
+  places: FileAttachment("../posts/overture-data-download/output/slco_places_r.parquet")
+})
+places = db.sql`
+  SELECT names.primary AS name,
+         categories.main AS category,
+         bbox.xmin AS lon,
+         bbox.ymin AS lat,
+         confidence,
+         addresses[1].locality AS city
+  FROM places
+  WHERE names.primary IS NOT NULL AND categories.main IS NOT NULL
+`
+categoryCounts = d3.rollups(places, v => v.length, d => d.category).sort((a, b) => b[1] - a[1])
+topCategories = categoryCounts.slice(0, 40).map(d => d[0])
+```
+
+## {.sidebar}
+
+```{ojs}
+viewof chosen = Inputs.select(topCategories, {
+  label: "Categories (top 40)",
+  multiple: 8,
+  format: d => d.replaceAll('_', ' '),
+  value: topCategories.slice(0, 5)
+})
+viewof minConfidence = Inputs.range([0, 1], {label: "Minimum confidence", step: 0.05, value: 0.5})
+```
+
+Data: Overture Maps places for Salt Lake County, downloaded in the post below.
+
+[Read the data download post &rarr;](../posts/overture-data-download/index.html){.no-external target='_self'}
+
+```{ojs}
+//| output: false
+rows = places.filter(d => d.confidence >= minConfidence && chosen.includes(d.category))
+cityCounts = d3.rollups(rows, v => v.length, d => d.city || "Unknown").sort((a, b) => b[1] - a[1])
+catRows = d3.rollups(rows, v => v.length, d => d.category).sort((a, b) => b[1] - a[1])
+```
+
+## Main
+
+### Row {height=30%}
+
+```{ojs}
+//| content: valuebox
+//| title: "Places selected"
+//| icon: geo-alt
+//| color: '#007EA7'
+html`${rows.length.toLocaleString()}`
+```
+
+```{ojs}
+//| content: valuebox
+//| title: "Share of all places"
+//| icon: percent
+//| color: '#D96E34'
+html`${(rows.length / places.length * 100).toFixed(1)}%`
+```
+
+```{ojs}
+//| content: valuebox
+//| title: "Cities with a match"
+//| icon: buildings
+//| color: '#A23E02'
+cityCounts.filter(d => d[0] !== "Unknown").length
+```
+
+```{ojs}
+//| content: valuebox
+//| title: "Busiest city"
+//| icon: trophy
+//| color: '#1A2B35'
+html`${cityCounts.length ? cityCounts[0][0] + " " + cityCounts[0][1].toLocaleString() : "none"}`
+```
+
+### Row {height=70%}
+
+#### Column {width=55%}
+
+```{ojs}
+//| title: "Where the selected places are"
+Plot.plot({
+  width: 640,
+  height: 440,
+  aspectRatio: 1 / Math.cos(40.7 * Math.PI / 180),
+  x: {label: "Longitude", ticks: 5},
+  y: {label: "Latitude", ticks: 5},
+  color: {legend: true},
+  style: {backgroundColor: "transparent"},
+  marks: [
+    Plot.dot(rows, {x: "lon", y: "lat", fill: d => d.category.replaceAll('_', ' '), r: 1.6, fillOpacity: 0.55, tip: true,
+      title: d => `${d.name}\n${d.category}\nConfidence ${d.confidence.toFixed(2)}`})
+  ]
+})
+```
+
+#### Column {width=45%}
+
+```{ojs}
+//| title: "Places by category"
+Plot.plot({
+  width: 520,
+  height: 440,
+  marginLeft: 150,
+  x: {label: "Places →", grid: true},
+  y: {label: null},
+  style: {backgroundColor: "transparent"},
+  marks: [
+    Plot.barX(catRows, {x: d => d[1], y: d => d[0].replaceAll('_', ' '), sort: {y: "-x"}, fill: "#007EA7", tip: true}),
+    Plot.ruleX([0])
+  ]
+})
+```

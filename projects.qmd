@@ -5,6 +5,7 @@ listing:
     - posts/**/*.qmd
     - slides/**/*.qmd
     - work/**/*.qmd
+    - dashboards/**/*.qmd
   sort: "date desc"
   type: default
   fields: [image, date, title, description, categories, reading-time]

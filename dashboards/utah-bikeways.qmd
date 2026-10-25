@@ -1,10 +1,14 @@
 ---
 title: "Utah Bikeways Dashboard"
+description: "Interactive dashboard comparing bikeway miles with road miles for every Utah municipality, filterable by facility type."
+image: ../posts/utah-bikeways/utah_bikeways.png
+image-alt: "Scatter plot of bikeway miles against total road miles for Utah cities."
+date: "2026-10-24"
+categories: [Dashboard, OJS, Transportation]
 format:
   dashboard:
     scrolling: false
     css: ../assets/css/dashboard.css
-draft: true
 ---
 
 ```{ojs}
@@ -45,7 +49,7 @@ top = d3.greatest(rows.filter(d => d["All Roads"] > 100), d => d.ratio)
 
 ## Main
 
-### Row {height=25%}
+### Row {height=30%}
 
 ```{ojs}
 //| content: valuebox
@@ -79,7 +83,7 @@ html`${(totalBike / totalRoad * 100).toFixed(1)}%`
 html`${top.Name} ${top.ratio.toFixed(1)}%`
 ```
 
-### Row {height=75%}
+### Row {height=70%}
 
 #### Column {width=60%}
 
