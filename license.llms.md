@@ -4,6 +4,21 @@ Published
 
 July 5, 2025
 
-The [blog posts](./projects) on this website are all released under a [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/). Please feel free to use and share anything you find valuable in these posts, but please provide appropriate citations!
+## Writing and code
+
+The [blog posts](./projects) on this website, and the code in them, are all released under a [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/). Please feel free to use and share anything you find valuable in these posts, but please provide appropriate citations!
+
+## Work at WFRC
 
 The pages under [Work](./projects) that summarize tools I built at my employer, the Wasatch Front Regional Council (WFRC), only describe my contribution and link out. The code and apps belong to WFRC and are not covered by this license.
+
+## Data and third-party material
+
+The license above covers my own writing and code only. The data shown in posts, maps and dashboards keeps the license and terms of whoever publishes it, and you should check those terms before reusing it. The main sources are:
+
+- [Overture Maps Foundation](https://overturemaps.org/) places and other themes, under [Overture’s licenses](https://docs.overturemaps.org/attribution/).
+- [OpenStreetMap](https://www.openstreetmap.org/copyright) data, © OpenStreetMap contributors, available under the [Open Database License](https://opendatacommons.org/licenses/odbl/).
+- Map tiles and styles from [OpenFreeMap](https://openfreemap.org/), built on [OpenMapTiles](https://openmaptiles.org/) and OpenStreetMap data.
+- [Kontur Population](https://www.kontur.io/portfolio/population-dataset/) data, under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+- U.S. Census Bureau data (ACS, decennial census, LEHD LODES), U.S. Department of Education NCES data, and Bureau of Transportation Statistics Freight Analysis Framework data, all published by U.S. federal agencies.
+- [Utah Geospatial Resource Center (UGRC)](https://gis.utah.gov/) data and basemap styles.

@@ -6,7 +6,7 @@ Interactive dashboard of Overture Maps places in Salt Lake County: filter by cat
 
 Oct 2026
 
-2 min
+4 min
 
 [![Scatter plot of bikeway miles against total road miles for Utah cities.](./posts/utah-bikeways/utah_bikeways.png)](dashboards/utah-bikeways.llms.md)
 

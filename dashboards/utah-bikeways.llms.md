@@ -21,7 +21,7 @@ Statewide bikeway share of roads
 html`${(totalBike / totalRoad * 100).toFixed(1)}%`
 ```
 
-Highest share (cities over 100 road miles)
+Highest share (over 100 road miles)
 
 ``` js
 html`${top.Name} ${top.ratio.toFixed(1)}%`
@@ -31,17 +31,21 @@ Bikeway miles against road miles
 
 ``` js
 Plot.plot({
-  width: 700,
+  width: 720,
   height: 440,
+  marginBottom: 44,
   grid: true,
   x: {label: "Total road miles (log) →", type: "log", domain: [10, 5000]},
   y: {label: "Selected bikeway miles (log) →", type: "log", domain: [0.1, 500]},
   color: {domain: ["Above average", "Below average"], range: ["#007EA7", "#D96E34"], legend: true},
-  style: {backgroundColor: "transparent"},
+  style: {backgroundColor: "transparent", fontSize: "12px"},
   marks: [
     Plot.line(d3.range(10, 5000, 100), {x: d => d, y: d => d * avgRatio / 100, stroke: "#888", strokeDasharray: "4,4"}),
     Plot.dot(rowsTagged.filter(d => d.bike > 0), {x: "All Roads", y: "bike", stroke: "group", fill: "group", fillOpacity: 0.3, r: 4, tip: true,
-      title: d => `${d.Name}\nBikeway: ${d.bike.toFixed(1)} mi\nRoads: ${d["All Roads"]} mi\nShare: ${d.ratio.toFixed(1)}%`}),
+      title: d => `${d.Name}
+Bikeway: ${d.bike.toFixed(1)} mi
+Roads: ${d["All Roads"]} mi
+Share: ${d.ratio.toFixed(1)}%`}),
     Plot.dot(highlighted, {x: "All Roads", y: "bike", stroke: "currentColor", strokeWidth: 2, r: 8}),
     Plot.text(highlighted, {x: "All Roads", y: "bike", text: "Name", dy: -16, fontWeight: "bold", stroke: "white", strokeWidth: 4, paintOrder: "stroke", fill: "#333"})
   ]
@@ -50,18 +54,27 @@ Plot.plot({
 
 Expand ![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgc3R5bGU9ImhlaWdodDoxZW07d2lkdGg6MWVtOyIgYXJpYS1oaWRkZW49InRydWUiIHJvbGU9ImltZyI+PHBhdGggZD0iTTIwIDVDMjAgNC40IDE5LjYgNCAxOSA0SDEzQzEyLjQgNCAxMiAzLjYgMTIgM0MxMiAyLjQgMTIuNCAyIDEzIDJIMjFDMjEuNiAyIDIyIDIuNCAyMiAzVjExQzIyIDExLjYgMjEuNiAxMiAyMSAxMkMyMC40IDEyIDIwIDExLjYgMjAgMTFWNVpNNCAxOUM0IDE5LjYgNC40IDIwIDUgMjBIMTFDMTEuNiAyMCAxMiAyMC40IDEyIDIxQzEyIDIxLjYgMTEuNiAyMiAxMSAyMkgzQzIuNCAyMiAyIDIxLjYgMiAyMVYxM0MyIDEyLjQgMi40IDEyIDMgMTJDMy42IDEyIDQgMTIuNCA0IDEzVjE5WiIgLz48L3N2Zz4=)
 
-Top 15 by bikeway miles
+Top 12 by bikeway miles
 
 ``` js
-Inputs.table(
-  [...rows].sort((a, b) => b.bike - a.bike).slice(0, 15),
-  {
-    columns: ["Name", "bike", "All Roads", "ratio"],
-    header: {Name: "City", bike: "Bike mi", "All Roads": "Road mi", ratio: "Share %"},
-    format: {bike: x => x.toFixed(1), "All Roads": x => x.toFixed(0), ratio: x => x.toFixed(1)},
-    rows: 15, maxHeight: 520
-  }
-)
+Plot.plot({
+  width: 460,
+  height: 440,
+  marginLeft: 110,
+  marginRight: 70,
+  x: {label: null, grid: true, ticks: 4},
+  y: {label: null},
+  color: {domain: ["Above average", "Below average"], range: ["#007EA7", "#D96E34"]},
+  style: {backgroundColor: "transparent", fontSize: "12px"},
+  marks: [
+    Plot.barX(d3.sort(rowsTagged, d => -d.bike).slice(0, 12), {x: "bike", y: "Name", fill: "group", sort: {y: "-x"}, tip: true,
+      title: d => `${d.Name}
+Bikeway: ${d.bike.toFixed(1)} mi
+Share: ${d.ratio.toFixed(1)}%`}),
+    Plot.text(d3.sort(rowsTagged, d => -d.bike).slice(0, 12), {x: "bike", y: "Name", text: d => `${d.bike.toFixed(1)} mi · ${d.ratio.toFixed(0)}%`, dx: 4, textAnchor: "start", fontSize: 10}),
+    Plot.ruleX([0])
+  ]
+})
 ```
 
 Expand ![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgc3R5bGU9ImhlaWdodDoxZW07d2lkdGg6MWVtOyIgYXJpYS1oaWRkZW49InRydWUiIHJvbGU9ImltZyI+PHBhdGggZD0iTTIwIDVDMjAgNC40IDE5LjYgNCAxOSA0SDEzQzEyLjQgNCAxMiAzLjYgMTIgM0MxMiAyLjQgMTIuNCAyIDEzIDJIMjFDMjEuNiAyIDIyIDIuNCAyMiAzVjExQzIyIDExLjYgMjEuNiAxMiAyMSAxMkMyMC40IDEyIDIwIDExLjYgMjAgMTFWNVpNNCAxOUM0IDE5LjYgNC40IDIwIDUgMjBIMTFDMTEuNiAyMCAxMiAyMC40IDEyIDIxQzEyIDIxLjYgMTEuNiAyMiAxMSAyMkgzQzIuNCAyMiAyIDIxLjYgMiAyMVYxM0MyIDEyLjQgMi40IDEyIDMgMTJDMy42IDEyIDQgMTIuNCA0IDEzVjE5WiIgLz48L3N2Zz4=)

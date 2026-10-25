@@ -18,6 +18,8 @@
   <category>Dashboard</category>
   <category>OJS</category>
   <category>Overture Maps</category>
+  <category>GIS</category>
+  <category>Data Science</category>
   <guid>https://ar-puuk.github.io/dashboards/slco-places.html</guid>
   <pubDate>Sun, 25 Oct 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/overture-data-download/overture_data_download.png" medium="image" type="image/png" height="87" width="144"/>
@@ -29,6 +31,8 @@
   <category>Dashboard</category>
   <category>OJS</category>
   <category>Transportation</category>
+  <category>GIS</category>
+  <category>Data Science</category>
   <guid>https://ar-puuk.github.io/dashboards/utah-bikeways.html</guid>
   <pubDate>Sat, 24 Oct 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/utah-bikeways/utah_bikeways.png" medium="image" type="image/png" height="127" width="144"/>
@@ -43,6 +47,7 @@
   <category>Data Science</category>
   <category>Web Apps</category>
   <category>Open Source</category>
+  <category>GIS</category>
   <guid>https://ar-puuk.github.io/posts/education-explorer/</guid>
   <pubDate>Mon, 19 Oct 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/education-explorer/education_explorer.png" medium="image" type="image/png" height="91" width="144"/>
@@ -57,6 +62,8 @@
   <category>Transportation</category>
   <category>Web Apps</category>
   <category>Open Source</category>
+  <category>GIS</category>
+  <category>Data Science</category>
   <guid>https://ar-puuk.github.io/posts/freight-explorer/</guid>
   <pubDate>Mon, 19 Oct 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/freight-explorer/freight_explorer.jpg" medium="image" type="image/jpeg"/>
@@ -70,6 +77,7 @@
   <category>Python</category>
   <category>GIS</category>
   <category>Open Source</category>
+  <category>Web Apps</category>
   <guid>https://ar-puuk.github.io/posts/ugrc-styles/</guid>
   <pubDate>Tue, 29 Sep 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/ugrc-styles/ugrc_styles.png" medium="image" type="image/png" height="82" width="144"/>
@@ -82,6 +90,7 @@
   <category>JavaScript</category>
   <category>Web Apps</category>
   <category>Open Source</category>
+  <category>GIS</category>
   <guid>https://ar-puuk.github.io/posts/borderline/</guid>
   <pubDate>Mon, 21 Sep 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/borderline/borderline.png" medium="image" type="image/png" height="91" width="144"/>
@@ -94,6 +103,7 @@
   <category>Developer Tools</category>
   <category>Travel Demand Modeling</category>
   <category>Open Source</category>
+  <category>Transportation</category>
   <guid>https://ar-puuk.github.io/posts/drut/</guid>
   <pubDate>Thu, 20 Aug 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/drut/drut.png" medium="image" type="image/png" height="91" width="144"/>
@@ -106,6 +116,8 @@
   <category>WFRC</category>
   <category>Transportation</category>
   <category>Travel Demand Modeling</category>
+  <category>GIS</category>
+  <category>Web Apps</category>
   <guid>https://ar-puuk.github.io/work/gtfs-vs-tdm/</guid>
   <pubDate>Thu, 02 Jul 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/work/gtfs-vs-tdm/gtfs_vs_tdm.png" medium="image" type="image/png" height="82" width="144"/>
@@ -119,6 +131,8 @@
   <category>JavaScript</category>
   <category>Transportation</category>
   <category>Web Apps</category>
+  <category>GIS</category>
+  <category>Data Science</category>
   <guid>https://ar-puuk.github.io/work/commute-explorer/</guid>
   <pubDate>Fri, 26 Jun 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/work/commute-explorer/commute_explorer.png" medium="image" type="image/png" height="82" width="144"/>
@@ -131,6 +145,7 @@
   <category>WFRC</category>
   <category>R</category>
   <category>GIS</category>
+  <category>Data Science</category>
   <guid>https://ar-puuk.github.io/work/opportunity-zones-info-sheets/</guid>
   <pubDate>Thu, 28 May 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/work/opportunity-zones-info-sheets/oz_tract_map.png" medium="image" type="image/png" height="202" width="144"/>
@@ -144,6 +159,8 @@
   <category>JavaScript</category>
   <category>Transportation</category>
   <category>Web Apps</category>
+  <category>GIS</category>
+  <category>Data Science</category>
   <guid>https://ar-puuk.github.io/work/commute-patterns/</guid>
   <pubDate>Sun, 17 May 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/work/commute-patterns/commute_patterns.png" medium="image" type="image/png" height="86" width="144"/>
@@ -157,6 +174,8 @@
   <category>R</category>
   <category>GIS</category>
   <category>Web Apps</category>
+  <category>Transportation</category>
+  <category>Data Science</category>
   <guid>https://ar-puuk.github.io/work/se2025-h3/</guid>
   <pubDate>Thu, 14 May 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/work/se2025-h3/se2025_h3.png" medium="image" type="image/png" height="91" width="144"/>
@@ -167,6 +186,8 @@
   <link>https://ar-puuk.github.io/slides/activitysim-accessibility/</link>
   <description><![CDATA[ undefined ]]></description>
   <category>Travel Demand Modeling</category>
+  <category>Transportation</category>
+  <category>Python</category>
   <guid>https://ar-puuk.github.io/slides/activitysim-accessibility/</guid>
   <pubDate>Sun, 19 Apr 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/slides/activitysim-accessibility/activitysim_accessibility.png" medium="image" type="image/png" height="81" width="144"/>
@@ -180,6 +201,7 @@
   <category>Data Science</category>
   <category>Web Apps</category>
   <category>Open Source</category>
+  <category>GIS</category>
   <guid>https://ar-puuk.github.io/posts/parquet-explorer/</guid>
   <pubDate>Sun, 12 Apr 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/parquet-explorer/parquet_explorer.png" medium="image" type="image/png" height="65" width="144"/>
@@ -193,6 +215,8 @@
   <category>Travel Demand Modeling</category>
   <category>Web Apps</category>
   <category>Open Source</category>
+  <category>Transportation</category>
+  <category>Data Science</category>
   <guid>https://ar-puuk.github.io/posts/omx-viewer/</guid>
   <pubDate>Sat, 11 Apr 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/omx-viewer/omx_viewer.png" medium="image" type="image/png" height="65" width="144"/>
@@ -203,6 +227,8 @@
   <link>https://ar-puuk.github.io/slides/prompt-engineering/</link>
   <description><![CDATA[ undefined ]]></description>
   <category>AI</category>
+  <category>WFRC</category>
+  <category>Data Science</category>
   <guid>https://ar-puuk.github.io/slides/prompt-engineering/</guid>
   <pubDate>Sat, 04 Apr 2026 06:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/slides/prompt-engineering/prompt_engineering.png" medium="image" type="image/png" height="71" width="144"/>
@@ -230,6 +256,7 @@
   <category>Python</category>
   <category>GIS</category>
   <category>Data Science</category>
+  <category>WFRC</category>
   <guid>https://ar-puuk.github.io/slides/spatial-benchmark/</guid>
   <pubDate>Sat, 07 Feb 2026 07:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/slides/spatial-benchmark/csv_vs_parquet.jpg" medium="image" type="image/jpeg"/>
@@ -240,6 +267,9 @@
   <link>https://ar-puuk.github.io/posts/wget-gui/</link>
   <description><![CDATA[ A modern, Windows 11-inspired web interface for building complex GNU Wget commands ]]></description>
   <category>Developer Tools</category>
+  <category>JavaScript</category>
+  <category>Web Apps</category>
+  <category>Open Source</category>
   <guid>https://ar-puuk.github.io/posts/wget-gui/</guid>
   <pubDate>Sun, 25 Jan 2026 07:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/wget-gui/wget_gui.png" medium="image" type="image/png" height="68" width="144"/>
