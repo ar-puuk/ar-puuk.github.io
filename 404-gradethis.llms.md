@@ -439,4 +439,4 @@ performance_summary
 
 ------------------------------------------------------------------------
 
-*Built with [Quarto Live](https://r-wasm.github.io/quarto-live/) and [WebR](https://docs.r-wasm.org/webr/latest/)*
+*Built with [Quarto Live](https://r-wasm.github.io/quarto-live/), [WebR](https://docs.r-wasm.org/webr/latest/) and [Pyodide](https://pyodide.org/). Feedback comes from [gradethis](https://pkgs.rstudio.com/gradethis/); the Python tabs use a port of its code checker.*

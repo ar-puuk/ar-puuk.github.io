@@ -781,7 +781,7 @@
     "href": "404-gradethis.html",
     "title": " Under Construction! ",
     "section": "",
-    "text": "P.S. - If you got this far, you’re definitely not lost anymore. You’re a certified Transportation Data Scientist! 🎯\nBuilt with Quarto Live and WebR"
+    "text": "P.S. - If you got this far, you’re definitely not lost anymore. You’re a certified Transportation Data Scientist! 🎯\nBuilt with Quarto Live, WebR and Pyodide. Feedback comes from gradethis; the Python tabs use a port of its code checker."
   },
   {
     "objectID": "404-gradethis.html#knowledge-test",
