@@ -11,6 +11,7 @@ format:
   html:
     toc: true
     toc-location: left
+    fig-format: svg
     number-sections: true
     number-depth: 2
     html-math-method: katex
@@ -20,10 +21,18 @@ format:
     css: ../assets/css/app-embed.css
     include-after-body: ../_includes/app-embed-js.html
   typst:
+    fig-format: png
+    knitr:
+      opts_chunk:
+        dev: ragg_png
     toc: true
     number-sections: true
     number-depth: 2
   docx:
+    fig-format: png
+    knitr:
+      opts_chunk:
+        dev: ragg_png
     toc: true
     number-sections: true
     number-depth: 2
@@ -41,9 +50,10 @@ format-links:
   - docx
 
 engine: knitr
-knitr:
-  opts_chunk:
-    dev: ragg_png
+# html figures are SVG (fig-format); a global knitr dev would override that, so the
+# raster device is set per format below for PDF and Word.
+# Charts that draw very many shapes (large sf maps) make huge SVGs: give those chunks
+# "#| fig-format: png", "#| dev: ragg_png" and "#| fig-dpi: 192" (see posts/nepal-population-density).
 
 citation: true
 page-navigation: true

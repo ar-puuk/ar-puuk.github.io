@@ -112,6 +112,9 @@ nepal_boundary <- nep_admin |>
 ### Initial Data Exploration
 
 ```{r data-exploration}
+#| fig-format: png
+#| dev: ragg_png
+#| fig-dpi: 192
 
 # Preliminary visualization to verify data quality
 ggplot2::ggplot(nep_hex) +
