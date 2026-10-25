@@ -82,7 +82,7 @@ tryCatch({
 })
 ```
 
-![](./output/nepal_electoral_map.svg)
+[![Scraped Electoral Map of Nepal in SVG format](./output/nepal_electoral_map.svg)](./output/nepal_electoral_map.svg "Scraped Electoral Map of Nepal in SVG format")
 
 Scraped Electoral Map of Nepal in SVG format
 

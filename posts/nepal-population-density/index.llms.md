@@ -121,7 +121,7 @@ ggplot2::ggplot(nep_hex) +
        fill = "Population")
 ```
 
-![](index_files/figure-html/data-exploration-1.png)
+[![](index_files/figure-html/data-exploration-1.png)](index_files/figure-html/data-exploration-1.png)
 
 ### Raster Conversion and Matrix Preparation
 
@@ -182,7 +182,7 @@ texture <- grDevices::colorRampPalette(color, bias = 3)(256)
 colorspace::swatchplot(texture)
 ```
 
-![](index_files/figure-html/color-palette-1.png)
+[![](index_files/figure-html/color-palette-1.svg)](index_files/figure-html/color-palette-1.svg)
 
 ## 6 3D Visualization Rendering
 
@@ -246,9 +246,9 @@ outfile <- here::here("posts/nepal-population-density/plots/final_plot.png")
 }
 ```
 
-    Rendering started: 2026-10-24 00:40:45.231615 
+    Rendering started: 2026-10-24 15:10:17.478139 
 
-    Rendering completed in: 11.3233206470807 
+    Rendering completed in: 1.89177620013555 
 
 ## 7 Post-Processing and Annotation
 
@@ -267,7 +267,7 @@ text_color <- colorspace::darken(color[7], .5)
 colorspace::swatchplot(text_color)
 ```
 
-![](index_files/figure-html/image-annotation-1.png)
+[![](index_files/figure-html/image-annotation-1.svg)](index_files/figure-html/image-annotation-1.svg)
 
 ``` downlit
 # Import and load fonts

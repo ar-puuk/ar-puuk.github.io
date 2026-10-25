@@ -59,7 +59,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-contrib/academicons-1.9.4/size.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
-  "copy-button": false,
+  "copy-button": true,
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
@@ -67,6 +67,7 @@ ul.task-list li input[type="checkbox"] {
   "keyboard-shortcut": [
     "/"
   ],
+  "show-item-context": true,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -91,7 +92,7 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-image','listing-date','listing-title','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-image','listing-date','listing-title','listing-description','listing-categories','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       page: 25,
     pagination: { item: "<li class='page-item'><a class='page page-link' href='#'></a></li>" },
       searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description","listing-categories"],
@@ -343,7 +344,7 @@ window.Quarto = {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-xl " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
@@ -425,6 +426,9 @@ window.Quarto = {
 </div>
       </div> <!-- /container-fluid -->
     </nav>
+  <div id="quarto-announcement" data-announcement-id="c2c65974b1b11cb0712261fb1df9d535" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>New:</strong> <a href="./posts/education-explorer/" class="no-external" target="_self">Education Explorer</a> and <a href="./posts/freight-explorer/" class="no-external" target="_self">Freight Explorer</a>, two zero-backend data apps built on public data.</p>
+</div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block"></header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
@@ -468,7 +472,7 @@ window.Quarto = {
     </div>
 </div>
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="SmF2YVNjcmlwdCUyQ1B5dGhvbiUyQ0RhdGElMjBTY2llbmNlJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1792389600000" data-listing-file-modified-sort="1792823857071" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="525">
+<div class="quarto-post image-right" data-index="0" data-categories="SmF2YVNjcmlwdCUyQ1B5dGhvbiUyQ0RhdGElMjBTY2llbmNlJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1792389600000" data-listing-file-modified-sort="1792867651837" data-listing-date-modified-sort="1792867651000" data-listing-reading-time-sort="3" data-listing-word-count-sort="525">
 <div class="thumbnail"><a href="./posts/education-explorer/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/education-explorer/education_explorer.png" class="thumbnail-image" alt="Utah Education Explorer map of public schools, private schools and colleges as clustered markers, with a layers panel and a year timeline.">
@@ -500,10 +504,11 @@ window.Quarto = {
 <div class="listing-date">
 Oct 2026
 </div>
+<div class="listing-reading-time">3 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="SmF2YVNjcmlwdCUyQ1B5dGhvbiUyQ1RyYW5zcG9ydGF0aW9uJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1792389600000" data-listing-file-modified-sort="1792823857071" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="604">
+<div class="quarto-post image-right" data-index="1" data-categories="SmF2YVNjcmlwdCUyQ1B5dGhvbiUyQ1RyYW5zcG9ydGF0aW9uJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1792389600000" data-listing-file-modified-sort="1792867651837" data-listing-date-modified-sort="1792867651000" data-listing-reading-time-sort="4" data-listing-word-count-sort="604">
 <div class="thumbnail"><a href="./posts/freight-explorer/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/freight-explorer/freight_explorer.jpg" class="thumbnail-image" alt="Freight Explorer dashboard for Utah with freight flow lines on a map, summary tonnage and value figures, and mode and direction charts.">
@@ -535,10 +540,11 @@ Oct 2026
 <div class="listing-date">
 Oct 2026
 </div>
+<div class="listing-reading-time">4 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="SmF2YVNjcmlwdCUyQ1B5dGhvbiUyQ0dJUyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1790661600000" data-listing-file-modified-sort="1792823857075" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="654">
+<div class="quarto-post image-right" data-index="2" data-categories="SmF2YVNjcmlwdCUyQ1B5dGhvbiUyQ0dJUyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1790661600000" data-listing-file-modified-sort="1792867651838" data-listing-date-modified-sort="1792867651000" data-listing-reading-time-sort="4" data-listing-word-count-sort="654">
 <div class="thumbnail"><a href="./posts/ugrc-styles/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/ugrc-styles/ugrc_styles.png" class="thumbnail-image" alt="UGRC Vector Map Tile Styles editor showing a dark Salt Lake City basemap and a layer list.">
@@ -568,10 +574,11 @@ Oct 2026
 <div class="listing-date">
 Sep 2026
 </div>
+<div class="listing-reading-time">4 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="SmF2YVNjcmlwdCUyQ1dlYiUyMEFwcHMlMkNPcGVuJTIwU291cmNl" data-listing-date-sort="1789970400000" data-listing-file-modified-sort="1792823857070" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="324">
+<div class="quarto-post image-right" data-index="3" data-categories="SmF2YVNjcmlwdCUyQ1dlYiUyMEFwcHMlMkNPcGVuJTIwU291cmNl" data-listing-date-sort="1789970400000" data-listing-file-modified-sort="1792823857070" data-listing-date-modified-sort="1792823857000" data-listing-reading-time-sort="2" data-listing-word-count-sort="324">
 <div class="thumbnail"><a href="./posts/borderline/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/borderline/borderline.png" class="thumbnail-image" alt="Borderline game start screen with mode, difficulty, timing and round options and a Play button, in a dark theme.">
@@ -599,10 +606,11 @@ Sep 2026
 <div class="listing-date">
 Sep 2026
 </div>
+<div class="listing-reading-time">2 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="RGV2ZWxvcGVyJTIwVG9vbHMlMkNUcmF2ZWwlMjBEZW1hbmQlMjBNb2RlbGluZyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1787205600000" data-listing-file-modified-sort="1792823857070" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="471">
+<div class="quarto-post image-right" data-index="4" data-categories="RGV2ZWxvcGVyJTIwVG9vbHMlMkNUcmF2ZWwlMjBEZW1hbmQlMjBNb2RlbGluZyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1787205600000" data-listing-file-modified-sort="1792867651837" data-listing-date-modified-sort="1792867651000" data-listing-reading-time-sort="3" data-listing-word-count-sort="471">
 <div class="thumbnail"><a href="./posts/drut/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/drut/drut.png" class="thumbnail-image" alt="Drut documentation page introducing the Cube Voyager script linter, formatter and editor tooling suite.">
@@ -630,10 +638,11 @@ Sep 2026
 <div class="listing-date">
 Aug 2026
 </div>
+<div class="listing-reading-time">3 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="V0ZSQyUyQ1RyYW5zcG9ydGF0aW9uJTJDVHJhdmVsJTIwRGVtYW5kJTIwTW9kZWxpbmc=" data-listing-date-sort="1782972000000" data-listing-file-modified-sort="1792823857079" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="236">
+<div class="quarto-post image-right" data-index="5" data-categories="V0ZSQyUyQ1RyYW5zcG9ydGF0aW9uJTJDVHJhdmVsJTIwRGVtYW5kJTIwTW9kZWxpbmc=" data-listing-date-sort="1782972000000" data-listing-file-modified-sort="1792865745289" data-listing-date-modified-sort="1792865745000" data-listing-reading-time-sort="2" data-listing-word-count-sort="236">
 <div class="thumbnail"><a href="./work/gtfs-vs-tdm/index.html" class="no-external">
 
 <img loading="lazy" src="./work/gtfs-vs-tdm/gtfs_vs_tdm.png" class="thumbnail-image" alt="Map comparing GTFS transit lines and stops with travel demand model transit lines along the Wasatch Front.">
@@ -661,10 +670,11 @@ Aug 2026
 <div class="listing-date">
 Jul 2026
 </div>
+<div class="listing-reading-time">2 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="V0ZSQyUyQ0phdmFTY3JpcHQlMkNUcmFuc3BvcnRhdGlvbiUyQ1dlYiUyMEFwcHM=" data-listing-date-sort="1782453600000" data-listing-file-modified-sort="1792823857078" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="219">
+<div class="quarto-post image-right" data-index="6" data-categories="V0ZSQyUyQ0phdmFTY3JpcHQlMkNUcmFuc3BvcnRhdGlvbiUyQ1dlYiUyMEFwcHM=" data-listing-date-sort="1782453600000" data-listing-file-modified-sort="1792865745289" data-listing-date-modified-sort="1792865745000" data-listing-reading-time-sort="2" data-listing-word-count-sort="219">
 <div class="thumbnail"><a href="./work/commute-explorer/index.html" class="no-external">
 
 <img loading="lazy" src="./work/commute-explorer/commute_explorer.png" class="thumbnail-image" alt="Commute Flow Explorer map of the Wasatch Front with commute flow lines scaled by volume.">
@@ -694,10 +704,11 @@ Jul 2026
 <div class="listing-date">
 Jun 2026
 </div>
+<div class="listing-reading-time">2 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="V0ZSQyUyQ1IlMkNHSVM=" data-listing-date-sort="1779948000000" data-listing-file-modified-sort="1792823876981" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="270">
+<div class="quarto-post image-right" data-index="7" data-categories="V0ZSQyUyQ1IlMkNHSVM=" data-listing-date-sort="1779948000000" data-listing-file-modified-sort="1792865749355" data-listing-date-modified-sort="1792865749000" data-listing-reading-time-sort="2" data-listing-word-count-sort="269">
 <div class="thumbnail"><a href="./work/opportunity-zones-info-sheets/index.html" class="no-external">
 
 <img loading="lazy" src="./work/opportunity-zones-info-sheets/oz_tract_map.png" class="thumbnail-image" alt="Map of a census tract outlined in dark blue with transit and land-use context.">
@@ -725,10 +736,11 @@ Jun 2026
 <div class="listing-date">
 May 2026
 </div>
+<div class="listing-reading-time">2 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="V0ZSQyUyQ0phdmFTY3JpcHQlMkNUcmFuc3BvcnRhdGlvbiUyQ1dlYiUyMEFwcHM=" data-listing-date-sort="1778997600000" data-listing-file-modified-sort="1792823857079" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="244">
+<div class="quarto-post image-right" data-index="8" data-categories="V0ZSQyUyQ0phdmFTY3JpcHQlMkNUcmFuc3BvcnRhdGlvbiUyQ1dlYiUyMEFwcHM=" data-listing-date-sort="1778997600000" data-listing-file-modified-sort="1792865745289" data-listing-date-modified-sort="1792865745000" data-listing-reading-time-sort="2" data-listing-word-count-sort="244">
 <div class="thumbnail"><a href="./work/commute-patterns/index.html" class="no-external">
 
 <img loading="lazy" src="./work/commute-patterns/commute_patterns.png" class="thumbnail-image" alt="Utah Commuter Flow Patterns dashboard with a map of Salt Lake City inflow, top flow bars and a commute length chart.">
@@ -758,10 +770,11 @@ May 2026
 <div class="listing-date">
 May 2026
 </div>
+<div class="listing-reading-time">2 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-categories="V0ZSQyUyQ1IlMkNHSVMlMkNXZWIlMjBBcHBz" data-listing-date-sort="1778738400000" data-listing-file-modified-sort="1792823857079" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="241">
+<div class="quarto-post image-right" data-index="9" data-categories="V0ZSQyUyQ1IlMkNHSVMlMkNXZWIlMjBBcHBz" data-listing-date-sort="1778738400000" data-listing-file-modified-sort="1792865745289" data-listing-date-modified-sort="1792865745000" data-listing-reading-time-sort="2" data-listing-word-count-sort="241">
 <div class="thumbnail"><a href="./work/se2025-h3/index.html" class="no-external">
 
 <img loading="lazy" src="./work/se2025-h3/se2025_h3.png" class="thumbnail-image" alt="Map of H3 hexagons on the Wasatch Front shaded by population and employment density, with a smoothed versus raw swipe divider.">
@@ -791,10 +804,11 @@ May 2026
 <div class="listing-date">
 May 2026
 </div>
+<div class="listing-reading-time">2 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-categories="VHJhdmVsJTIwRGVtYW5kJTIwTW9kZWxpbmc=" data-listing-date-sort="1776578400000" data-listing-file-modified-sort="1792823857076" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
+<div class="quarto-post image-right" data-index="10" data-categories="VHJhdmVsJTIwRGVtYW5kJTIwTW9kZWxpbmc=" data-listing-date-sort="1776578400000" data-listing-file-modified-sort="1792823857076" data-listing-date-modified-sort="1792823857000" data-listing-reading-time-sort="1" data-listing-word-count-sort="1">
 <div class="thumbnail"><a href="./slides/activitysim-accessibility/index.html" class="no-external">
 
 <img loading="lazy" src="./slides/activitysim-accessibility/activitysim_accessibility.png" class="thumbnail-image" alt="Title slide: Initialization and Accessibility, an ActivitySim deep dive for travel demand modelers.">
@@ -818,10 +832,11 @@ May 2026
 <div class="listing-date">
 Apr 2026
 </div>
+<div class="listing-reading-time">1 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="11" data-categories="SmF2YVNjcmlwdCUyQ0RhdGElMjBTY2llbmNlJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1775973600000" data-listing-file-modified-sort="1792823857073" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="266">
+<div class="quarto-post image-right" data-index="11" data-categories="SmF2YVNjcmlwdCUyQ0RhdGElMjBTY2llbmNlJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1775973600000" data-listing-file-modified-sort="1792823857073" data-listing-date-modified-sort="1792823857000" data-listing-reading-time-sort="2" data-listing-word-count-sort="266">
 <div class="thumbnail"><a href="./posts/parquet-explorer/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/parquet-explorer/parquet_explorer.png" class="thumbnail-image" alt="Parquet Explorer with a column list, a map of points, a data table and a schema panel for a Nodes.parquet file.">
@@ -851,10 +866,11 @@ Apr 2026
 <div class="listing-date">
 Apr 2026
 </div>
+<div class="listing-reading-time">2 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="12" data-categories="SmF2YVNjcmlwdCUyQ1RyYXZlbCUyMERlbWFuZCUyME1vZGVsaW5nJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1775887200000" data-listing-file-modified-sort="1792823857072" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="308">
+<div class="quarto-post image-right" data-index="12" data-categories="SmF2YVNjcmlwdCUyQ1RyYXZlbCUyMERlbWFuZCUyME1vZGVsaW5nJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1775887200000" data-listing-file-modified-sort="1792823857072" data-listing-date-modified-sort="1792823857000" data-listing-reading-time-sort="2" data-listing-word-count-sort="308">
 <div class="thumbnail"><a href="./posts/omx-viewer/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/omx-viewer/omx_viewer.png" class="thumbnail-image" alt="OMX Viewer showing a 3,629 by 3,629 trip matrix as a scrollable table with a file info side panel.">
@@ -884,10 +900,11 @@ Apr 2026
 <div class="listing-date">
 Apr 2026
 </div>
+<div class="listing-reading-time">2 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="13" data-categories="QUk=" data-listing-date-sort="1775282400000" data-listing-file-modified-sort="1792823857076" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2997">
+<div class="quarto-post image-right" data-index="13" data-categories="QUk=" data-listing-date-sort="1775282400000" data-listing-file-modified-sort="1792861608694" data-listing-date-modified-sort="1792861608000" data-listing-reading-time-sort="15" data-listing-word-count-sort="2997">
 <div class="thumbnail"><a href="./slides/prompt-engineering/index.html" class="no-external">
 
 <img loading="lazy" src="./slides/prompt-engineering/prompt_engineering.png" class="thumbnail-image" alt="Title slide for Prompt Engineering Best Practices over a darkened photo of a humanoid robot reading.">
@@ -911,18 +928,19 @@ Apr 2026
 <div class="listing-date">
 Apr 2026
 </div>
+<div class="listing-reading-time">15 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="14" data-categories="SmF2YVNjcmlwdCUyQ0dJUyUyQ0RldmVsb3BlciUyMFRvb2xzJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1772002800000" data-listing-file-modified-sort="1792823857075" data-listing-date-modified-sort="1792735200000" data-listing-reading-time-sort="9" data-listing-word-count-sort="1723">
-<div class="thumbnail"><a href="./posts/spatial-sql-exporer/index.html" class="no-external">
+<div class="quarto-post image-right" data-index="14" data-categories="SmF2YVNjcmlwdCUyQ0dJUyUyQ0RldmVsb3BlciUyMFRvb2xzJTJDV2ViJTIwQXBwcyUyQ09wZW4lMjBTb3VyY2U=" data-listing-date-sort="1772002800000" data-listing-file-modified-sort="1792867651838" data-listing-date-modified-sort="1792735200000" data-listing-reading-time-sort="9" data-listing-word-count-sort="1723">
+<div class="thumbnail"><a href="./posts/spatial-sql-explorer/index.html" class="no-external">
 
-<img loading="lazy" src="./posts/spatial-sql-exporer/spatial_sql_explorer.png" class="thumbnail-image" alt="Spatial Explorer landing page, &amp;#039;Open a map file. Query it like a database.', with a SQL query over a hex-binned world map.">
+<img loading="lazy" src="./posts/spatial-sql-explorer/spatial_sql_explorer.png" class="thumbnail-image" alt="Spatial Explorer landing page, &amp;#039;Open a map file. Query it like a database.', with a SQL query over a hex-binned world map.">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
-<a href="./posts/spatial-sql-exporer/index.html" class="no-external">Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code</a>
+<a href="./posts/spatial-sql-explorer/index.html" class="no-external">Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code</a>
 </h3>
 <div class="listing-categories">
 
@@ -937,19 +955,20 @@ Apr 2026
 <div class="listing-category" onclick="window.quartoListingCategory('T3BlbiUyMFNvdXJjZQ=='); return false;">Open Source</div>
 
 </div>
-<div class="delink listing-description"><a href="./posts/spatial-sql-exporer/index.html" class="no-external">
+<div class="delink listing-description"><a href="./posts/spatial-sql-explorer/index.html" class="no-external">
 <p>Open a geospatial file, query it with spatial SQL, style it and export it without a desktop GIS. How the project grew from a single-page experiment into a web app and a VS Code extension.</p>
 </a></div>
 </div>
 <div class="metadata">
-<a href="./posts/spatial-sql-exporer/index.html" class="no-external">
+<a href="./posts/spatial-sql-explorer/index.html" class="no-external">
 <div class="listing-date">
 Feb 2026
 </div>
+<div class="listing-reading-time">9 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="15" data-categories="UiUyQ1B5dGhvbiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1770447600000" data-listing-file-modified-sort="1792823857078" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2165">
+<div class="quarto-post image-right" data-index="15" data-categories="UiUyQ1B5dGhvbiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1770447600000" data-listing-file-modified-sort="1792869931557" data-listing-date-modified-sort="1792869931000" data-listing-reading-time-sort="11" data-listing-word-count-sort="2167">
 <div class="thumbnail"><a href="./slides/spatial-benchmark/index.html" class="no-external">
 
 <img loading="lazy" src="./slides/spatial-benchmark/csv_vs_parquet.jpg" class="thumbnail-image" alt="Cartoon contrasting CSV, which checks every box of mixed fruit, with Parquet, which opens only the box of apples.">
@@ -979,10 +998,11 @@ Feb 2026
 <div class="listing-date">
 Feb 2026
 </div>
+<div class="listing-reading-time">11 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="16" data-categories="RGV2ZWxvcGVyJTIwVG9vbHM=" data-listing-date-sort="1769324400000" data-listing-file-modified-sort="1792823857076" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="352">
+<div class="quarto-post image-right" data-index="16" data-categories="RGV2ZWxvcGVyJTIwVG9vbHM=" data-listing-date-sort="1769324400000" data-listing-file-modified-sort="1792823857076" data-listing-date-modified-sort="1792823857000" data-listing-reading-time-sort="2" data-listing-word-count-sort="352">
 <div class="thumbnail"><a href="./posts/wget-gui/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/wget-gui/wget_gui.png" class="thumbnail-image" alt="WgetGUI Ultimate window with target URL and output fields and the generated wget command.">
@@ -1006,10 +1026,11 @@ Feb 2026
 <div class="listing-date">
 Jan 2026
 </div>
+<div class="listing-reading-time">2 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="17" data-categories="UiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1768719600000" data-listing-file-modified-sort="1792823857072" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1243">
+<div class="quarto-post image-right" data-index="17" data-categories="UiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1768719600000" data-listing-file-modified-sort="1792823857072" data-listing-date-modified-sort="1792823857000" data-listing-reading-time-sort="7" data-listing-word-count-sort="1243">
 <div class="thumbnail"><a href="./posts/nepal-election-geojson/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/nepal-election-geojson/nepal_election_geojson.png" class="thumbnail-image" alt="Map of Nepal&amp;#039;s electoral constituencies in grey with national parks highlighted in green.">
@@ -1037,10 +1058,11 @@ Jan 2026
 <div class="listing-date">
 Jan 2026
 </div>
+<div class="listing-reading-time">7 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="18" data-categories="V0ZSQyUyQ1IlMkNUcmFuc3BvcnRhdGlvbiUyQ1dlYiUyMEFwcHM=" data-listing-date-sort="1764658800000" data-listing-file-modified-sort="1792823857079" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="266">
+<div class="quarto-post image-right" data-index="18" data-categories="V0ZSQyUyQ1IlMkNUcmFuc3BvcnRhdGlvbiUyQ1dlYiUyMEFwcHM=" data-listing-date-sort="1764658800000" data-listing-file-modified-sort="1792865745289" data-listing-date-modified-sort="1792865745000" data-listing-reading-time-sort="2" data-listing-word-count-sort="266">
 <div class="thumbnail"><a href="./work/housing-site-evaluator/index.html" class="no-external">
 
 <img loading="lazy" src="./work/housing-site-evaluator/housing_site_evaluator.png" class="thumbnail-image" alt="Wasatch Front Housing Site Evaluator welcome dialog explaining how to select communities, filter by land use and set priorities.">
@@ -1070,10 +1092,11 @@ Jan 2026
 <div class="listing-date">
 Dec 2025
 </div>
+<div class="listing-reading-time">2 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="19" data-categories="UiUyQ0dJUyUyQ1RyYW5zcG9ydGF0aW9u" data-listing-date-sort="1763276400000" data-listing-file-modified-sort="1792823857076" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3312">
+<div class="quarto-post image-right" data-index="19" data-categories="UiUyQ0dJUyUyQ1RyYW5zcG9ydGF0aW9u" data-listing-date-sort="1763276400000" data-listing-file-modified-sort="1792823857076" data-listing-date-modified-sort="1792823857000" data-listing-reading-time-sort="17" data-listing-word-count-sort="3312">
 <div class="thumbnail"><a href="./posts/utah-bikeways/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/utah-bikeways/utah_bikeways.png" class="thumbnail-image" alt="Scatter plot of bikeway miles against total road miles for Utah cities, colored above and below the statewide average.">
@@ -1101,10 +1124,11 @@ Dec 2025
 <div class="listing-date">
 Nov 2025
 </div>
+<div class="listing-reading-time">17 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="20" data-categories="UiUyQ1dlYiUyMEFwcHM=" data-listing-date-sort="1756879200000" data-listing-file-modified-sort="1792823857075" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1122">
+<div class="quarto-post image-right" data-index="20" data-categories="UiUyQ1dlYiUyMEFwcHM=" data-listing-date-sort="1756879200000" data-listing-file-modified-sort="1792823857075" data-listing-date-modified-sort="1792823857000" data-listing-reading-time-sort="6" data-listing-word-count-sort="1122">
 <div class="thumbnail"><a href="./posts/storymap_my_journey/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/storymap_my_journey/storymap_my_journey.png" class="thumbnail-image" alt="Globe view centered on Africa with an introduction card for a personal story map.">
@@ -1130,13 +1154,14 @@ Nov 2025
 <div class="listing-date">
 Sep 2025
 </div>
+<div class="listing-reading-time">6 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="21" data-categories="VHJhbnNwb3J0YXRpb24lMkNEYXRhJTIwU2NpZW5jZQ==" data-listing-date-sort="1754546400000" data-listing-file-modified-sort="1792823857078" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1948">
+<div class="quarto-post image-right" data-index="21" data-categories="VHJhbnNwb3J0YXRpb24lMkNEYXRhJTIwU2NpZW5jZQ==" data-listing-date-sort="1754546400000" data-listing-file-modified-sort="1792863493798" data-listing-date-modified-sort="1792863493000" data-listing-reading-time-sort="10" data-listing-word-count-sort="1948">
 <div class="thumbnail"><a href="./slides/quantifying-economic-impacts/index.html" class="no-external">
 
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+<p class="card-img-top"><img loading='lazy' src="slides\quantifying-economic-impacts\data:image\svg+xml;base64,PHN2ZyB3aWR0aD0iMTY1MyIgaGVpZ2h0PSIxNjUzIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDE2NTMgMTY1MyIgdmVyc2lvbj0iMS4xIj4KCiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPHBhdGggaWQ9InN2Z18xIiBkPSJtOTE5LDE2NTRjLTMwNi4zMzMyNSwwIC02MTIuMTY2NDcsMCAtOTE3Ljk5OTc5LDBjLTAuMDAwMDcsLTU1MC45OTk3NiAtMC4wMDAwNywtMTEwMS45OTk1MSAtMC4wMDAxNCwtMTY1Mi45OTk0MmM1NTAuOTk5NSwtMC4wMDAyIDExMDEuOTk5MDgsLTAuMDAwMiAxNjUyLjk5ODk1LC0wLjAwMDM5YzAuMDAwMzcsNTUwLjk5OTI2IDAuMDAwMzcsMTEwMS45OTg3MSAwLjAwMDc0LDE2NTIuOTk4OTZjLTI0NC44MzMxMywwLjAwMDg1IC00ODkuNjY2MzksMC4wMDA4NSAtNzM0Ljk5OTc2LDAuMDAwODVtMTg2LjU1NjY0LC0yOTQuOTYxMDZjLTE0LjYwOTM3LDcuNzc3NDcgLTI5LjQ4NTk2LDE0LjgwODM1IC00NS40NzIwNCwxOS41MDkyOGMtMjAuMjcyMjIsNS45NjE1NSAtNDAuODM3MjIsOS40MjI0OCAtNjEuOTYxNDMsOS40NDI1Yy0zNS40OTg2NiwwLjAzMzgyIC03MC45OTczOCwwLjAwOTI4IC0xMDYuNDk2MDMsMC4wMDkyOGMtMS43NzY4LDAgLTMuNTUzNTMsMCAtNS4zODc2NCwwYzAsLTIyMy41NTM4MyAwLC00NDYuNjE5NzUgMCwtNjcwYzIuMDM0NjEsMCAzLjgzMzc0LDAgNS42MzI4OCwwYzU0LjQ5Nzk4LDAgMTA4Ljk5NjMzLDAuMTA2NjkgMTYzLjQ5MzU5LC0wLjA5MDMzYzEwLjgzNjQyLC0wLjAzOTEzIDIxLjY3Nzk3LC0xLjExNjcgMzIuNTAwNDksLTEuOTM1NzljMTcuMzIzOTcsLTEuMzExMTYgMzQuMDE5NCwtNS42Nzg5IDUwLjU1MTM5LC0xMC43NzAwMmMyMC42NDYxMiwtNi4zNTgxIDQwLjIwMjAyLC0xNS4xODA1NCA1OC43MzM1MiwtMjYuMjQwMTFjMTguMTkxMTYsLTEwLjg1NjM5IDM1LjE5NDQ2LC0yMy4zODM2NyA1MC4zODAzNywtMzguMTU4MjdjOC4zODIzMiwtOC4xNTUyMSAxNi4xNDAxNCwtMTYuOTc5NDkgMjMuODU5MjUsLTI1Ljc4Mjk2YzEyLjA4NjMsLTEzLjc4NDQ4IDIxLjk3Mjc4LC0yOS4xMTU5NiAzMC42MTc4LC00NS4yNDg4NGMxMS44MTAxOCwtMjIuMDM5NzMgMjEuNDk4OSwtNDQuOTYzMTkgMjYuMjMyNzksLTY5LjU5NzUzYzMuMjExMTgsLTE2LjcxMDMzIDYuMDAzNDIsLTMzLjU4MzQxIDcuNDkwNiwtNTAuNTE0ODNjMS4wNTA3OCwtMTEuOTYzMzggMC4xMTY4MiwtMjQuMTg4ODUgLTAuODc1MjUsLTM2LjIxOTQ2Yy0xLjAxMzMsLTEyLjI4ODE0IC0yLjg3NjU4LC0yNC41MzE2NyAtNC45MDU4OCwtMzYuNzA1MDRjLTMuNzc2MzcsLTIyLjY1MzM4IC0xMS42Njg5NSwtNDQuMDQ0MDEgLTIxLjUwNzA4LC02NC42Njk4Yy04LjQzODcyLC0xNy42OTE0NyAtMTguMTM4NTUsLTM0LjY2NjcyIC0zMS4xOTI4NywtNDkuNTQwMjNjLTguMzc2NTksLTkuNTQzOTcgLTE1LjY4MTY0LC0yMC4xMDY1IC0yNC42MzAwMSwtMjkuMDQ4NTJjLTguOTY0MjMsLTguOTU3NzggLTE5LjAxODU1LC0xNi45NTA5IC0yOS4yNDI3OSwtMjQuNDg4MjhjLTExLjgxMjUsLTguNzA4MjggLTIzLjg4MjMzLC0xNy4yNTgzOCAtMzYuNjUxMzcsLTI0LjQzMzc2Yy0xOS4yMDM5OCwtMTAuNzkxMjggLTM5Ljc0ODQxLC0xOC43Njg5NyAtNjEuMTMxNzEsLTI0LjI2NTg5Yy0yMi40NzM3NiwtNS43NzcyOSAtNDUuMzAxNzYsLTkuMjgxNSAtNjguNTcxMTcsLTkuMjgzNDNjLTE1OS40OTQwMiwtMC4wMTMxOCAtMzE4Ljk4ODEsLTAuMDA2OTEgLTQ3OC40ODIxMiwtMC4wMDY5MWMtMTAuMzMyOTUsMCAtMjAuNjY4MTUsMC4xMjEwNiAtMzAuOTk3NSwtMC4wNzEyYy0zLjI0MiwtMC4wNjAzNSAtNC4zOTEyMywxLjM0OTM3IC00LjUzMTg2LDQuMTk4MDhjLTAuMDY1NjEsMS4zMzAwNiAtMC4wMTI1MSwyLjY2NjAxIC0wLjAxMjUxLDMuOTk5MjljLTAuMDAwMDYsNDA3LjQ4NDc5IC0wLjAwMDA2LDgxNC45Njk1OSAtMC4wMDAwNiwxMjIyLjQ1NDRjMCwyLjA5MDk0IDAsNC4xODE3NiAwLDYuMDk5MTJjLTM2LjA0MDMxLDAgLTcxLjQ0NTE5LDAgLTEwNy4yMzIwNiwwYzAsLTQxMi4zODE0MSAwLC04MjQuNDQyNDUgMCwtMTIzNi4zNjgzNWMtMzkuMTIzNTMsMCAtNzcuODYxNTEsMCAtMTE2Ljc2Nzk0LDBjMCwxLjk2MTcyIDAsMy42MTI5NiAwLDUuMjY0MjJjMCw0NDcuNjQ5OTYgLTAuMDAwMDMsODk1LjI5OTkzIDAuMDAwMjEsMTM0Mi45NDk4M2MwLDYuNDczMTQgMC4wMDE1Niw2LjQ3NDI0IDYuNTc2NzksNi40NzQyNGMxMDkuNDk1OTEsMC4wMDAzNyAyMTguOTkxODUsMC4wMDAzNyAzMjguNDg3NzYsMC4wMDAzN2M2LjkzNDg3LDAgNi45MzUxOCwtMC4wMDA0OSA2LjkzNTE4LC03LjExNjMzYzAuMDAwMDYsLTQwOC4zMTgxMiAwLjAwMDA2LC04MTYuNjM2MTcgMC4wMDAwNiwtMTIyNC45NTQyM2MwLC0xLjkyNDg5IDAsLTMuODQ5NzkgMCwtNS45Mjk0NGMyLjQ0Mzg1LDAgNC4yNjMyNCwwIDYuMDgyNjQsMGM1OS4zMzExMiwwIDExOC42NjI2LC0wLjEyNzk5IDE3Ny45OTMyOSwwLjAzMjgxYzcxLjkxNjY5LDAuMTk0OTEgMTQzLjgzNDE2LDAuNDc1NDkgMjE1Ljc0NzQzLDEuMTQyMDljMTAuNDg5NzUsMC4wOTcyMyAyMS4yMjQ4NiwxLjQ5NjY0IDMxLjM4NDQsNC4wOTgyYzI3LjQ1MDgxLDcuMDI5NDUgNTEuOTA1NjQsMjAuMjA4MzIgNzIuODQ1NzEsMzkuMzkwMDJjMTIuODE3MzgsMTEuNzQwOTkgMjMuNTM3MzUsMjUuMzQ4NzUgMzEuOTIxMjYsNDAuNjAzNDJjMTUuMDA1MTMsMjcuMzAyMjIgMjMuMDU4OTYsNTYuMzgzMTggMjAuOTYyODksODcuNzc0MDhjLTAuNTg1NDUsOC43Njc4MiAtMS40MzcwMSwxNy41NzQzNCAtMy4wMTAxMywyNi4yMDk0NGMtNS4zODg1NSwyOS41NzYxNyAtMTguNzU5ODksNTUuNDI0OTkgLTM4LjU5NTQ2LDc3Ljc2MDAxYy0xNi45NjExOCwxOS4wOTg0NSAtMzcuMzk3NDYsMzMuNjY1MDQgLTYxLjE2MjQ3LDQzLjM4OTUzYy0xOS41NTkyMSw4LjAwMzU0IC0zOS45MDkzMSwxMi40ODU5IC02MC45OTYyMiwxMi41MjUyYy05My4xNjI5LDAuMTczODMgLTE4Ni4zMjYyMywwLjA3NTE0IC0yNzkuNDg5NDQsMC4wNzUzOGMtNi42NzYyNywwIC02LjY4Mjg2LDAuMDAxMSAtNi42ODI5Miw2Ljk4NTE3Yy0wLjAwMTEsMjk2Ljk4ODk1IC0wLjAwMTEsNTkzLjk3NzkxIC0wLjAwMDI1LDg5MC45NjY4YzAsNi43NTAxMiAwLjI5NzU1LDcuMDQ3IDcuMDU0MDgsNy4wNDcxMmM3MS40OTczMSwwLjAwMTIyIDE0Mi45OTQ5MywwLjA5NTgyIDIxNC40OTE3NiwtMC4wODkxMWMxMi41MDUxOSwtMC4wMzIzNSAyNS4wNTYyNywtMC43NjI1OCAzNy40OTc5OSwtMi4wMzM5NGMxNC4zNjg2NSwtMS40NjgxNCAyOC44NjUyMywtMi45MDExMiA0Mi45MDczNCwtNi4xMDA5NWMzMi42OTMxMiwtNy40NDk5NSA2My44OTEsLTE5LjEwNzY3IDkzLjE5MDA3LC0zNS43MTg4N2MyMS43OTkwNywtMTIuMzU4ODkgNDIuMTc1MTcsLTI2LjY5NjA1IDYwLjY0MDg3LC00My41MjQ5MWMyMC4xOTcwMiwtMTguNDA2NDkgMzguMzkwNzQsLTM4LjczNDg2IDUzLjY2MDY0LC02MS41MDQzOWMxMy40NTY5MSwtMjAuMDY1OTIgMjUuNTMwNzYsLTQwLjk1MTkxIDMzLjcxMTY3LC02My43NDc4YzYuMTY1NzcsLTE3LjE4MDQyIDEyLjUzOTU1LC0zNC40NjQ0OCAxNi40NjE3OSwtNTIuMjIzMzljNC4yMjY2OSwtMTkuMTM3NDUgNi40Njk0OSwtMzguODE3NzUgOC4xMTM0MSwtNTguMzg0MjhjMS4wODkzNSwtMTIuOTY1NTcgLTAuNDU5MjMsLTI2LjE0NjM2IC0wLjcxNDYsLTM5LjIzMzAzYy0wLjMzNDg0LC0xNy4xNzQ1NiAtMy40ODk5OSwtMzMuOTEzODIgLTYuODcwOTgsLTUwLjcwMjg4Yy00Ljc0NTg0LC0yMy41NjY3OCAtMTIuNTY3MzgsLTQ2LjA3OTg0IC0yMi4yOTM0NSwtNjcuOTAzMDhjLTguNzI2NDQsLTE5LjU4MDc1IC0xOS42OTI4NywtMzguMDAxNzEgLTMyLjA2MTA0LC01NS41NTYzOWMtMTQuMzU0MzcsLTIwLjM3MzYgLTMwLjk1OTEsLTM4LjY4NTc0IC00OS4zNjE0NSwtNTUuNDk3MDdjLTEzLjUzMSwtMTIuMzYxMTUgLTI4LjA2Njg5LC0yMy4yNDg2IC00My4zNTY0NCwtMzMuMzAwNDJjLTI0LjQ1Mjc2LC0xNi4wNzYwNSAtNTAuNDQxMTYsLTI4Ljg3NzA4IC03OC40MTA1MiwtMzcuNDI2NjRjLTEzLjY1MjU5LC00LjE3MzM0IC0yNy41MDg1NSwtNy43ODI5NSAtNDEuNDM3NSwtMTAuOTEzNjljLTkuMTU2NzQsLTIuMDU4MTEgLTE4LjYwNDI1LC0yLjgzMjI4IC0yNy45Mjg5NiwtNC4xMjg3MmMtNC45OTk1MSwtMC42OTUwMSAtMTAuMDAwNzMsLTEuNjM5MTcgLTE1LjAyNTU3LC0xLjgzMDM5Yy04LjA2MzI0LC0wLjMwNjg4IC0xNi4xNDY3MywtMC4wODIyNyAtMjMuOTA1ODksLTAuMDgyMjdjMCwzOS4zNjc1NSAwLDc4LjEwNTU5IDAsMTE1Ljk3Njk5YzEzLjU4ODYzLDEuNjczMDMgMjYuNzQ2NjUsMy4wOTEzNiAzOS44NDIxMSw0Ljk0OTY0YzIzLjE0NTUsMy4yODQzNiA0NC43MzgyOCwxMS4zNDQ4NSA2NS4zNDI4OSwyMi4xNTIxNmMyNC41MDk4OSwxMi44NTU1OSA0NS43OTI2LDI5Ljc0MjA3IDYzLjk2OTM2LDUwLjcwNDFjMTAuMTM1NjIsMTEuNjg4NTQgMTkuMDYyOTksMjQuMTE1NTQgMjYuNTQyNiwzNy42MDY1MWMxOS43OTA5LDM1LjY5NzE0IDI5Ljg4MTExLDczLjgwNDA4IDI3Ljg2NzA3LDExNC43NjYyNGMtMC41MjEsMTAuNjAwMzQgLTEuNDgwNzEsMjEuMjIyNjUgLTMuMDIxNDksMzEuNzE5ODRjLTIuOTgzODgsMjAuMzI5ODQgLTkuNjcxNSwzOS42MDMxNSAtMTguNTEzMyw1OC4wNzkyM2MtOC4wNDk5MywxNi44MjE1MyAtMTguMTA1OTYsMzIuMzk0NDEgLTMwLjM5MTExLDQ2LjUwNzU3Yy0xMS4xNjY1MSwxMi44MjggLTIzLjAyNDc5LDI0LjkwNDE3IC0zNi45MDY5OSwzNC44MTU5MWMtNy40ODgxNiw1LjM0NjMyIC0xNS4xODA3OCwxMC40MDYyNSAtMjMuNTM4NDUsMTUuNjYzN3oiIGZpbGw9IiNmZmZiZjIiLz4KICA8cGF0aCBpZD0ic3ZnXzIiIGQ9Im0xMTA1LjkzNTMsMTM1OS4wMDQ3NmM3Ljk3OTAxLC01LjIyMzI3IDE1LjY3MTYzLC0xMC4yODMyIDIzLjE1OTc5LC0xNS42Mjk1MmMxMy44ODIyLC05LjkxMTc0IDI1Ljc0MDQ4LC0yMS45ODc5MSAzNi45MDY5OSwtMzQuODE1OTFjMTIuMjg1MTUsLTE0LjExMzE2IDIyLjM0MTE4LC0yOS42ODYwNCAzMC4zOTExMSwtNDYuNTA3NTdjOC44NDE4LC0xOC40NzYwOCAxNS41Mjk0MiwtMzcuNzQ5MzkgMTguNTEzMywtNTguMDc5MjNjMS41NDA3OCwtMTAuNDk3MTkgMi41MDA0OSwtMjEuMTE5NSAzLjAyMTQ5LC0zMS43MTk4NGMyLjAxNDA0LC00MC45NjIxNiAtOC4wNzYxNywtNzkuMDY5MSAtMjcuODY3MDcsLTExNC43NjYyNGMtNy40Nzk2MSwtMTMuNDkwOTcgLTE2LjQwNjk4LC0yNS45MTc5NyAtMjYuNTQyNiwtMzcuNjA2NTFjLTE4LjE3Njc2LC0yMC45NjIwMyAtMzkuNDU5NDcsLTM3Ljg0ODUxIC02My45NjkzNiwtNTAuNzA0MWMtMjAuNjA0NjEsLTEwLjgwNzMxIC00Mi4xOTczOSwtMTguODY3OCAtNjUuMzQyODksLTIyLjE1MjE2Yy0xMy4wOTU0NiwtMS44NTgyOCAtMjYuMjUzNDgsLTMuMjc2NjEgLTM5Ljg0MjExLC00Ljk0OTY0YzAsLTM3Ljg3MTQgMCwtNzYuNjA5NDQgMCwtMTE1Ljk3Njk5YzcuNzU5MTYsMCAxNS44NDI2NSwtMC4yMjQ2MSAyMy45MDU4OSwwLjA4MjI3YzUuMDI0ODQsMC4xOTEyMiAxMC4wMjYwNiwxLjEzNTM4IDE1LjAyNTU3LDEuODMwMzljOS4zMjQ3MSwxLjI5NjQ0IDE4Ljc3MjIyLDIuMDcwNjEgMjcuOTI4OTYsNC4xMjg3MmMxMy45Mjg5NSwzLjEzMDc0IDI3Ljc4NDkxLDYuNzQwMzUgNDEuNDM3NSwxMC45MTM2OWMyNy45NjkzNiw4LjU0OTU2IDUzLjk1Nzc2LDIxLjM1MDU5IDc4LjQxMDUyLDM3LjQyNjY0YzE1LjI4OTU1LDEwLjA1MTgyIDI5LjgyNTQ0LDIwLjkzOTI3IDQzLjM1NjQ0LDMzLjMwMDQyYzE4LjQwMjM1LDE2LjgxMTMzIDM1LjAwNzA4LDM1LjEyMzQ3IDQ5LjM2MTQ1LDU1LjQ5NzA3YzEyLjM2ODE3LDE3LjU1NDY4IDIzLjMzNDYsMzUuOTc1NjQgMzIuMDYxMDQsNTUuNTU2MzljOS43MjYwNywyMS44MjMyNCAxNy41NDc2MSw0NC4zMzYzIDIyLjI5MzQ1LDY3LjkwMzA4YzMuMzgwOTksMTYuNzg5MDYgNi41MzYxNCwzMy41MjgzMiA2Ljg3MDk4LDUwLjcwMjg4YzAuMjU1MzcsMTMuMDg2NjcgMS44MDM5NSwyNi4yNjc0NiAwLjcxNDYsMzkuMjMzMDNjLTEuNjQzOTIsMTkuNTY2NTMgLTMuODg2NzIsMzkuMjQ2ODMgLTguMTEzNDEsNTguMzg0MjhjLTMuOTIyMjQsMTcuNzU4OTEgLTEwLjI5NjAyLDM1LjA0Mjk3IC0xNi40NjE3OSw1Mi4yMjMzOWMtOC4xODA5MSwyMi43OTU4OSAtMjAuMjU0NzYsNDMuNjgxODggLTMzLjcxMTY3LDYzLjc0NzhjLTE1LjI2OTksMjIuNzY5NTMgLTMzLjQ2MzYyLDQzLjA5NzkgLTUzLjY2MDY0LDYxLjUwNDM5Yy0xOC40NjU3LDE2LjgyODg2IC0zOC44NDE4LDMxLjE2NjAyIC02MC42NDA4Nyw0My41MjQ5MWMtMjkuMjk5MDcsMTYuNjExMiAtNjAuNDk2OTUsMjguMjY4OTIgLTkzLjE5MDA3LDM1LjcxODg3Yy0xNC4wNDIxMSwzLjE5OTgzIC0yOC41Mzg2OSw0LjYzMjgxIC00Mi45MDczNCw2LjEwMDk1Yy0xMi40NDE3MiwxLjI3MTM2IC0yNC45OTI4LDIuMDAxNTkgLTM3LjQ5Nzk5LDIuMDMzOTRjLTcxLjQ5NjgzLDAuMTg0OTMgLTE0Mi45OTQ0NSwwLjA5MDMzIC0yMTQuNDkxNzYsMC4wODkxMWMtNi43NTY1MywtMC4wMDAxMiAtNy4wNTQwOCwtMC4yOTcgLTcuMDU0MDgsLTcuMDQ3MTJjLTAuMDAwODUsLTI5Ni45ODg4OSAtMC4wMDA4NSwtNTkzLjk3Nzg1IDAuMDAwMjUsLTg5MC45NjY4YzAuMDAwMDYsLTYuOTg0MDcgMC4wMDY2NSwtNi45ODUxNyA2LjY4MjkyLC02Ljk4NTE3YzkzLjE2MzIxLC0wLjAwMDI0IDE4Ni4zMjY1NCwwLjA5ODQ1IDI3OS40ODk0NCwtMC4wNzUzOGMyMS4wODY5MSwtMC4wMzkzIDQxLjQzNzAxLC00LjUyMTY2IDYwLjk5NjIyLC0xMi41MjUyYzIzLjc2NTAxLC05LjcyNDQ5IDQ0LjIwMTI5LC0yNC4yOTEwOCA2MS4xNjI0NywtNDMuMzg5NTNjMTkuODM1NTcsLTIyLjMzNTAyIDMzLjIwNjkxLC00OC4xODM4NCAzOC41OTU0NiwtNzcuNzYwMDFjMS41NzMxMiwtOC42MzUxIDIuNDI0NjgsLTE3LjQ0MTYyIDMuMDEwMTMsLTI2LjIwOTQ0YzIuMDk2MDcsLTMxLjM5MDkgLTUuOTU3NzYsLTYwLjQ3MTg2IC0yMC45NjI4OSwtODcuNzc0MDhjLTguMzgzOTEsLTE1LjI1NDY3IC0xOS4xMDM4OCwtMjguODYyNDMgLTMxLjkyMTI2LC00MC42MDM0MmMtMjAuOTQwMDcsLTE5LjE4MTcgLTQ1LjM5NDksLTMyLjM2MDU3IC03Mi44NDU3MSwtMzkuMzkwMDJjLTEwLjE1OTU0LC0yLjYwMTU2IC0yMC44OTQ2NSwtNC4wMDA5NyAtMzEuMzg0NCwtNC4wOTgyYy03MS45MTMyNywtMC42NjY2IC0xNDMuODMwNzQsLTAuOTQ3MTggLTIxNS43NDc0MywtMS4xNDIwOWMtNTkuMzMwNjksLTAuMTYwOCAtMTE4LjY2MjE3LC0wLjAzMjgxIC0xNzcuOTkzMjksLTAuMDMyODFjLTEuODE5NCwwIC0zLjYzODc5LDAgLTYuMDgyNjQsMGMwLDIuMDc5NjUgMCw0LjAwNDU1IDAsNS45Mjk0NGMwLDQwOC4zMTgwNiAwLDgxNi42MzYxMSAtMC4wMDAwNiwxMjI0Ljk1NDIzYzAsNy4xMTU4NCAtMC4wMDAzMSw3LjExNjMzIC02LjkzNTE4LDcuMTE2MzNjLTEwOS40OTU5MSwwIC0yMTguOTkxODUsMCAtMzI4LjQ4Nzc2LC0wLjAwMDM3Yy02LjU3NTIzLDAgLTYuNTc2NzksLTAuMDAxMSAtNi41NzY3OSwtNi40NzQyNGMtMC4wMDAyNCwtNDQ3LjY0OTkgLTAuMDAwMjEsLTg5NS4yOTk4NyAtMC4wMDAyMSwtMTM0Mi45NDk4M2MwLC0xLjY1MTI2IDAsLTMuMzAyNSAwLC01LjI2NDIyYzM4LjkwNjQzLDAgNzcuNjQ0NDEsMCAxMTYuNzY3OTQsMGMwLDQxMS45MjU5IDAsODIzLjk4Njk0IDAsMTIzNi4zNjgzNWMzNS43ODY4NywwIDcxLjE5MTc1LDAgMTA3LjIzMjA2LDBjMCwtMS45MTczNiAwLC00LjAwODE4IDAsLTYuMDk5MTJjMCwtNDA3LjQ4NDgxIDAsLTgxNC45Njk2MSAwLjAwMDA2LC0xMjIyLjQ1NDRjMCwtMS4zMzMyOCAtMC4wNTMxLC0yLjY2OTIzIDAuMDEyNTEsLTMuOTk5MjljMC4xNDA2MywtMi44NDg3MSAxLjI4OTg2LC00LjI1ODQzIDQuNTMxODYsLTQuMTk4MDhjMTAuMzI5MzUsMC4xOTIyNiAyMC42NjQ1NSwwLjA3MTIgMzAuOTk3NSwwLjA3MTJjMTU5LjQ5NDAyLDAgMzE4Ljk4ODEsLTAuMDA2MjcgNDc4LjQ4MjEyLDAuMDA2OTFjMjMuMjY5NDEsMC4wMDE5MyA0Ni4wOTc0MSwzLjUwNjE0IDY4LjU3MTE3LDkuMjgzNDNjMjEuMzgzMyw1LjQ5NjkyIDQxLjkyNzczLDEzLjQ3NDYxIDYxLjEzMTcxLDI0LjI2NTg5YzEyLjc2OTA0LDcuMTc1MzggMjQuODM4ODcsMTUuNzI1NDggMzYuNjUxMzcsMjQuNDMzNzZjMTAuMjI0MjQsNy41MzczOCAyMC4yNzg1NiwxNS41MzA1IDI5LjI0Mjc5LDI0LjQ4ODI4YzguOTQ4MzcsOC45NDIwMiAxNi4yNTM0MiwxOS41MDQ1NSAyNC42MzAwMSwyOS4wNDg1MmMxMy4wNTQzMiwxNC44NzM1MSAyMi43NTQxNSwzMS44NDg3NiAzMS4xOTI4Nyw0OS41NDAyM2M5LjgzODEzLDIwLjYyNTc5IDE3LjczMDcxLDQyLjAxNjQyIDIxLjUwNzA4LDY0LjY2OThjMi4wMjkzLDEyLjE3MzM3IDMuODkyNTgsMjQuNDE2OSA0LjkwNTg4LDM2LjcwNTA0YzAuOTkyMDcsMTIuMDMwNjEgMS45MjYwMywyNC4yNTYwOCAwLjg3NTI1LDM2LjIxOTQ2Yy0xLjQ4NzE4LDE2LjkzMTQyIC00LjI3OTQyLDMzLjgwNDUgLTcuNDkwNiw1MC41MTQ4M2MtNC43MzM4OSwyNC42MzQzNCAtMTQuNDIyNjEsNDcuNTU3OCAtMjYuMjMyNzksNjkuNTk3NTNjLTguNjQ1MDIsMTYuMTMyODggLTE4LjUzMTUsMzEuNDY0MzYgLTMwLjYxNzgsNDUuMjQ4ODRjLTcuNzE5MTEsOC44MDM0NyAtMTUuNDc2OTMsMTcuNjI3NzUgLTIzLjg1OTI1LDI1Ljc4Mjk2Yy0xNS4xODU5MSwxNC43NzQ2IC0zMi4xODkyMSwyNy4zMDE4OCAtNTAuMzgwMzcsMzguMTU4MjdjLTE4LjUzMTUsMTEuMDU5NTcgLTM4LjA4NzQsMTkuODgyMDEgLTU4LjczMzUyLDI2LjI0MDExYy0xNi41MzE5OSw1LjA5MTEyIC0zMy4yMjc0Miw5LjQ1ODg2IC01MC41NTEzOSwxMC43NzAwMmMtMTAuODIyNTIsMC44MTkwOSAtMjEuNjY0MDcsMS44OTY2NiAtMzIuNTAwNDksMS45MzU3OWMtNTQuNDk3MjYsMC4xOTcwMiAtMTA4Ljk5NTYxLDAuMDkwMzMgLTE2My40OTM1OSwwLjA5MDMzYy0xLjc5OTE0LDAgLTMuNTk4MjcsMCAtNS42MzI4OCwwYzAsMjIzLjM4MDI1IDAsNDQ2LjQ0NjE3IDAsNjcwYzEuODM0MTEsMCAzLjYxMDg0LDAgNS4zODc2NCwwYzM1LjQ5ODY1LDAgNzAuOTk3MzcsMC4wMjQ1NCAxMDYuNDk2MDMsLTAuMDA5MjhjMjEuMTI0MjEsLTAuMDIwMDIgNDEuNjg5MjEsLTMuNDgwOTUgNjEuOTYxNDMsLTkuNDQyNWMxNS45ODYwOCwtNC43MDA5MyAzMC44NjI2NywtMTEuNzMxODEgNDUuODUwNywtMTkuNTQzNDZ6IiBmaWxsPSIjMGUxNzFlIi8+CiA8L2c+Cjwvc3ZnPg==" alt="Pukar Bhandari logo"  class="thumbnail-image card-img"/></p>
 
 </a></div>
 <div class="body">
@@ -1159,10 +1184,11 @@ Sep 2025
 <div class="listing-date">
 Aug 2025
 </div>
+<div class="listing-reading-time">10 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="22" data-categories="UiUyQ1B5dGhvbiUyQ0RhdGElMjBTY2llbmNlJTJDVHJhbnNwb3J0YXRpb24=" data-listing-date-sort="1751695200000" data-listing-file-modified-sort="1792823857075" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="53" data-listing-word-count-sort="10416">
+<div class="quarto-post image-right" data-index="22" data-categories="UiUyQ1B5dGhvbiUyQ0RhdGElMjBTY2llbmNlJTJDVHJhbnNwb3J0YXRpb24=" data-listing-date-sort="1751695200000" data-listing-file-modified-sort="1792823857075" data-listing-date-modified-sort="1792823857000" data-listing-reading-time-sort="53" data-listing-word-count-sort="10416">
 <div class="thumbnail"><a href="./posts/socioeconomic-demo/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/socioeconomic-demo/lscog_taz.png" class="thumbnail-image" alt="Map of six South Carolina counties in the Lower Savannah region divided into colored traffic analysis zones.">
@@ -1192,10 +1218,11 @@ Aug 2025
 <div class="listing-date">
 Jul 2025
 </div>
+<div class="listing-reading-time">53 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="23" data-categories="UiUyQ0RhdGElMjBTY2llbmNlJTJDV2ViJTIwQXBwcw==" data-listing-date-sort="1750831200000" data-listing-file-modified-sort="1792823857073" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="965">
+<div class="quarto-post image-right" data-index="23" data-categories="UiUyQ0RhdGElMjBTY2llbmNlJTJDV2ViJTIwQXBwcw==" data-listing-date-sort="1750831200000" data-listing-file-modified-sort="1792823857073" data-listing-date-modified-sort="1792823857000" data-listing-reading-time-sort="5" data-listing-word-count-sort="965">
 <div class="thumbnail"><a href="./posts/population-pyramid-explorer/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/population-pyramid-explorer/population_pyramid_explorer.png" class="thumbnail-image" alt="Population pyramid for Autauga County, Alabama, beside a tract-level map of Alabama.">
@@ -1223,10 +1250,11 @@ Jul 2025
 <div class="listing-date">
 Jun 2025
 </div>
+<div class="listing-reading-time">5 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="24" data-categories="RGV2ZWxvcGVyJTIwVG9vbHM=" data-listing-date-sort="1749967200000" data-listing-file-modified-sort="1792823857073" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="242">
+<div class="quarto-post image-right" data-index="24" data-categories="RGV2ZWxvcGVyJTIwVG9vbHM=" data-listing-date-sort="1749967200000" data-listing-file-modified-sort="1792823857073" data-listing-date-modified-sort="1792823857000" data-listing-reading-time-sort="2" data-listing-word-count-sort="242">
 <div class="thumbnail"><a href="./posts/robocopy-gui/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/robocopy-gui/robocopy_gui.png" class="thumbnail-image" alt="RoboGUI Ultimate window with source and destination fields, quick presets and the generated robocopy command.">
@@ -1250,10 +1278,11 @@ Jun 2025
 <div class="listing-date">
 Jun 2025
 </div>
+<div class="listing-reading-time">2 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="25" data-categories="UiUyQ0dJUyUyQ0RldmVsb3BlciUyMFRvb2xzJTJDT3BlbiUyMFNvdXJjZQ==" data-listing-date-sort="1747980000000" data-listing-file-modified-sort="1792807344821" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="228">
+<div class="quarto-post image-right" data-index="25" data-categories="UiUyQ0dJUyUyQ0RldmVsb3BlciUyMFRvb2xzJTJDT3BlbiUyMFNvdXJjZQ==" data-listing-date-sort="1747980000000" data-listing-file-modified-sort="1792867651837" data-listing-date-modified-sort="1792867651000" data-listing-reading-time-sort="2" data-listing-word-count-sort="228">
 <div class="thumbnail"><a href="./posts/pukrhelpers/index.html" class="no-external">
 
 <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
@@ -1283,10 +1312,11 @@ Jun 2025
 <div class="listing-date">
 May 2025
 </div>
+<div class="listing-reading-time">2 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="26" data-categories="UiUyQ1B5dGhvbiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1716357600000" data-listing-file-modified-sort="1792823857072" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1537">
+<div class="quarto-post image-right" data-index="26" data-categories="UiUyQ1B5dGhvbiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1716357600000" data-listing-file-modified-sort="1792823857072" data-listing-date-modified-sort="1792823857000" data-listing-reading-time-sort="8" data-listing-word-count-sort="1537">
 <div class="thumbnail"><a href="./posts/overture-data-download/index.html" class="no-external">
 
 <img loading="lazy" data-src="./posts/overture-data-download/overture_data_download.png" class="thumbnail-image" alt="Interactive map of the Salt Lake City area covered with clustered purple points from Overture Maps data.">
@@ -1316,10 +1346,11 @@ May 2025
 <div class="listing-date">
 May 2024
 </div>
+<div class="listing-reading-time">8 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="27" data-categories="UiUyQ0RhdGElMjBTY2llbmNlJTJDV2ViJTIwQXBwcw==" data-listing-date-sort="1715407200000" data-listing-file-modified-sort="1792823857075" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1418">
+<div class="quarto-post image-right" data-index="27" data-categories="UiUyQ0RhdGElMjBTY2llbmNlJTJDV2ViJTIwQXBwcw==" data-listing-date-sort="1715407200000" data-listing-file-modified-sort="1792823857075" data-listing-date-modified-sort="1792823857000" data-listing-reading-time-sort="8" data-listing-word-count-sort="1418">
 <div class="thumbnail"><a href="./posts/uscensus-dashboard/index.html" class="no-external">
 
 <img loading="lazy" data-src="./posts/uscensus-dashboard/uscensus_dashboard.png" class="thumbnail-image" alt="Census Data Explorer with year, state and county filters, a map of Utah counties and a table of block group data.">
@@ -1347,10 +1378,11 @@ May 2024
 <div class="listing-date">
 May 2024
 </div>
+<div class="listing-reading-time">8 min</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="28" data-categories="UiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1672729200000" data-listing-file-modified-sort="1792823857072" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3047">
+<div class="quarto-post image-right" data-index="28" data-categories="UiUyQ0dJUyUyQ0RhdGElMjBTY2llbmNl" data-listing-date-sort="1672729200000" data-listing-file-modified-sort="1792876164819" data-listing-date-modified-sort="1792876164000" data-listing-reading-time-sort="16" data-listing-word-count-sort="3053">
 <div class="thumbnail"><a href="./posts/nepal-population-density/index.html" class="no-external">
 
 <img loading="lazy" data-src="./posts/nepal-population-density/nepal_population_density.png" class="thumbnail-image" alt="3D population density map of Nepal with tall orange columns marking Kathmandu and other cities.">
@@ -1378,6 +1410,7 @@ May 2024
 <div class="listing-date">
 Jan 2023
 </div>
+<div class="listing-reading-time">16 min</div>
 </a>
 </div>
 </div>

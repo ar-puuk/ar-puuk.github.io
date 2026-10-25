@@ -188,16 +188,16 @@
 <item>
   <title>Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code</title>
   <dc:creator>Pukar Bhandari</dc:creator>
-  <link>https://ar-puuk.github.io/posts/spatial-sql-exporer/</link>
+  <link>https://ar-puuk.github.io/posts/spatial-sql-explorer/</link>
   <description><![CDATA[ Open a geospatial file, query it with spatial SQL, style it and export it without a desktop GIS. How the project grew from a single-page experiment into a web app and a VS Code extension. ]]></description>
   <category>JavaScript</category>
   <category>GIS</category>
   <category>Developer Tools</category>
   <category>Web Apps</category>
   <category>Open Source</category>
-  <guid>https://ar-puuk.github.io/posts/spatial-sql-exporer/</guid>
+  <guid>https://ar-puuk.github.io/posts/spatial-sql-explorer/</guid>
   <pubDate>Wed, 25 Feb 2026 07:00:00 GMT</pubDate>
-  <media:content url="https://ar-puuk.github.io/posts/spatial-sql-exporer/spatial_sql_explorer.png" medium="image" type="image/png" height="82" width="144"/>
+  <media:content url="https://ar-puuk.github.io/posts/spatial-sql-explorer/spatial_sql_explorer.png" medium="image" type="image/png" height="82" width="144"/>
 </item>
 <item>
   <title></title>

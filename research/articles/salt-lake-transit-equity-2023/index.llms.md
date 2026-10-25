@@ -99,3 +99,29 @@ The research provides evidence that can inform future transit planning decisions
     abstract = {Addressing social equity in public transportation remains a key challenge for many cities and planning organizations. In this study, we examined social equity dimensions of accessibility to light rail transit (LRT) stations in Salt Lake County, U.S., by employing two novel methods. First, we used the two-step floating catchment area (2SFCA) method to examine the interactions between the demand and supply of the public transit service. Second, we developed geospatial models to account for spatial bias in transit equity analysis. Results showed little evidence of inequitable access to LRT stations in Salt Lake County. The accessibility to LRT stations appeared to be generally higher in the downtown and transit catchment areas with a higher concentration of low-income and ethnic minority populations. Furthermore, we found statistically significant associations between higher transit accessibility and households which are not homeowners, and/or do not own a private motor vehicle. Our findings suggest that transit investments in Salt Lake County could leverage substantial transportation accessibility opportunities to achieve an equitable and sustainable future.}
 }
 ```
+
+## Citation
+
+BibTeX citation:
+
+``` quarto-appendix-bibtex
+@article{afrin_zinia2023,
+  author = {Afrin Zinia, Faria and Bhandari, Pukar and Prosper Tuffour,
+    Justice and Hong, Andy},
+  publisher = {SAGE Publications},
+  title = {Evaluating {Social} {Equity} of {Transit} {Accessibility:}
+    {A} {Case} of {Salt} {Lake} {County,} {U.S.}},
+  journal = {Transportation Research Record},
+  volume = {2677},
+  number = {12},
+  pages = {806-814},
+  date = {2023},
+  url = {https://ar-puuk.github.io/research/articles/salt-lake-transit-equity-2023/},
+  doi = {10.1177/03611981231170005},
+  langid = {en-US}
+}
+```
+
+For attribution, please cite this work as:
+
+Afrin Zinia, Faria, Pukar Bhandari, Justice Prosper Tuffour, and Andy Hong. 2023. “Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, U.S.” *Transportation Research Record* 2677 (12): 806–14. <https://doi.org/10.1177/03611981231170005>.

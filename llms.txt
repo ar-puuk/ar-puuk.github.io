@@ -12,7 +12,7 @@
 - [projects](https://ar-puuk.github.io/projects.llms.md)
 - [Analyzing the Utah Bikeways data](https://ar-puuk.github.io/posts/utah-bikeways/index.llms.md)
 - [Restyling Utah's Vector Basemap for MapLibre](https://ar-puuk.github.io/posts/ugrc-styles/index.llms.md)
-- [Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code](https://ar-puuk.github.io/posts/spatial-sql-exporer/index.llms.md)
+- [Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code](https://ar-puuk.github.io/posts/spatial-sql-explorer/index.llms.md)
 - [Interactive Robocopy GUI Tool](https://ar-puuk.github.io/posts/robocopy-gui/index.llms.md)
 - [Building an Interactive Population Pyramid Explorer](https://ar-puuk.github.io/posts/population-pyramid-explorer/index.llms.md)
 - [Overture Maps Data Download](https://ar-puuk.github.io/posts/overture-data-download/index.llms.md)

@@ -137,11 +137,11 @@ BibTeX citation:
   title = {Spatial {Explorer:} {Spatial} {SQL} for {Maps,} in the
     {Browser} and in {VS} {Code}},
   date = {2026-02-25},
-  url = {https://ar-puuk.github.io/posts/spatial-sql-exporer/},
+  url = {https://ar-puuk.github.io/posts/spatial-sql-explorer/},
   langid = {en-US}
 }
 ```
 
 For attribution, please cite this work as:
 
-Bhandari, Pukar. 2026. “Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code.” February 25. <https://ar-puuk.github.io/posts/spatial-sql-exporer/>.
+Bhandari, Pukar. 2026. “Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code.” February 25. <https://ar-puuk.github.io/posts/spatial-sql-explorer/>.
