@@ -50,3 +50,16 @@ body.quarto-light .navbar .quarto-reader-toggle.reader.quarto-navigation-tool .b
 body.quarto-dark g[aria-label="tip"] {
   fill: #1A2B35;
 }
+
+/* Quarto Live (webR / Pyodide) editors are CodeMirror, which falls back to the generic
+   `monospace` at the body size. Use the site's code font and size so the live cells look
+   like every other code block. */
+.cm-editor .cm-scroller {
+  font-family: var(--bs-font-monospace);
+  font-size: 0.875em;
+}
+.cm-editor .cm-content,
+.cm-editor .cm-gutters {
+  font-family: inherit;
+  font-size: inherit;
+}
