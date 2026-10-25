@@ -37,7 +37,7 @@
 - [Building a U.S. Census Data Explorer](https://ar-puuk.github.io/posts/uscensus-dashboard/index.llms.md)
 - [WgetGUI Ultimate: A Fluent Command Generator](https://ar-puuk.github.io/posts/wget-gui/index.llms.md)
 - [Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, U.S.](https://ar-puuk.github.io/research/articles/salt-lake-transit-equity-2023/index.llms.md)
-- [Resume](https://ar-puuk.github.io/resume.llms.md)
+- [Resume](https://ar-puuk.github.io/resume/index.llms.md)
 - [Commute Flow Explorer](https://ar-puuk.github.io/work/commute-explorer/index.llms.md)
 - [GTFS vs. TDM Transit Network Comparison](https://ar-puuk.github.io/work/gtfs-vs-tdm/index.llms.md)
 - [Opportunity Zones 2.0 Tract Info Sheets](https://ar-puuk.github.io/work/opportunity-zones-info-sheets/index.llms.md)
