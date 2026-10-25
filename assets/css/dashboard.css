@@ -1,0 +1,21 @@
+/* Brand colours for the dashboard pages (palette in assets/brand/_brand.yml). */
+.bslib-sidebar-layout {
+  --_sidebar-bg: #F8F6ED;
+}
+body.quarto-dark .bslib-sidebar-layout {
+  --_sidebar-bg: #1A2B35;
+}
+.bslib-sidebar-layout > .sidebar,
+.bslib-sidebar-layout > .sidebar .sidebar-content {
+  background-color: var(--_sidebar-bg) !important;
+}
+.card > .card-header {
+  background-color: #F8F6ED !important;
+  border-bottom-color: #D96E34;
+}
+body.quarto-dark .card > .card-header {
+  background-color: #1A2B35 !important;
+}
+.bslib-value-box {
+  color: #FFFBF2;
+}
