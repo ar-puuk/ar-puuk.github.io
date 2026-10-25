@@ -8,7 +8,7 @@ author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com
 date: "2026-10-19"
-categories: [JavaScript, Python, Transportation, Web Apps, Open Source]
+categories: [JavaScript, Python, Transportation, Web Apps, Open Source, GIS, Data Science]
 prefer-html: true
 ---
 

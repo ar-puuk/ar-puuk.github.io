@@ -11,7 +11,7 @@ author:
       - name: Metro Analytics
         url: "https://www.metroanalytics.com/"
 date: "2025-07-05"
-categories: [R, Python, Data Science, Transportation]
+categories: [R, Python, Data Science, Transportation, GIS, Travel Demand Modeling]
 prefer-html: true
 format:
   typst:

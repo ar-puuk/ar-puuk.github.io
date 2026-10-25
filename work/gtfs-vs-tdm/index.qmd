@@ -11,7 +11,7 @@ author:
       - name: Wasatch Front Regional Council
         url: "https://wfrc.utah.gov/"
 date: "2026-07-02"
-categories: [WFRC, Transportation, Travel Demand Modeling]
+categories: [WFRC, Transportation, Travel Demand Modeling, GIS, Web Apps]
 prefer-html: true
 ---
 

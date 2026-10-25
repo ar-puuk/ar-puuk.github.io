@@ -9,7 +9,7 @@ author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com
 date: "2025-09-03"
-categories: [R, Web Apps]
+categories: [R, Web Apps, GIS, Open Source]
 filters:
   - shinylive
 code-annotations: select

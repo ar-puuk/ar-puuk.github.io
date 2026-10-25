@@ -7,7 +7,7 @@ author: "Pukar Bhandari"
 date: 2026-04-19
 draft: true
 image: "activitysim_accessibility.png"
-categories: [Travel Demand Modeling]
+categories: [Travel Demand Modeling, Transportation, Python]
 ---
 
 ```{=html}

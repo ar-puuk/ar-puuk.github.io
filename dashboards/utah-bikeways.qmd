@@ -4,7 +4,7 @@ description: "Interactive dashboard comparing bikeway miles with road miles for 
 image: ../posts/utah-bikeways/utah_bikeways.png
 image-alt: "Scatter plot of bikeway miles against total road miles for Utah cities."
 date: "2026-10-24"
-categories: [Dashboard, OJS, Transportation]
+categories: [Dashboard, OJS, Transportation, GIS, Data Science]
 format:
   dashboard:
     scrolling: false

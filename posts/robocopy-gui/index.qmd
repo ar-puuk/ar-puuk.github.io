@@ -7,7 +7,7 @@ author:
     email: pukar.bhandari@outlook.com
 image: "robocopy_gui.png"
 date: "2025-06-15"
-categories: [Developer Tools]
+categories: [Developer Tools, JavaScript, Web Apps, Open Source]
 prefer-html: true
 ---
 

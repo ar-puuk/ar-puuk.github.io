@@ -11,7 +11,7 @@ author:
       - name: Wasatch Front Regional Council
         url: "https://wfrc.utah.gov/"
 date: "2026-05-17"
-categories: [WFRC, JavaScript, Transportation, Web Apps]
+categories: [WFRC, JavaScript, Transportation, Web Apps, GIS, Data Science]
 prefer-html: true
 ---
 

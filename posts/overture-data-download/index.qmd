@@ -8,7 +8,7 @@ author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com
 date: "2024-05-22"
-categories: [R, Python, GIS, Data Science]
+categories: [R, Python, GIS, Data Science, Overture Maps]
 prefer-html: true
 format:
   typst:

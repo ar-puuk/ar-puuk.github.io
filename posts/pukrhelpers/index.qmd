@@ -6,7 +6,7 @@ author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com
 date: "2025-05-23"
-categories: [R, GIS, Developer Tools, Open Source]
+categories: [R, GIS, Developer Tools, Open Source, Data Science]
 prefer-html: true
 ---
 

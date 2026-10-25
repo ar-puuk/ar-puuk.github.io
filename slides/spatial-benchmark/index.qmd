@@ -18,7 +18,7 @@ format:
     highlight-style: github
     code-line-numbers: true
     footer: "Tech, Skills and Beyond | WFRC Analytics"
-categories: [R, Python, GIS, Data Science]
+categories: [R, Python, GIS, Data Science, WFRC]
 # freeze: auto is set project-wide in the root _quarto.yml.
 # The run-benchmarks chunk below uses callr::rscript() to execute run_all.R
 # safely from within knitr. Because of freeze: auto, benchmarks only re-run

@@ -4,7 +4,7 @@ description: "Interactive dashboard of Overture Maps places in Salt Lake County:
 image: ../posts/overture-data-download/overture_data_download.png
 image-alt: "Map of places in Salt Lake County downloaded from Overture Maps."
 date: "2026-10-25"
-categories: [Dashboard, OJS, Overture Maps]
+categories: [Dashboard, OJS, Overture Maps, GIS, Data Science]
 format:
   dashboard:
     scrolling: false

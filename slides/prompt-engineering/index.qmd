@@ -23,7 +23,7 @@ format:
     code-line-numbers: false
     highlight-style: monokai
     incremental: true
-categories: [AI]
+categories: [AI, WFRC, Data Science]
 ---
 
 ## Why This Talk? {background-color="#0E171E"}

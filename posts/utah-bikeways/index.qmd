@@ -11,7 +11,7 @@ author:
         url: "https://wfrc.utah.gov/"
 date: "2025-11-16"
 image: "utah_bikeways.png"
-categories: [R, GIS, Transportation]
+categories: [R, GIS, Transportation, Data Science]
 prefer-html: true
 resources:
         - "_output/*.csv"

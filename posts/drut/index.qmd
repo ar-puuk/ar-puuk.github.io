@@ -8,7 +8,7 @@ author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com
 date: "2026-08-20"
-categories: [Developer Tools, Travel Demand Modeling, Open Source]
+categories: [Developer Tools, Travel Demand Modeling, Open Source, Transportation]
 prefer-html: true
 ---
 
