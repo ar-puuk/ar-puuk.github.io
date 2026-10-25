@@ -30,16 +30,19 @@ body.quarto-dark .bslib-value-box:nth-child(4) { background: #005577 !important;
 .bslib-value-box { overflow: hidden; }
 .bslib-value-box .value-box-value { overflow: visible; }
 .bslib-value-box .cell-output-display { overflow: hidden; }
-/* Same size and weight for every value, whether OJS returns a number or HTML, and no wrapping.
+/* Same size and weight for every value, whether OJS returns a number or HTML. Long values
+   (a city name, "Highland 34.4%") wrap inside the box instead of running past its edge.
    (The OJS output sits in a sibling of the empty .value-box-value paragraph.) */
+.bslib-value-box .value-box-area {
+  min-width: 0;
+}
 .bslib-value-box .value-box-area .value-box-value,
 .bslib-value-box .value-box-area .cell-output-display,
 .bslib-value-box .value-box-area .cell-output-display * {
-  font-size: clamp(1.4rem, 2.3vw, 2rem);
+  font-size: clamp(1.25rem, 1.7vw, 1.75rem);
   font-weight: 400;
   line-height: 1.15;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
 }
 
 /* The "expand" button that appears on hover. */
@@ -114,6 +117,13 @@ body.quarto-dark .tooltip {
    which causes a horizontal scrollbar. Let them fill the sidebar instead. */
 .bslib-sidebar-layout > .sidebar form {
   width: 100%;
+  max-width: 100%;
+}
+.bslib-sidebar-layout > .sidebar .cell-output-display {
+  overflow-x: hidden;
+}
+.bslib-sidebar-layout > .sidebar form input {
+  box-sizing: border-box;
   max-width: 100%;
 }
 .bslib-sidebar-layout > .sidebar form > div:not(:first-child) {
