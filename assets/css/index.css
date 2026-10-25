@@ -11,19 +11,24 @@ a.external:has(> img:only-child)::after {
 
 /* Reader-mode toggle in the navbar.
    Off: orange icon (Quarto default, same in both themes).
-   On: a solid orange square with the icon in the navbar background colour, which
-   is the page background in each theme (#0E171E dark, #FFFBF2 light). Quarto's own "on" style is a gray square
-   with a pale blue icon, so it is replaced here; the icon is drawn as a mask so its
-   colour can follow the theme. */
-.navbar .quarto-reader-toggle.reader.quarto-navigation-tool .quarto-reader-toggle-btn {
-  background-color: #D96E34;
-  border-radius: 0;
+   On: a solid orange rounded square with the icon in the navbar background colour,
+   which is the page background in each theme (#0E171E dark, #FFFBF2 light). Quarto's
+   own "on" style is a gray square with a pale blue icon, so it is replaced here; the
+   icon is drawn as a mask so its colour can follow the theme.
+   The button has the same fixed box in both states, so the navbar items to its left
+   do not shift when the mode is switched. */
+.navbar .quarto-reader-toggle.quarto-navigation-tool .quarto-reader-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 1.6em;
   height: 1.6em;
   padding: 0;
   margin: 0;
-  align-items: center;
-  justify-content: center;
+  border-radius: 0.4em;
+}
+.navbar .quarto-reader-toggle.reader.quarto-navigation-tool .quarto-reader-toggle-btn {
+  background-color: #D96E34;
 }
 .navbar .quarto-reader-toggle.reader.quarto-navigation-tool .bi::before {
   background-image: none;
@@ -37,4 +42,11 @@ a.external:has(> img:only-child)::after {
    theme colours are set explicitly rather than read from that variable.) */
 body.quarto-light .navbar .quarto-reader-toggle.reader.quarto-navigation-tool .bi::before {
   background-color: #FFFBF2;
+}
+
+/* Observable Plot tooltips (OJS charts): the tip box is painted with a white fill
+   attribute and its text inherits the page colour, so in the dark theme it is white
+   on white. Give the box the dark theme's surface colour. */
+body.quarto-dark g[aria-label="tip"] {
+  fill: #1A2B35;
 }
