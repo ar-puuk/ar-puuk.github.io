@@ -52,7 +52,7 @@ website:
     #   - href: projects.qmd
     #     # icon: link-45deg
     #     text: Projects
-    #   - href: resume.qmd
+    #   - href: resume/index.qmd
     #     # icon: file-earmark-text-fill
     #     text: Resume
 
@@ -60,7 +60,7 @@ website:
       - href: about.qmd
         # icon: person-circle
         text: About
-      - href: resume.qmd
+      - href: resume/index.qmd
         # icon: file-earmark-text-fill
         text: Resume
       - href: projects.qmd
