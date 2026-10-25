@@ -43,6 +43,6 @@ I am a Transportation Analyst with a Master’s in City & Metropolitan Planning 
 <!-- [Learn more about me &rarr;](/about.html) -->
 
 ::: {#landing-icons}
-[{{< fa brands linkedin title="linkedin" >}}](https://www.linkedin.com/in/arpuuk/){target="_blank"} &nbsp; [{{< fa brands github title="github" >}}](https://github.com/ar-puuk){target="_blank"} &nbsp; [{{< fa brands bluesky title="bluesky" >}}](https://bsky.app/profile/arpuuk.bsky.social){target="_blank"} &nbsp; [{{< fa envelope title="envelope" >}}](mailto:pukar.bhandari@outlook.com)
+[{{< fa brands linkedin title="linkedin" >}}](https://www.linkedin.com/in/arpuuk/){target="_blank"} &nbsp; [{{< fa brands github title="github" >}}](https://github.com/ar-puuk){target="_blank"} &nbsp; [{{< fa brands bluesky title="bluesky" >}}](https://bsky.app/profile/arpuuk.bsky.social){target="_blank"} &nbsp; <a href="mailto:pukar.bhandari@outlook.com" title="E-mail" aria-label="E-mail">{{< fa envelope >}}</a>
 :::
 :::
