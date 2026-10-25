@@ -1,0 +1,119 @@
+---
+title: "Utah Bikeways Dashboard"
+format:
+  dashboard:
+    scrolling: false
+    css: ../assets/css/dashboard.css
+draft: true
+---
+
+```{ojs}
+//| output: false
+data = FileAttachment("../posts/utah-bikeways/_output/miles_by_city.csv").csv({typed: true})
+types = ["Paved Path", "Protected Bike Lane", "Bike Lane", "Marked Route", "Unmarked Route"]
+```
+
+## {.sidebar}
+
+```{ojs}
+viewof bikeTypes = Inputs.checkbox(types, {
+  label: "Facility types",
+  value: ["Paved Path", "Protected Bike Lane"]
+})
+viewof searchCity = Inputs.text({placeholder: "e.g. Salt Lake City", label: "Highlight city"})
+```
+
+Each dot is a Utah municipality. The ratio is the selected bikeway miles divided by total road lane miles.
+
+[Read the full analysis &rarr;](../posts/utah-bikeways/index.html){.no-external target='_self'}
+
+```{ojs}
+//| output: false
+rows = data
+  .filter(d => d.Name && d.Name !== "NA" && d["All Roads"] > 0)
+  .map(d => {
+    const bike = bikeTypes.reduce((a, t) => a + (d[t] || 0), 0);
+    return {...d, bike, ratio: bike / d["All Roads"] * 100};
+  })
+avgRatio = d3.mean(rows, d => d.ratio)
+rowsTagged = rows.map(d => ({...d, group: d.ratio >= avgRatio ? "Above average" : "Below average"}))
+highlighted = rowsTagged.filter(d => searchCity && d.Name.toLowerCase().includes(searchCity.toLowerCase()))
+totalBike = d3.sum(rows, d => d.bike)
+totalRoad = d3.sum(rows, d => d["All Roads"])
+top = d3.greatest(rows.filter(d => d["All Roads"] > 100), d => d.ratio)
+```
+
+## Main
+
+### Row {height=25%}
+
+```{ojs}
+//| content: valuebox
+//| title: "Municipalities"
+//| icon: buildings
+//| color: '#007EA7'
+rows.length
+```
+
+```{ojs}
+//| content: valuebox
+//| title: "Selected bikeway miles"
+//| icon: bicycle
+//| color: '#D96E34'
+html`${totalBike.toLocaleString(undefined, {maximumFractionDigits: 0})}`
+```
+
+```{ojs}
+//| content: valuebox
+//| title: "Statewide bikeway share of roads"
+//| icon: percent
+//| color: '#A23E02'
+html`${(totalBike / totalRoad * 100).toFixed(1)}%`
+```
+
+```{ojs}
+//| content: valuebox
+//| title: "Highest share (cities over 100 road miles)"
+//| icon: trophy
+//| color: '#1A2B35'
+html`${top.Name} ${top.ratio.toFixed(1)}%`
+```
+
+### Row {height=75%}
+
+#### Column {width=60%}
+
+```{ojs}
+//| title: "Bikeway miles against road miles"
+Plot.plot({
+  width: 700,
+  height: 440,
+  grid: true,
+  x: {label: "Total road miles (log) →", type: "log", domain: [10, 5000]},
+  y: {label: "Selected bikeway miles (log) →", type: "log", domain: [0.1, 500]},
+  color: {domain: ["Above average", "Below average"], range: ["#007EA7", "#D96E34"], legend: true},
+  style: {backgroundColor: "transparent"},
+  marks: [
+    Plot.line(d3.range(10, 5000, 100), {x: d => d, y: d => d * avgRatio / 100, stroke: "#888", strokeDasharray: "4,4"}),
+    Plot.dot(rowsTagged.filter(d => d.bike > 0), {x: "All Roads", y: "bike", stroke: "group", fill: "group", fillOpacity: 0.3, r: 4, tip: true,
+      title: d => `${d.Name}\nBikeway: ${d.bike.toFixed(1)} mi\nRoads: ${d["All Roads"]} mi\nShare: ${d.ratio.toFixed(1)}%`}),
+    Plot.dot(highlighted, {x: "All Roads", y: "bike", stroke: "currentColor", strokeWidth: 2, r: 8}),
+    Plot.text(highlighted, {x: "All Roads", y: "bike", text: "Name", dy: -16, fontWeight: "bold", stroke: "white", strokeWidth: 4, paintOrder: "stroke", fill: "#333"})
+  ]
+})
+```
+
+#### Column {width=40%}
+
+```{ojs}
+//| title: "Top 15 by bikeway miles"
+Inputs.table(
+  [...rows].sort((a, b) => b.bike - a.bike).slice(0, 15),
+  {
+    columns: ["Name", "bike", "All Roads", "ratio"],
+    header: {Name: "City", bike: "Bike mi", "All Roads": "Road mi", ratio: "Share %"},
+    format: {bike: x => x.toFixed(1), "All Roads": x => x.toFixed(0), ratio: x => x.toFixed(1)},
+    rows: 15, maxHeight: 520
+  }
+)
+```
