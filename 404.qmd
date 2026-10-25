@@ -9,6 +9,11 @@ format:
       cell-options:
         completion: true
       render-df: gt-interactive
+    pyodide:
+      packages:
+        - pandas
+        - numpy
+        - matplotlib
     live:
       show-solutions: true
       show-grading: true
@@ -95,6 +100,43 @@ los_data <- data.frame(
 )
 ```
 
+```{pyodide}
+#| context: setup
+#| include: false
+import numpy as np
+import pandas as pd
+
+traffic_data = pd.DataFrame({
+    "location": ["Main St", "Oak Ave", "Park Rd", "First St", "Center Blvd", "Highway 101"],
+    "aadt": [15000, 8500, 12000, 6800, 22000, 45000],
+    "speed_limit": [35, 25, 30, 25, 45, 65],
+    "lanes": [4, 2, 3, 2, 6, 8],
+    "accidents_2023": [12, 3, 8, 2, 18, 35],
+    "congestion_hours": [4, 2, 3, 1, 6, 8],
+})
+
+bike_data = pd.DataFrame({
+    "station": ["Station " + c for c in "ABCDEF"],
+    "daily_trips": [45, 78, 23, 56, 89, 34],
+    "distance_downtown_km": [0.5, 2.1, 4.2, 1.8, 0.8, 3.5],
+    "bike_capacity": [20, 30, 15, 25, 35, 20],
+})
+
+transit_data = pd.DataFrame({
+    "route": ["Route " + str(i) for i in range(1, 6)],
+    "daily_riders": [1200, 850, 2100, 650, 1800],
+    "route_length_miles": [12.5, 8.2, 18.3, 6.1, 15.7],
+    "frequency_minutes": [15, 20, 10, 30, 12],
+})
+
+los_data = pd.DataFrame({
+    "intersection": list("ABCDE"),
+    "delay_seconds": [10, 25, 45, 75, 120],
+    "volume": [800, 1200, 1600, 1800, 2000],
+    "capacity": [1800] * 5,
+})
+```
+
 ---
 
 ## 🧠 **Knowledge Test**
@@ -104,6 +146,10 @@ los_data <- data.frame(
 ### Question 1: Traffic Signal Timing ⏱️
 
 If a traffic light has a 90-second cycle and the green light lasts 60 seconds, how many cars can pass through if each car takes 3 seconds to clear the intersection?
+
+::: {.panel-tabset group="lang"}
+
+## R
 
 ```{webr}
 #| exercise: know_1
@@ -135,9 +181,44 @@ if (!exists("cars_per_cycle")) {
 }
 ```
 
+## Python
+
+```{pyodide}
+#| exercise: know_1_py
+#| caption: "Knowledge Question 1"
+# Calculate how many cars can pass in one green phase
+green_time = 60  # seconds
+time_per_car = 3  # seconds
+
+# Your calculation:
+cars_per_cycle = ______
+
+cars_per_cycle
+```
+
+```{pyodide}
+#| exercise: know_1_py
+#| check: true
+if "cars_per_cycle" not in envir_result:
+    fb = {"correct": False, "message": "🚫 Please create the 'cars_per_cycle' variable and run your code.", "type": "error"}
+elif envir_result["cars_per_cycle"] == 20:
+    fb = {"correct": True, "message": "🎯 Perfect! 20 cars can pass through in one green cycle. This is a fundamental capacity calculation used in traffic signal timing.", "type": "success"}
+elif envir_result["cars_per_cycle"] > 20:
+    fb = {"correct": False, "message": "🤔 Too many cars! Remember, each car needs 3 seconds to clear the intersection. Try dividing the green time by the time per car.", "type": "warning"}
+else:
+    fb = {"correct": False, "message": "🚗 Not quite enough cars! How many 3-second periods fit in 60 seconds? Think: 60 ÷ 3 = ?", "type": "info"}
+fb
+```
+
+:::
+
 ### Question 2: Level of Service 🚦
 
 Calculate the volume-to-capacity (V/C) ratio for an intersection with 1,600 vehicles/hour and capacity of 1,800 vehicles/hour. What LOS category does this represent? (A-C: ≤0.8, D: 0.8-0.9, E-F: >0.9)
+
+::: {.panel-tabset group="lang"}
+
+## R
 
 ```{webr}
 #| exercise: know_2
@@ -175,9 +256,51 @@ if (!exists("vc_ratio") || !exists("los_category")) {
 }
 ```
 
+## Python
+
+```{pyodide}
+#| exercise: know_2_py
+#| caption: "Knowledge Question 2"
+volume = 1600
+capacity = 1800
+
+# Calculate V/C ratio
+vc_ratio = ______
+
+# Determine LOS category
+los_category = ______  # Should be "A-C", "D", or "E-F"
+
+{"vc_ratio": vc_ratio, "los_category": los_category}
+```
+
+```{pyodide}
+#| exercise: know_2_py
+#| check: true
+if "vc_ratio" not in envir_result or "los_category" not in envir_result:
+    fb = {"correct": False, "message": "🚫 Please create both 'vc_ratio' and 'los_category' variables.", "type": "error"}
+else:
+    vc_correct = round(envir_result["vc_ratio"], 3) == round(1600 / 1800, 3)
+    los_correct = envir_result["los_category"] == "D"
+    if vc_correct and los_correct:
+        fb = {"correct": True, "message": "🎯 Excellent! V/C = 0.889 puts this intersection at LOS D. This indicates approaching unstable flow with tolerable delays.", "type": "success"}
+    elif los_correct:
+        fb = {"correct": False, "message": "🔢 LOS category is correct, but check your V/C calculation: volume ÷ capacity = 1600 ÷ 1800", "type": "warning"}
+    elif vc_correct:
+        fb = {"correct": False, "message": "📊 V/C ratio is correct (0.889), but check the LOS thresholds: 0.8-0.9 = Level D", "type": "warning"}
+    else:
+        fb = {"correct": False, "message": "🚦 Both calculations need work. V/C ratio = volume ÷ capacity, then check: ≤0.8=A-C, 0.8-0.9=D, >0.9=E-F", "type": "error"}
+fb
+```
+
+:::
+
 ### Question 3: Modal Split 🚌🚲🚗
 
 In a city where 40% of trips are by car, 25% by transit, 20% by walking, and 15% by cycling, what percentage of non-car trips are made by transit?
+
+::: {.panel-tabset group="lang"}
+
+## R
 
 ```{webr}
 #| exercise: know_3
@@ -210,9 +333,50 @@ if (!exists("transit_share_of_non_car")) {
 }
 ```
 
+## Python
+
+```{pyodide}
+#| exercise: know_3_py
+#| caption: "Knowledge Question 3"
+car_percent = 40
+transit_percent = 25
+walking_percent = 20
+cycling_percent = 15
+
+# Calculate percentage of non-car trips that are transit
+non_car_total = ______
+transit_share_of_non_car = ______
+
+transit_share_of_non_car
+```
+
+```{pyodide}
+#| exercise: know_3_py
+#| check: true
+if "transit_share_of_non_car" not in envir_result:
+    fb = {"correct": False, "message": "🚫 Please create the 'transit_share_of_non_car' variable and run your code.", "type": "error"}
+else:
+    share = envir_result["transit_share_of_non_car"]
+    if round(share, 1) == 41.7:
+        fb = {"correct": True, "message": "🚌 Perfect! 41.7% of non-car trips are made by transit. This shows transit's importance in the sustainable transportation mix.", "type": "success"}
+    elif share == 25:
+        fb = {"correct": False, "message": "🤔 That's the overall transit share (25%). But what about just among non-car trips? Hint: transit % ÷ non-car total % × 100", "type": "info"}
+    elif round(share, 0) == 42:
+        fb = {"correct": False, "message": "🚌 Very close! 41.7% of non-car trips are made by transit. Your calculation method is correct!", "type": "warning"}
+    else:
+        fb = {"correct": False, "message": "📊 Remember: First find non-car total (100 - car %), then calculate: (transit %) ÷ (non-car total %) × 100", "type": "error"}
+fb
+```
+
+:::
+
 ### Question 4: Trip Generation 🏠
 
 A residential development has 200 housing units. Using ITE trip generation rate of 9.5 trips per dwelling unit per day, calculate total daily trips. If 15% occur during PM peak hour, how many PM peak trips?
+
+::: {.panel-tabset group="lang"}
+
+## R
 
 ```{webr}
 #| exercise: know_4
@@ -251,9 +415,52 @@ if (!exists("total_daily_trips") || !exists("pm_peak_trips")) {
 }
 ```
 
+## Python
+
+```{pyodide}
+#| exercise: know_4_py
+#| caption: "Knowledge Question 4"
+housing_units = 200
+trip_rate = 9.5
+pm_peak_percent = 15
+
+# Calculate total daily trips
+total_daily_trips = ______
+
+# Calculate PM peak hour trips
+pm_peak_trips = ______
+
+{"daily": total_daily_trips, "pm_peak": pm_peak_trips}
+```
+
+```{pyodide}
+#| exercise: know_4_py
+#| check: true
+if "total_daily_trips" not in envir_result or "pm_peak_trips" not in envir_result:
+    fb = {"correct": False, "message": "🚫 Please create both 'total_daily_trips' and 'pm_peak_trips' variables.", "type": "error"}
+else:
+    daily_correct = abs(envir_result["total_daily_trips"] - 1900) < 1e-9
+    peak_correct = abs(envir_result["pm_peak_trips"] - 285) < 1e-9
+    if daily_correct and peak_correct:
+        fb = {"correct": True, "message": "🏠 Excellent! 1,900 daily trips with 285 during PM peak. These are key numbers for traffic impact studies.", "type": "success"}
+    elif peak_correct:
+        fb = {"correct": False, "message": "🏘️ PM peak trips are correct, but check daily trips: units × trip rate = 200 × 9.5", "type": "warning"}
+    elif daily_correct:
+        fb = {"correct": False, "message": "🕔 Daily trips correct, but check PM peak: daily trips × 15% = 1900 × 0.15", "type": "warning"}
+    else:
+        fb = {"correct": False, "message": "📊 Both calculations need work. Daily = units × rate, PM peak = daily × 15%", "type": "error"}
+fb
+```
+
+:::
+
 ### Question 5: Transit Frequency 🚍
 
 A bus route operates every 12 minutes during peak hours. How many buses pass a given stop in one hour? If each bus has 40-passenger capacity and average load is 75%, what's the hourly passenger capacity past that stop?
+
+::: {.panel-tabset group="lang"}
+
+## R
 
 ```{webr}
 #| exercise: know_5
@@ -293,6 +500,45 @@ if (!exists("buses_per_hour") || !exists("hourly_passenger_capacity")) {
 }
 ```
 
+## Python
+
+```{pyodide}
+#| exercise: know_5_py
+#| caption: "Knowledge Question 5"
+frequency_minutes = 12
+bus_capacity = 40
+load_factor = 0.75
+
+# Calculate buses per hour
+buses_per_hour = ______
+
+# Calculate hourly passenger capacity
+hourly_passenger_capacity = ______
+
+{"buses_per_hour": buses_per_hour, "hourly_capacity": hourly_passenger_capacity}
+```
+
+```{pyodide}
+#| exercise: know_5_py
+#| check: true
+if "buses_per_hour" not in envir_result or "hourly_passenger_capacity" not in envir_result:
+    fb = {"correct": False, "message": "🚫 Please create both 'buses_per_hour' and 'hourly_passenger_capacity' variables.", "type": "error"}
+else:
+    buses_correct = abs(envir_result["buses_per_hour"] - 5) < 1e-9
+    capacity_correct = abs(envir_result["hourly_passenger_capacity"] - 150) < 1e-9
+    if buses_correct and capacity_correct:
+        fb = {"correct": True, "message": "🚍 Perfect! 5 buses per hour with 150 passenger capacity. This helps determine route efficiency and passenger service levels.", "type": "success"}
+    elif capacity_correct:
+        fb = {"correct": False, "message": "🕒 Passenger capacity is correct, but check buses per hour: 60 minutes ÷ frequency = 60 ÷ 12", "type": "warning"}
+    elif buses_correct:
+        fb = {"correct": False, "message": "👥 Buses per hour correct, but check capacity: buses × capacity × load factor = 5 × 40 × 0.75", "type": "warning"}
+    else:
+        fb = {"correct": False, "message": "🚌 Both calculations need work. Buses/hour = 60 ÷ frequency, Capacity = buses × seats × load factor", "type": "error"}
+fb
+```
+
+:::
+
 ---
 
 ## 🚀 **Skills Test**
@@ -308,6 +554,10 @@ Using the `traffic_data` dataset, filter for locations with AADT > 15,000 and co
 #| include: false
 library(dplyr)
 ```
+
+::: {.panel-tabset group="lang"}
+
+## R
 
 ```{webr}
 #| autorun: true
@@ -353,9 +603,58 @@ if (!exists("high_traffic") || !exists("count_high_traffic")) {
 }
 ```
 
+## Python
+
+```{pyodide}
+#| autorun: true
+#| caption: "Traffic Data"
+# First, let's see the data
+traffic_data
+```
+
+```{pyodide}
+#| exercise: skill_1_py
+#| envir: global
+#| caption: "Skill Question 1"
+# Filter for high-traffic locations and count them
+high_traffic = traffic_data[______]
+
+# Count the results
+count_high_traffic = ______
+
+count_high_traffic
+```
+
+```{pyodide}
+#| exercise: skill_1_py
+#| check: true
+if "high_traffic" not in envir_result or "count_high_traffic" not in envir_result:
+    fb = {"correct": False, "message": "📊 Make sure to create both 'high_traffic' and 'count_high_traffic' variables.", "type": "error"}
+else:
+    data = envir_result["traffic_data"]
+    expected = data[data["aadt"] > 15000]
+    filter_correct = envir_result["high_traffic"].equals(expected)
+    count_correct = envir_result["count_high_traffic"] == len(expected)
+    if filter_correct and count_correct:
+        fb = {"correct": True, "message": "🎯 Perfect! You correctly identified 3 high-traffic locations (Main St, Center Blvd, Highway 101) with AADT > 15,000. This type of analysis helps prioritize infrastructure investments.", "type": "success"}
+    elif count_correct:
+        fb = {"correct": False, "message": "🔍 Count is correct, but check your filtering condition. You should use: traffic_data[traffic_data['aadt'] > 15000]", "type": "warning"}
+    elif filter_correct:
+        fb = {"correct": False, "message": "📋 Filtering is correct, but check your count calculation. Use len() to count the filtered results.", "type": "warning"}
+    else:
+        fb = {"correct": False, "message": "🚗 Check both your filter condition (aadt > 15000) and count method (use len()).", "type": "error"}
+fb
+```
+
+:::
+
 ### Question 2: Safety Rate Calculation 🔍
 
 Calculate the accident rate per 1,000 AADT for each location. Create a new column called `accident_rate` and arrange by highest rate.
+
+::: {.panel-tabset group="lang"}
+
+## R
 
 ```{webr}
 #| exercise: skill_2
@@ -398,9 +697,54 @@ if (!exists("safety_analysis")) {
 }
 ```
 
+## Python
+
+```{pyodide}
+#| exercise: skill_2_py
+#| envir: global
+#| caption: "Skill Question 2"
+# Calculate accident rates and arrange
+safety_analysis = (
+    traffic_data
+    .assign(accident_rate=______)
+    .sort_values(______, ascending=False)
+)
+
+# Show the results
+safety_analysis
+```
+
+```{pyodide}
+#| exercise: skill_2_py
+#| check: true
+if "safety_analysis" not in envir_result:
+    fb = {"correct": False, "message": "📊 Make sure to create the 'safety_analysis' variable.", "type": "error"}
+else:
+    result = envir_result["safety_analysis"]
+    data = envir_result["traffic_data"]
+    unsorted_check = data.assign(accident_rate=data["accidents_2023"] / data["aadt"] * 1000)
+    expected = unsorted_check.sort_values("accident_rate", ascending=False)
+    if "accident_rate" not in result.columns:
+        fb = {"correct": False, "message": "📋 Make sure to create the 'accident_rate' column using assign().", "type": "error"}
+    elif not result.equals(expected):
+        if result.equals(unsorted_check):
+            fb = {"correct": False, "message": "📈 Accident rate calculation is correct, but you need to sort by accident_rate with ascending=False to show highest rates first.", "type": "warning"}
+        else:
+            fb = {"correct": False, "message": "🔢 Check your accident rate calculation: (accidents_2023 / aadt) * 1000", "type": "error"}
+    else:
+        fb = {"correct": True, "message": "🎯 Excellent! You've calculated accident rates per 1,000 AADT and sorted by highest risk. Park Rd has the highest rate at 0.67 accidents per 1,000 AADT, making it a priority for safety improvements.", "type": "success"}
+fb
+```
+
+:::
+
 ### Question 3: Transit Efficiency Analysis 🚌
 
 Calculate riders per mile for each transit route and identify the most efficient route (highest riders per mile).
+
+::: {.panel-tabset group="lang"}
+
+## R
 
 ```{webr}
 #| autorun: true
@@ -452,6 +796,59 @@ if (!exists("transit_efficiency") || !exists("most_efficient")) {
 }
 ```
 
+## Python
+
+```{pyodide}
+#| autorun: true
+#| caption: "Transit Data"
+# Look at transit data first
+transit_data
+```
+
+```{pyodide}
+#| exercise: skill_3_py
+#| envir: global
+#| caption: "Skill Question 3"
+# Calculate efficiency and find the best route
+transit_efficiency = (
+    transit_data
+    .assign(riders_per_mile=______)
+    .sort_values(______, ascending=False)
+)
+
+# Get the most efficient route name
+most_efficient = transit_efficiency.iloc[0][______]
+
+most_efficient
+```
+
+```{pyodide}
+#| exercise: skill_3_py
+#| check: true
+if "transit_efficiency" not in envir_result or "most_efficient" not in envir_result:
+    fb = {"correct": False, "message": "📊 Make sure to create both 'transit_efficiency' and 'most_efficient' variables.", "type": "error"}
+else:
+    data = envir_result["transit_data"]
+    expected = (
+        data.assign(riders_per_mile=data["daily_riders"] / data["route_length_miles"])
+        .sort_values("riders_per_mile", ascending=False)
+    )
+    expected_best = expected.iloc[0]["route"]
+    efficiency_correct = envir_result["transit_efficiency"].equals(expected)
+    route_correct = envir_result["most_efficient"] == expected_best
+    if efficiency_correct and route_correct:
+        fb = {"correct": True, "message": "🎯 Perfect! Route 3 is the most efficient with 114.8 riders per mile. This analysis helps transit agencies optimize route planning and resource allocation.", "type": "success"}
+    elif route_correct:
+        fb = {"correct": False, "message": "🚌 Most efficient route is correct, but check your efficiency calculation: daily_riders / route_length_miles", "type": "warning"}
+    elif efficiency_correct:
+        fb = {"correct": False, "message": "📊 Efficiency calculation is correct, but check how you're extracting the most efficient route name using iloc[0]['route']", "type": "warning"}
+    else:
+        fb = {"correct": False, "message": "🚍 Check both your efficiency calculation (riders ÷ miles) and route extraction (iloc[0]['route'])", "type": "error"}
+fb
+```
+
+:::
+
 ### Question 4: Bike Share Visualization 📈
 
 Create a scatter plot showing the relationship between distance from downtown and daily trips for bike share stations. Add a smooth trend line.
@@ -461,6 +858,10 @@ Create a scatter plot showing the relationship between distance from downtown an
 #| include: false
 library(ggplot2)
 ```
+
+::: {.panel-tabset group="lang"}
+
+## R
 
 ```{webr}
 #| autorun: true
@@ -511,9 +912,69 @@ if (!exists("bike_plot")) {
 }
 ```
 
+## Python
+
+```{pyodide}
+#| autorun: true
+#| caption: "Bike Data"
+# Look at bike data first
+bike_data
+```
+
+```{pyodide}
+#| exercise: skill_4_py
+#| envir: global
+#| caption: "Skill Question 4"
+import matplotlib.pyplot as plt
+
+# Create the bike share analysis plot
+fig, ax = plt.subplots(figsize=(6, 4))
+ax.scatter(bike_data[______], bike_data[______], s=50, alpha=0.7, color="steelblue")
+
+# Add a linear trend line
+slope, intercept = np.polyfit(bike_data["distance_downtown_km"], bike_data["daily_trips"], 1)
+x_line = np.linspace(bike_data["distance_downtown_km"].min(), bike_data["distance_downtown_km"].max(), 50)
+ax.plot(x_line, slope * x_line + intercept, color="red")
+
+ax.set_title("Bike Share Usage vs Distance from Downtown")
+ax.set_xlabel("Distance from Downtown (km)")
+ax.set_ylabel("Daily Trips")
+plt.show()
+```
+
+```{pyodide}
+#| exercise: skill_4_py
+#| check: true
+if "ax" not in envir_result:
+    fb = {"correct": False, "message": "📊 Make sure to create the 'ax' variable with fig, ax = plt.subplots().", "type": "error"}
+elif len(envir_result["ax"].collections) == 0:
+    fb = {"correct": False, "message": "📈 Make sure to draw the points with ax.scatter().", "type": "error"}
+else:
+    import numpy as np
+    data = envir_result["bike_data"]
+    points = np.asarray(envir_result["ax"].collections[0].get_offsets())
+    x_correct = np.allclose(points[:, 0], data["distance_downtown_km"])
+    y_correct = np.allclose(points[:, 1], data["daily_trips"])
+    if x_correct and y_correct:
+        fb = {"correct": True, "message": "🎯 Excellent visualization! Your plot shows the relationship between distance from downtown and bike share usage. The trend line reveals that stations closer to downtown tend to have higher usage - a key insight for bike share planning.", "type": "success"}
+    elif y_correct:
+        fb = {"correct": False, "message": "📊 Y-axis (daily_trips) is correct, but check your x-axis mapping: use distance_downtown_km", "type": "warning"}
+    elif x_correct:
+        fb = {"correct": False, "message": "📊 X-axis (distance_downtown_km) is correct, but check your y-axis mapping: use daily_trips", "type": "warning"}
+    else:
+        fb = {"correct": False, "message": "🚲 Check your column choices: x = distance_downtown_km, y = daily_trips", "type": "error"}
+fb
+```
+
+:::
+
 ### Question 5: Comprehensive Performance Summary 🏆
 
 Create a summary table showing for each location: total daily volume, accidents per 1000 vehicles, and congestion level (Low: <3hrs, Medium: 3-5hrs, High: >5hrs).
+
+::: {.panel-tabset group="lang"}
+
+## R
 
 ```{webr}
 #| exercise: skill_5
@@ -578,6 +1039,61 @@ if (!exists("performance_summary")) {
   }
 }
 ```
+
+## Python
+
+```{pyodide}
+#| exercise: skill_5_py
+#| envir: global
+#| caption: "Skill Question 5"
+# Create comprehensive performance summary
+performance_summary = (
+    traffic_data
+    .assign(
+        daily_volume=______,
+        accidents_per_1000=______,
+        congestion_level=np.select(
+            [______ < 3, ______ <= 5],
+            ["Low", "Medium"],
+            default="High",
+        ),
+    )
+    [["location", "daily_volume", "accidents_per_1000", "congestion_level"]]
+)
+
+performance_summary
+```
+
+```{pyodide}
+#| exercise: skill_5_py
+#| check: true
+if "performance_summary" not in envir_result:
+    fb = {"correct": False, "message": "📊 Make sure to create the 'performance_summary' variable.", "type": "error"}
+else:
+    import numpy as np
+    result = envir_result["performance_summary"]
+    data = envir_result["traffic_data"]
+    expected_cols = ["location", "daily_volume", "accidents_per_1000", "congestion_level"]
+    missing_cols = [c for c in expected_cols if c not in result.columns]
+    if missing_cols:
+        fb = {"correct": False, "message": "📋 Missing columns: " + ", ".join(missing_cols), "type": "error"}
+    else:
+        daily_vol_correct = bool((result["daily_volume"] == data["aadt"]).all())
+        accidents_correct = bool(np.allclose(result["accidents_per_1000"], data["accidents_2023"] / data["aadt"] * 1000, atol=0.001))
+        expected_levels = np.select([data["congestion_hours"] < 3, data["congestion_hours"] <= 5], ["Low", "Medium"], default="High")
+        congestion_correct = list(result["congestion_level"]) == list(expected_levels)
+        if daily_vol_correct and accidents_correct and congestion_correct:
+            fb = {"correct": True, "message": "🎯 Outstanding! You've created a comprehensive performance dashboard showing volume, safety rates, and congestion levels. This type of integrated analysis is essential for transportation planning and helps identify priority locations for improvements.", "type": "success"}
+        elif not daily_vol_correct:
+            fb = {"correct": False, "message": "📊 Check daily_volume calculation: should be the same as aadt", "type": "warning"}
+        elif not accidents_correct:
+            fb = {"correct": False, "message": "🔢 Check accidents_per_1000 calculation: (accidents_2023 / aadt) * 1000", "type": "warning"}
+        else:
+            fb = {"correct": False, "message": "🚦 Check congestion_level logic: <3='Low', <=5='Medium', >5='High'", "type": "warning"}
+fb
+```
+
+:::
 
 ---
 
