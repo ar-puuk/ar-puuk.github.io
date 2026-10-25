@@ -43,7 +43,6 @@ execute:
   message: false
 
 format-links:
-  # - html
   - format: typst
     text: PDF
     icon: file-pdf
