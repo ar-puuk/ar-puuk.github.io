@@ -22,7 +22,7 @@
 #let ul(url, body, color: blue) = link(url, text(fill: color, underline(offset: 1.2pt, stroke: 0.5pt + color, evade: false, body)))
 
 // An icon that takes up width but no height, so it cannot push the baseline around
-#let ico(name, w: 14pt, h: 14pt, iw: auto) = box(width: w, height: 0pt, place(bottom + left, image("/assets/icons/fa-" + name + ".svg", width: if iw == auto { w } else { iw }, height: h, fit: "contain")))
+#let ico(name, w: 14pt, h: 14pt, iw: auto) = box(width: w, height: 0pt, place(bottom + left, image("/assets/icons/" + name + ".svg", width: if iw == auto { w } else { iw }, height: h, fit: "contain")))
 
 // Header: name and the contact line
 #let header(name, ..items) = {

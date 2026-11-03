@@ -15,7 +15,7 @@ format:
 ---
 
 ```{=typst}
-#import "/assets/typst/resume-style.typ": *
+#import "/resume/resume-style.typ": *
 
 // No page number (the default template turns numbering on)
 #set page(numbering: none)

@@ -16,14 +16,14 @@ format:
 ---
 
 ```{=typst}
-#import "/assets/typst/cv-style.typ": *
+#import "/cv/cv-style.typ": *
 #show: setup
 
 #let blog(slug) = "https://bhandaripukar.com.np/pt-portfolio/" + slug + "/"
 
 #header("PUKAR BHANDARI",
   contact("phone", 10.5pt, 10.5pt)[240-670-5686],
-  contact("envelope", 10.5pt, 10.5pt)[#ul("mailto:pukar.bhandari@outlook.com", color: black)[pukar.bhandari\@outlook.com]],
+  contact("email", 10.5pt, 10.5pt)[#ul("mailto:pukar.bhandari@outlook.com", color: black)[pukar.bhandari\@outlook.com]],
   contact("linkedin", 10.5pt, 10.5pt)[#ul("https://www.linkedin.com/in/arpuuk", color: black)[in/arpuuk]],
   contact("globe", 10.5pt, 10.5pt)[#ul("https://ar-puuk.github.io/", color: black)[ar-puuk.github.io]],
 )
