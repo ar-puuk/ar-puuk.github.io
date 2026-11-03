@@ -288,25 +288,71 @@ div.quarto-about-trestles .about-entity .about-link {
   }
 }
 
-// Landing page: everything fits in the first view, no page scroll.
-// Applies on screens large enough for it; on small screens the content stacks
-// and scrolls normally, since forcing a fit there would clip it.
+// Landing page (jolla template): one view, no page scroll.
+// The template stacks headshot, title and text with a 10% top margin; tighten that and let
+// the headshot scale with the viewport height so the content always fits.
+.pb-home {
+  max-width: 40rem;
+  margin: 0 auto;
+
+  .pb-chips,
+  .pb-links p {
+    justify-content: center;
+  }
+
+  .pb-chips {
+    margin-bottom: 0;
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+}
+
+body:has(.pb-home) .quarto-about-jolla {
+  margin-top: 0;
+  justify-content: center;
+  // viewport minus navbar, announcement bar and the pinned footer
+  min-height: calc(100dvh - 13rem);
+  padding-top: 0;
+  padding-bottom: 0;
+
+  .about-image {
+    width: clamp(5.5rem, 21vh, 11rem) !important;
+    height: clamp(5.5rem, 21vh, 11rem) !important;
+    margin-bottom: clamp(0.5rem, 2vh, 1.25rem);
+  }
+
+  #title-block-header,
+  .quarto-title-block {
+    margin-bottom: 0;
+  }
+
+  h1.title {
+    margin-bottom: 0.5rem;
+  }
+}
+
+// Short screens: drop the decorative tag chips to make room.
+@media (max-height: 720px) {
+  .pb-home .pb-chips {
+    display: none;
+  }
+}
+
+// Only where the viewport is big enough for the content to fit; on small screens the
+// content stacks and scrolls normally, because locking the page there would clip it.
 @media (min-width: 992px) and (min-height: 560px) {
   body:has(.pb-home) {
     overflow: hidden;
-  }
 
-  // Quarto's page-wrapper gets a viewport-high flex layout
-  body:has(.pb-home) #quarto-content {
-    min-height: 0;
-  }
-
-  .pb-home {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    // viewport minus navbar and footer (approximate, tuned when the page is built)
-    height: calc(100vh - 9rem);
-    max-height: calc(100dvh - 9rem);
+    // the footer stays in view at the bottom instead of falling below the fold
+    footer.footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bs-body-bg);
+    }
   }
 }

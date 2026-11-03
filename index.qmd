@@ -29,13 +29,26 @@ twitter-card:
     image: assets/images/Headshot_PukarBhandari_July2025.png
 ---
 
-::: {#bio}
+::: {#bio .pb-home}
 
 # Hi! I am <span class="name-highlight">Pukar Bhandari</span>.
 
-I am a Transportation Analyst with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning.
+Transportation data scientist at the Wasatch Front Regional Council in Salt Lake City. I work where geospatial analytics, land use and transportation planning meet, and I build open-source tools that put data in planners' hands.
 
-<!-- [Learn more about me &rarr;](/about.html) -->
+```{=html}
+<ul class="pb-chips">
+  <li><i class="bi bi-geo-alt-fill"></i> Salt Lake City, UT</li>
+  <li><i class="bi bi-globe-americas"></i> Geospatial analytics</li>
+  <li><i class="bi bi-bus-front-fill"></i> Transportation</li>
+  <li><i class="bi bi-houses-fill"></i> Land use</li>
+</ul>
+```
+
+::: {.pb-links}
+[<i class="bi bi-person"></i> About](about.qmd)
+[<i class="bi bi-file-earmark-person"></i> Resume](resume/index.qmd)
+[<i class="bi bi-collection"></i> Projects](projects.qmd)
+:::
 
 ::: {#landing-icons}
 [{{< fa brands linkedin title="linkedin" >}}](https://www.linkedin.com/in/arpuuk/){target="_blank"} &nbsp; [{{< fa brands github title="github" >}}](https://github.com/ar-puuk){target="_blank"} &nbsp; [{{< fa brands bluesky title="bluesky" >}}](https://bsky.app/profile/arpuuk.bsky.social){target="_blank"} &nbsp; <a href="mailto:pukar.bhandari@outlook.com" title="E-mail" aria-label="E-mail">{{< fa envelope >}}</a>
