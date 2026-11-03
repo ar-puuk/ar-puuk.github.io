@@ -62,7 +62,7 @@ p:has(> .pb-eyebrow):not(:first-child) {
   // icon and title share the first row; description and tags span the full width below
   display: grid;
   grid-template-columns: auto 1fr;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr auto auto;
   align-items: center;
   column-gap: 0.75rem;
   row-gap: 0.5rem;
@@ -114,6 +114,38 @@ p:has(> .pb-eyebrow):not(:first-child) {
       font-size: 0.72rem;
       letter-spacing: 0.02em;
       opacity: 0.85;
+    }
+  }
+}
+
+// Action buttons inside a card (View / Download), styled like the .pb-links pills
+.pb-card .pb-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  grid-column: 1 / -1;
+  margin-top: 0.15rem;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.8rem;
+    border: 1px solid $pb-rule;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.15s ease, color 0.15s ease;
+
+    i {
+      color: $pb-secondary;
+    }
+
+    &:hover {
+      border-color: $pb-secondary;
+      color: $pb-secondary;
     }
   }
 }

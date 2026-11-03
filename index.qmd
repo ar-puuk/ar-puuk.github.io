@@ -46,7 +46,7 @@ Transportation data scientist at the Wasatch Front Regional Council in Salt Lake
 
 ::: {.pb-links}
 [<i class="bi bi-person"></i> About](about.qmd)
-[<i class="bi bi-file-earmark-person"></i> Resume](resume/index.qmd)
+[<i class="bi bi-file-earmark-person"></i> Resume & CV](about.qmd#documents)
 [<i class="bi bi-collection"></i> Projects](projects.qmd)
 :::
 

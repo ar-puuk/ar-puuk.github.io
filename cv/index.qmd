@@ -1,0 +1,106 @@
+---
+pagetitle: Curriculum Vitae
+engine: markdown
+format:
+  typst:
+    output-file: CV_PukarBhandari
+    papersize: us-letter
+    margin:
+      x: 36pt
+      top: 54.4pt
+      bottom: 43pt
+    font-paths:
+      - ../assets/fonts
+    mainfont: "Liberation Serif"
+    fontsize: 11pt
+---
+
+```{=typst}
+#import "/assets/typst/cv-style.typ": *
+#show: setup
+
+#let blog(slug) = "https://bhandaripukar.com.np/pt-portfolio/" + slug + "/"
+
+#header("PUKAR BHANDARI",
+  contact("phone", 10.5pt, 10.5pt)[240-670-5686],
+  contact("envelope", 10.5pt, 10.5pt)[#ul("mailto:pukar.bhandari@outlook.com", color: black)[pukar.bhandari\@outlook.com]],
+  contact("linkedin", 10.5pt, 10.5pt)[#ul("https://www.linkedin.com/in/arpuuk", color: black)[in/arpuuk]],
+  contact("globe", 10.5pt, 10.5pt)[#ul("https://ar-puuk.github.io/", color: black)[ar-puuk.github.io]],
+)
+
+#section("circle-user", "Professional Profile", before: 25.7pt, after: 15pt, iw: 11.9pt, h: 11.9pt)
+Transportation data scientist with 3+ years of specialized experience in travel demand forecasting, spatial econometrics, and economic impact assessment. Proven expertise in developing stochastic models for regional transportation systems, conducting predictive analysis on multi-modal datasets, and translating complex technical analyses into strategic insights for infrastructure investment decisions. Strong foundation in computational methods, geospatial statistics, and stakeholder engagement across metropolitan planning organizations and state transportation agencies.
+
+#section("graduation-cap", "Education", before: 35.1pt, after: 18.2pt, w: 18.3pt, h: 14.7pt)
+#block(width: 100%)[*University of Utah, College of Architecture and Planning* #h(1fr) Salt Lake City, UT \ #emph[Master of City & Metropolitan Planning \[GPA: 4.0/4.0\]] #h(1fr) #emph[2021 – 2023]]
+#bullets(first: 13.4pt)[Specialization in land use, transportation, and smart growth with interest in GIS and geospatial data analytics][*Coursework:* Transportation Planning, Transportation Analysis Methods, Land Use and Transportation, Advanced Geospatial Analysis, Big Data in Transportation][*Projects:* #ul(blog("traffic-impact-study-at-2100s-2100e"))[Traffic Impact Study at 2100S/2100E], #ul(blog("pedestrian-and-bicycle-safety-analysis"))[Built environment determinants of walking and biking safety]\; #ul("https://arcg.is/09qOuW0")[Accessibility Analysis of Transit Equity]\; #ul(blog("a-15-minute-salt-lake-city"))[15-Minute Salt Lake City: Proximity Analysis]\; #ul(blog("suitability-of-bicycle-sharing-station-in-university-of-utah-campus"))[Bicycle-Sharing Station Suitability Analysis]\; #ul(blog("salt-lake-city-profile-2010-2019"))[Salt Lake City Profile (2010-2019)]\; #ul("https://arcg.is/19eKXT0")[Folsom Trail Extension].]
+
+#entry("Tribhuvan University, Institute of Engineering", "Kathmandu, Nepal", "Bachelor’s Degree in Architecture [GPA: 81%]", "2013 – 2018", before: 16.7pt)
+#bullets(first: 13.6pt)[*Coursework:* Building Construction and Services, Surveying, Estimating and Costing, Construction Management, Landscape Architecture, Computer Aided Design & Drafting, Geographic Information System][*Projects:* #ul(blog("earthquake-memorial-at-barpak"))[Earthquake Memorial at Barpak (Thesis)], #ul(blog("nuwakot-durbar-conservation"))[Conservation Masterplan for Historic Nuwakot Palace], #ul(blog("barpak-resettlement-plan-ward-4"))[Resettlement plan for Barpak]\; #ul(blog("cafeteria-at-ioe-pulchowk-campus"))[Cafeteria at IOE Pulchowk Campus].]
+
+#section("briefcase", "Professional Experience", before: 26.3pt, after: 18.1pt, h: 13.9pt)
+#entry("Wasatch Front Regional Council", "Salt Lake City, UT", "Data Scientist II – Full Time", "September 2025 – Present", before: 0pt)
+#bullets(pitch: 13.7pt, before: 14.2pt)[Lead development and calibration of four-step and activity-based travel demand models for Utah’s six-county Wasatch Front region (population 2.7M+), utilizing *Cube Voyager*, *R*, and *Python*, generating 30-year forecasts to inform \$15+ billion in regional infrastructure investment decisions.][Develop automated geospatial analysis workflows to support Regional Transportation Plan (RTP) and Wasatch Choice Vision initiatives, translating complex transportation systems analysis into actionable insights for local governments, transportation agencies, and regional stakeholders through interactive *R-Shiny* dashboards and *ArcGIS Experience Builder* applications.]
+
+#entry("Metro Analytics", "Atlanta, GA", "Transportation Planner/Analyst – Full Time", "June 2023 – September 2025")
+#bullets(pitch: 13.7pt, before: 14.2pt)[Developed and calibrated four-step travel demand models using *TransCAD* for multiple MPOs across the Southeast (Bowling Green-Warren County KY and Lower Savannah COG SC), generating 25-year travel forecasts and evaluating alternative scenarios to support long-range investment decisions for regions serving population exceeding 200,000.][Led scenario-based economic impact assessment for multi-billion dollar infrastructure investments (Utah’s Unified Transportation Plan 2023-2050, Utah Transit Authority, Des Moines Area MPO) using integrated travel demand (*Cube Voyager*), land use (*REMM*), and economic modeling platforms (*IMPLAN*, *TREDIS*), quantifying economic effects and employment impacts.][Conducted comprehensive benefit-cost analyses for major infrastructure projects valued at \$12+ billion including Ohio DOT Cleveland intersection improvements and Missouri DOT STIP programs, applying USDOT guidance and economic evaluation methodologies.][Built automated geospatial analysis workflows in *R* and *Python* processing large-scale Census, LEHD/LODES, and CTPP datasets to generate socio-economic inputs for regional travel demand models across Georgia, South Carolina, and Kentucky.][Integrated diverse transportation datasets (HPMS, NBI, AASHTOWare Crash Data) to develop data-driven project prioritization frameworks for regional freight plans and long-range plans.][Developed spatial databases (*ESRI AGOL*, *SQLite*) supporting multi-state and national research programs (NCHRP 08-146 Transportation Resiliency, BTS Cybersecurity Research); created interactive dashboards using *R-Shiny*, *ArcGIS Experience Builder*, and *WordPress*.]
+
+#entry("University of Utah", "Salt Lake City, UT", "Graduate Teaching Assistant – Department of City & Metropolitan Planning", "August 2021 – May 2023", before: 17.5pt)
+#bullets(pitch: 13.6pt, first: 13.5pt)[Led classroom workshops for 48 graduate students on community and regional analysis, focusing on demographic and economic assessments utilizing advanced *MS Excel* and *R* techniques for data analysis and visualization.]
+#block(above: 21.6pt, width: 100%)[#emph[Graduate Research Assistant – Department of City and Metropolitan Planning] #h(1fr) #emph[May 2022 – August 2022]]
+#bullets(pitch: 13.6pt, first: 13.5pt)[Conducted statistical analysis using *R* and *SPSS* on resident survey data (n=1,200+) for Salt Lake City “Thriving in Place” anti-displacement initiative, developing policy recommendations based on empirical findings to preserve housing availability in gentrifying neighborhoods.]
+#block(above: 17.5pt, width: 100%)[#emph[Student Researcher – Energy & Geoscience Institute (EGI)] #h(1fr) #emph[June 2022 – August 2022]]
+#bullets(pitch: 13.6pt, first: 13.6pt)[Developed integrated geospatial databases for mining operations research, combining historical georeferenced datasets with current global mining data collected through *web scraping* (httr2/rvest in R).]
+
+#entry("Prabal Thapa Architects", "Kathmandu, Nepal", "Associate Architect – Full Time", "June 2020 – July 2021")
+#bullets(pitch: 13.6pt, before: 14.2pt, first: 13.5pt)[Developed detailed conceptual design drawings for a variety of architectural projects, including hospitality developments in _Ghandruk_ and _Nagarkot_, and residential and institutional projects in _Surkhet_, _Chitwan_, and _Kathmandu_.][Led the development of architectural plans and graphical communications using 2D and 3D visualization, ensuring designs met client expectations and project objectives while fostering strong client relationships through effective communication and tailored solutions.][Mentored and guided junior staff in advanced design techniques and software applications, enhancing their skills and contributing to overall project success.]
+
+#entry("Institute of Engineering, Research Training and Consultancy Service Unit", "Lalitpur, Nepal", "Associate Architect and Planner – Freelance", "September 2020 – June 2021")
+#bullets(before: 13.5pt)[Led the design team in developing the Masterplan for _Padma Kanya Multiple Campus_, ensuring alignment with strategic goals and optimizing space utilization to support the institution’s growth.][Produced architectural drawings and digital models, provided planning-level cost estimates, and effectively communicated design concepts and progress to stakeholders, facilitating informed decision-making.]
+
+#entry("Urban Park Pvt. Ltd.", "Lalitpur, Nepal", "Junior Architect – Full Time", "January 2019 – June 2020", before: 16.6pt)
+#bullets(pitch: 13.1pt, before: 13.7pt)[Contributed to architectural design and urban planning projects across residential, institutional, and hospitality sectors, including the Film City Masterplan in _Dolakha_ and the ICT Center for _Tulsipur’s_ Smart City initiative.][Led the development of innovative masterplans, ensuring design solutions aligned with strategic objectives and enhancing project outcomes through creative and functional design.][Developed comprehensive project reports for infrastructure initiatives across Terai and Mid-Hill regions, supporting effective urban planning within Nepal’s Integrated Urban Development Plan (IUDP) and promoting sustainable growth in newly established municipalities.]
+
+#entry("Archetype Design Consult Pvt. Ltd.", "Kathmandu, Nepal", "Architect and Planner – Freelance", "June 2018 – January 2020", before: 16.5pt)
+#bullets(before: 13.4pt)[Led the conceptualization and execution of major conservation projects, including the Conservation Masterplan for the Sindhuligadhi Area and the Pashupatinath Temple Complex, adhering to international heritage standards.][Conducted in-depth research, developed detailed inventories of historical assets, and produced comprehensive project reports and digital models, effectively communicating conservation strategies and balancing preservation with sustainable development.]
+
+#entry("Prabal Thapa Architects", "Kathmandu, Nepal", "Intern Architect", "October 2016 – April 2017", before: 12.6pt)
+#bullets(pitch: 13.65pt, before: 14.3pt, first: 13.6pt)[Developed conceptual design drawings and 3D visualizations for diverse architectural projects across hospitality, residential, and institutional sectors, including trekker's accommodations, modular housing, community centers, and boutique hotel renovations, utilizing AutoCAD and SketchUp to support client presentations and project development.][Prepared construction drawings and technical documentation including bill of quantities for hospitality developments and contributed to innovative design solutions incorporating alternative construction technologies such as rammed-earth and bamboo construction for community infrastructure projects in rural Nepal.]
+
+#section("puzzle-piece", "Technical Skills", before: 26.2pt, after: 16pt)
+#bullet(before: 0pt)[*Transportation Modeling and Forecasting:* Cube Voyager, TransCAD, Synchro/SimTraffic, Four-Step Model Calibration, Scenario-Based Forecasting, Traffic Impact Analysis, Mode Choice Modeling, Trip Distribution Analysis.]
+#bullet(before: 13.5pt)[*Economic Impact Analysis:* IMPLAN, TREDIS, REMI, Benefit-Cost Analysis (BCA), Economic Impact Modeling, Infrastructure Valuation, Risk Assessment, USDOT BCA Guidance Implementation]
+#bullet(before: 13.5pt)[*Data Science and Programming:*]
+#sub(before: 12.6pt)[R/RStudio: _dplyr, ggplot2, sf, tidyverse, shiny, quarto, data.table_]
+#sub[Python: _numpy, pandas, geopandas, scikit-learn, matplotlib, seaborn, plotnine_]
+#sub[Statistical Methods: _Regression analysis, spatial statistics, machine learning (Random Forest, K-Means, Naïve Bayes), predictive modeling_]
+#sub[Database Management: _SQLite, PostgreSQL, DuckDB, MS Access_]
+#sub[Version Control & Documentation: _Git/GitHub, R Markdown, Jupyter Notebooks, Quarto, LaTeX_]
+#sub[Web Development: _HTML, CSS, WordPress, Postman API_]
+#bullet(before: 13.5pt)[*Geospatial Analysis & GIS:* ArcGIS/ArcGIS Online, QGIS, GeoDA, Network Analysis, Accessibility Modeling, Spatial Econometrics, Proximity Analysis, Web Mapping]
+#bullet(before: 13.4pt)[*Transportation Datasets:* Decennial Census/American Community Survey (ACS), Census Transportation Planning Products (CTPP), Longitudinal Employment-Household Dynamics (LEHD) Origin-Destination Employment Statistics (LODES), National Household Travel Survey (NHTS), Highway Performance Monitoring System (HPMS), National Bridge Inventory (NBI), National Bridge Investment Allocation System (NBIAS), Freight Analysis Framework (FAF5), AASHTOWare Safety, Replica Mobility Data]
+#bullet(before: 13.6pt)[*Design and Drafting:* AutoCAD, SketchUp, Revit, Lumion, Microsoft Office Suite, Adobe Creative Cloud Suite]
+
+#section("file-lines", "Papers & Publications", before: 35pt, after: 15.8pt, w: 11.2pt, h: 14.8pt)
+#bullet(before: 0pt)[Zinia, F. A., *Bhandari, P.*, Tuffour, J. P., & Hong, A. (2023). Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, U.S. Transportation Research Record, 2677(12), 806-814. #box(ul("https://doi.org/10.1177/03611981231170005")[https://doi.org/10.1177/03611981231170005])]
+#bullet(before: 13.4pt)[*Bhandari, P.*, “Earthquake Memorial at Barpak, Gorkha”, Spaces Magazine, March-April 2019, pp. 32-34. #box(ul("https://issuu.com/spacesnepal5/docs/march%20april%202019%20f4d9f8b25cec23")[https://issuu.com/spacesnepal5/docs/march april 2019 f4d9f8b25cec23])]
+
+#section("id-badge", "Conference Presentations", before: 21.2pt, after: 15.7pt, w: 15pt, iw: 14.7pt, h: 13.1pt)
+#bullets(x: 72pt, first: 0pt, before: 13.45pt)[Duncan C., *Bhandari, P.*, & Cheng S., Resilience Planning: Quantifying the Economic Value of Resilience, Risk Reduction and Asset Protection, Transportation Research Board (TRB) Conference on Innovations in Travel Analysis and Planning, June 2023, Indianapolis – _*Poster*_][Zinia, F. A. & *Bhandari, P.*, Evaluating Social Equity of Transit Accessibility: A Case of Salt Lake County, Transportation Research Board (TRB) Annual Meeting, January 2023, Washington D.C. – _*Lectern*_][*Bhandari, P.*, Earthquake Memorial at _Barpak, Gorkha_, National Architecture Conference “Architectural Responses to Tourism in Nepal”, December 2019, _Kathmandu, Nepal_ – _*Poster*_][*Bhandari, P.*, Earthquake Memorial at _Barpak, Gorkha_, National Graduate Conference on Architecture (NGC-2019), December 2019, _Bhaktapur, Nepal_ – _*Podium Presentation*_]
+
+#section("handshake", "Volunteering", before: 22pt, after: 18pt, w: 18.3pt, h: 14.5pt)
+#item("Site Architect, Women of the World Kathmandu 2018 Festival", "Site Architect", "February 2018", before: 0pt)
+#bullet(before: 13.5pt)[Led site planning for a major three-day festival, ensuring ADA compliance, emergency management, and efficient space organization to enhance attendee safety and experience.]
+#item("Site Architect, United Nations Development Program (UNDP)", "Site Architect", "May 2018 & September 2017", before: 15.7pt)
+#bullet(before: 13.5pt)[Drawing preparation initiative for safer reconstruction in _Palungtar_ Municipality and _Chautara-Sangachowkgadhi_ Municipality, United Nations Development Program funded by the Government of India and The European Union as a part of the Comprehensive Disaster Risk Management Programme (CDRMP).]
+#item("10th National ASA Architectural Exhibition", "Treasurer", "April 2016 – July 2016", before: 15.6pt)
+#bullet(before: 13.4pt)[Successfully managed budget for a three-day national architectural exhibition, maintaining fiscal discipline while enhancing event quality and audience engagement.]
+#item("Ashraya Nepal", "Technical Advisor", "May 2015 – July 2015", before: 15.7pt)
+#bullet(before: 13.5pt)[Coordinated construction of temporary shelters in _Gorkha_, _Dhading_, and _Sindhupalchowk_ following the 2015 _Gorkha_ Earthquake, delivering rapid infrastructure solutions for affected communities.]
+
+#section("id-card", "Professional Memberships", before: 21.1pt, after: 15.7pt, w: 15pt, iw: 14.4pt, h: 11.2pt)
+#bullets(first: 0pt, before: 13.5pt)[*Member,* TRB Standing Committee on Travel Behavior and Choices, AEP12][*Member,* Utah Data Engineers and Scientists in Transportation (UDEST)][*Student Member,* Association of Pedestrian and Bicycle Professionals (APBP) - Utah Chapter][*Registered Architect,* Nepal Engineering Council (NEC), Registration Number: 2245 “Architecture” A]
+
+#section("award", "Awards & Recognitions", before: 22.4pt, after: 16pt, w: 11.2pt, h: 14.9pt)
+#bullets(first: 0pt, before: 13.4pt)[*Best Professional Project Award 2023,* University of Utah, Department of City & Metropolitan Planning][*Best Architectural Thesis Award 2018*, Tribhuvan University, Department of Architecture][*First Runner-Up*, Asian Paints All Nepal Architecture Student’s Design Competition 2017-2018]
+```
