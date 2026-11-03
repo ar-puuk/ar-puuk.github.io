@@ -33,28 +33,226 @@ format:
     page-layout: full
 ---
 
-:::{#main-content}
+::: {#main-content}
+
+```{=html}
+<ul class="pb-chips">
+  <li><i class="bi bi-geo-alt-fill"></i> Salt Lake City, UT</li>
+  <li><i class="bi bi-briefcase-fill"></i> Data Scientist, Wasatch Front Regional Council</li>
+  <li><i class="bi bi-signpost-split-fill"></i> Transportation &amp; land use</li>
+  <li><i class="bi bi-mortarboard-fill"></i> M.C.M.P., University of Utah</li>
+</ul>
+```
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-lg-7}
+[Overview]{.pb-eyebrow}
 
 ## Professional Overview
 
 I am a Transportation Analyst with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning.
 
------
+::: {.pb-links}
+[<i class="bi bi-file-earmark-person"></i> Resume](resume/index.qmd)
+[<i class="bi bi-collection"></i> Projects](projects.qmd)
+[<i class="bi bi-envelope"></i> Contact](contact.qmd)
+:::
+
+[Career]{.pb-eyebrow}
 
 ## Work Experience
 
- - **Transportation Data Scientist** [| Wasatch Front Regional Council | *September 2025 - Present*]{.gray}
- - **Transportation Planner/Analyst** [| Metro Analytics | *June 2023 - September 2025*]{.gray}
- - **Graduate Teaching & Research Assistant** [| University of Utah | *August 2021 - May 2023*]{.gray}
- - **GIS Data Analyst** [| Energy & Geoscience Institute | *June 2022 - August 2022*]{.gray}
- - **Associate Architect** [| Prabal Thapa Architects | *June 2020 - July 2021*]{.gray}
- - **Architect & Planner** [| Urban Park Nepal Pvt. Ltd. | *January 2019 - June 2020*]{.gray}
+```{=html}
+<ol class="pb-timeline">
+  <li class="pb-current">
+    <span class="pb-when">Sep 2025 &ndash; Present</span>
+    <strong class="pb-role">Transportation Data Scientist</strong>
+    <span class="pb-org">Wasatch Front Regional Council</span>
+    <p>Builds open-source analysis tools and web apps for regional transportation and land use planning.</p>
+  </li>
+  <li>
+    <span class="pb-when">Jun 2023 &ndash; Sep 2025</span>
+    <strong class="pb-role">Transportation Planner/Analyst</strong>
+    <span class="pb-org">Metro Analytics</span>
+  </li>
+  <li>
+    <span class="pb-when">Aug 2021 &ndash; May 2023</span>
+    <strong class="pb-role">Graduate Teaching &amp; Research Assistant</strong>
+    <span class="pb-org">University of Utah</span>
+  </li>
+  <li>
+    <span class="pb-when">Jun 2022 &ndash; Aug 2022</span>
+    <strong class="pb-role">GIS Data Analyst</strong>
+    <span class="pb-org">Energy &amp; Geoscience Institute</span>
+  </li>
+  <li>
+    <span class="pb-when">Jun 2020 &ndash; Jul 2021</span>
+    <strong class="pb-role">Associate Architect</strong>
+    <span class="pb-org">Prabal Thapa Architects</span>
+  </li>
+  <li>
+    <span class="pb-when">Jan 2019 &ndash; Jun 2020</span>
+    <strong class="pb-role">Architect &amp; Planner</strong>
+    <span class="pb-org">Urban Park Nepal Pvt. Ltd.</span>
+  </li>
+</ol>
+```
+:::
 
------
+::: {.g-col-12 .g-col-lg-5}
+[Toolbox]{.pb-eyebrow}
+
+## Skills
+
+[Languages]{.pb-group-label}
+
+::: {.pb-badges}
+- R
+- Python
+- SQL
+- JavaScript
+:::
+
+[Geospatial]{.pb-group-label}
+
+::: {.pb-badges}
+- sf
+- tmap
+- GeoPandas
+- ArcGIS Pro
+- QGIS
+- PostgreSQL
+:::
+
+[Data &amp; visualization]{.pb-group-label}
+
+::: {.pb-badges}
+- tidyverse
+- pandas
+- ggplot2
+- Matplotlib
+- Shiny
+- Quarto
+- Power BI
+- Tableau
+:::
+
+[Design]{.pb-group-label}
+
+::: {.pb-badges}
+- AutoCAD
+- SketchUp
+- Illustrator
+- InDesign
+:::
+
+[Learning]{.pb-eyebrow}
 
 ## Education
 
- - **Master of City & Metropolitan Planning** [| University of Utah | *August 2021 - May 2023*]{.gray}
- - **Bachelors Degree in Architecture** [| Tribhuvan University | *October 2013 - August 2018*]{.gray}
+```{=html}
+<ol class="pb-timeline">
+  <li>
+    <span class="pb-when">Aug 2021 &ndash; May 2023</span>
+    <strong class="pb-role">Master of City &amp; Metropolitan Planning</strong>
+    <span class="pb-org">University of Utah</span>
+  </li>
+  <li>
+    <span class="pb-when">Oct 2013 &ndash; Aug 2018</span>
+    <strong class="pb-role">Bachelor of Architecture</strong>
+    <span class="pb-org">Tribhuvan University</span>
+  </li>
+</ol>
+```
+:::
+
+:::
+
+-----
+
+[Portfolio]{.pb-eyebrow}
+
+## Selected Work
+
+Tools I built at the Wasatch Front Regional Council. See [all projects](projects.qmd).
+
+```{=html}
+<div class="pb-cards">
+  <a class="pb-card" href="work/commute-explorer/index.html">
+    <span class="pb-card-icon"><i class="bi bi-signpost-split"></i></span>
+    <span class="pb-card-title">Commute Flow Explorer</span>
+    <p>Origin-destination commuter flows across the Wasatch Front, on H3 cells and DuckDB-WASM.</p>
+    <span class="pb-card-tags"><span>Web app</span><span>JavaScript</span></span>
+  </a>
+  <a class="pb-card" href="work/housing-site-evaluator/index.html">
+    <span class="pb-card-icon"><i class="bi bi-house-door"></i></span>
+    <span class="pb-card-title">Housing Site Evaluator</span>
+    <p>Scores parcels and H3 hexagons on access to jobs, transit and everyday necessities.</p>
+    <span class="pb-card-tags"><span>Web app</span><span>Land use</span></span>
+  </a>
+  <a class="pb-card" href="work/gtfs-vs-tdm/index.html">
+    <span class="pb-card-icon"><i class="bi bi-bus-front"></i></span>
+    <span class="pb-card-title">GTFS vs. TDM Transit Comparison</span>
+    <p>A web map comparing the travel demand model's transit network with GTFS data.</p>
+    <span class="pb-card-tags"><span>Web map</span><span>Transit</span></span>
+  </a>
+  <a class="pb-card" href="work/se2025-h3/index.html">
+    <span class="pb-card-icon"><i class="bi bi-hexagon"></i></span>
+    <span class="pb-card-title">SE 2025 Urban Form D Variables</span>
+    <p>Density, diversity, design, destinations, demographics and transit distance at H3 resolution.</p>
+    <span class="pb-card-tags"><span>Data pipeline</span><span>R</span></span>
+  </a>
+</div>
+```
+
+-----
+
+[Open source]{.pb-eyebrow}
+
+## Tools I Build
+
+Browser-native tools and utilities on [GitHub](https://github.com/ar-puuk/).
+
+```{=html}
+<div class="pb-cards">
+  <a class="pb-card" href="https://github.com/ar-puuk/spatial-sql-explorer" target="_blank" rel="noopener">
+    <span class="pb-card-icon"><i class="bi bi-database"></i></span>
+    <span class="pb-card-title">Spatial SQL Explorer</span>
+    <p>A completely client-side spatial SQL explorer.</p>
+    <span class="pb-card-tags"><span>TypeScript</span></span>
+  </a>
+  <a class="pb-card" href="https://github.com/ar-puuk/omx-viewer" target="_blank" rel="noopener">
+    <span class="pb-card-icon"><i class="bi bi-table"></i></span>
+    <span class="pb-card-title">OMX Viewer</span>
+    <p>Browser-native OMX / HDF5 matrix explorer. No server, no upload.</p>
+    <span class="pb-card-tags"><span>TypeScript</span></span>
+  </a>
+  <a class="pb-card" href="https://github.com/ar-puuk/parquet-viewer" target="_blank" rel="noopener">
+    <span class="pb-card-icon"><i class="bi bi-file-earmark-bar-graph"></i></span>
+    <span class="pb-card-title">Parquet Viewer</span>
+    <p>View Parquet files directly in your browser.</p>
+    <span class="pb-card-tags"><span>TypeScript</span></span>
+  </a>
+  <a class="pb-card" href="https://github.com/ar-puuk/basemapper" target="_blank" rel="noopener">
+    <span class="pb-card-icon"><i class="bi bi-map"></i></span>
+    <span class="pb-card-title">basemapper</span>
+    <p>A headless MapLibre renderer for raster and vector basemaps in R and Python.</p>
+    <span class="pb-card-tags"><span>R</span><span>Python</span></span>
+  </a>
+  <a class="pb-card" href="https://github.com/ar-puuk/robocopy-gui" target="_blank" rel="noopener">
+    <span class="pb-card-icon"><i class="bi bi-terminal"></i></span>
+    <span class="pb-card-title">Robocopy GUI</span>
+    <p>A command generator for seamless file synchronization.</p>
+    <span class="pb-card-tags"><span>HTML</span></span>
+  </a>
+  <a class="pb-card" href="https://github.com/ar-puuk/drut-dev" target="_blank" rel="noopener">
+    <span class="pb-card-icon"><i class="bi bi-braces"></i></span>
+    <span class="pb-card-title">drut-dev</span>
+    <p>Cube Voyager control-statement tooling: tokenizer, parser and more.</p>
+    <span class="pb-card-tags"><span>Rust</span></span>
+  </a>
+</div>
+```
 
 :::

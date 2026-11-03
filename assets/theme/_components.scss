@@ -1,0 +1,312 @@
+// Shared page components for the landing and About pages.
+// Pure CSS, built on Bootstrap's theme variables, so it follows light/dark mode
+// without per-theme overrides. Prefix: pb-
+
+// Surfaces and rules are tints of the current text colour, which keeps them
+// readable on both the cream (light) and navy (dark) backgrounds.
+$pb-tint:        color-mix(in srgb, currentColor 6%, transparent);
+$pb-tint-strong: color-mix(in srgb, currentColor 12%, transparent);
+$pb-rule:        color-mix(in srgb, currentColor 18%, transparent);
+
+// Eyebrow label above a section heading
+.pb-eyebrow {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $pb-secondary;
+  margin-bottom: 0.25rem;
+}
+
+// A section that starts after other content in the same column needs air above its label
+p:has(> .pb-eyebrow):not(:first-child) {
+  margin-top: 2.75rem;
+}
+
+// Fact chips: small pills with an icon (location, role, focus)
+.pb-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.75rem;
+
+  > * {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid $pb-rule;
+    border-radius: 999px;
+    background: $pb-tint;
+    font-size: 0.85rem;
+    line-height: 1.3;
+
+    i, .bi, .fa-solid, .fa-brands {
+      color: $pb-secondary;
+    }
+  }
+}
+
+// Card grid: auto-fits as many columns as the width allows
+.pb-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.pb-card {
+  // icon and title share the first row; description and tags span the full width below
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr auto;
+  align-items: center;
+  column-gap: 0.75rem;
+  row-gap: 0.5rem;
+  padding: 0.9rem 1.1rem 0.85rem;
+  border: 1px solid $pb-rule;
+  border-radius: 10px;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  .pb-card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    color: $pb-secondary;
+    background: color-mix(in srgb, #{$pb-secondary} 14%, transparent);
+  }
+
+  .pb-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  p {
+    grid-column: 1 / -1;
+    align-self: start;
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    opacity: 0.8;
+  }
+
+  // tag pills pinned to the bottom so cards in a row line up
+  .pb-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    grid-column: 1 / -1;
+    gap: 0.35rem;
+
+    > span {
+      padding: 0.05rem 0.55rem;
+      border-radius: 999px;
+      background: $pb-tint;
+      font-size: 0.72rem;
+      letter-spacing: 0.02em;
+      opacity: 0.85;
+    }
+  }
+}
+
+a.pb-card:hover {
+  border-color: $pb-secondary;
+  box-shadow: 0 4px 14px color-mix(in srgb, currentColor 10%, transparent);
+  text-decoration: none;
+}
+
+// Skill / tool badges. Pandoc turns a Markdown list inside the div into a <ul>,
+// so the container rule covers both the div's <ul> and a bare <ul class="pb-badges">.
+.pb-badges > ul,
+ul.pb-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0 1rem;
+
+  > li {
+    margin: 0;
+    padding: 0.15rem 0.65rem;
+    border-radius: 4px;
+    border: 1px solid $pb-rule;
+    background: $pb-tint;
+    font-size: 0.8rem;
+    font-family: var(--bs-font-monospace);
+  }
+}
+
+// Labelled badge group (e.g. "Languages")
+.pb-group-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin: 1rem 0 0;
+}
+
+// Timeline: a vertical rule with a dot per entry.
+// Markup: <ol class="pb-timeline"><li><span class="pb-when">…</span>
+//         <strong class="pb-role">…</strong><span class="pb-org">…</span><p>…</p></li></ol>
+.pb-timeline {
+  position: relative;
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0 0 0 1.4rem;
+  border-left: 2px solid $pb-rule;
+
+  > li {
+    position: relative;
+    padding-bottom: 1.25rem;
+
+    &:last-child {
+      padding-bottom: 0;
+    }
+
+    // dot on the rule
+    &::before {
+      content: "";
+      position: absolute;
+      left: calc(-1.4rem - 7px);
+      top: 0.4rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--bs-body-bg);
+      border: 2px solid $pb-secondary;
+    }
+
+    // the current role gets a filled dot
+    &.pb-current::before {
+      background: $pb-secondary;
+    }
+  }
+
+  .pb-when {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .pb-role {
+    display: block;
+    font-weight: 600;
+  }
+
+  .pb-org {
+    display: block;
+    font-size: 0.9rem;
+    color: $pb-secondary;
+  }
+
+  p {
+    margin: 0.25rem 0 0;
+    font-size: 0.875rem;
+    opacity: 0.85;
+  }
+}
+
+// Row of icon buttons (Resume, Research, ...). Pandoc joins the links into one <p>.
+.pb-links {
+  margin: 1.25rem 0;
+
+  p {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.35rem 0.9rem;
+    border: 1px solid $pb-rule;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.15s ease, color 0.15s ease;
+
+    i {
+      color: $pb-secondary;
+    }
+
+    &:hover {
+      border-color: $pb-secondary;
+      color: $pb-secondary;
+    }
+  }
+}
+
+// About page (trestles template): the template gives the sidebar 42% of the width and
+// lets it scroll away, which leaves the left half blank. Narrow it, keep it in view while
+// the content scrolls, and give the content the freed width. Stacked layouts (below lg)
+// keep the template's own behaviour.
+@media (min-width: 992px) {
+  // `div.` matches the template's own selector specificity so these win
+  div.quarto-about-trestles {
+    align-items: flex-start;
+
+    // the template hardcodes a light-grey rule (#dee2e6), which glares on the dark theme
+    .about-contents {
+      border-left-color: color-mix(in srgb, currentColor 12%, transparent);
+    }
+
+    .about-entity {
+      flex: 0 0 24%;
+      position: sticky;
+      top: 5.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+}
+
+// Sidebar link buttons: the template draws their outline in the full text colour, which is
+// pure white on the dark theme. Soften it, and light it up in the accent on hover.
+div.quarto-about-trestles .about-entity .about-link {
+  border-color: $pb-rule;
+  transition: border-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    border-color: $pb-secondary;
+  }
+}
+
+// Landing page: everything fits in the first view, no page scroll.
+// Applies on screens large enough for it; on small screens the content stacks
+// and scrolls normally, since forcing a fit there would clip it.
+@media (min-width: 992px) and (min-height: 560px) {
+  body:has(.pb-home) {
+    overflow: hidden;
+  }
+
+  // Quarto's page-wrapper gets a viewport-high flex layout
+  body:has(.pb-home) #quarto-content {
+    min-height: 0;
+  }
+
+  .pb-home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    // viewport minus navbar and footer (approximate, tuned when the page is built)
+    height: calc(100vh - 9rem);
+    max-height: calc(100dvh - 9rem);
+  }
+}
