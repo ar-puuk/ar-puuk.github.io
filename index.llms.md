@@ -5,6 +5,4 @@ Transportation data scientist at the Wasatch Front Regional Council in Salt Lake
 -  Transportation
 -  Land use
 
-[ About](about.llms.md) [ Resume & CV](about.llms.md#documents) [ Projects](projects.llms.md)
-
 [](https://www.linkedin.com/in/arpuuk/)   [](https://github.com/ar-puuk)   [](https://bsky.app/profile/arpuuk.bsky.social)   [](mailto:pukar.bhandari@outlook.com "E-mail")

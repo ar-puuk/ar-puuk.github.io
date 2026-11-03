@@ -9,7 +9,7 @@ Overview
 
 I am a Transportation Analyst with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning.
 
-[ Resume & CV](#documents) [ Projects](projects.llms.md) [ Contact](contact.llms.md)
+[ Projects](projects.llms.md) [ Contact](contact.llms.md)
 
 Career
 
@@ -73,26 +73,6 @@ Learning
 
 1.  Aug 2021 – May 2023 **Master of City & Metropolitan Planning** University of Utah
 2.  Oct 2013 – Aug 2018 **Bachelor of Architecture** Tribhuvan University
-
-------------------------------------------------------------------------
-
-Documents
-
-## Resume and CV
-
-Both are PDFs built from this site’s source. Open one in the browser or save a copy.
-
-Resume
-
-One page: experience, education and technical skills at a glance.
-
-PDF1 page [ View](resume/Resume_PukarBhandari.pdf) [ Download](resume/Resume_PukarBhandari.pdf)
-
-Curriculum Vitae
-
-The full record: projects, publications, presentations, volunteering, memberships and awards.
-
-PDF4 pages [ View](cv/CV_PukarBhandari.pdf) [ Download](cv/CV_PukarBhandari.pdf)
 
 ------------------------------------------------------------------------
 
