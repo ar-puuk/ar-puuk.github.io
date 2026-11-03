@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.19">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -39,17 +39,18 @@ ul.task-list li input[type="checkbox"] {
 <link href="./assets/images/pb-logo.svg" rel="icon" type="image/svg+xml">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-42e53f4b51833e46cb17750f9b73e6ae.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-3ce4178af615251a636da138a333cfab.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-42e53f4b51833e46cb17750f9b73e6ae.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-8764c335dad511aad077ef15741b5bc9.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-0d5f3593458c098432535763b485963f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-0bade39263fe8c54cd71b4de9f5a211f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-0d5f3593458c098432535763b485963f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-34bbd4a9976eff7d39b6d5eb3b3736d6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-c6c1a33feb61d6a7350ea1ab78c36840.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-34bbd4a9976eff7d39b6d5eb3b3736d6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
@@ -101,11 +102,9 @@ ul.task-list li input[type="checkbox"] {
 <meta name="twitter:creator" content="@arpuuk">
 <meta name="twitter:site" content="@arpuuk">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image-height" content="1280">
-<meta name="twitter:image-width" content="1280">
 </head>
 
-<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -128,6 +127,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -157,13 +157,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -258,6 +264,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -267,6 +274,7 @@ ul.task-list li input[type="checkbox"] {
         return;
       const alternate = e.matches
       toggleColorMode(alternate);
+      refreshSafariScrollbar();
       localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
       toggleGiscusIfUsed(alternate, darkModeDefault);
     });
@@ -280,7 +288,7 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-xl " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-xl " data-bs-theme="dark" aria-label="Site">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
@@ -291,8 +299,7 @@ ul.task-list li input[type="checkbox"] {
     <span class="navbar-title">Pukar Bhandari</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -300,10 +307,6 @@ ul.task-list li input[type="checkbox"] {
   <li class="nav-item">
     <a class="nav-link active" href="./about.html" aria-current="page"> 
 <span class="menu-text">About</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./resume/index.html"> 
-<span class="menu-text">Resume</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./projects.html"> 
@@ -353,13 +356,14 @@ ul.task-list li input[type="checkbox"] {
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
   </div>
 </a>
 </div>
+            <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
   <div id="quarto-announcement" data-announcement-id="c2c65974b1b11cb0712261fb1df9d535" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
@@ -410,32 +414,231 @@ ul.task-list li input[type="checkbox"] {
   </a>
 </div>
   </div>
-  <div class="about-contents"><main class="content column-page" id="quarto-document-content">
+  <div class="about-contents"><main class="content column-page" id="quarto-document-content" tabindex="-1">
 
 <div id="main-content">
+<ul class="pb-chips">
+  <li><i class="bi bi-geo-alt-fill"></i> Salt Lake City, UT</li>
+  <li><i class="bi bi-briefcase-fill"></i> Data Scientist, Wasatch Front Regional Council</li>
+  <li><i class="bi bi-signpost-split-fill"></i> Transportation &amp; land use</li>
+  <li><i class="bi bi-mortarboard-fill"></i> M.C.M.P., University of Utah</li>
+</ul>
+<div class="grid">
+<div class="g-col-12 g-col-lg-7">
+<p><span class="pb-eyebrow">Overview</span></p>
 <section id="professional-overview" class="level2">
 <h2 data-anchor-id="professional-overview">Professional Overview</h2>
 <p>I am a Transportation Analyst with a Master’s in City &amp; Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning.</p>
-<hr>
+<div class="pb-links">
+<p><a href="#documents"><i class="bi bi-file-earmark-person"></i> Resume &amp; CV</a> <a href="./projects.html"><i class="bi bi-collection"></i> Projects</a> <a href="./contact.html"><i class="bi bi-envelope"></i> Contact</a></p>
+</div>
+<p><span class="pb-eyebrow">Career</span></p>
 </section>
 <section id="work-experience" class="level2">
 <h2 data-anchor-id="work-experience">Work Experience</h2>
+<ol class="pb-timeline">
+  <li class="pb-current">
+    <span class="pb-when">Sep 2025 – Present</span>
+    <strong class="pb-role">Transportation Data Scientist</strong>
+    <span class="pb-org">Wasatch Front Regional Council</span>
+    <p>Builds open-source analysis tools and web apps for regional transportation and land use planning.</p>
+  </li>
+  <li>
+    <span class="pb-when">Jun 2023 – Sep 2025</span>
+    <strong class="pb-role">Transportation Planner/Analyst</strong>
+    <span class="pb-org">Metro Analytics</span>
+  </li>
+  <li>
+    <span class="pb-when">Aug 2021 – May 2023</span>
+    <strong class="pb-role">Graduate Teaching &amp; Research Assistant</strong>
+    <span class="pb-org">University of Utah</span>
+  </li>
+  <li>
+    <span class="pb-when">Jun 2022 – Aug 2022</span>
+    <strong class="pb-role">GIS Data Analyst</strong>
+    <span class="pb-org">Energy &amp; Geoscience Institute</span>
+  </li>
+  <li>
+    <span class="pb-when">Jun 2020 – Jul 2021</span>
+    <strong class="pb-role">Associate Architect</strong>
+    <span class="pb-org">Prabal Thapa Architects</span>
+  </li>
+  <li>
+    <span class="pb-when">Jan 2019 – Jun 2020</span>
+    <strong class="pb-role">Architect &amp; Planner</strong>
+    <span class="pb-org">Urban Park Nepal Pvt. Ltd.</span>
+  </li>
+</ol>
+</section>
+</div>
+<div class="g-col-12 g-col-lg-5">
+<p><span class="pb-eyebrow">Toolbox</span></p>
+<section id="skills" class="level2">
+<h2 data-anchor-id="skills">Skills</h2>
+<p><span class="pb-group-label">Languages</span></p>
+<div class="pb-badges">
 <ul>
-<li><strong>Transportation Data Scientist</strong> <span class="gray">| Wasatch Front Regional Council | <em>September 2025 - Present</em></span></li>
-<li><strong>Transportation Planner/Analyst</strong> <span class="gray">| Metro Analytics | <em>June 2023 - September 2025</em></span></li>
-<li><strong>Graduate Teaching &amp; Research Assistant</strong> <span class="gray">| University of Utah | <em>August 2021 - May 2023</em></span></li>
-<li><strong>GIS Data Analyst</strong> <span class="gray">| Energy &amp; Geoscience Institute | <em>June 2022 - August 2022</em></span></li>
-<li><strong>Associate Architect</strong> <span class="gray">| Prabal Thapa Architects | <em>June 2020 - July 2021</em></span></li>
-<li><strong>Architect &amp; Planner</strong> <span class="gray">| Urban Park Nepal Pvt. Ltd.&nbsp;| <em>January 2019 - June 2020</em></span></li>
+<li>R</li>
+<li>Python</li>
+<li>SQL</li>
+<li>JavaScript</li>
 </ul>
-<hr>
+</div>
+<p><span class="pb-group-label">Geospatial</span></p>
+<div class="pb-badges">
+<ul>
+<li>sf</li>
+<li>tmap</li>
+<li>GeoPandas</li>
+<li>ArcGIS Pro</li>
+<li>QGIS</li>
+<li>PostgreSQL</li>
+</ul>
+</div>
+<p><span class="pb-group-label">Data &amp; visualization</span></p>
+<div class="pb-badges">
+<ul>
+<li>tidyverse</li>
+<li>pandas</li>
+<li>ggplot2</li>
+<li>Matplotlib</li>
+<li>Shiny</li>
+<li>Quarto</li>
+<li>Power BI</li>
+<li>Tableau</li>
+</ul>
+</div>
+<p><span class="pb-group-label">Design</span></p>
+<div class="pb-badges">
+<ul>
+<li>AutoCAD</li>
+<li>SketchUp</li>
+<li>Illustrator</li>
+<li>InDesign</li>
+</ul>
+</div>
+<p><span class="pb-eyebrow">Learning</span></p>
 </section>
 <section id="education" class="level2">
 <h2 data-anchor-id="education">Education</h2>
-<ul>
-<li><strong>Master of City &amp; Metropolitan Planning</strong> <span class="gray">| University of Utah | <em>August 2021 - May 2023</em></span></li>
-<li><strong>Bachelors Degree in Architecture</strong> <span class="gray">| Tribhuvan University | <em>October 2013 - August 2018</em></span></li>
-</ul>
+<ol class="pb-timeline">
+  <li>
+    <span class="pb-when">Aug 2021 – May 2023</span>
+    <strong class="pb-role">Master of City &amp; Metropolitan Planning</strong>
+    <span class="pb-org">University of Utah</span>
+  </li>
+  <li>
+    <span class="pb-when">Oct 2013 – Aug 2018</span>
+    <strong class="pb-role">Bachelor of Architecture</strong>
+    <span class="pb-org">Tribhuvan University</span>
+  </li>
+</ol>
+</section>
+</div>
+</div>
+<hr>
+<p><span class="pb-eyebrow">Documents</span></p>
+<section id="documents" class="level2">
+<h2 data-anchor-id="documents">Resume and CV</h2>
+<p>Both are PDFs built from this site’s source. Open one in the browser or save a copy.</p>
+<div class="pb-cards">
+  <div class="pb-card">
+    <span class="pb-card-icon"><i class="bi bi-file-earmark-person"></i></span>
+    <span class="pb-card-title">Resume</span>
+    <p>One page: experience, education and technical skills at a glance.</p>
+    <span class="pb-card-tags"><span>PDF</span><span>1 page</span></span>
+    <span class="pb-card-actions">
+      <a href="resume/Resume_PukarBhandari.pdf" target="_blank" rel="noopener"><i class="bi bi-eye"></i> View</a>
+      <a href="resume/Resume_PukarBhandari.pdf" download=""><i class="bi bi-download"></i> Download</a>
+    </span>
+  </div>
+  <div class="pb-card">
+    <span class="pb-card-icon"><i class="bi bi-journal-text"></i></span>
+    <span class="pb-card-title">Curriculum Vitae</span>
+    <p>The full record: projects, publications, presentations, volunteering, memberships and awards.</p>
+    <span class="pb-card-tags"><span>PDF</span><span>4 pages</span></span>
+    <span class="pb-card-actions">
+      <a href="cv/CV_PukarBhandari.pdf" target="_blank" rel="noopener"><i class="bi bi-eye"></i> View</a>
+      <a href="cv/CV_PukarBhandari.pdf" download=""><i class="bi bi-download"></i> Download</a>
+    </span>
+  </div>
+</div>
+<hr>
+<p><span class="pb-eyebrow">Portfolio</span></p>
+</section>
+<section id="selected-work" class="level2">
+<h2 data-anchor-id="selected-work">Selected Work</h2>
+<p>Tools I built at the Wasatch Front Regional Council. See <a href="./projects.html">all projects</a>.</p>
+<div class="pb-cards">
+  <a class="pb-card" href="work/commute-explorer/index.html">
+    <span class="pb-card-icon"><i class="bi bi-signpost-split"></i></span>
+    <span class="pb-card-title">Commute Flow Explorer</span>
+    <p>Origin-destination commuter flows across the Wasatch Front, on H3 cells and DuckDB-WASM.</p>
+    <span class="pb-card-tags"><span>Web app</span><span>JavaScript</span></span>
+  </a>
+  <a class="pb-card" href="work/housing-site-evaluator/index.html">
+    <span class="pb-card-icon"><i class="bi bi-house-door"></i></span>
+    <span class="pb-card-title">Housing Site Evaluator</span>
+    <p>Scores parcels and H3 hexagons on access to jobs, transit and everyday necessities.</p>
+    <span class="pb-card-tags"><span>Web app</span><span>Land use</span></span>
+  </a>
+  <a class="pb-card" href="work/gtfs-vs-tdm/index.html">
+    <span class="pb-card-icon"><i class="bi bi-bus-front"></i></span>
+    <span class="pb-card-title">GTFS vs. TDM Transit Comparison</span>
+    <p>A web map comparing the travel demand model's transit network with GTFS data.</p>
+    <span class="pb-card-tags"><span>Web map</span><span>Transit</span></span>
+  </a>
+  <a class="pb-card" href="work/se2025-h3/index.html">
+    <span class="pb-card-icon"><i class="bi bi-hexagon"></i></span>
+    <span class="pb-card-title">SE 2025 Urban Form D Variables</span>
+    <p>Density, diversity, design, destinations, demographics and transit distance at H3 resolution.</p>
+    <span class="pb-card-tags"><span>Data pipeline</span><span>R</span></span>
+  </a>
+</div>
+<hr>
+<p><span class="pb-eyebrow">Open source</span></p>
+</section>
+<section id="tools-i-build" class="level2">
+<h2 data-anchor-id="tools-i-build">Tools I Build</h2>
+<p>Browser-native tools and utilities on <a href="https://github.com/ar-puuk/">GitHub</a>.</p>
+<div class="pb-cards">
+  <a class="pb-card" href="https://github.com/ar-puuk/spatial-sql-explorer" target="_blank" rel="noopener">
+    <span class="pb-card-icon"><i class="bi bi-database"></i></span>
+    <span class="pb-card-title">Spatial SQL Explorer</span>
+    <p>A completely client-side spatial SQL explorer.</p>
+    <span class="pb-card-tags"><span>TypeScript</span></span>
+  </a>
+  <a class="pb-card" href="https://github.com/ar-puuk/omx-viewer" target="_blank" rel="noopener">
+    <span class="pb-card-icon"><i class="bi bi-table"></i></span>
+    <span class="pb-card-title">OMX Viewer</span>
+    <p>Browser-native OMX / HDF5 matrix explorer. No server, no upload.</p>
+    <span class="pb-card-tags"><span>TypeScript</span></span>
+  </a>
+  <a class="pb-card" href="https://github.com/ar-puuk/parquet-viewer" target="_blank" rel="noopener">
+    <span class="pb-card-icon"><i class="bi bi-file-earmark-bar-graph"></i></span>
+    <span class="pb-card-title">Parquet Viewer</span>
+    <p>View Parquet files directly in your browser.</p>
+    <span class="pb-card-tags"><span>TypeScript</span></span>
+  </a>
+  <a class="pb-card" href="https://github.com/ar-puuk/basemapper" target="_blank" rel="noopener">
+    <span class="pb-card-icon"><i class="bi bi-map"></i></span>
+    <span class="pb-card-title">basemapper</span>
+    <p>A headless MapLibre renderer for raster and vector basemaps in R and Python.</p>
+    <span class="pb-card-tags"><span>R</span><span>Python</span></span>
+  </a>
+  <a class="pb-card" href="https://github.com/ar-puuk/robocopy-gui" target="_blank" rel="noopener">
+    <span class="pb-card-icon"><i class="bi bi-terminal"></i></span>
+    <span class="pb-card-title">Robocopy GUI</span>
+    <p>A command generator for seamless file synchronization.</p>
+    <span class="pb-card-tags"><span>HTML</span></span>
+  </a>
+  <a class="pb-card" href="https://github.com/ar-puuk/drut-dev" target="_blank" rel="noopener">
+    <span class="pb-card-icon"><i class="bi bi-braces"></i></span>
+    <span class="pb-card-title">drut-dev</span>
+    <p>Cube Voyager control-statement tooling: tokenizer, parser and more.</p>
+    <span class="pb-card-tags"><span>Rust</span></span>
+  </a>
+</div>
 </section>
 </div>
 
@@ -454,15 +657,50 @@ ul.task-list li input[type="checkbox"] {
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const isCodeAnnotation = (el) => {
@@ -530,11 +768,30 @@ ul.task-list li input[type="checkbox"] {
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
         var filterRegex = new RegExp("https:\/\/ar-puuk\.github\.io");
+      const newWindowLabel = "(opens in a new tab)";
+      const newWindowNoteId = "quarto-ext-newwindow-label";
+      // Links reference one hidden label through aria-describedby, so the
+      // announcement never changes their accessible name.
+      var describeNewWindow = (link) => {
+        if (!window.document.getElementById(newWindowNoteId)) {
+          var newWindowNote = window.document.createElement("span");
+          newWindowNote.id = newWindowNoteId;
+          newWindowNote.hidden = true;
+          newWindowNote.textContent = newWindowLabel;
+          window.document.body.appendChild(newWindowNote);
+        }
+        var describedBy = (link.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
+        if (!describedBy.includes(newWindowNoteId)) {
+          describedBy.push(newWindowNoteId);
+          link.setAttribute("aria-describedby", describedBy.join(" "));
+        }
+      }
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -548,10 +805,72 @@ ul.task-list li input[type="checkbox"] {
             if (link.getAttribute("rel") === null) {
               link.setAttribute("rel", "noopener");
             }
+            describeNewWindow(link);
+          if (!link.classList.contains('no-external-icon')) {
             // default icon
             link.classList.add("external");
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -565,6 +884,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -727,44 +1047,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -862,6 +1192,9 @@ ul.task-list li input[type="checkbox"] {
       }
     }
   });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
   </script>
 </div> <!-- /content -->
 <footer class="footer">

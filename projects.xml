@@ -9,7 +9,7 @@
 <link>https://ar-puuk.github.io/projects.html</link>
 <atom:link href="https://ar-puuk.github.io/projects.xml" rel="self" type="application/rss+xml"/>
 <description>Pukar Bhandari is a Transportation Planner and Data Scientist working at the intersection of Transportation Modeling, Economic Impact Analysis, and Data Science.</description>
-<generator>quarto-1.10.19</generator>
+<generator>quarto-1.11.9</generator>
 <lastBuildDate>Sun, 25 Oct 2026 06:00:00 GMT</lastBuildDate>
 <item>
   <title></title>
@@ -66,7 +66,7 @@
   <category>Data Science</category>
   <guid>https://ar-puuk.github.io/posts/freight-explorer/</guid>
   <pubDate>Mon, 19 Oct 2026 06:00:00 GMT</pubDate>
-  <media:content url="https://ar-puuk.github.io/posts/freight-explorer/freight_explorer.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://ar-puuk.github.io/posts/freight-explorer/freight_explorer.jpg" medium="image" type="image/jpeg" height="90" width="144"/>
 </item>
 <item>
   <title>Restyling Utah’s Vector Basemap for MapLibre</title>
@@ -259,7 +259,7 @@
   <category>WFRC</category>
   <guid>https://ar-puuk.github.io/slides/spatial-benchmark/</guid>
   <pubDate>Sat, 07 Feb 2026 07:00:00 GMT</pubDate>
-  <media:content url="https://ar-puuk.github.io/slides/spatial-benchmark/csv_vs_parquet.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://ar-puuk.github.io/slides/spatial-benchmark/csv_vs_parquet.jpg" medium="image" type="image/jpeg" height="180" width="144"/>
 </item>
 <item>
   <title>WgetGUI Ultimate: A Fluent Command Generator</title>

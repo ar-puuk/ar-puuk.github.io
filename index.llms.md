@@ -1,3 +1,10 @@
-I am a Transportation Analyst with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning.
+Transportation data scientist at the Wasatch Front Regional Council in Salt Lake City. I work where geospatial analytics, land use and transportation planning meet, and I build open-source tools that put data in planners’ hands.
+
+-  Salt Lake City, UT
+-  Geospatial analytics
+-  Transportation
+-  Land use
+
+[ About](about.llms.md) [ Resume & CV](about.llms.md#documents) [ Projects](projects.llms.md)
 
 [](https://www.linkedin.com/in/arpuuk/)   [](https://github.com/ar-puuk)   [](https://bsky.app/profile/arpuuk.bsky.social)   [](mailto:pukar.bhandari@outlook.com "E-mail")
