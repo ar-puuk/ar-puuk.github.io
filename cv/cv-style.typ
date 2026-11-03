@@ -35,9 +35,10 @@
 #let contact(icon, w, ht, body) = [#ico(icon, w: w, h: ht) #h(2.6pt) #body]
 
 // Section heading: icon, upper-case bold title and a heavy rule. `before` is the gap from the
-// previous baseline, `after` the gap to the first baseline of the content.
+// previous baseline, `after` the gap to the first baseline of the content. Sticky, so a heading
+// never ends a page on its own.
 #let section(icon, title, before: 26pt, after: 16pt, w: 15pt, h: 15pt, iw: auto, gap: 2.8pt) = {
-  block(above: before, width: 100%, below: 0pt)[
+  block(above: before, width: 100%, below: 0pt, sticky: true)[
     #text(weight: "bold")[#ico(icon, w: w + gap, iw: if iw == auto { w } else { iw }, h: h)#upper(title)]
     #v(3.1pt)
     #move(dx: -1.4pt, line(length: 100% + 2.9pt, stroke: 1.4pt))

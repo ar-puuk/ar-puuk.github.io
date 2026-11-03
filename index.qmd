@@ -44,12 +44,6 @@ Transportation data scientist at the Wasatch Front Regional Council in Salt Lake
 </ul>
 ```
 
-::: {.pb-links}
-[<i class="bi bi-person"></i> About](about.qmd)
-[<i class="bi bi-file-earmark-person"></i> Resume & CV](about.qmd#documents)
-[<i class="bi bi-collection"></i> Projects](projects.qmd)
-:::
-
 ::: {#landing-icons}
 [{{< fa brands linkedin title="linkedin" >}}](https://www.linkedin.com/in/arpuuk/){target="_blank"} &nbsp; [{{< fa brands github title="github" >}}](https://github.com/ar-puuk){target="_blank"} &nbsp; [{{< fa brands bluesky title="bluesky" >}}](https://bsky.app/profile/arpuuk.bsky.social){target="_blank"} &nbsp; <a href="mailto:pukar.bhandari@outlook.com" title="E-mail" aria-label="E-mail">{{< fa envelope >}}</a>
 :::

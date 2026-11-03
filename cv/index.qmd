@@ -49,7 +49,7 @@ Transportation data scientist with 3+ years of specialized experience in travel 
 #bullets(pitch: 13.6pt, first: 13.5pt)[Led classroom workshops for 48 graduate students on community and regional analysis, focusing on demographic and economic assessments utilizing advanced *MS Excel* and *R* techniques for data analysis and visualization.]
 #block(above: 21.6pt, width: 100%)[#emph[Graduate Research Assistant – Department of City and Metropolitan Planning] #h(1fr) #emph[May 2022 – August 2022]]
 #bullets(pitch: 13.6pt, first: 13.5pt)[Conducted statistical analysis using *R* and *SPSS* on resident survey data (n=1,200+) for Salt Lake City “Thriving in Place” anti-displacement initiative, developing policy recommendations based on empirical findings to preserve housing availability in gentrifying neighborhoods.]
-#block(above: 17.5pt, width: 100%)[#emph[Student Researcher – Energy & Geoscience Institute (EGI)] #h(1fr) #emph[June 2022 – August 2022]]
+#block(above: 21.6pt, width: 100%)[#emph[Student Researcher – Energy & Geoscience Institute (EGI)] #h(1fr) #emph[June 2022 – August 2022]]
 #bullets(pitch: 13.6pt, first: 13.6pt)[Developed integrated geospatial databases for mining operations research, combining historical georeferenced datasets with current global mining data collected through *web scraping* (httr2/rvest in R).]
 
 #entry("Prabal Thapa Architects", "Kathmandu, Nepal", "Associate Architect – Full Time", "June 2020 – July 2021")
@@ -66,6 +66,20 @@ Transportation data scientist with 3+ years of specialized experience in travel 
 
 #entry("Prabal Thapa Architects", "Kathmandu, Nepal", "Intern Architect", "October 2016 – April 2017", before: 12.6pt)
 #bullets(pitch: 13.65pt, before: 14.3pt, first: 13.6pt)[Developed conceptual design drawings and 3D visualizations for diverse architectural projects across hospitality, residential, and institutional sectors, including trekker's accommodations, modular housing, community centers, and boutique hotel renovations, utilizing AutoCAD and SketchUp to support client presentations and project development.][Prepared construction drawings and technical documentation including bill of quantities for hospitality developments and contributed to innovative design solutions incorporating alternative construction technologies such as rammed-earth and bamboo construction for community infrastructure projects in rural Nepal.]
+
+#section("code", "Selected Projects & Open Source", before: 26.2pt, after: 18pt, w: 18.3pt, h: 14.7pt)
+#item(ul("https://ar-puuk.github.io/work/commute-explorer/")[Commute Flow Explorer], "WFRC", emph("JavaScript"), before: 0pt)
+#bullet(before: 13.5pt)[Client-side web app for exploring origin-destination commuter flows across the Wasatch Front, built on H3 cells and DuckDB-WASM.]
+#item(ul("https://ar-puuk.github.io/work/housing-site-evaluator/")[Housing Site Evaluator], "WFRC", emph("R"), before: 15.7pt)
+#bullet(before: 13.5pt)[Rebuilt scoring pipeline for WFRC’s Housing Access-to-Opportunity calculator, scoring every parcel and H3 hexagon in the region on access to jobs, transit, and everyday necessities.]
+#item(ul("https://github.com/ar-puuk/spatial-sql-explorer")[Spatial SQL Explorer], "Open source", emph("TypeScript"), before: 15.7pt)
+#bullet(before: 13.5pt)[Spatial SQL explorer that runs entirely in the browser, with no backend.]
+#item(ul("https://github.com/ar-puuk/drut-dev")[drut-dev], "Open source", emph("Rust"), before: 15.7pt)
+#bullet(before: 13.5pt)[Tokenizer and structural parser for Cube Voyager control statements, with a linter, formatter, and language server planned.]
+#item(ul("https://github.com/ar-puuk/omx-viewer")[OMX Viewer], "Open source", emph("TypeScript"), before: 15.7pt)
+#bullet(before: 13.5pt)[Browser-native explorer for OMX/HDF5 travel model matrices, with no server and no file upload.]
+#item(ul("https://github.com/ar-puuk/parquet-viewer")[Parquet Viewer], "Open source", emph("TypeScript"), before: 15.7pt)
+#bullet(before: 13.5pt)[View Parquet files directly in the browser.]
 
 #section("puzzle-piece", "Technical Skills", before: 26.2pt, after: 16pt)
 #bullet(before: 0pt)[*Transportation Modeling and Forecasting:* Cube Voyager, TransCAD, Synchro/SimTraffic, Four-Step Model Calibration, Scenario-Based Forecasting, Traffic Impact Analysis, Mode Choice Modeling, Trip Distribution Analysis.]

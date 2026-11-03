@@ -11,6 +11,12 @@ about:
   image-width: 12em
   image-shape: round
   links:
+    - icon: file-earmark-person
+      text: Resume
+      href: resume/Resume_PukarBhandari.pdf
+    - icon: journal-text
+      text: CV
+      href: cv/CV_PukarBhandari.pdf
     - icon: github
       text: Github
       href: https://github.com/ar-puuk/
@@ -59,7 +65,6 @@ format:
 I am a Transportation Analyst with a Master’s in City & Metropolitan Planning and a background in architecture, specializing in data-driven, multimodal strategies that advance equity, sustainability, and community well-being. I have over three years of hands-on experience in multimodal system evaluation, GIS modeling, benefit-cost and economic impact analysis for state and regional projects. I am skilled in leading interagency programs, managing complex contracts, and engaging diverse stakeholders to deliver innovative, resilient, and accessible transportation solutions grounded in inclusive, community-driven planning.
 
 ::: {.pb-links}
-[<i class="bi bi-file-earmark-person"></i> Resume & CV](#documents)
 [<i class="bi bi-collection"></i> Projects](projects.qmd)
 [<i class="bi bi-envelope"></i> Contact](contact.qmd)
 :::
@@ -173,39 +178,6 @@ I am a Transportation Analyst with a Master’s in City & Metropolitan Planning 
 :::
 
 :::
-
------
-
-[Documents]{.pb-eyebrow}
-
-## Resume and CV {#documents}
-
-Both are PDFs built from this site's source. Open one in the browser or save a copy.
-
-```{=html}
-<div class="pb-cards">
-  <div class="pb-card">
-    <span class="pb-card-icon"><i class="bi bi-file-earmark-person"></i></span>
-    <span class="pb-card-title">Resume</span>
-    <p>One page: experience, education and technical skills at a glance.</p>
-    <span class="pb-card-tags"><span>PDF</span><span>1 page</span></span>
-    <span class="pb-card-actions">
-      <a href="resume/Resume_PukarBhandari.pdf" target="_blank" rel="noopener"><i class="bi bi-eye"></i> View</a>
-      <a href="resume/Resume_PukarBhandari.pdf" download><i class="bi bi-download"></i> Download</a>
-    </span>
-  </div>
-  <div class="pb-card">
-    <span class="pb-card-icon"><i class="bi bi-journal-text"></i></span>
-    <span class="pb-card-title">Curriculum Vitae</span>
-    <p>The full record: projects, publications, presentations, volunteering, memberships and awards.</p>
-    <span class="pb-card-tags"><span>PDF</span><span>4 pages</span></span>
-    <span class="pb-card-actions">
-      <a href="cv/CV_PukarBhandari.pdf" target="_blank" rel="noopener"><i class="bi bi-eye"></i> View</a>
-      <a href="cv/CV_PukarBhandari.pdf" download><i class="bi bi-download"></i> Download</a>
-    </span>
-  </div>
-</div>
-```
 
 -----
 
