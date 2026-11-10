@@ -9,13 +9,18 @@
 */
 
 .app-embed-wrapper {
-  --app-accent: #d96e34;
+  --app-accent: #a84a18;         /* text-safe orange on the toolbar tint (4.8:1) */
   --app-accent-hover: #a23e02;
   border: 1px solid var(--bs-border-color);
   border-radius: 4px;
   overflow: hidden;
   margin: 1.5rem 0 1rem;
   background: var(--bs-body-bg);
+}
+
+body.quarto-dark .app-embed-wrapper {
+  --app-accent: #d96e34;
+  --app-accent-hover: #f2894f;
 }
 
 .app-embed-toolbar {

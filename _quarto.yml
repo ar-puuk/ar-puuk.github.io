@@ -92,7 +92,7 @@ website:
         href: projects.xml
 
   page-footer:
-    left: '&copy; 2025&ndash;<span id="footer-year">2026</span> Pukar Bhandari &#8729; Made with [{{< fa brands r-project title="R Project" >}}](https://www.r-project.org/about.html){target=_blank}, [<img src="https://quarto.org/favicon.png" width="14">](https://quarto.org/){target=_blank}, [{{< fa brands git-alt title="Git alt logo" >}}](https://git-scm.com/){target=_blank} and [{{< fa brands github title="GitHub octocat logo" >}}](https://github.com/){target=_blank}'
+    left: '&copy; 2025&ndash;<span id="footer-year">2026</span> Pukar Bhandari &#8729; Made with [{{< fa brands r-project title="R Project" >}}](https://www.r-project.org/about.html){target=_blank}, [<img src="https://quarto.org/favicon.png" width="14" alt="Quarto">](https://quarto.org/){target=_blank}, [{{< fa brands git-alt title="Git alt logo" >}}](https://git-scm.com/){target=_blank} and [{{< fa brands github title="GitHub octocat logo" >}}](https://github.com/){target=_blank}'
     center: |
           <a href="https://www.linkedin.com/in/arpuuk" title="LinkedIn" target="_blank" rel="noopener">{{< fa brands linkedin >}}</a>
           &nbsp;

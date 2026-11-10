@@ -37,8 +37,8 @@ $code-block-bg:              $pb-bg-1-dark;
 $code-block-border:          $pb-border-dark;
 
 // Inline code (Dark mode)
-$code-color:                  $body-bg;
-$code-bg:                     $pb-accent;
+$code-color:                  #8FD3EA;              // light teal text on a tinted surface (the old solid teal block was loud)
+$code-bg:                     mix($pb-accent, $pb-bg-0-dark, 24%);
 
 // Table of contents
 $toc-color:                   $link-color;
@@ -54,6 +54,20 @@ $footer-fg:                   $pb-text-dark;
 // Miscellaneous
 $gray-200:                    darken($pb-text-dark, 30%);
 $gray-700:                    darken($pb-text-dark, 30%);
+
+// Callouts (Quarto reads these to colour the border, header tint and icon)
+$callout-color-note:         #4DB6D9;
+$callout-color-tip:          #4FC08D;
+$callout-color-important:    #F07178;
+$callout-color-caution:      #F2894F;
+$callout-color-warning:      #E8B04B;
+
+// Hairline colour for tabsets, callouts and other content borders
+$pb-line:                    $pb-border-dark;
+
+// Orange that is safe for TEXT on this background (>= 4.5:1), and its hover colour
+$pb-accent-text:             $pb-secondary;
+$pb-accent-text-hover:       #F2894F;
 
 /*-- scss:rules --*/
 
@@ -144,6 +158,14 @@ details > summary {
 
   .title, .subtitle, .quarto-title-author-name, .quarto-title-affiliation {
     color: $pb-text-light !important;  // Dark text
+  }
+  // the orange description sits on cream here (3.3:1): use the dark orange (6.3:1)
+  .description {
+    color: $pb-secondary-light !important;
+  }
+  // undo the light-theme rule that lightens the Code dropdown (it also loads in dark mode)
+  #quarto-code-tools-source {
+    color: $pb-secondary-light;
   }
 }
 

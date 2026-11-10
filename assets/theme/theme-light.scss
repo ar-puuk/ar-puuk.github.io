@@ -22,7 +22,7 @@ $body-bg:                    $pb-bg-0;            // #FFFBF2 (cream background)
 $body-secondary:             #6C757D;
 
 // Links - ACTUAL SITE COLORS
-$link-color:                  $pb-secondary;        // #D96E34
+$link-color:                  #B8531F;              // darker orange: 4.7:1 on the cream background (#D96E34 is 3.3:1)
 $link-decoration:             underline;
 $link-hover-color:            $pb-secondary-light;  // #A23E02
 $link-hover-decoration:       none;
@@ -53,6 +53,20 @@ $footer-fg:                   $pb-primary;
 
 // Miscellaneous
 $gray-200:                    lighten($pb-primary, 60%);
+
+// Callouts (Quarto reads these to colour the border, header tint and icon)
+$callout-color-note:         #007EA7;
+$callout-color-tip:          #2E8B62;
+$callout-color-important:    #C0392B;
+$callout-color-caution:      #D96E34;
+$callout-color-warning:      #B7791F;
+
+// Hairline colour for tabsets, callouts and other content borders
+$pb-line:                    $pb-border-light;
+
+// Orange that is safe for TEXT on this background (>= 4.5:1), and its hover colour
+$pb-accent-text:             #B8531F;
+$pb-accent-text-hover:       $pb-secondary-light;
 
 /*-- scss:rules --*/
 
@@ -129,6 +143,11 @@ div.sourceCode {
 // Title banner (opposite colors for light theme)
 .quarto-title-banner {
   background-color: $pb-bg-0-dark !important;  // Dark background
+
+  // the Code dropdown sits on navy here: use a light orange (8.8:1)
+  #quarto-code-tools-source {
+    color: #F2A27A;
+  }
 
   .title, .subtitle, .quarto-title-author-name, .quarto-title-affiliation {
     color: $pb-text-dark !important;  // Light text

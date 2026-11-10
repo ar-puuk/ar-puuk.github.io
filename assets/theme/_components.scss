@@ -31,7 +31,7 @@ $pb-rule:        color-mix(in srgb, currentColor 18%, transparent);
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: $pb-secondary;
+  color: $pb-accent-text;
   margin-bottom: 0.25rem;
 }
 
@@ -225,7 +225,7 @@ ul.pb-badges {
   .pb-org {
     display: block;
     font-size: 0.9rem;
-    color: $pb-secondary;
+    color: $pb-accent-text;
   }
 
   p {
@@ -265,7 +265,7 @@ ul.pb-badges {
 
     &:hover {
       border-color: $pb-secondary;
-      color: $pb-secondary;
+      color: $pb-accent-text;
     }
   }
 }

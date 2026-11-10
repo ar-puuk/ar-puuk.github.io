@@ -5,6 +5,7 @@ about:
   template: jolla
   image-width: 12em
   image-shape: round
+  image-alt: "Headshot of Pukar Bhandari"
   # links:
   #   - icon: github
   #     aria-label: Github

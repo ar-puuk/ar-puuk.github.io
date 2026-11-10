@@ -8,6 +8,10 @@ categories: [Dashboard, OJS, Transportation, GIS, Data Science]
 format:
   dashboard:
     scrolling: false
+    theme:
+      light: [cosmo, ../assets/theme/index.scss, ../assets/theme/theme-light.scss]
+      dark: [cosmo, ../assets/theme/index.scss, ../assets/theme/theme-dark.scss]
+    respect-user-color-scheme: true
     css: ../assets/css/dashboard.css
 ---
 

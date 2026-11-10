@@ -10,6 +10,7 @@ about:
   template: trestles
   image-width: 12em
   image-shape: round
+  image-alt: "Headshot of Pukar Bhandari"
   links:
     - icon: file-earmark-person
       text: Resume

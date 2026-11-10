@@ -11,8 +11,12 @@
 // Common styles that apply to both light and dark themes
 
 // Shared components for the landing and About pages
-// (Quarto's Sass cache keys on this file, not on the partial: change this number after editing _components.scss to force a recompile. rev 26)
+// (Quarto's Sass cache keys on this file, not on the partial: change this number after editing _components.scss to force a recompile. rev 28)
 @import "components";
+
+// Callouts, tabsets and the announcement bar
+// (same Sass-cache note as above: change the rev number here after editing _content.scss. rev 5)
+@import "content";
 
 // Import common CSS rules that both themes share
 
@@ -41,8 +45,8 @@
 
 // Categories (common hover behavior)
 .listing-category {
-  color: $pb-secondary !important;
-  border-color: $pb-secondary !important;
+  color: $pb-accent-text !important;
+  border-color: $pb-accent-text !important;
   &:hover {
     background-color: $pb-secondary;
     color: white !important;
@@ -67,24 +71,24 @@
 }
 
 .navbar-nav .nav-link {
-  color: $pb-secondary !important;
+  color: $pb-accent-text !important;
   text-transform: uppercase;
   letter-spacing: .1em;
-  border-bottom: 0px hidden $pb-secondary;
+  border-bottom: 0px hidden $pb-accent-text;
   margin: 0px 10px 0px 10px;
   padding: 2px 2px 4px 2px !important;
 
   &:hover {
-    border-bottom: 1px solid $pb-secondary !important;
+    border-bottom: 1px solid $pb-accent-text !important;
     padding: 2px 2px 0px 2px !important;
   }
 }
 
 // Footer links (common styling)
 .nav-footer a {
-  color: $pb-secondary;
+  color: $pb-accent-text;
   &:hover {
-    color: $pb-secondary-light;
+    color: $pb-accent-text-hover;
   }
 }
 

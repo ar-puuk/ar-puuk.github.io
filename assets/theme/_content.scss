@@ -1,0 +1,150 @@
+// Content components shared by both themes: callouts, tabsets, announcement bar.
+// Colours come from the per-theme variables ($callout-color-*, $pb-line, $body-bg,
+// $body-color, $link-color), so one rule set serves light and dark.
+
+$pb-callouts: (
+  "note": $callout-color-note,
+  "tip": $callout-color-tip,
+  "important": $callout-color-important,
+  "caution": $callout-color-caution,
+  "warning": $callout-color-warning,
+);
+
+// ---------------------------------------------------------------- Callouts
+div.callout.callout {
+  border-radius: 0.6rem;
+  border: 1px solid $pb-line;
+  border-left-width: 4px;
+  box-shadow: none;
+  overflow: hidden;
+  background-color: mix($body-color, $body-bg, 3%);
+
+  // Quarto dims the title to 85%/75% opacity; keep it at full contrast
+  > div.callout-header {
+    opacity: 1;
+  }
+  .callout-title-container {
+    color: $body-color;
+  }
+  // Links in a coloured callout stay readable: body colour with an accent underline
+  a:not(.btn) {
+    color: inherit;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    font-weight: 600;
+  }
+  a:not(.btn):hover {
+    text-decoration-thickness: 2px;
+  }
+  // Code inside a callout reads against the tinted body
+  pre {
+    margin-bottom: 0.5rem;
+  }
+}
+
+@each $name, $c in $pb-callouts {
+  div.callout.callout-#{$name} {
+    border-color: mix($c, $body-bg, 32%);
+    border-left-color: $c;
+    background-color: mix($c, $body-bg, 5%);
+
+    &.callout-style-default > div.callout-header {
+      background-color: mix($c, $body-bg, 14%);
+    }
+    a:not(.btn) {
+      text-decoration-color: $c;
+    }
+  }
+}
+
+// ---------------------------------------------------------------- Tabsets
+.panel-tabset {
+  margin: 1.25rem 0;
+
+  > .nav-tabs {
+    gap: 0.25rem;
+    margin-bottom: 0;
+    border-bottom: 1px solid $pb-line;
+
+    .nav-link {
+      border: none;
+      border-bottom: 3px solid transparent;
+      border-radius: 0.5rem 0.5rem 0 0;
+      margin-bottom: -1px;
+      padding: 0.5rem 0.95rem;
+      background: transparent;
+      color: $body-secondary;
+      font-weight: 500;
+      transition: color 0.15s ease, background-color 0.15s ease,
+        border-color 0.15s ease;
+
+      &:hover,
+      &:focus-visible {
+        color: $body-color;
+        background-color: mix($body-color, $body-bg, 6%);
+        border-bottom-color: mix($link-color, $body-bg, 45%);
+      }
+      &.active {
+        color: $body-color;
+        font-weight: 600;
+        background-color: mix($body-color, $body-bg, 3%);
+        border-bottom-color: $link-color;
+      }
+    }
+  }
+
+  > .tab-content {
+    border: 1px solid $pb-line;
+    border-top: none;
+    border-radius: 0 0 0.6rem 0.6rem;
+    padding: 1rem 1.1rem 0.4rem;
+    background-color: mix($body-color, $body-bg, 3%);
+
+    > .tab-pane > :last-child {
+      margin-bottom: 0.6rem;
+    }
+  }
+}
+
+// ---------------------------------------------------------------- Announcement bar
+// Quarto paints it with Bootstrap's alert-info (pale blue); use the site's own palette.
+#quarto-announcement.alert {
+  background-color: mix($link-color, $body-bg, 11%);
+  color: $body-color;
+  border: none;
+  border-bottom: 1px solid mix($link-color, $body-bg, 30%);
+  border-radius: 0;
+
+  i {
+    color: $link-color;
+  }
+  .quarto-announcement-content a {
+    font-weight: 600;
+    color: $pb-accent-text-hover;  // 6.3:1 on the tinted bar (the plain link colour was 4.1:1)
+  }
+}
+
+// ---------------------------------------------------------------- Small screens
+@media (max-width: 767.98px) {
+  // Wide tables scroll inside the page instead of widening the whole page
+  #quarto-document-content table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+@media (max-width: 479.98px) {
+  // Keep the whole name visible next to the menu and search buttons
+  .navbar-title {
+    font-size: 0.82em;
+    letter-spacing: 0.06em;
+  }
+}
+
+// ---------------------------------------------------------------- Citation block
+// Quarto fades the whole citation section to 90% opacity, which drops the DOI link
+// below 4.5:1 contrast; keep it at full strength.
+#quarto-appendix.default section.quarto-appendix-contents > *:not(a) {
+  opacity: 1;
+}
