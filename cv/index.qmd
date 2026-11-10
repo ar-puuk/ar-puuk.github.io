@@ -72,6 +72,12 @@ Transportation data scientist with 3+ years of specialized experience in travel 
 #bullet(before: 13.5pt)[Client-side web app for exploring origin-destination commuter flows across the Wasatch Front, built on H3 cells and DuckDB-WASM.]
 #item(ul("https://ar-puuk.github.io/work/housing-site-evaluator/")[Housing Site Evaluator], "WFRC", emph("R"), before: 15.7pt)
 #bullet(before: 13.5pt)[Rebuilt scoring pipeline for WFRC’s Housing Access-to-Opportunity calculator, scoring every parcel and H3 hexagon in the region on access to jobs, transit, and everyday necessities.]
+#item(ul("https://ar-puuk.github.io/work/community-profiles/")[Community Profiles], "WFRC", emph("TypeScript, Python"), before: 15.7pt)
+#bullet(before: 13.5pt)[Map-first dashboard of Census, LODES, and QCEW indicators for the Wasatch Front, with a Python data pipeline.]
+#item(ul("https://ar-puuk.github.io/work/synthetic-data-generator/")[Synthetic Data Generator], "WFRC", emph("TypeScript"), before: 15.7pt)
+#bullet(before: 13.5pt)[Browser-only tool that turns a private survey table into a fake one, so AI agents never see real data.]
+#item(ul("https://ar-puuk.github.io/work/proposal-scoresheet/")[Proposal Evaluation Scoresheet], "WFRC", emph("TypeScript"), before: 15.7pt)
+#bullet(before: 13.5pt)[Client-only tool for scoring and ranking RFP proposals, with reviewer Excel forms and a PDF report.]
 #item(ul("https://github.com/ar-puuk/spatial-sql-explorer")[Spatial SQL Explorer], "Open source", emph("TypeScript"), before: 15.7pt)
 #bullet(before: 13.5pt)[Spatial SQL explorer that runs entirely in the browser, with no backend.]
 #item(ul("https://github.com/ar-puuk/drut-dev")[drut-dev], "Open source", emph("Rust"), before: 15.7pt)

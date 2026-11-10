@@ -195,6 +195,24 @@ Tools I built at the Wasatch Front Regional Council. See [all projects](projects
     <p>Origin-destination commuter flows across the Wasatch Front, on H3 cells and DuckDB-WASM.</p>
     <span class="pb-card-tags"><span>Web app</span><span>JavaScript</span></span>
   </a>
+  <a class="pb-card" href="work/community-profiles/index.html">
+    <span class="pb-card-icon"><i class="bi bi-bar-chart-line"></i></span>
+    <span class="pb-card-title">Community Profiles</span>
+    <p>A map-first dashboard of Census and economic indicators for Wasatch Front communities.</p>
+    <span class="pb-card-tags"><span>Dashboard</span><span>TypeScript</span></span>
+  </a>
+  <a class="pb-card" href="work/synthetic-data-generator/index.html">
+    <span class="pb-card-icon"><i class="bi bi-shuffle"></i></span>
+    <span class="pb-card-title">Synthetic Data Generator</span>
+    <p>Fake tables that behave like private survey data, made entirely in the browser.</p>
+    <span class="pb-card-tags"><span>Web app</span><span>TypeScript</span></span>
+  </a>
+  <a class="pb-card" href="work/proposal-scoresheet/index.html">
+    <span class="pb-card-icon"><i class="bi bi-clipboard-check"></i></span>
+    <span class="pb-card-title">Proposal Evaluation Scoresheet</span>
+    <p>Scores and ranks RFP proposals, with Excel forms for reviewers and a PDF report.</p>
+    <span class="pb-card-tags"><span>Web app</span><span>TypeScript</span></span>
+  </a>
   <a class="pb-card" href="work/housing-site-evaluator/index.html">
     <span class="pb-card-icon"><i class="bi bi-house-door"></i></span>
     <span class="pb-card-title">Housing Site Evaluator</span>

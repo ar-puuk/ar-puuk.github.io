@@ -1,0 +1,44 @@
+---
+title: "Synthetic Data Generator"
+image-alt: "Synthetic Data Generator start screen with a Start from a file card, a Start from scratch card and a privacy banner."
+subtitle: Fake data that behaves like your real data, so AI coding agents never see the real thing
+description: A client-side tool that turns one private survey table into a fake table with the same columns, types, formats and summary statistics. Developed at the Wasatch Front Regional Council.
+image: "synthetic_data_generator.png"
+author:
+  - name: Pukar Bhandari
+    email: pukar.bhandari@wfrc.utah.gov
+    affiliation:
+      - name: Wasatch Front Regional Council
+        url: "https://wfrc.utah.gov/"
+date: "2026-11-03"
+categories: [WFRC, JavaScript, Web Apps, Data Science, Developer Tools, AI]
+prefer-html: true
+---
+
+::: {.callout-note appearance="simple"}
+**Developed at the Wasatch Front Regional Council (WFRC).** The application and its repository belong to WFRC; this page only summarizes my work.
+:::
+
+![The start screen: begin from a data file or design a table from scratch, with a banner stating that data never leaves the device.](synthetic_data_generator.png)
+
+## What it does
+
+Analysts want AI coding agents to help write analysis code, but the real survey data is private. This tool learns the shape of one table and produces a fake one with the same columns, row count, types, formats and summary statistics, so an agent can build and test code without ever seeing a real row. Swap in the real file afterwards and run the code locally.
+
+- **No backend, no uploads, no accounts.** Everything runs in the browser tab, a strict Content-Security-Policy blocks other requests, and a live counter shows what the page sends.
+- **Many formats:** CSV, Excel, Parquet, JSON, SPSS, Stata and SAS in; the fake file comes out in the same format.
+- **Ingest, Review, Generate:** override each column's type and rules, set a seed, preview rows and check that every summary was met.
+- The only thing derived from real data is a **spec file** of summaries and settings, never rows or identifiers, plus a README written for the agent.
+
+## What I worked on
+
+The full application: a TypeScript front end with DuckDB-WASM for reading files, the generation and checking logic, and the tests that show no real value reaches the page, the spec, the preview, the output file or an error message, run across Chrome, Edge, Firefox and WebKit.
+
+My role: developer. I authored all the commits in the repository.
+
+## See it
+
+::: {.app-links}
+[{{< fa arrow-up-right-from-square >}} Open app](https://wfrcanalytics.github.io/APP-synthetic-data-generator/){.btn .btn-primary target="_blank" rel="noopener"}
+[{{< fa brands github >}} GitHub](https://github.com/WFRCAnalytics/APP-synthetic-data-generator){.btn .btn-outline-secondary target="_blank" rel="noopener"}
+:::
