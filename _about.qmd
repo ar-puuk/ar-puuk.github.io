@@ -575,7 +575,7 @@ library(htmlwidgets)
 
 # Create the map
 journey_map <- leaflet() %>%
-  addProviderTiles(providers$CartoDB.Positron) %>%
+  addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
   setView(lng = 20, lat = 35, zoom = 2)
 
 # Add comprehensive JavaScript for map functionality
