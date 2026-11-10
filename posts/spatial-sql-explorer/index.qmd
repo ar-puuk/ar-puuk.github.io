@@ -13,6 +13,10 @@ aliases:
   - /posts/spatial-sql-exporer/
 categories: [JavaScript, GIS, Developer Tools, Web Apps, Open Source]
 prefer-html: true
+citation:
+  type: software
+  doi: 10.5281/zenodo.23931414
+  publisher: Zenodo
 ---
 
 Most of my day-to-day GIS work happens in R or Python: load a shapefile, write a few spatial queries, make a quick map to sanity-check the result. That is fast when you are already in a scripting environment, and annoying when you just want to *look* at a file, or hand someone a tool without asking them to install anything.

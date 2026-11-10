@@ -10,6 +10,10 @@ author:
 date: "2026-10-19"
 categories: [JavaScript, Python, Data Science, Web Apps, Open Source, GIS]
 prefer-html: true
+citation:
+  type: software
+  doi: 10.5281/zenodo.23789925
+  publisher: Zenodo
 ---
 
 The National Center for Education Statistics publishes a remarkable amount of open data on schools and colleges, but spread across separate surveys with different file layouts, identifiers and release schedules. Looking up "what has happened to enrollment near this school?" means stitching several of them together.

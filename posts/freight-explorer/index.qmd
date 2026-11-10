@@ -10,6 +10,10 @@ author:
 date: "2026-10-19"
 categories: [JavaScript, Python, Transportation, Web Apps, Open Source, GIS, Data Science]
 prefer-html: true
+citation:
+  type: software
+  doi: 10.5281/zenodo.23789900
+  publisher: Zenodo
 ---
 
 The Freight Analysis Framework (FAF) is the go-to public source for how much freight moves between U.S. regions, by commodity and mode. It is also awkward to use: several releases with different zone systems, benchmark years and dollar bases, plus a forecast that skips 2025 to 2029. Answering "what moves in and out of Utah?" usually means downloading gigabytes and wrangling them yourself.
