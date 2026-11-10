@@ -103,6 +103,12 @@ tryCatch({
 }, error = function(e) {
   message("Error fetching URL: ", e$message)
 })
+
+# The source site is sometimes down: fall back to the SVG saved by an earlier run
+if (!exists("svg_node") && file.exists(output_svg_path)) {
+  message("Using the previously saved SVG: ", output_svg_path)
+  svg_node <- read_xml(output_svg_path)
+}
 ```
 
 ::: {.content-visible when-format="html"}
