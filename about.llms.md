@@ -86,7 +86,19 @@ Tools I built at the Wasatch Front Regional Council. See [all projects](projects
 
 Origin-destination commuter flows across the Wasatch Front, on H3 cells and DuckDB-WASM.
 
-Web appJavaScript [ Housing Site Evaluator](work/housing-site-evaluator/index.llms.md)
+Web appJavaScript [ Community Profiles](work/community-profiles/index.llms.md)
+
+A map-first dashboard of Census and economic indicators for Wasatch Front communities.
+
+DashboardTypeScript [ Synthetic Data Generator](work/synthetic-data-generator/index.llms.md)
+
+Fake tables that behave like private survey data, made entirely in the browser.
+
+Web appTypeScript [ Proposal Evaluation Scoresheet](work/proposal-scoresheet/index.llms.md)
+
+Scores and ranks RFP proposals, with Excel forms for reviewers and a PDF report.
+
+Web appTypeScript [ Housing Site Evaluator](work/housing-site-evaluator/index.llms.md)
 
 Scores parcels and H3 hexagons on access to jobs, transit and everyday necessities.
 

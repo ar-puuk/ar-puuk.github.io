@@ -10,7 +10,53 @@
 <atom:link href="https://ar-puuk.github.io/projects.xml" rel="self" type="application/rss+xml"/>
 <description>Pukar Bhandari is a Transportation Planner and Data Scientist working at the intersection of Transportation Modeling, Economic Impact Analysis, and Data Science.</description>
 <generator>quarto-1.11.9</generator>
-<lastBuildDate>Sun, 25 Oct 2026 06:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 09 Nov 2026 07:00:00 GMT</lastBuildDate>
+<item>
+  <title>Community Profiles</title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/work/community-profiles/</link>
+  <description><![CDATA[ A static, map-first dashboard of Census and economic indicators for the Wasatch Front region, counties, cities and planning areas, plus the data pipeline behind it. Developed at the Wasatch Front Regional Council. ]]></description>
+  <category>WFRC</category>
+  <category>Python</category>
+  <category>JavaScript</category>
+  <category>Transportation</category>
+  <category>Web Apps</category>
+  <category>GIS</category>
+  <category>Data Science</category>
+  <category>Dashboard</category>
+  <guid>https://ar-puuk.github.io/work/community-profiles/</guid>
+  <pubDate>Mon, 09 Nov 2026 07:00:00 GMT</pubDate>
+  <media:content url="https://ar-puuk.github.io/work/community-profiles/community_profiles.png" medium="image" type="image/png" height="91" width="144"/>
+</item>
+<item>
+  <title>Proposal Evaluation Scoresheet</title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/work/proposal-scoresheet/</link>
+  <description><![CDATA[ A client-only tool for configuring weighted criteria, collecting reviewer scores through Excel workbooks, and ranking consulting firm proposals. Developed at the Wasatch Front Regional Council. ]]></description>
+  <category>WFRC</category>
+  <category>JavaScript</category>
+  <category>Web Apps</category>
+  <category>Data Science</category>
+  <category>Developer Tools</category>
+  <guid>https://ar-puuk.github.io/work/proposal-scoresheet/</guid>
+  <pubDate>Fri, 06 Nov 2026 07:00:00 GMT</pubDate>
+  <media:content url="https://ar-puuk.github.io/work/proposal-scoresheet/proposal_scoresheet.png" medium="image" type="image/png" height="91" width="144"/>
+</item>
+<item>
+  <title>Synthetic Data Generator</title>
+  <dc:creator>Pukar Bhandari</dc:creator>
+  <link>https://ar-puuk.github.io/work/synthetic-data-generator/</link>
+  <description><![CDATA[ A client-side tool that turns one private survey table into a fake table with the same columns, types, formats and summary statistics. Developed at the Wasatch Front Regional Council. ]]></description>
+  <category>WFRC</category>
+  <category>JavaScript</category>
+  <category>Web Apps</category>
+  <category>Data Science</category>
+  <category>Developer Tools</category>
+  <category>AI</category>
+  <guid>https://ar-puuk.github.io/work/synthetic-data-generator/</guid>
+  <pubDate>Tue, 03 Nov 2026 07:00:00 GMT</pubDate>
+  <media:content url="https://ar-puuk.github.io/work/synthetic-data-generator/synthetic_data_generator.png" medium="image" type="image/png" height="91" width="144"/>
+</item>
 <item>
   <title></title>
   <link>https://ar-puuk.github.io/dashboards/slco-places.html</link>
@@ -246,45 +292,6 @@
   <guid>https://ar-puuk.github.io/posts/spatial-sql-explorer/</guid>
   <pubDate>Wed, 25 Feb 2026 07:00:00 GMT</pubDate>
   <media:content url="https://ar-puuk.github.io/posts/spatial-sql-explorer/spatial_sql_explorer.png" medium="image" type="image/png" height="82" width="144"/>
-</item>
-<item>
-  <title></title>
-  <dc:creator>Pukar Bhandari</dc:creator>
-  <link>https://ar-puuk.github.io/slides/spatial-benchmark/</link>
-  <description><![CDATA[ undefined ]]></description>
-  <category>R</category>
-  <category>Python</category>
-  <category>GIS</category>
-  <category>Data Science</category>
-  <category>WFRC</category>
-  <guid>https://ar-puuk.github.io/slides/spatial-benchmark/</guid>
-  <pubDate>Sat, 07 Feb 2026 07:00:00 GMT</pubDate>
-  <media:content url="https://ar-puuk.github.io/slides/spatial-benchmark/csv_vs_parquet.jpg" medium="image" type="image/jpeg" height="180" width="144"/>
-</item>
-<item>
-  <title>WgetGUI Ultimate: A Fluent Command Generator</title>
-  <dc:creator>Pukar Bhandari</dc:creator>
-  <link>https://ar-puuk.github.io/posts/wget-gui/</link>
-  <description><![CDATA[ A modern, Windows 11-inspired web interface for building complex GNU Wget commands ]]></description>
-  <category>Developer Tools</category>
-  <category>JavaScript</category>
-  <category>Web Apps</category>
-  <category>Open Source</category>
-  <guid>https://ar-puuk.github.io/posts/wget-gui/</guid>
-  <pubDate>Sun, 25 Jan 2026 07:00:00 GMT</pubDate>
-  <media:content url="https://ar-puuk.github.io/posts/wget-gui/wget_gui.png" medium="image" type="image/png" height="68" width="144"/>
-</item>
-<item>
-  <title>Nepal Electoral Constituency GeoJSON</title>
-  <dc:creator>Pukar Bhandari</dc:creator>
-  <link>https://ar-puuk.github.io/posts/nepal-election-geojson/</link>
-  <description><![CDATA[ Scraping a constituency map from an election results site, converting its SVG paths to GIS geometry, and georeferencing it against ward boundaries in R. ]]></description>
-  <category>R</category>
-  <category>GIS</category>
-  <category>Data Science</category>
-  <guid>https://ar-puuk.github.io/posts/nepal-election-geojson/</guid>
-  <pubDate>Sun, 18 Jan 2026 07:00:00 GMT</pubDate>
-  <media:content url="https://ar-puuk.github.io/posts/nepal-election-geojson/nepal_election_geojson.png" medium="image" type="image/png" height="85" width="144"/>
 </item>
 </channel>
 </rss>

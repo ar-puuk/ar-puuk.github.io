@@ -362,14 +362,14 @@ The interactive map visualization displays the TAZ structure colored by county, 
 
 ``` downlit
 # Create interactive map
-mapview::mapview(lscog_taz, zcol = "COUNTY", lwd = 1.6, map.types = "CartoDB.Voyager", col.regions = RColorBrewer::brewer.pal(6, "Dark2"))
+mapview::mapview(lscog_taz, zcol = "COUNTY", lwd = 1.6, map.types = "Esri.WorldGrayCanvas", col.regions = RColorBrewer::brewer.pal(6, "Dark2"))
 ```
 
 ##  Python
 
 ``` python
 # Create interactive map
-lscog_taz.explore(column="COUNTY", categorical=True, legend=True, tiles="CartoDB.Voyager", zoom_start=8)
+lscog_taz.explore(column="COUNTY", categorical=True, legend=True, tiles="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", attr="Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ", zoom_start=8)
 ```
 
 Make this Notebook Trusted to load map: File -\> Trust Notebook
@@ -1482,16 +1482,16 @@ The comparative visualization reveals the increased spatial resolution achieved 
 
 ``` downlit
 # Compare before and after interpolation
-mapview::mapview(lscog_acs_cb, zcol = "INC_49999", color = NA) |
-mapview::mapview(lscog_acs, zcol = "INC_49999", color = NA)
+mapview::mapview(lscog_acs_cb, zcol = "INC_49999", color = NA, map.types = "Esri.WorldGrayCanvas") |
+mapview::mapview(lscog_acs, zcol = "INC_49999", color = NA, map.types = "Esri.WorldGrayCanvas")
 ```
 
 ##  Python
 
 ``` python
 # Compare before and after interpolation
-lscog_acs_cb.explore(column="INC_49999", color="blue", legend=True, tiles="CartoDB positron") |\
-    lscog_acs.explore(column="INC_49999", color="red", legend=True, tiles="CartoDB positron")
+lscog_acs_cb.explore(column="INC_49999", color="blue", legend=True, tiles="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", attr="Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ") |\
+    lscog_acs.explore(column="INC_49999", color="red", legend=True, tiles="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", attr="Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ")
 ```
 
 ## 4.2 Combine population and households

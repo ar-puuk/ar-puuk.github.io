@@ -118,11 +118,11 @@ The application uses Leaflet for interactive mapping, with a carefully chosen ba
 
 ``` r
 default_map <- leaflet(options = leafletOptions(crs = leafletCRS())) |>
-  addProviderTiles("CartoDB.Voyager") |>
+  addProviderTiles("Esri.WorldGrayCanvas") |>
   addPolygons(data = sf_states, color = "#222222", weight = 1, fillOpacity = 0.15)
 ```
 
-**CartoDB.Voyager** was selected for its clean design and good contrast with overlay data, though the code structure allows for easy switching between provider tiles.
+**Esri.WorldGrayCanvas** (Esri’s Light Gray Canvas) was selected for its muted design and good contrast with overlay data, and it needs no API key, though the code structure allows for easy switching between provider tiles.
 
 ### Dynamic Geographic Focus
 

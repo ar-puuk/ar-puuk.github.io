@@ -62,15 +62,17 @@ Nothing in the code is specific to a state; the state shown is set by one config
 BibTeX citation:
 
 ``` quarto-appendix-bibtex
-@online{bhandari2026,
+@software{bhandari2026,
   author = {Bhandari, Pukar},
+  publisher = {Zenodo},
   title = {An {Education} {Explorer} for {Public} {NCES} {Data}},
   date = {2026-10-19},
   url = {https://ar-puuk.github.io/posts/education-explorer/},
+  doi = {10.5281/zenodo.23789925},
   langid = {en-US}
 }
 ```
 
 For attribution, please cite this work as:
 
-Bhandari, Pukar. 2026. “An Education Explorer for Public NCES Data.” October 19. <https://ar-puuk.github.io/posts/education-explorer/>.
+Bhandari, Pukar. 2026. *An Education Explorer for Public NCES Data*. Zenodo, released October 19. <https://doi.org/10.5281/zenodo.23789925>.

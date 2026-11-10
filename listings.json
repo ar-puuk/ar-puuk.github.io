@@ -1,13 +1,10 @@
 [
   {
-    "listing": "/research/index.html",
-    "items": [
-      "/research/articles/salt-lake-transit-equity-2023/index.html"
-    ]
-  },
-  {
     "listing": "/projects.html",
     "items": [
+      "/work/community-profiles/index.html",
+      "/work/proposal-scoresheet/index.html",
+      "/work/synthetic-data-generator/index.html",
       "/dashboards/slco-places.html",
       "/dashboards/utah-bikeways.html",
       "/posts/education-explorer/index.html",
@@ -39,6 +36,12 @@
       "/posts/overture-data-download/index.html",
       "/posts/uscensus-dashboard/index.html",
       "/posts/nepal-population-density/index.html"
+    ]
+  },
+  {
+    "listing": "/research/index.html",
+    "items": [
+      "/research/articles/salt-lake-transit-equity-2023/index.html"
     ]
   }
 ]

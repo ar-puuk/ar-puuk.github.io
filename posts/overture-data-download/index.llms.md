@@ -336,7 +336,7 @@ slco_places_sf |>
     categories_main = "main", 
     confidence
   ) |>
-  mapview::mapview(map.types = "CartoDB.Voyager", legend = FALSE)
+  mapview::mapview(map.types = "Esri.WorldGrayCanvas", legend = FALSE)
 ```
 
 ##  Python
@@ -351,7 +351,7 @@ slco_places_sf |>
         categories_main=lambda d: d["categories"].str["main"],
     )
     .loc[:, ["names_primary", "categories_main", "confidence", "geometry"]]
-    .explore(tiles="CartoDB.Voyager", zoom_start=9)
+    .explore(tiles="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", attr="Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ", zoom_start=9)
 )
 ```
 

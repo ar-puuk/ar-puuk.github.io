@@ -1,3 +1,33 @@
+[![Community Profiles dashboard for the WFRC region, with headline indicator tiles, a county choropleth of median household income and two trend charts.](./work/community-profiles/community_profiles.png)](work/community-profiles/index.llms.md)
+
+### [Community Profiles](work/community-profiles/index.llms.md)
+
+A static, map-first dashboard of Census and economic indicators for the Wasatch Front region, counties, cities and planning areas, plus the data pipeline behind it. Developed at the Wasatch Front Regional Council.
+
+Nov 2026
+
+2 min
+
+[![Proposal Evaluation Scoresheet landing page with a five-step workflow from configuring the project to exporting the PDF report.](./work/proposal-scoresheet/proposal_scoresheet.png)](work/proposal-scoresheet/index.llms.md)
+
+### [Proposal Evaluation Scoresheet](work/proposal-scoresheet/index.llms.md)
+
+A client-only tool for configuring weighted criteria, collecting reviewer scores through Excel workbooks, and ranking consulting firm proposals. Developed at the Wasatch Front Regional Council.
+
+Nov 2026
+
+2 min
+
+[![Synthetic Data Generator start screen with a Start from a file card, a Start from scratch card and a privacy banner.](./work/synthetic-data-generator/synthetic_data_generator.png)](work/synthetic-data-generator/index.llms.md)
+
+### [Synthetic Data Generator](work/synthetic-data-generator/index.llms.md)
+
+A client-side tool that turns one private survey table into a fake table with the same columns, types, formats and summary statistics. Developed at the Wasatch Front Regional Council.
+
+Nov 2026
+
+2 min
+
 [![Map of places in Salt Lake County downloaded from Overture Maps.](./posts/overture-data-download/overture_data_download.png)](dashboards/slco-places.llms.md)
 
 ### [Salt Lake County Places Dashboard](dashboards/slco-places.llms.md)
@@ -218,8 +248,6 @@ Nov 2025
 
 17 min
 
-[![Globe view centered on Africa with an introduction card for a personal story map.](./posts/storymap_my_journey/storymap_my_journey.png)](posts/storymap_my_journey/index.llms.md)
-
 ### [Building an Interactive Storymap using {mapgl}](posts/storymap_my_journey/index.llms.md)
 
 Creating an open-source, interactive storymap with the {mapgl} R package to visualize my journey across the world.
@@ -235,8 +263,6 @@ Slides on methods and applications for quantifying the economic effects of trans
 Aug 2025
 
 10 min
-
-[![Map of six South Carolina counties in the Lower Savannah region divided into colored traffic analysis zones.](./posts/socioeconomic-demo/lscog_taz.png)](posts/socioeconomic-demo/index.llms.md)
 
 ### [Base Year SE Data Development](posts/socioeconomic-demo/index.llms.md)
 

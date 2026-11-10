@@ -132,16 +132,18 @@ The code is MIT-licensed on [GitHub](https://github.com/ar-puuk/spatial-sql-expl
 BibTeX citation:
 
 ``` quarto-appendix-bibtex
-@online{bhandari2026,
+@software{bhandari2026,
   author = {Bhandari, Pukar},
+  publisher = {Zenodo},
   title = {Spatial {Explorer:} {Spatial} {SQL} for {Maps,} in the
     {Browser} and in {VS} {Code}},
   date = {2026-02-25},
   url = {https://ar-puuk.github.io/posts/spatial-sql-explorer/},
+  doi = {10.5281/zenodo.23931414},
   langid = {en-US}
 }
 ```
 
 For attribution, please cite this work as:
 
-Bhandari, Pukar. 2026. “Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code.” February 25. <https://ar-puuk.github.io/posts/spatial-sql-explorer/>.
+Bhandari, Pukar. 2026. *Spatial Explorer: Spatial SQL for Maps, in the Browser and in VS Code*. Zenodo, released February 25. <https://doi.org/10.5281/zenodo.23931414>.

@@ -75,15 +75,17 @@ The [methodology page](https://ar-puuk.github.io/freight-explorer/methodology.ht
 BibTeX citation:
 
 ``` quarto-appendix-bibtex
-@online{bhandari2026,
+@software{bhandari2026,
   author = {Bhandari, Pukar},
+  publisher = {Zenodo},
   title = {A {Zero-Cost} {Freight} {Flow} {Explorer} for {Utah}},
   date = {2026-10-19},
   url = {https://ar-puuk.github.io/posts/freight-explorer/},
+  doi = {10.5281/zenodo.23789900},
   langid = {en-US}
 }
 ```
 
 For attribution, please cite this work as:
 
-Bhandari, Pukar. 2026. “A Zero-Cost Freight Flow Explorer for Utah.” October 19. <https://ar-puuk.github.io/posts/freight-explorer/>.
+Bhandari, Pukar. 2026. *A Zero-Cost Freight Flow Explorer for Utah*. Zenodo, released October 19. <https://doi.org/10.5281/zenodo.23789900>.

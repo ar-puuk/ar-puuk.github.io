@@ -80,6 +80,12 @@ tryCatch({
 }, error = function(e) {
   message("Error fetching URL: ", e$message)
 })
+
+# The source site is sometimes down: fall back to the SVG saved by an earlier run
+if (!exists("svg_node") && file.exists(output_svg_path)) {
+  message("Using the previously saved SVG: ", output_svg_path)
+  svg_node <- read_xml(output_svg_path)
+}
 ```
 
 [![Scraped Electoral Map of Nepal in SVG format](./output/nepal_electoral_map.svg)](./output/nepal_electoral_map.svg "Scraped Electoral Map of Nepal in SVG format")
@@ -180,7 +186,7 @@ st_crs(nepal_sf) <- 3857
 
 ``` downlit
 # Create interactive map
-mapview::mapview(nepal_sf)
+mapview::mapview(nepal_sf, map.types = "Esri.WorldGrayCanvas")
 ```
 
 ``` downlit
@@ -253,7 +259,7 @@ final_map_preview <- final_map_utm |>
   sf::st_simplify(preserveTopology = TRUE, dTolerance = 200) |>
   st_transform(4326)
 
-mapview::mapview(final_map_preview)
+mapview::mapview(final_map_preview, map.types = "Esri.WorldGrayCanvas")
 ```
 
 ``` downlit

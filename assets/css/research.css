@@ -11,14 +11,14 @@
 }
 
 .research .project {
-  border-left: 4px solid #e9ecef;
+  border-left: 4px solid var(--bs-border-color);
   margin-bottom: 2rem;
   padding: 1rem 0 1rem 1.5rem;
   transition: border-color 0.3s ease;
 }
 
 .research .project:hover {
-  border-left-color: #007bff;
+  border-left-color: var(--bs-link-color);
 }
 
 .research .project-content {
@@ -44,8 +44,8 @@
 }
 
 .research .project-category a {
-  background: #f8f9fa;
-  color: #6c757d;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  color: var(--bs-secondary-color);
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
   text-decoration: none;
@@ -54,13 +54,13 @@
 }
 
 .research .project-category a:hover {
-  background: #e9ecef;
-  color: #495057;
+  background: color-mix(in srgb, currentColor 18%, transparent);
+  color: var(--bs-body-color);
   text-decoration: none;
 }
 
 .research .project-description {
-  color: #6c757d;
+  color: var(--bs-secondary-color);
   font-style: italic;
   margin-bottom: 1rem;
   line-height: 1.4;
@@ -84,19 +84,28 @@
 }
 
 .research .project-link a {
-  color: #007bff;
+  color: var(--bs-link-color);
   text-decoration: none;
   font-size: 0.9rem;
   transition: color 0.3s ease;
 }
 
 .research .project-link a:hover {
-  color: #0056b3;
+  color: var(--bs-link-hover-color);
   text-decoration: underline;
 }
 
 .research .project-link.details a {
   font-weight: 500;
+}
+
+/* DOI inside the citation: plain monospace text, not a boxed code chip */
+.research .listing-pub-info code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font-size: 0.95em;
 }
 
 /* Responsive design */
