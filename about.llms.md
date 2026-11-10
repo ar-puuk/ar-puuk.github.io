@@ -90,7 +90,7 @@ Web appJavaScript [ Community Profiles](work/community-profiles/index.llms.md)
 
 A map-first dashboard of Census and economic indicators for Wasatch Front communities.
 
-DashboardTypeScript [ Synthetic Data Generator](work/synthetic-data-generator/index.llms.md)
+PythonTypeScript [ Synthetic Data Generator](work/synthetic-data-generator/index.llms.md)
 
 Fake tables that behave like private survey data, made entirely in the browser.
 
@@ -102,7 +102,7 @@ Web appTypeScript [ Housing Site Evaluator](work/housing-site-evaluator/index.ll
 
 Scores parcels and H3 hexagons on access to jobs, transit and everyday necessities.
 
-Web appLand use [ GTFS vs. TDM Transit Comparison](work/gtfs-vs-tdm/index.llms.md)
+RTypeScript [ GTFS vs. TDM Transit Comparison](work/gtfs-vs-tdm/index.llms.md)
 
 A web map comparing the travel demand model's transit network with GTFS data.
 
