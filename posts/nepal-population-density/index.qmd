@@ -51,6 +51,13 @@ library(rayshader)
 library(MetBrewer)
 library(colorspace)
 library(rayrender)
+
+# Annotation: PNG reading, anti-aliased PNG device, and font registration
+# (grid ships with base R)
+library(png)
+library(ragg)
+library(systemfonts)
+library(grid)
 ```
 
 ```{r global-options}
