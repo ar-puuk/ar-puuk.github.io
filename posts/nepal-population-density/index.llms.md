@@ -32,6 +32,13 @@ library(rayshader)
 library(MetBrewer)
 library(colorspace)
 library(rayrender)
+
+# Annotation: PNG reading, anti-aliased PNG device, and font registration
+# (grid ships with base R)
+library(png)
+library(ragg)
+library(systemfonts)
+library(grid)
 ```
 
 ``` downlit
@@ -243,9 +250,9 @@ outfile <- here::here("posts/nepal-population-density/plots/final_plot.png")
 }
 ```
 
-    Rendering started: 2026-11-12 10:11:09.506255 
+    Rendering started: 2026-11-12 11:07:44.269246 
 
-    Rendering completed in: 11.1198294679324 
+    Rendering completed in: 11.1458701809247 
 
 ## 7 Post-Processing and Annotation
 
