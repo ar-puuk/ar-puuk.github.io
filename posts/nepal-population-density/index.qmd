@@ -16,7 +16,7 @@ prefer-html: true
 
 This analysis demonstrates advanced geospatial visualization techniques using R's rayshader package to create a stunning 3D population density map of Nepal. The project showcases the integration of high-resolution population data with topographic visualization methods, resulting in an interactive and informative representation of demographic patterns across Nepal's diverse terrain.
 
-**Key Technologies**: R, rayshader, sf, stars, magick\
+**Key Technologies**: R, rayshader, sf, stars, ragg, grid\
 **Data Source**: Kontur Population Dataset (400m H3 hexagon resolution)\
 **Projection**: ESRI:102306 (Nepal Nagarkot TM)
 
@@ -30,13 +30,13 @@ This analysis demonstrates advanced geospatial visualization techniques using R'
 #| code-summary: "Package Installation (Run Once)"
 
 # Core packages for geospatial analysis
-install.packages(c("tidyverse", "here", "sf", "tmap", "ggplot2", "mapview", "stars"))
+install.packages(c("here", "sf", "ggplot2", "stars"))
 
 # Visualization packages
-install.packages(c("rayshader", "MetBrewer", "colorspace", "rayrender", "magick"))
+install.packages(c("rayshader", "MetBrewer", "colorspace", "rayrender"))
 
-# Font handling
-install.packages("extrafont")
+# Annotation: PNG reading, anti-aliased PNG device, and font registration
+install.packages(c("png", "ragg", "systemfonts"))
 ```
 
 ```{r libraries}
@@ -44,7 +44,6 @@ install.packages("extrafont")
 #| warning: false
 
 # Load required libraries
-library(tidyverse)
 library(here)
 library(sf)
 library(stars)
@@ -52,8 +51,6 @@ library(rayshader)
 library(MetBrewer)
 library(colorspace)
 library(rayrender)
-library(magick)
-library(extrafont)
 ```
 
 ```{r global-options}
@@ -251,12 +248,19 @@ outfile <- here::here("posts/nepal-population-density/plots/final_plot.png")
 
 ### Geographic Labeling
 
-The final step enhances the visualization with strategic city labels and professional annotation using the {magick} package for image manipulation.
+The final step adds the title, city labels and attribution on top of the rendered image. Instead of {magick}, it uses base {grid} for layout and the {ragg} PNG device for anti-aliased text. Two font files in the `font/` folder are registered for the session with {systemfonts}, so nothing needs to be installed in Windows: Ananda Namaste for the title, and Jost Medium (a free Google Fonts typeface in the style of Futura) for everything else.
 
-```{r image-annotation}
-# Load rendered image
-pop_raster <- magick::image_read(
-  here::here("posts/nepal-population-density/plots/final_plot.png")
+```{r font-setup}
+# Register the bundled font (no system-wide install required)
+systemfonts::register_font(
+  "Ananda Namaste",
+  plain = here::here("posts/nepal-population-density/font/Ananda Namaste 400.ttf")
+)
+
+# Jost (Google Fonts, OFL) stands in for Futura BT Medium, which is commercial
+systemfonts::register_font(
+  "Jost Medium",
+  plain = here::here("posts/nepal-population-density/font/Jost-500.ttf")
 )
 
 # Define text styling
@@ -264,139 +268,101 @@ text_color <- colorspace::darken(color[7], .5)
 colorspace::swatchplot(text_color)
 ```
 
-```{r font-setup}
-# Import and load fonts
-extrafont::font_import(
-  paths = here::here("posts/nepal-population-density/font"), prompt = FALSE
+```{r image-annotation}
+# Load rendered image
+render <- png::readPNG(
+  here::here("posts/nepal-population-density/plots/final_plot.png")
 )
+img_h <- dim(render)[1]
+img_w <- dim(render)[2]
 
-extrafont::loadfonts(quiet = TRUE)
+# Place text using ImageMagick-style gravity and pixel offsets
+# (offsets move the label inward from the named edge; for "center", +x is right and +y is down)
+add_label <- function(label, gravity, dx, dy, size, alpha = 0.8,
+                      family = "Jost Medium") {
+  pos <- switch(
+    gravity,
+    northeast = list(x = img_w - dx,      y = dy,             h = 1,  v = 1),
+    east      = list(x = img_w - dx,      y = img_h / 2 + dy, h = 1,  v = 0.5),
+    west      = list(x = dx,              y = img_h / 2 + dy, h = 0,  v = 0.5),
+    center    = list(x = img_w / 2 + dx,  y = img_h / 2 + dy, h = 0.5, v = 0.5),
+    southwest = list(x = dx,              y = img_h - dy,     h = 0,  v = 0)
+  )
+  grid::grid.text(
+    label,
+    x = grid::unit(pos$x, "native"),
+    y = grid::unit(pos$y, "native"),
+    hjust = pos$h,
+    vjust = pos$v,
+    gp = grid::gpar(
+      col = grDevices::adjustcolor(text_color, alpha.f = alpha),
+      fontsize = size,
+      fontfamily = family
+    )
+  )
+}
 ```
 
 ```{r annotated-render}
-# Add comprehensive annotations
-pop_raster |>
-  # magick::image_crop(gravity = "center", geometry = "") |> 
-  magick::image_annotate("NEPAL",
-                 gravity = "northeast",
-                 location = "+50+50",
-                 color = text_color,
-                 size = 150,
-                 # degrees = 0,
-                 font = "Ananda Namaste",
-                 weight = 700) |>
-  magick::image_annotate("POPULATION DENSITY MAP",
-                 gravity = "northeast",
-                 location = "+50+200",
-                 color = text_color,
-                 size = 36.5,
-                 # degrees = 0,
-                 font = "FuturaBT-Medium",
-                 weight = 500) |>
-  # Major urban centers
-  magick::image_annotate("Kathmandu",
-                 gravity = "center",
-                 location = "+250-50",
-                 color = scales::alpha(text_color, .8),
-                 size = 30,
-                 # degrees = -85,
-                 font = "FuturaBT-Medium") |>
-  magick::image_annotate("Pokhara",
-                 gravity = "center",
-                 location = "-30+35",
-                 color = scales::alpha(text_color, .8),
-                 size = 25,
-                 # degrees = -75,
-                 font = "FuturaBT-Medium") |>
-  magick::image_annotate("Biratnagar",
-                 gravity = "east",
-                 location = "+125+100",
-                 color = scales::alpha(text_color, .8),
-                 size = 28,
-                 # degrees = -75,
-                 font = "FuturaBT-Medium") |>
-  # Regional centers
-  magick::image_annotate("Birgunj",
-                 gravity = "center",
-                 location = "+130+100",
-                 color = scales::alpha(text_color, .8),
-                 size = 25,
-                 font = "FuturaBT-Medium") |>
-  magick::image_annotate("Nepalgunj",
-                 gravity = "center",
-                 location = "-450+0",
-                 color = scales::alpha(text_color, .8),
-                 size = 24,
-                 font = "FuturaBT-Medium") |>
-  magick::image_annotate("Janakpur",
-                 gravity = "east",
-                 location = "+500+140",
-                 color = scales::alpha(text_color, .8),
-                 size = 22,
-                 font = "FuturaBT-Medium") |>
-  # Additional urban areas
-  magick::image_annotate("Itahari",
-                 gravity = "east",
-                 location = "+230+150",
-                 color = scales::alpha(text_color, .8),
-                 size = 24,
-                 # degrees = -75,
-                 font = "FuturaBT-Medium") |> 
-  magick::image_annotate("Surkhet",
-                 gravity = "center",
-                 location = "-450-75",
-                 color = scales::alpha(text_color, .8),
-                 size = 20,
-                 # degrees = -75,
-                 font = "FuturaBT-Medium") |> 
-  magick::image_annotate("Tikapur",
-                 gravity = "west",
-                 location = "+400-125",
-                 color = scales::alpha(text_color, .8),
-                 size = 22,
-                 # degrees = -75,
-                 font = "FuturaBT-Medium") |> 
-  magick::image_annotate("Dhangadhi",
-                 gravity = "west",
-                 location = "+275-135",
-                 color = scales::alpha(text_color, .8),
-                 size = 18,
-                 # degrees = -75,
-                 font = "FuturaBT-Medium") |> 
-  magick::image_annotate("Bharatpur",
-                 gravity = "center",
-                 location = "+60+0",
-                 color = scales::alpha(text_color, .8),
-                 size = 20,
-                 # degrees = -75,
-                 font = "FuturaBT-Medium") |> 
-  magick::image_annotate("Butwal",
-                 gravity = "center",
-                 location = "-125+5",
-                 color = scales::alpha(text_color, .8),
-                 size = 20,
-                 # degrees = -75,
-                 font = "FuturaBT-Medium") |>
-  magick::image_annotate("Ghorahi\nTulsipur",
-                 gravity = "center",
-                 location = "-350-100",
-                 color = scales::alpha(text_color, .8),
-                 size = 22,
-                 # degrees = -75,
-                 font = "FuturaBT-Medium") |> 
-  # Professional attribution
-  magick::image_annotate("Visualization by: Pukar Bhandari with Rayshader(@tylermorganwall) | Data: Kontur Population (Released 2022-06-30)",
-                 gravity = "southwest",
-                 location = "+20+20",
-                 color = scales::alpha(text_color, .6),
-                 # degrees = 0,
-                 font = "FuturaBT-Medium",
-                 size = 20) |>
-  magick::image_write(
-    here::here("posts/nepal-population-density/nepal_population_density.png"),
-    format = "png",
-    quality = 100
+# res = 72 makes one point equal one pixel, so sizes match the image's pixel grid
+ragg::agg_png(
+  here::here("posts/nepal-population-density/nepal_population_density.png"),
+  width = img_w, height = img_h, units = "px", res = 72
+)
+
+grid::grid.newpage()
+grid::grid.raster(render, width = 1, height = 1)
+
+# Native units with y running top-down, to match pixel offsets
+grid::pushViewport(grid::viewport(xscale = c(0, img_w), yscale = c(img_h, 0)))
+
+# Title: scale "NEPAL" so its width matches the subtitle's width
+label_width <- function(label, size, family) {
+  grid::convertWidth(
+    grid::grobWidth(grid::textGrob(
+      label, gp = grid::gpar(fontsize = size, fontfamily = family)
+    )),
+    "native", valueOnly = TRUE
   )
+}
+
+subtitle_size <- 36.5
+subtitle_width <- label_width("POPULATION DENSITY MAP", subtitle_size, "Jost Medium")
+# Ananda Namaste has side bearings and an overhanging top bar on the "n", so the
+# advance width is nudged up (x1.04) to line the stem of the "n" up with the "P"
+title_size <- 1.04 * 100 * subtitle_width / label_width("NEPAL", 100, "Ananda Namaste")
+
+add_label("NEPAL", "northeast", 50, 65, title_size, alpha = 1, family = "Ananda Namaste")
+add_label("POPULATION DENSITY MAP", "northeast", 50, 235, subtitle_size, alpha = 1)
+
+# Major urban centers
+add_label("Kathmandu", "center", 250, -50, 30)
+add_label("Pokhara", "center", -30, 35, 25)
+add_label("Biratnagar", "east", 125, 100, 28)
+
+# Regional centers
+add_label("Birgunj", "center", 130, 100, 25)
+add_label("Nepalgunj", "center", -450, 0, 24)
+add_label("Janakpur", "east", 500, 140, 22)
+
+# Additional urban areas
+add_label("Itahari", "east", 230, 150, 24)
+add_label("Surkhet", "center", -450, -75, 20)
+add_label("Tikapur", "west", 400, -125, 22)
+add_label("Dhangadhi", "west", 275, -135, 18)
+add_label("Bharatpur", "center", 60, 0, 20)
+add_label("Butwal", "center", -125, 5, 20)
+add_label("Ghorahi
+Tulsipur", "center", -350, -100, 22)
+
+# Attribution
+add_label(
+  "Visualization by: Pukar Bhandari with Rayshader(@tylermorganwall) | Data: Kontur Population (Released 2022-06-30)",
+  "southwest", 20, 20, 20, alpha = 0.6
+)
+
+invisible(grid::popViewport())
+invisible(dev.off())
 ```
 
 ![Population Density of Nepal](nepal_population_density.png){.lightbox}
