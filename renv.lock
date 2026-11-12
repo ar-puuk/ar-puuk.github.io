@@ -13,6 +13,10 @@
       {
         "Name": "rspatial",
         "URL": "https://r-spatial.r-universe.dev"
+      },
+      {
+        "Name": "apache",
+        "URL": "https://apache.r-universe.dev"
       }
     ]
   },
@@ -6457,7 +6461,7 @@
     "sedonadb": {
       "Package": "sedonadb",
       "Version": "0.5.0.9000",
-      "Source": "unknown",
+      "Source": "Repository",
       "Title": "Bindings for Apache SedonaDB",
       "Authors@R": "person(\"Dewey\", \"Dunnington\", , \"dewey@dunnington.ca\", role = c(\"aut\", \"cre\"))",
       "Description": "Provides bindings for Apache SedonaDB, a lightweight query engine optimized for spatial workflows.",
@@ -6490,15 +6494,10 @@
       "Config/Needs/check": "lintr",
       "Config/roxygen2/version": "8.0.0",
       "Config/pak/sysreqs": "libzstd-dev libclang-dev",
-      "Repository": "https://apache.r-universe.dev",
+      "Repository": "apache",
       "NeedsCompilation": "yes",
       "Author": "Dewey Dunnington [aut, cre]",
-      "Maintainer": "Dewey Dunnington <dewey@dunnington.ca>",
-      "RemoteType": "unknown",
-      "RemoteUrl": "https://github.com/apache/sedona-db",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "f6f61d1f462907a48221c71029be576f7d5506bc",
-      "RemoteSubdir": "r/sedonadb"
+      "Maintainer": "Dewey Dunnington <dewey@dunnington.ca>"
     },
     "selectr": {
       "Package": "selectr",
