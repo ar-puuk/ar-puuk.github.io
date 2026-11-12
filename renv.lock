@@ -13,10 +13,6 @@
       {
         "Name": "rspatial",
         "URL": "https://r-spatial.r-universe.dev"
-      },
-      {
-        "Name": "apache",
-        "URL": "https://apache.r-universe.dev"
       }
     ]
   },
@@ -6457,47 +6453,6 @@
       "Author": "Hadley Wickham [aut], Thomas Lin Pedersen [cre, aut] (<https://orcid.org/0000-0002-5147-4711>), Dana Seidel [aut], Posit Software, PBC [cph, fnd] (03wc8by49)",
       "Maintainer": "Thomas Lin Pedersen <thomas.pedersen@posit.co>",
       "Repository": "CRAN"
-    },
-    "sedonadb": {
-      "Package": "sedonadb",
-      "Version": "0.5.0.9000",
-      "Source": "Repository",
-      "Title": "Bindings for Apache SedonaDB",
-      "Authors@R": "person(\"Dewey\", \"Dunnington\", , \"dewey@dunnington.ca\", role = c(\"aut\", \"cre\"))",
-      "Description": "Provides bindings for Apache SedonaDB, a lightweight query engine optimized for spatial workflows.",
-      "License": "Apache License (>= 2)",
-      "Encoding": "UTF-8",
-      "Roxygen": "list(markdown = TRUE)",
-      "SystemRequirements": "Cargo (Rust's package manager), rustc",
-      "Depends": [
-        "R (>= 4.1.0)"
-      ],
-      "Suggests": [
-        "adbcdrivermanager",
-        "dplyr",
-        "jsonlite",
-        "lintr",
-        "rlang",
-        "tibble",
-        "sf",
-        "testthat (>= 3.0.0)",
-        "tidyselect",
-        "withr",
-        "wk"
-      ],
-      "Imports": [
-        "geoarrow",
-        "nanoarrow"
-      ],
-      "Config/testthat/edition": "3",
-      "Config/build/bootstrap": "TRUE",
-      "Config/Needs/check": "lintr",
-      "Config/roxygen2/version": "8.0.0",
-      "Config/pak/sysreqs": "libzstd-dev libclang-dev",
-      "Repository": "apache",
-      "NeedsCompilation": "yes",
-      "Author": "Dewey Dunnington [aut, cre]",
-      "Maintainer": "Dewey Dunnington <dewey@dunnington.ca>"
     },
     "selectr": {
       "Package": "selectr",

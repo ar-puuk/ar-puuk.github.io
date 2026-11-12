@@ -125,7 +125,7 @@ message("DuckDB spatial extension ready.")
 
 # --- MODULE D: VERIFY SEDONADB PACKAGE ---
 #
-# FIX: sedonadb (from community.r-multiverse.org) is an EMBEDDED Rust/DataFusion
+# FIX: sedonadb (from the Apache r-universe) is an EMBEDDED Rust/DataFusion
 # engine — it has NO Java dependency, NO Spark requirement, NO JVM.
 # The previous version of this module incorrectly checked for Java, sparklyr,
 # and apache.sedona (requirements for the Spark-based Apache Sedona, a
@@ -133,10 +133,27 @@ message("DuckDB spatial extension ready.")
 
 message("Verifying sedonadb package...")
 
+# sedonadb is installed here, from the Apache r-universe, and is deliberately
+# not tracked in renv.lock (it is listed under renv's ignored packages). Only
+# this deck uses it, and r-universe builds carry no source metadata renv can
+# record, so installing it on demand keeps `renv::restore()` and
+# `renv::snapshot()` clean for the rest of the site.
+sedonadb_repos <- c(
+  apache = "https://apache.r-universe.dev",
+  CRAN = "https://cloud.r-project.org"
+)
+
+if (!requireNamespace("sedonadb", quietly = TRUE)) {
+  message("sedonadb not found. Installing from https://apache.r-universe.dev ...")
+  # utils:: bypasses renv's install.packages() wrapper, which would also upgrade
+  # already-installed dependencies (nanoarrow) to r-universe development builds
+  utils::install.packages("sedonadb", repos = sedonadb_repos)
+}
+
 if (!requireNamespace("sedonadb", quietly = TRUE)) {
   stop(
-    "sedonadb package not found. Install it with:\n",
-    "  install.packages('sedonadb', repos = 'https://community.r-multiverse.org')"
+    "sedonadb could not be installed. Install it manually with:\n",
+    "  install.packages('sedonadb', repos = 'https://apache.r-universe.dev')"
   )
 }
 
@@ -154,7 +171,7 @@ tryCatch(
       "sedonadb loaded but spatial functions failed. Error:\n",
       conditionMessage(e),
       "\n",
-      "Try reinstalling: install.packages('sedonadb', repos = 'https://community.r-multiverse.org')"
+      "Try reinstalling: install.packages('sedonadb', repos = 'https://apache.r-universe.dev')"
     )
   }
 )
