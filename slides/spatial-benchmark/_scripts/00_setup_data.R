@@ -138,23 +138,11 @@ message("Verifying sedonadb package...")
 # this deck uses it, and r-universe builds carry no source metadata renv can
 # record, so installing it on demand keeps `renv::restore()` and
 # `renv::snapshot()` clean for the rest of the site.
-sedonadb_repos <- c(
-  apache = "https://apache.r-universe.dev",
-  CRAN = "https://cloud.r-project.org"
-)
-
 if (!requireNamespace("sedonadb", quietly = TRUE)) {
   message("sedonadb not found. Installing from https://apache.r-universe.dev ...")
   # utils:: bypasses renv's install.packages() wrapper, which would also upgrade
   # already-installed dependencies (nanoarrow) to r-universe development builds
-  utils::install.packages("sedonadb", repos = sedonadb_repos)
-}
-
-if (!requireNamespace("sedonadb", quietly = TRUE)) {
-  stop(
-    "sedonadb could not be installed. Install it manually with:\n",
-    "  install.packages('sedonadb', repos = 'https://apache.r-universe.dev')"
-  )
+  utils::install.packages("sedonadb", repos = "https://apache.r-universe.dev")
 }
 
 library(sedonadb)
