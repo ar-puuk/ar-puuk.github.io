@@ -30,7 +30,7 @@ div.sourceCode.sourceCode {
 @import "components";
 
 // Callouts, tabsets and the announcement bar
-// (same Sass-cache note as above: change the rev number here after editing _content.scss. rev 21)
+// (same Sass-cache note as above: change the rev number here after editing _content.scss. rev 23)
 @import "content";
 
 // Import common CSS rules that both themes share
@@ -67,6 +67,45 @@ div.sourceCode.sourceCode {
   &:hover,
   &:focus-visible {
     @include pb-chip-hover($pb-accent-text, $body-color, $body-bg);
+  }
+}
+
+// Project listing
+div.quarto-post {
+  // room between the title, its chips and the description
+  .body h3.listing-title {
+    margin-bottom: 0.45rem;
+    a:hover {
+      color: $pb-accent-text;
+    }
+  }
+  .listing-description {
+    margin-top: 0.3rem;
+  }
+  // thumbnails sit on the page like the cards and callouts do
+  .thumbnail img {
+    border: 1px solid $pb-line;
+    border-radius: $pb-radius;
+  }
+}
+// On a phone Quarto puts the date and reading time after the description; read them first
+@media (max-width: 767.98px) {
+  div.quarto-post .metadata {
+    order: 0;
+    flex-direction: row;
+    gap: 0.75rem;
+    padding-bottom: 0.4rem;
+    opacity: 0.8;
+  }
+}
+// Category list in the sidebar: a visible hover and active state
+.quarto-listing-category .category {
+  padding: 0.1rem 0;
+  transition: color 0.15s ease;
+
+  &:hover,
+  &.active {
+    color: $pb-accent-text;
   }
 }
 
