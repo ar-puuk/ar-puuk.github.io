@@ -12,7 +12,7 @@
 
 ------------------------------------------------------------------------
 
-> **TIP:**
+> **NOTE:**
 >
 > Complete these interactive R exercises to test your skills in transportation planning and data analysis. Each exercise builds on real-world scenarios you’ll encounter as a transportation professional.
 

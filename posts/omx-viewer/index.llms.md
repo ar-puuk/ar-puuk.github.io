@@ -9,7 +9,7 @@ So, I built a browser tool to preview OMX files directly. You can:
 
 Built on WebAssembly so it’s fast and works without any backend, right on your browser. Files in the 300 to 700 MB range are supported; the matrix grid only renders the rows and columns on screen and reads chunks on demand, so it never loads a whole matrix into memory.
 
-> **TIP:**
+> **NOTE:**
 >
 > The same engine now powers an **OMX Viewer extension for VS Code**, so `.omx`, `.h5` and `.hdf5` files open in the viewer straight from the editor, with an *Export Summary as CSV* command. Install it from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=arpuuk.omx-viewer) or [Open VSX](https://open-vsx.org/extension/arpuuk/omx-viewer). The web app and the extension are versioned together, and the extension streams large files to its webview in 32 MB chunks, which lifts the practical size limit well into multi-gigabyte territory.
 

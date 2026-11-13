@@ -5,7 +5,7 @@ Want a quick way to preview what is inside your parquet file? This is a browser-
 - **Query it**: a CodeMirror SQL editor with column autocomplete, or a point-and-click query builder whose generated SQL stays visible and editable.
 - **Map it**: GeoParquet and spatial files appear on a MapLibre map, synced with the table in both directions.
 
-> **TIP:**
+> **NOTE:**
 >
 > Since the first version it has gained support for Esri JSON geometries (rings, paths and x/y columns), clearer error messages for common failures like CORS, 403/404 and unsupported ZSTD compression (re-save with Snappy or Gzip), and a refreshed theme.
 
