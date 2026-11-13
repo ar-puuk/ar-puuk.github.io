@@ -13,6 +13,9 @@ author:
 date: "2026-11-09"
 categories: [Python, JavaScript, Transportation, Web Apps, GIS, Data Science, Dashboard, Open Source]
 prefer-html: true
+format:
+  html:
+    include-after-body: ../../_includes/app-embed-js.html
 ---
 
 ::: {.callout-note}
@@ -21,7 +24,26 @@ prefer-html: true
 A fork of [Community Profiles](https://github.com/WFRCAnalytics/APP-Community-Profiles), which I developed at the [Wasatch Front Regional Council (WFRC)](https://wfrc.utah.gov/), hosted in my own repository with WFRC's permission. The original belongs to WFRC ([details below](#the-original)). This app is still marked as a draft.
 :::
 
-![Demographic Profiles for Utah: headline indicators, a county choropleth, and population and income trends.](demographic_profiles.png)
+## Try it
+
+::: {.column-screen-inset}
+```{=html}
+<div class="app-embed-wrapper" style="--embed-height: 820px">
+  <div class="app-embed-toolbar">
+    <span class="app-embed-label">Demographic Profiles</span>
+    <button class="app-fullscreen-btn" type="button" title="Toggle fullscreen">Fullscreen</button>
+  </div>
+  <div class="app-embed-frame">
+    <iframe src="https://ar-puuk.github.io/Demographic-Profiles/" title="Demographic Profiles" allowfullscreen loading="lazy"></iframe>
+  </div>
+</div>
+```
+:::
+
+::: {.app-links}
+[{{< fa arrow-up-right-from-square >}} Open app](https://ar-puuk.github.io/Demographic-Profiles/){.btn .btn-primary target="_blank" rel="noopener"}
+[{{< fa brands github >}} GitHub](https://github.com/ar-puuk/Demographic-Profiles){.btn .btn-outline-secondary target="_blank" rel="noopener"}
+:::
 
 ## What it does
 
@@ -37,13 +59,6 @@ Facts and figures for Utah, its counties and its cities and towns, all in one da
 Everything in it. I developed the original at WFRC, both halves of it: the Python pipeline that downloads, validates and crosswalks the Census, LODES and QCEW data into committed Parquet files, and the Svelte and TypeScript front end that reads them in the browser with DuckDB-WASM, with MapLibre maps, Observable Plot charts and a Flowmap.gl commute layer. I authored all the commits in that repository.
 
 This fork is mine to maintain. I reworked the geography from the WFRC region and its planning areas to the state, counties and cities and towns of Utah, and gave the app its own name and mark.
-
-## See it
-
-::: {.app-links}
-[{{< fa arrow-up-right-from-square >}} Open app](https://ar-puuk.github.io/Demographic-Profiles/){.btn .btn-primary target="_blank" rel="noopener"}
-[{{< fa brands github >}} GitHub](https://github.com/ar-puuk/Demographic-Profiles){.btn .btn-outline-secondary target="_blank" rel="noopener"}
-:::
 
 ## The original: WFRC's Community Profiles {#the-original}
 
