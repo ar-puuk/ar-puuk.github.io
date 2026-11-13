@@ -8,9 +8,9 @@
 
 <meta name="author" content="Pukar Bhandari">
 <meta name="dcterms.date" content="2026-01-25">
-<meta name="description" content="A modern, Windows 11-inspired web interface for building complex GNU Wget commands">
+<meta name="description" content="A browser-based builder for GNU Wget commands, covering every option in wget 1.21 with plain-language explanations and warnings for risky choices">
 
-<title>WgetGUI Ultimate: A Fluent Command Generator – Pukar Bhandari</title>
+<title>Fetch: a Wget Command Builder – Pukar Bhandari</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -87,9 +87,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8e721a4470c08d07732b64397fd2268c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-6d894e33e53a614de6a6a75e0c5ca61f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-8e721a4470c08d07732b64397fd2268c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-8a609488e45b054f43c34afffad32d9a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-05f0ad563d035a8eea4856dc40387084.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-8a609488e45b054f43c34afffad32d9a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
@@ -132,21 +132,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <link rel="stylesheet" href="../../assets/css/index.css">
 <link rel="stylesheet" href="../../assets/css/app-embed.css">
-<meta property="og:title" content="WgetGUI Ultimate: A Fluent Command Generator – Pukar Bhandari">
-<meta property="og:description" content="A modern, Windows 11-inspired web interface for building complex GNU Wget commands">
+<meta property="og:title" content="Fetch: a Wget Command Builder – Pukar Bhandari">
+<meta property="og:description" content="A browser-based builder for GNU Wget commands, covering every option in wget 1.21 with plain-language explanations and warnings for risky choices">
 <meta property="og:image" content="https://ar-puuk.github.io/posts/wget-gui/wget_gui.png">
 <meta property="og:site_name" content="Pukar Bhandari">
-<meta property="og:image:height" content="912">
-<meta property="og:image:width" content="1918">
-<meta property="og:image:alt" content="WgetGUI Ultimate window with target URL and output fields and the generated wget command.">
-<meta name="twitter:title" content="WgetGUI Ultimate: A Fluent Command Generator – Pukar Bhandari">
-<meta name="twitter:description" content="A modern, Windows 11-inspired web interface for building complex GNU Wget commands">
+<meta property="og:image:height" content="900">
+<meta property="og:image:width" content="1440">
+<meta property="og:image:alt" content="Fetch in the Conduit app: a Target form with a web address and save folder, preset buttons along the top and the generated wget command on the right.">
+<meta name="twitter:title" content="Fetch: a Wget Command Builder – Pukar Bhandari">
+<meta name="twitter:description" content="A browser-based builder for GNU Wget commands, covering every option in wget 1.21 with plain-language explanations and warnings for risky choices">
 <meta name="twitter:image" content="https://ar-puuk.github.io/posts/wget-gui/wget_gui.png">
 <meta name="twitter:creator" content="@arpuuk">
 <meta name="twitter:site" content="@arpuuk">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image:alt" content="WgetGUI Ultimate window with target URL and output fields and the generated wget command.">
-<meta name="citation_title" content="WgetGUI Ultimate: A Fluent Command Generator">
+<meta name="twitter:image:alt" content="Fetch in the Conduit app: a Target form with a web address and save folder, preset buttons along the top and the generated wget command on the right.">
+<meta name="citation_title" content="Fetch: a Wget Command Builder">
 <meta name="citation_author" content="Pukar Bhandari">
 <meta name="citation_publication_date" content="2026-01-25">
 <meta name="citation_cover_date" content="2026-01-25">
@@ -426,10 +426,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <div class="quarto-title-block"><div><h1 class="title">WgetGUI Ultimate: A Fluent Command Generator</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+      <div class="quarto-title-block"><div><h1 class="title">Fetch: a Wget Command Builder</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
                   <div>
         <div class="description">
-          A modern, Windows 11-inspired web interface for building complex GNU Wget commands
+          A browser-based builder for GNU Wget commands, covering every option in wget 1.21 with plain-language explanations and warnings for risky choices
         </div>
       </div>
                           <div class="quarto-categories">
@@ -475,10 +475,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#wget-command-generator" id="toc-wget-command-generator" class="nav-link active" data-scroll-target="#wget-command-generator"><span class="header-section-number">1</span> Wget Command Generator</a></li>
-  <li><a href="#features" id="toc-features" class="nav-link" data-scroll-target="#features"><span class="header-section-number">2</span> Features</a></li>
-  <li><a href="#technical-details" id="toc-technical-details" class="nav-link" data-scroll-target="#technical-details"><span class="header-section-number">3</span> Technical Details</a></li>
-  <li><a href="#use-cases" id="toc-use-cases" class="nav-link" data-scroll-target="#use-cases"><span class="header-section-number">4</span> Use Cases</a></li>
+  <li><a href="#try-it" id="toc-try-it" class="nav-link active" data-scroll-target="#try-it"><span class="header-section-number">1</span> Try it</a></li>
+  <li><a href="#how-it-works" id="toc-how-it-works" class="nav-link" data-scroll-target="#how-it-works"><span class="header-section-number">2</span> How it works</a></li>
+  <li><a href="#other-ways-in" id="toc-other-ways-in" class="nav-link" data-scroll-target="#other-ways-in"><span class="header-section-number">3</span> Other ways in</a></li>
+  <li><a href="#technical-details" id="toc-technical-details" class="nav-link" data-scroll-target="#technical-details"><span class="header-section-number">4</span> Technical details</a></li>
+  <li><a href="#use-cases" id="toc-use-cases" class="nav-link" data-scroll-target="#use-cases"><span class="header-section-number">5</span> Use cases</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/edit/master/posts/wget-gui/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
 </nav>
@@ -487,48 +488,62 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content" tabindex="-1">
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content" tabindex="-1">
 
 
 
 
 
 
-<section id="wget-command-generator" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="wget-command-generator"><span class="header-section-number">1</span> Wget Command Generator</h2>
-<p>Following the success of my <a href="https://ar-puuk.github.io/robocopy-gui/">RobocopyGUI</a> tool, I’ve developed <strong>WgetGUI Ultimate</strong>. This interactive web-based interface is designed to demystify the powerful but complex GNU Wget utility, allowing users to build sophisticated download strings through a clean, Fluent-style UI.</p>
-<p>Instead of wrestling with dozens of command-line switches like <code>-r</code>, <code>-np</code>, or <code>--limit-rate</code>, you can simply toggle switches and fill in fields to see your command built in real-time.</p>
-<div class="app-embed-wrapper">
+<p>GNU Wget can download a file, a folder or a whole website, but only if you remember which of its many switches to combine. <strong>Fetch</strong> lets you build the command visually instead. It covers every option in <code>wget --help</code> for version 1.21 (155 settings), explains what each one does, and warns about risky choices. It runs entirely in your browser; nothing is uploaded.</p>
+<p>Fetch started as a Wget companion to my Robocopy tool and was redesigned as part of <strong>Conduit</strong>, a pair of command builders that share one design system. Its sister app is <a href="../../posts/robocopy-gui/index.html">Mirror</a>, the Robocopy builder.</p>
+<section id="try-it" class="level2 page-columns page-full" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="try-it"><span class="header-section-number">1</span> Try it</h2>
+<div class="column-screen-inset">
+<div class="app-embed-wrapper" style="--embed-height: 820px">
   <div class="app-embed-toolbar">
-    <span class="app-embed-label">WgetGUI Ultimate</span>
+    <span class="app-embed-label">Fetch</span>
     <button class="app-fullscreen-btn" type="button" title="Toggle fullscreen">Fullscreen</button>
   </div>
   <div class="app-embed-frame">
-    <iframe src="https://ar-puuk.github.io/wget-gui/" title="WgetGUI Ultimate Tool" allowfullscreen="" loading="lazy"></iframe>
+    <iframe src="https://ar-puuk.github.io/wget-gui/" title="Fetch, a Wget command builder" allowfullscreen="" loading="lazy"></iframe>
   </div>
+</div>
 </div>
 <div class="app-links">
 <p><a href="https://ar-puuk.github.io/wget-gui/" class="btn btn-primary" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square" aria-label="arrow-up-right-from-square"></i> Open app</a> <a href="https://github.com/ar-puuk/wget-gui" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
 </div>
 </section>
-<section id="features" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="features"><span class="header-section-number">2</span> Features</h2>
-<p>The WgetGUI provides a comprehensive suite of options for web scraping and file retrieval:</p>
+<section id="how-it-works" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="how-it-works"><span class="header-section-number">2</span> How it works</h2>
+<ol type="1">
+<li><strong>Pick a starting point.</strong> Choose a preset (One file, Offline site copy, Images only, Check for broken links, or Gentle crawl) or start from scratch.</li>
+<li><strong>Fill in the tabs.</strong> Target, What to download, Save layout, Filters, Performance, Requests, Security, Logging and Advanced. Rarely used options stay hidden until you turn on <strong>Show advanced</strong>.</li>
+<li><strong>Watch the command.</strong> It updates as you choose, with every flag explained and notes for risky choices such as skipping certificate checks, putting a password in the command, or crawling with no wait.</li>
+<li><strong>Add to queue.</strong> Build several downloads, reorder them, then download one <code>.bat</code> or <code>.ps1</code> script. Stop on first failure is on by default.</li>
+</ol>
+</section>
+<section id="other-ways-in" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="other-ways-in"><span class="header-section-number">3</span> Other ways in</h2>
 <ul>
-<li><strong>Quick Presets</strong>: One-click configurations for common tasks like mirroring an entire website for offline viewing or checking for broken links (Spider mode).</li>
-<li><strong>Recursive &amp; Mirroring</strong>: Easily set recursion depth, convert links for local viewing, and manage page requisites.</li>
-<li><strong>Advanced Throttling</strong>: Control your bandwidth usage with rate limiting and randomized wait intervals to avoid server rate-limits.</li>
-<li><strong>Batch Queue</strong>: Build multiple commands and export them as a single <code>.bat</code> file for Windows automation.</li>
-<li><strong>Dark/Light Mode</strong>: A native-feeling Windows 11 (Fluent) aesthetic that respects your system’s theme preference.</li>
+<li><strong>Find an option.</strong> Type a name or a flag, such as <code>cookies</code> or <code>--limit-rate</code>, to search every tab at once.</li>
+<li><strong>Paste a command.</strong> Paste an existing <code>wget</code> command and the form fills in. Flags the builder does not recognise are kept under Advanced.</li>
+<li><strong>Command palette.</strong> <code>Ctrl+K</code> jumps to any option, preset or page, and <code>Ctrl+Enter</code> adds the current command to the queue.</li>
+<li><strong>Profiles.</strong> Save a full set of options and load it later. Profiles, the queue and the form are remembered in your browser.</li>
 </ul>
 </section>
-<section id="technical-details" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="technical-details"><span class="header-section-number">3</span> Technical Details</h2>
-<p>This tool is a pure client-side application built using <strong>vanilla HTML, CSS, and JavaScript</strong>. It uses: - <strong>Fluent UI Design</strong>: CSS variables are utilized to mimic the Windows 11 design language, providing a seamless experience for desktop users. - <strong>GitHub Pages</strong>: Hosted directly from the <a href="https://github.com/ar-puuk/wget-gui">source repository</a>, ensuring high availability and automatic updates. - <strong>No Backend Required</strong>: All command generation logic happens locally in your browser, ensuring your URLs and credentials remain private.</p>
+<section id="technical-details" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="technical-details"><span class="header-section-number">4</span> Technical details</h2>
+<p>Fetch is one self-contained <code>index.html</code> with no build step to run it and no backend, so your URLs and credentials never leave the browser. It is generated from the shared source in the <a href="https://github.com/ar-puuk/robocopy-gui">Mirror repository</a>, so the two apps keep identical design tokens and components. Icons are from <a href="https://lucide.dev">Lucide</a> and the fonts are Bricolage Grotesque, Instrument Sans and JetBrains Mono. The code lives in the <a href="https://github.com/ar-puuk/wget-gui">source repository</a>.</p>
 </section>
-<section id="use-cases" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="use-cases"><span class="header-section-number">4</span> Use Cases</h2>
-<p>WgetGUI is ideal for: - <strong>Digital Archivists</strong>: Creating offline mirrors of websites before they go offline. - <strong>Developers</strong>: Testing server responses and checking for broken links via the “Spider” feature. - <strong>Bulk Downloaders</strong>: Managing large lists of files by importing URL text files. - <strong>Students</strong>: Learning the syntax of GNU Wget through a visual, trial-and-error environment.</p>
+<section id="use-cases" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="use-cases"><span class="header-section-number">5</span> Use cases</h2>
+<ul>
+<li><strong>Digital archivists</strong> creating offline mirrors of websites before they go offline</li>
+<li><strong>Developers</strong> checking a site for broken links</li>
+<li><strong>Bulk downloaders</strong> working through long lists of files from a list file</li>
+<li><strong>Students</strong> learning Wget syntax by seeing what each option does</li>
+</ul>
 <hr>
 <p><em>Feedback and contributions are welcome! Check out the project on GitHub:</em> <a href="https://github.com/ar-puuk/wget-gui" class="uri">https://github.com/ar-puuk/wget-gui</a></p>
 
@@ -539,14 +554,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{bhandari2026,
   author = {Bhandari, Pukar},
-  title = {WgetGUI {Ultimate:} {A} {Fluent} {Command} {Generator}},
+  title = {Fetch: A {Wget} {Command} {Builder}},
   date = {2026-01-25},
   url = {https://ar-puuk.github.io/posts/wget-gui/},
   langid = {en-US}
 }
 </code></pre><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-bhandari2026" class="csl-entry quarto-appendix-citeas" role="listitem">
-Bhandari, Pukar. 2026. <span>“WgetGUI Ultimate: A Fluent Command
-Generator.”</span> January 25. <a href="https://ar-puuk.github.io/posts/wget-gui/">https://ar-puuk.github.io/posts/wget-gui/</a>.
+Bhandari, Pukar. 2026. <span>“Fetch: A Wget Command Builder.”</span>
+January 25. <a href="https://ar-puuk.github.io/posts/wget-gui/">https://ar-puuk.github.io/posts/wget-gui/</a>.
 </div></div></section></div></main> <!-- /main -->
 <script>
   // keep the footer copyright range current without editing _quarto.yml each year
@@ -1201,9 +1216,9 @@ Generator.”</span> January 25. <a href="https://ar-puuk.github.io/posts/wget-g
   window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "WgetGUI Ultimate: A Fluent Command Generator"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">image-alt:</span><span class="co"> "WgetGUI Ultimate window with target URL and output fields and the generated wget command."</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "A modern, Windows 11-inspired web interface for building complex GNU Wget commands"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Fetch: a Wget Command Builder"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">image-alt:</span><span class="co"> "Fetch in the Conduit app: a Target form with a web address and save folder, preset buttons along the top and the generated wget command on the right."</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "A browser-based builder for GNU Wget commands, covering every option in wget 1.21 with plain-language explanations and warnings for risky choices"</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Pukar Bhandari</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    email: pukar.bhandari@outlook.com</span></span>
@@ -1213,57 +1228,59 @@ Generator.”</span> January 25. <a href="https://ar-puuk.github.io/posts/wget-g
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Wget Command Generator</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>GNU Wget can download a file, a folder or a whole website, but only if you remember which of its many switches to combine. **Fetch** lets you build the command visually instead. It covers every option in <span class="in">`wget --help`</span> for version 1.21 (155 settings), explains what each one does, and warns about risky choices. It runs entirely in your browser; nothing is uploaded.</span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>Following the success of my <span class="co">[</span><span class="ot">RobocopyGUI</span><span class="co">](https://ar-puuk.github.io/robocopy-gui/)</span> tool, I’ve developed **WgetGUI Ultimate**. This interactive web-based interface is designed to demystify the powerful but complex GNU Wget utility, allowing users to build sophisticated download strings through a clean, Fluent-style UI.</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>Fetch started as a Wget companion to my Robocopy tool and was redesigned as part of **Conduit**, a pair of command builders that share one design system. Its sister app is <span class="co">[</span><span class="ot">Mirror</span><span class="co">](../robocopy-gui/index.qmd)</span>, the Robocopy builder.</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>Instead of wrestling with dozens of command-line switches like <span class="in">`-r`</span>, <span class="in">`-np`</span>, or <span class="in">`--limit-rate`</span>, you can simply toggle switches and fill in fields to see your command built in real-time.</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## Try it</span></span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper"&gt;</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;WgetGUI Ultimate&lt;/span&gt;</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/wget-gui/" title="WgetGUI Ultimate Tool" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open app</span><span class="co">](https://ar-puuk.github.io/wget-gui/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/wget-gui)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="fu">## Features</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>::: {.column-screen-inset}</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper" style="--embed-height: 820px"&gt;</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;Fetch&lt;/span&gt;</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/wget-gui/" title="Fetch, a Wget command builder" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open app</span><span class="co">](https://ar-puuk.github.io/wget-gui/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/wget-gui)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>The WgetGUI provides a comprehensive suite of options for web scraping and file retrieval:</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="fu">## How it works</span></span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Quick Presets**: One-click configurations for common tasks like mirroring an entire website for offline viewing or checking for broken links (Spider mode).</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Recursive &amp; Mirroring**: Easily set recursion depth, convert links for local viewing, and manage page requisites.</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Advanced Throttling**: Control your bandwidth usage with rate limiting and randomized wait intervals to avoid server rate-limits.</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Batch Queue**: Build multiple commands and export them as a single <span class="in">`.bat`</span> file for Windows automation.</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Dark/Light Mode**: A native-feeling Windows 11 (Fluent) aesthetic that respects your system's theme preference.</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## Technical Details</span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>This tool is a pure client-side application built using **vanilla HTML, CSS, and JavaScript**. It uses:</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Fluent UI Design**: CSS variables are utilized to mimic the Windows 11 design language, providing a seamless experience for desktop users.</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**GitHub Pages**: Hosted directly from the <span class="co">[</span><span class="ot">source repository</span><span class="co">](https://github.com/ar-puuk/wget-gui)</span>, ensuring high availability and automatic updates.</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**No Backend Required**: All command generation logic happens locally in your browser, ensuring your URLs and credentials remain private.</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="fu">## Use Cases</span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>WgetGUI is ideal for:</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Digital Archivists**: Creating offline mirrors of websites before they go offline.</span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Developers**: Testing server responses and checking for broken links via the "Spider" feature.</span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Bulk Downloaders**: Managing large lists of files by importing URL text files.</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Students**: Learning the syntax of GNU Wget through a visual, trial-and-error environment.</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Pick a starting point.** Choose a preset (One file, Offline site copy, Images only, Check for broken links, or Gentle crawl) or start from scratch.</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Fill in the tabs.** Target, What to download, Save layout, Filters, Performance, Requests, Security, Logging and Advanced. Rarely used options stay hidden until you turn on **Show advanced**.</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Watch the command.** It updates as you choose, with every flag explained and notes for risky choices such as skipping certificate checks, putting a password in the command, or crawling with no wait.</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Add to queue.** Build several downloads, reorder them, then download one <span class="in">`.bat`</span> or <span class="in">`.ps1`</span> script. Stop on first failure is on by default.</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## Other ways in</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Find an option.** Type a name or a flag, such as <span class="in">`cookies`</span> or <span class="in">`--limit-rate`</span>, to search every tab at once.</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Paste a command.** Paste an existing <span class="in">`wget`</span> command and the form fills in. Flags the builder does not recognise are kept under Advanced.</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Command palette.** <span class="in">`Ctrl+K`</span> jumps to any option, preset or page, and <span class="in">`Ctrl+Enter`</span> adds the current command to the queue.</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Profiles.** Save a full set of options and load it later. Profiles, the queue and the form are remembered in your browser.</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="fu">## Technical details</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>Fetch is one self-contained <span class="in">`index.html`</span> with no build step to run it and no backend, so your URLs and credentials never leave the browser. It is generated from the shared source in the <span class="co">[</span><span class="ot">Mirror repository</span><span class="co">](https://github.com/ar-puuk/robocopy-gui)</span>, so the two apps keep identical design tokens and components. Icons are from <span class="co">[</span><span class="ot">Lucide</span><span class="co">](https://lucide.dev)</span> and the fonts are Bricolage Grotesque, Instrument Sans and JetBrains Mono. The code lives in the <span class="co">[</span><span class="ot">source repository</span><span class="co">](https://github.com/ar-puuk/wget-gui)</span>.</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="fu">## Use cases</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Digital archivists** creating offline mirrors of websites before they go offline</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Developers** checking a site for broken links</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Bulk downloaders** working through long lists of files from a list file</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Students** learning Wget syntax by seeing what each option does</span>
 <span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>*Feedback and contributions are welcome! Check out the project on GitHub:* <span class="ot">&lt;https://github.com/ar-puuk/wget-gui&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>*Feedback and contributions are welcome! Check out the project on GitHub:* <span class="ot">&lt;https://github.com/ar-puuk/wget-gui&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

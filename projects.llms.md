@@ -208,15 +208,15 @@ Feb 2026
 
 11 min
 
-[![WgetGUI Ultimate window with target URL and output fields and the generated wget command.](./posts/wget-gui/wget_gui.png)](posts/wget-gui/index.llms.md)
+[![Fetch in the Conduit app: a Target form with a web address and save folder, preset buttons along the top and the generated wget command on the right.](./posts/wget-gui/wget_gui.png)](posts/wget-gui/index.llms.md)
 
-### [WgetGUI Ultimate: A Fluent Command Generator](posts/wget-gui/index.llms.md)
+### [Fetch: a Wget Command Builder](posts/wget-gui/index.llms.md)
 
-A modern, Windows 11-inspired web interface for building complex GNU Wget commands
+A browser-based builder for GNU Wget commands, covering every option in wget 1.21 with plain-language explanations and warnings for risky choices
 
 Jan 2026
 
-2 min
+3 min
 
 [![Map of Nepal\&#039;s electoral constituencies in grey with national parks highlighted in green.](./posts/nepal-election-geojson/nepal_election_geojson.png)](posts/nepal-election-geojson/index.llms.md)
 
@@ -280,13 +280,13 @@ Jun 2025
 
 5 min
 
-### [Interactive Robocopy GUI Tool](posts/robocopy-gui/index.llms.md)
+### [Mirror: a Robocopy Command Builder](posts/robocopy-gui/index.llms.md)
 
-A web-based interface for generating Windows robocopy commands with ease
+A browser-based builder for Windows Robocopy commands, covering every option in robocopy /? with plain-language explanations and warnings before anything deletes files
 
 Jun 2025
 
-2 min
+3 min
 
 ### [pukRhelpers: A Personal Toolbox of R Helpers](posts/pukrhelpers/index.llms.md)
 

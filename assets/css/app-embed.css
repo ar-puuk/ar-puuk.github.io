@@ -2,8 +2,9 @@
   Shared styling for project pages (posts/ and work/):
   - .app-embed-wrapper: a live app embedded in an iframe, drawn as one panel:
       a bar with a "live" dot, the app name and its address, then the app itself
-  - .app-links: the "Open app" / "GitHub" pair. Directly after an embed it becomes the
-      panel's footer; on its own (employer summary pages) it is a centred pair.
+  - .app-links: the "Open app" / "GitHub" pair. app-embed.js moves the pair that follows an
+      embed into the panel's bar (as .app-embed-action buttons); on its own (employer summary
+      pages, or without JS) it stays a centred pair.
 
   Both themes are handled with a few custom properties, set for the light theme and
   redefined under body.quarto-dark:
@@ -38,7 +39,7 @@ body.quarto-dark .app-links {
   border: 1px solid var(--app-line);
   border-radius: var(--pb-radius, 8px);
   overflow: hidden;
-  margin: 1.5rem 0 0.75rem;
+  margin: 1.5rem 0 2.25rem;
   background: var(--bs-body-bg);
 }
 
@@ -83,9 +84,9 @@ body.quarto-dark .app-links {
   white-space: nowrap;
 }
 
-/* The app's real address, added by app-embed.js; it also opens the app in a new tab */
+/* The app's real address, added by app-embed.js */
 .app-embed-toolbar .app-embed-url {
-  margin-left: auto;
+  margin-left: 0.25rem;
   min-width: 0;
   padding: 0.18rem 0.6rem;
   font-family: var(--bs-font-monospace);
@@ -95,38 +96,34 @@ body.quarto-dark .app-links {
   background: var(--bs-body-bg);
   border: 1px solid var(--app-line);
   border-radius: 999px;
-  text-decoration: none;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: color 0.15s ease, border-color 0.15s ease;
 }
 
-.app-embed-toolbar .app-embed-url::after {
-  content: none;  /* the site adds an outside-link arrow to every external link */
+/* Actions: GitHub, Open app and Fullscreen share one group at the right of the bar. They are
+   the same height and radius; "Open app" is the only filled one. */
+.app-embed-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+  flex: none;
 }
 
-.app-embed-toolbar .app-embed-url:hover,
-.app-embed-toolbar .app-embed-url:focus-visible {
-  color: var(--app-accent);
-  border-color: var(--app-accent);
-}
-
-.app-embed-url ~ .app-fullscreen-btn {
-  margin-left: 0;
-}
-
+.app-embed-action,
 .app-fullscreen-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   min-height: 1.9rem;
-  margin-left: auto;
   padding: 0.25rem 0.65rem;
   font-family: inherit;
   font-size: 0.8rem;
   font-weight: 500;
+  line-height: 1.2;
   white-space: nowrap;
+  text-decoration: none;
   color: inherit;
   background: transparent;
   border: 1px solid var(--app-line);
@@ -135,29 +132,55 @@ body.quarto-dark .app-links {
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-/* The icon is a mask, so it takes the button's text colour in either theme */
-.app-fullscreen-btn::before {
-  content: "";
-  width: 0.85rem;
-  height: 0.85rem;
-  background-color: currentColor;
-  -webkit-mask: var(--app-icon) center / contain no-repeat;
-  mask: var(--app-icon) center / contain no-repeat;
-  --app-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707z'/%3E%3C/svg%3E");
+/* the site adds an outside-link arrow to every external link; these buttons carry their own icon */
+.app-embed-toolbar a.app-embed-action::after,
+.app-embed-toolbar a.app-embed-action.external::after {
+  content: none !important;
+  display: none !important;
 }
 
-.app-embed-wrapper.fullscreen .app-fullscreen-btn::before {
-  --app-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z'/%3E%3C/svg%3E");
+/* Every icon sits in the same fixed box, so the three buttons line up. The label is a single
+   line-height tall, and the icon is nudged down a hair to meet the text's optical centre. */
+.app-embed-action i,
+.app-fullscreen-btn i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  font-size: 0.85rem;
+  line-height: 1;
+  transform: translateY(0.5px);
 }
 
-.app-fullscreen-btn:hover {
+.app-action-label {
+  line-height: 1;
+}
+
+.app-embed-action:hover,
+.app-fullscreen-btn:hover,
+.app-embed-action:focus-visible {
   color: var(--app-accent);
   border-color: var(--app-accent);
   background: color-mix(in srgb, var(--app-accent) 10%, transparent);
 }
 
+.app-embed-action.is-primary {
+  background: var(--btn);
+  border-color: var(--btn);
+  color: var(--btn-ink);
+}
+
+.app-embed-action.is-primary:hover,
+.app-embed-action.is-primary:focus-visible {
+  background: transparent;
+  border-color: var(--btn);
+  color: var(--btn);
+}
+
 .app-fullscreen-btn:focus-visible,
-.app-embed-url:focus-visible {
+.app-embed-action:focus-visible {
   outline: 2px solid var(--app-accent);
   outline-offset: 2px;
 }
@@ -216,7 +239,8 @@ body.quarto-dark .app-links {
 }
 
 /* --------------------------------------------------------------- Actions
-   Open app / GitHub. Directly after an embed they are the panel's footer. */
+   Open app / GitHub on their own (employer summary pages, or when JS is off). Next to an
+   embed, app-embed.js moves them into its bar instead. */
 .app-links {
   display: flex;
   justify-content: center;
@@ -275,48 +299,25 @@ body.quarto-dark .app-links {
   background: color-mix(in srgb, var(--app-accent) 10%, transparent);
 }
 
-/* Attached footer: the panel's bottom edge, buttons on the right */
-.app-embed-wrapper:has(+ .app-links) {
-  margin-bottom: 0;
-  border-bottom: 0;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.app-embed-wrapper + .app-links {
-  justify-content: flex-end;
-  margin: 0 0 2.25rem;
-  padding: 0.5rem 0.6rem;
-  background: var(--app-bar);
-  border: 1px solid var(--app-line);
-  border-radius: 0 0 var(--pb-radius, 8px) var(--pb-radius, 8px);
-}
-
-/* Phones: a shorter frame so the page can still be scrolled past it, no address pill, and
-   bigger tap targets; the footer buttons share the width */
+/* Phones: a shorter frame so the page can still be scrolled past it, no address pill, and the
+   actions shrink to icon-only buttons with bigger tap targets */
 @media (max-width: 575.98px) {
   .app-embed-frame {
     height: min(var(--embed-height, 720px), 72svh);
   }
-  .app-embed-toolbar .app-embed-url {
-    display: none;
-  }
-  /* with the pill hidden the button goes back to the right edge */
-  .app-embed-url ~ .app-fullscreen-btn {
-    margin-left: auto;
-  }
   .app-embed-toolbar {
     padding-left: 0.75rem;
+    gap: 0.5rem;
   }
+  .app-embed-toolbar .app-embed-url,
+  .app-embed-actions .app-action-label {
+    display: none;
+  }
+  .app-embed-action,
   .app-fullscreen-btn {
-    min-height: 2.25rem;
-  }
-  .app-embed-wrapper + .app-links > p {
-    flex: 1 1 100%;
-  }
-  .app-embed-wrapper + .app-links .btn {
-    flex: 1 1 0;
     justify-content: center;
-    min-height: 2.5rem;
+    min-width: 2.25rem;
+    min-height: 2.25rem;
+    padding: 0.25rem;
   }
 }
