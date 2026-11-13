@@ -160,6 +160,10 @@ details > summary {
   .title, .subtitle, .quarto-title-author-name, .quarto-title-affiliation {
     color: $pb-text-light !important;  // Dark text
   }
+  // one description colour in both themes
+  .description {
+    color: #D95424 !important;
+  }
   // undo the light-theme rule that lightens the Code dropdown (it also loads in dark mode)
   #quarto-code-tools-source {
     color: $pb-secondary-light;

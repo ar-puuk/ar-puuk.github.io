@@ -152,6 +152,10 @@ div.sourceCode {
   .title, .subtitle, .quarto-title-author-name, .quarto-title-affiliation {
     color: $pb-text-dark !important;  // Light text
   }
+  // one description colour in both themes
+  .description {
+    color: #D95424 !important;
+  }
 }
 
 // Research page title visibility in light mode
