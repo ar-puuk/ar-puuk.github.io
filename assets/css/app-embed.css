@@ -1,66 +1,200 @@
 /*
   Shared styling for project pages (posts/ and work/):
-  - .app-embed-wrapper: a live app embedded in an iframe
-  - .app-links: the "Open app" / "GitHub" button pair
+  - .app-embed-wrapper: a live app embedded in an iframe, drawn as one panel:
+      a bar with a "live" dot, the app name and its address, then the app itself
+  - .app-links: the "Open app" / "GitHub" pair. Directly after an embed it becomes the
+      panel's footer; on its own (employer summary pages) it is a centred pair.
 
-  Colors follow the site theme (assets/theme/_colors.scss): the orange accent
-  and Bootstrap's theme-aware border/background variables, so both adapt to
-  light and dark mode.
+  Both themes are handled with a few custom properties, set for the light theme and
+  redefined under body.quarto-dark:
+    --app-accent        text-safe orange for the dot and interactive text
+    --app-accent-hover  its hover colour
+    --app-line          hairline (a tint of the text colour, so it is a soft line on cream
+                        and on navy; Bootstrap's own border colour is near-white in the dark
+                        theme and drew a hard outline)
+    --app-bar           surface of the bar and footer
+    --btn / --btn-ink   filled "Open app" button: fill and the text colour readable on it
 */
 
-.app-embed-wrapper {
-  --app-accent: #a84a18;         /* text-safe orange on the toolbar tint (4.8:1) */
+.app-embed-wrapper,
+.app-links {
+  --app-accent: #a84a18;         /* 4.8:1 on the bar tint */
   --app-accent-hover: #a23e02;
-  border: 1px solid var(--bs-border-color);
+  --app-line: color-mix(in srgb, currentColor 20%, transparent);
+  --app-bar: color-mix(in srgb, currentColor 5%, var(--bs-body-bg));
+  --btn: #b8531f;                /* white on this is 5.0:1 */
+  --btn-ink: #fff;
+}
+
+body.quarto-dark .app-embed-wrapper,
+body.quarto-dark .app-links {
+  --app-accent: #e8844d;         /* 6.5:1 on the dark bar */
+  --app-accent-hover: #f2a27a;
+  --btn: #d96e34;                /* navy on this is 5.3:1 */
+  --btn-ink: #0e171e;
+}
+
+.app-embed-wrapper {
+  border: 1px solid var(--app-line);
   border-radius: var(--pb-radius, 8px);
   overflow: hidden;
-  margin: 1.5rem 0 1rem;
+  margin: 1.5rem 0 0.75rem;
   background: var(--bs-body-bg);
 }
 
-body.quarto-dark .app-embed-wrapper {
-  --app-accent: #d96e34;
-  --app-accent-hover: #f2894f;
-}
-
+/* ------------------------------------------------------------------ Bar */
 .app-embed-toolbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.45rem 0.9rem;
-  background: rgba(127, 127, 127, 0.1);
-  border-bottom: 1px solid var(--bs-border-color);
+  gap: 0.7rem;
+  padding: 0.4rem 0.6rem 0.4rem 0.9rem;
+  background: var(--app-bar);
+  border-bottom: 1px solid var(--app-line);
 }
 
-.app-embed-label,
-.app-fullscreen-btn {
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--app-accent);
+/* The live dot: the one thing that moves on its own, and only gently */
+.app-embed-toolbar::before {
+  content: "";
+  flex: none;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--app-accent);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--app-accent) 45%, transparent);
+  animation: app-embed-live 2.8s ease-out infinite;
+}
+
+@keyframes app-embed-live {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--app-accent) 45%, transparent); }
+  70%  { box-shadow: 0 0 0 0.45rem transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-embed-toolbar::before { animation: none; }
 }
 
 .app-embed-label {
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The app's real address, added by app-embed.js; it also opens the app in a new tab */
+.app-embed-toolbar .app-embed-url {
+  margin-left: auto;
+  min-width: 0;
+  padding: 0.18rem 0.6rem;
+  font-family: var(--bs-font-monospace);
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: color-mix(in srgb, currentColor 70%, transparent);
+  background: var(--bs-body-bg);
+  border: 1px solid var(--app-line);
+  border-radius: 999px;
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.app-embed-toolbar .app-embed-url::after {
+  content: none;  /* the site adds an outside-link arrow to every external link */
+}
+
+.app-embed-toolbar .app-embed-url:hover,
+.app-embed-toolbar .app-embed-url:focus-visible {
+  color: var(--app-accent);
+  border-color: var(--app-accent);
+}
+
+.app-embed-url ~ .app-fullscreen-btn {
+  margin-left: 0;
 }
 
 .app-fullscreen-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 1.9rem;
+  margin-left: auto;
+  padding: 0.25rem 0.65rem;
   font-family: inherit;
-  background: none;
-  border: 0;
-  border-bottom: 1px solid transparent;
-  padding: 0 0.1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  color: inherit;
+  background: transparent;
+  border: 1px solid var(--app-line);
+  border-radius: var(--pb-radius-sm, 4px);
   cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+/* The icon is a mask, so it takes the button's text colour in either theme */
+.app-fullscreen-btn::before {
+  content: "";
+  width: 0.85rem;
+  height: 0.85rem;
+  background-color: currentColor;
+  -webkit-mask: var(--app-icon) center / contain no-repeat;
+  mask: var(--app-icon) center / contain no-repeat;
+  --app-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707z'/%3E%3C/svg%3E");
+}
+
+.app-embed-wrapper.fullscreen .app-fullscreen-btn::before {
+  --app-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z'/%3E%3C/svg%3E");
 }
 
 .app-fullscreen-btn:hover {
-  color: var(--app-accent-hover);
-  border-bottom-color: currentColor;
+  color: var(--app-accent);
+  border-color: var(--app-accent);
+  background: color-mix(in srgb, var(--app-accent) 10%, transparent);
 }
 
+.app-fullscreen-btn:focus-visible,
+.app-embed-url:focus-visible {
+  outline: 2px solid var(--app-accent);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------- Frame
+   Sits on the page background and shows a short hint while a lazy iframe loads. The iframe
+   is painted over the hint, so it disappears as soon as the app does; if an app happens to be
+   transparent, the hint fades out on its own after a few seconds. */
 .app-embed-frame {
+  position: relative;
   width: 100%;
   height: min(var(--embed-height, 720px), 85vh);
+  background: var(--bs-body-bg);
+}
+
+.app-embed-frame::before {
+  content: "Loading app\2026";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: var(--bs-secondary-color);
+  animation: app-embed-hint 0.4s ease 5s forwards;
+}
+
+@keyframes app-embed-hint {
+  to { opacity: 0; }
+}
+
+.app-embed-frame iframe {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
 }
 
 .app-embed-wrapper.fullscreen {
@@ -74,37 +208,115 @@ body.quarto-dark .app-embed-wrapper {
   flex-direction: column;
 }
 
-/* The toolbar stays visible in fullscreen so "Exit fullscreen" is always reachable */
+/* The bar stays visible in fullscreen so "Exit fullscreen" is always reachable */
 .app-embed-wrapper.fullscreen .app-embed-frame {
   flex: 1;
   height: auto;
   min-height: 0;
 }
 
-.app-embed-wrapper.fullscreen .app-fullscreen-btn {
-  font-weight: 600;
-}
-
-.app-embed-frame iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  display: block;
-}
-
-/* The shared "Open app" / "GitHub" button pair, used under every embed and on
-   employer summary pages. Buttons inherit the theme's .btn colors. */
+/* --------------------------------------------------------------- Actions
+   Open app / GitHub. Directly after an embed they are the panel's footer. */
 .app-links {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 0.5rem;
-  margin: 0 0 2rem;
+  margin: 1rem 0 2.25rem;
+}
+
+/* Pandoc puts the links in one <p> inside the div, so the row layout lives on the <p> */
+.app-links > p {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: inherit;
+  gap: 0.6rem;
+  margin: 0;
 }
 
 .app-links .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.42rem 0.95rem;
   font-size: 0.85rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
   text-decoration: none;
+  border-radius: var(--pb-radius-sm, 4px);
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+/* Filled orange; hover flips to an outline, as on the About page. The fill and its text
+   colour come from the per-theme tokens above so the label stays readable. */
+.app-links .btn-primary {
+  background: var(--btn);
+  border-color: var(--btn);
+  color: var(--btn-ink);
+}
+
+.app-links .btn-primary:hover,
+.app-links .btn-primary:focus-visible {
+  background: transparent;
+  border-color: var(--btn);
+  color: var(--btn);
+}
+
+/* Quiet neutral outline, so the primary action is the only filled one */
+.app-links .btn-outline-secondary {
+  color: inherit;
+  background: transparent;
+  border-color: color-mix(in srgb, currentColor 35%, transparent);
+}
+
+.app-links .btn-outline-secondary:hover,
+.app-links .btn-outline-secondary:focus-visible {
+  color: var(--app-accent);
+  border-color: var(--app-accent);
+  background: color-mix(in srgb, var(--app-accent) 10%, transparent);
+}
+
+/* Attached footer: the panel's bottom edge, buttons on the right */
+.app-embed-wrapper:has(+ .app-links) {
+  margin-bottom: 0;
+  border-bottom: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.app-embed-wrapper + .app-links {
+  justify-content: flex-end;
+  margin: 0 0 2.25rem;
+  padding: 0.5rem 0.6rem;
+  background: var(--app-bar);
+  border: 1px solid var(--app-line);
+  border-radius: 0 0 var(--pb-radius, 8px) var(--pb-radius, 8px);
+}
+
+/* Phones: a shorter frame so the page can still be scrolled past it, no address pill, and
+   bigger tap targets; the footer buttons share the width */
+@media (max-width: 575.98px) {
+  .app-embed-frame {
+    height: min(var(--embed-height, 720px), 72svh);
+  }
+  .app-embed-toolbar .app-embed-url {
+    display: none;
+  }
+  /* with the pill hidden the button goes back to the right edge */
+  .app-embed-url ~ .app-fullscreen-btn {
+    margin-left: auto;
+  }
+  .app-embed-toolbar {
+    padding-left: 0.75rem;
+  }
+  .app-fullscreen-btn {
+    min-height: 2.25rem;
+  }
+  .app-embed-wrapper + .app-links > p {
+    flex: 1 1 100%;
+  }
+  .app-embed-wrapper + .app-links .btn {
+    flex: 1 1 0;
+    justify-content: center;
+    min-height: 2.5rem;
+  }
 }
