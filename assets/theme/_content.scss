@@ -11,32 +11,70 @@ $pb-callouts: (
 );
 
 // ---------------------------------------------------------------- Callouts
+// Tints mix against pure white on the light theme (the cream page background turns the
+// green and teal tints muddy) and against the page colour on the dark theme.
+$pb-tint-base: if(lightness($body-bg) > 50%, #fff, $body-bg);
+
 div.callout.callout {
   border-radius: $pb-radius;
   border: 1px solid $pb-line;
-  border-left-width: 4px;
+  border-left-width: 1px;
   box-shadow: none;
+  position: relative;
   overflow: hidden;
-  background-color: mix($body-color, $body-bg, 3%);
+
+  // Accent bar over header and body: clipped by the rounded corners, so it stays straight
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background-color: $pb-line;
+    z-index: 1;
+  }
+  margin: 1.25rem 0;
+  background-color: mix($body-color, $pb-tint-base, 3%);
 
   // Quarto dims the title to 85%/75% opacity; keep it at full contrast
   > div.callout-header {
     opacity: 1;
+    align-items: center;
+    padding: 0.55rem 0.9rem;
   }
   .callout-title-container {
     color: $body-color;
+    font-size: 0.95rem;
+    font-weight: 600;
   }
-  // Links in a coloured callout stay readable: body colour with an accent underline
+  .callout-body-container {
+    padding: 0.7rem 0.95rem 0.8rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+
+    > :first-child { margin-top: 0; }
+    > :last-child { margin-bottom: 0; }
+    ul, ol { padding-left: 1.25rem; }
+    strong { font-weight: 600; }
+  }
+  // Links stay readable without shouting: body colour, thin accent underline
   a:not(.btn) {
     color: inherit;
+    font-weight: 500;
+    text-decoration-line: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 0.18em;
-    font-weight: 600;
   }
   a:not(.btn):hover {
     text-decoration-thickness: 2px;
   }
-  // Code inside a callout reads against the tinted body
+  // The outside-link arrow only adds noise inside a callout
+  a.external::after {
+    display: none;
+  }
+  // Code inside a callout: outline only, so it does not stack chips on a tint
+  code:not(.sourceCode) {
+    background-color: transparent;
+  }
   pre {
     margin-bottom: 0.5rem;
   }
@@ -44,15 +82,21 @@ div.callout.callout {
 
 @each $name, $c in $pb-callouts {
   div.callout.callout-#{$name} {
-    border-color: mix($c, $body-bg, 32%);
-    border-left-color: $c;
-    background-color: mix($c, $body-bg, 5%);
+    border-color: mix($c, $pb-tint-base, 24%);
+    background-color: mix($c, $pb-tint-base, 4%);
+
+    &::before {
+      background-color: $c;
+    }
 
     &.callout-style-default > div.callout-header {
-      background-color: mix($c, $body-bg, 14%);
+      background-color: mix($c, $pb-tint-base, 13%);
     }
     a:not(.btn) {
       text-decoration-color: $c;
+    }
+    code:not(.sourceCode) {
+      border-color: mix($c, $pb-tint-base, 40%);
     }
   }
 }
