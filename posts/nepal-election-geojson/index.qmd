@@ -11,8 +11,12 @@ date: "2026-01-18"
 categories: [R, GIS, Data Science]
 prefer-html: true
 resources:
-        - "_output/*.geojson"
-        - "_output/*.svg"
+        - "output/*.geojson"
+        - "output/*.svg"
+code-links:
+  - text: Source of this post
+    icon: github
+    href: https://github.com/ar-puuk/ar-puuk.github.io/blob/master/posts/nepal-election-geojson/index.qmd
 ---
 
 ## Introduction
@@ -21,11 +25,29 @@ In this workflow, we tackle a common geospatial problem: extracting data from st
 
 Rather than just cleaning the rough edges of a scraped SVG, we will use a **reconstruction technique**. We will:
 
-1. **Scrape** the electoral map to get rough constituency shapes.
-2. **Georeferencing** the shapes to align them with real coordinates.
-3. **Reconstruct** the precise boundaries by grouping official administrative "Wards" based on which constituency shape they fall into.
+1. **Scrape** the electoral map to get rough constituency shapes (@sec-scrape, @sec-parse).
+2. **Georeference** the shapes to align them with real coordinates (@sec-georef).
+3. **Reconstruct** the precise boundaries by grouping official administrative "Wards" based on which constituency shape they fall into (@sec-wards).
 
-## 1. Setup and Libraries
+::: {.content-visible when-format="html"}
+```{mermaid}
+%%| label: fig-workflow
+%%| fig-cap: "The workflow: rough shapes from the scraped map, precise boundaries from the wards."
+flowchart LR
+  A["Scrape<br/>SVG"] --> B["Parse and<br/>georeference"]
+  B --> C["Rough<br/>shapes"]
+  W["Official<br/>wards"] --> D["Match each ward<br/>to a shape"]
+  C --> D
+  D --> E["Dissolve by<br/>constituency"]
+  E --> F["Final<br/>GeoJSON"]
+```
+:::
+
+::: {.column-margin}
+The constituency map comes from the [2079 general election heatmap](https://generalelection2079.ekantipur.com/heatmap) on ekantipur. Ward boundaries are the official administrative layer saved in this post's `data/` folder.
+:::
+
+## Setup and Libraries
 
 We use `sf` for spatial operations and `rvest` for scraping. We also define paths for our inputs (official ward data) and outputs.
 
@@ -33,6 +55,8 @@ We use `sf` for spatial operations and `rvest` for scraping. We also define path
 #| label: setup
 #| message: false
 #| warning: false
+#| code-fold: true
+#| code-summary: "Show the setup code"
 
 library(sf)       # Spatial data handling
 library(xml2)     # Parsing XML/SVG
@@ -42,23 +66,24 @@ library(stringr)  # String manipulation
 library(dplyr)    # Data manipulation
 library(here)     # Robust project-relative paths
 
-# We build the path to the current post directory.
-post_dir <- here("posts", "nepal-election-geojson")
+post_dir <- here("posts", "nepal-election-geojson") # <1>
 
-# 2. Define paths to data folder
-wards_geojson_path    <- here::here(post_dir, "data", "nepal-wards.gpkg")
+wards_geojson_path    <- here::here(post_dir, "data", "nepal-wards.gpkg") # <2>
 national_geojson_path <- here::here(post_dir, "data", "nepal-national.gpkg")
 
-# 3. Define output paths
-output_svg_path       <- here::here(post_dir, "output", "nepal_electoral_map.svg")
+output_svg_path       <- here::here(post_dir, "output", "nepal_electoral_map.svg") # <3>
 rough_map_path <- here::here(post_dir, "output", "nepal_svg_rough.geojson")
 output_geojson_path   <- here::here(post_dir, "output", "nepal_electoral_map.geojson")
 
-# Ensure output directory exists
-if (!dir.exists(dirname(output_svg_path))) dir.create(dirname(output_svg_path), recursive = TRUE)
+if (!dir.exists(dirname(output_svg_path))) dir.create(dirname(output_svg_path), recursive = TRUE) # <4>
 ```
 
-## Scraping the SVG
+1. The path to this post's own folder, so the code runs from anywhere in the project.
+2. Official ward and national boundaries, used as the reference.
+3. Where the three outputs are written.
+4. Create the output folder if it is missing.
+
+## Scraping the SVG {#sec-scrape}
 
 We use `httr2` to fetch the webpage and `rvest` to extract the specific SVG element containing the map. We also inject some CSS to ensure the map renders correctly if viewed in a browser (e.g., setting the viewBox and handling overflow).
 
@@ -70,30 +95,25 @@ url <- "https://generalelection2079.ekantipur.com/heatmap"
 message("Fetching data from: ", url)
 
 tryCatch({
-  # 1. Fetch Content
   req <- request(url) |>
-    req_user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
+    req_user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36") # <1>
 
   resp <- req_perform(req)
   html_content <- resp_body_html(resp)
 
-  # 2. Extract SVG (Select by pattern ID specific to this map)
-  svg_node <- html_element(html_content, xpath = "//svg[.//pattern[@id='np__BG']]")
+  svg_node <- html_element(html_content, xpath = "//svg[.//pattern[@id='np__BG']]") # <2>
 
   if (!inherits(svg_node, "xml_missing")) {
-    # Fix viewBox for consistency (1920x1080)
-    xml_set_attr(svg_node, "viewBox", "0 0 1920 1080")
+    xml_set_attr(svg_node, "viewBox", "0 0 1920 1080") # <3>
 
-    # Add CSS for better visibility
     css_styles <- "
       path { fill: #cccccc; stroke: #fff; cursor: pointer; stroke-width: 1.75px; }
       path:hover { opacity: 0.9; }
       .national-park { fill: #55e5a5 !important; }
       svg { overflow: visible !important; }
     "
-    xml_add_child(svg_node, "style", css_styles, .where = 0)
+    xml_add_child(svg_node, "style", css_styles, .where = 0) # <4>
 
-    # Save to output folder
     write_xml(svg_node, output_svg_path)
     message("Success! Raw SVG saved to: ", output_svg_path)
 
@@ -104,12 +124,17 @@ tryCatch({
   message("Error fetching URL: ", e$message)
 })
 
-# The source site is sometimes down: fall back to the SVG saved by an earlier run
-if (!exists("svg_node") && file.exists(output_svg_path)) {
+if (!exists("svg_node") && file.exists(output_svg_path)) { # <5>
   message("Using the previously saved SVG: ", output_svg_path)
   svg_node <- read_xml(output_svg_path)
 }
 ```
+
+1. Send a browser-like user agent, because the site can refuse bare requests.
+2. Pick the one `<svg>` that carries this map's background pattern.
+3. Fix the viewBox at 1920 by 1080 so every run uses the same coordinate system.
+4. Inject CSS so the saved SVG also looks right when opened in a browser.
+5. The source site is sometimes down: fall back to the SVG saved by an earlier run.
 
 ::: {.content-visible when-format="html"}
 ![Scraped Electoral Map of Nepal in SVG format](./output/nepal_electoral_map.svg)
@@ -119,31 +144,30 @@ if (!exists("svg_node") && file.exists(output_svg_path)) {
 (The scraped SVG map is shown on the web version of this post.)
 :::
 
-## Parsing SVG Paths to Geometry
+## Parsing SVG Paths to Geometry {#sec-parse}
 
 SVG paths are stored as strings in the `d` attribute. We need a robust parser to convert these strings into numerical coordinates. This function handles messy spacing and implicit commands often found in web SVGs.
 
 ```{r}
 #| label: parse-geometry
+#| lst-label: lst-parse
+#| lst-cap: "Turning an SVG path string into polygon coordinates"
 
-# Function to robustly handle SVG path strings (fixes minified negatives)
 parse_d_robust <- function(d) {
-  d_clean <- str_replace_all(d, "-", " -")             # Handle "100-100"
-  d_clean <- str_replace_all(d_clean, "[a-zA-Z]", " ") # Remove commands
+  d_clean <- str_replace_all(d, "-", " -") # <1>
+  d_clean <- str_replace_all(d_clean, "[a-zA-Z]", " ") # <2>
   nums <- as.numeric(str_split(d_clean, "[\\s,]+")[[1]])
   nums <- nums[!is.na(nums)]
 
   if(length(nums) < 4) return(NULL)
 
-  mtx <- matrix(nums, ncol = 2, byrow = TRUE)
-  # Close polygon if open
-  if (!all(mtx[1,] == mtx[nrow(mtx),])) mtx <- rbind(mtx, mtx[1,])
+  mtx <- matrix(nums, ncol = 2, byrow = TRUE) # <3>
+  if (!all(mtx[1,] == mtx[nrow(mtx),])) mtx <- rbind(mtx, mtx[1,]) # <4>
   if (nrow(mtx) < 4) return(NULL)
 
   return(mtx)
 }
 
-# Extract paths from the scraped SVG content
 path_nodes <- xml_find_all(svg_node, "//*[local-name()='path']")
 
 polys_list <- list()
@@ -153,9 +177,7 @@ for (i in seq_along(path_nodes)) {
   d_attr <- xml_attr(path_nodes[i], "d")
   id_val <- xml_attr(path_nodes[i], "data-slug")
 
-  # --- UI FILTER FIX ---
-  # Strictly skip paths that lack a data-slug (buttons, background rects)
-  if (is.na(id_val) || id_val == "") next
+  if (is.na(id_val) || id_val == "") next # <5>
 
   coords <- parse_d_robust(d_attr)
   if (!is.null(coords)) {
@@ -166,11 +188,19 @@ for (i in seq_along(path_nodes)) {
 
 if (length(polys_list) == 0) stop("No valid map districts found after filtering.")
 
-# Create initial SF object (Raw SVG Coordinates)
-nepal_sf <- st_sf(constituency_id = id_list, geometry = st_sfc(polys_list))
+nepal_sf <- st_sf(constituency_id = id_list, geometry = st_sfc(polys_list)) # <6>
 ```
 
-## Georeferencing (Affine Transformation)
+1. Minified paths write negative numbers without a separator (`100-100`), so put a space before each minus sign.
+2. Remove the path commands (`M`, `L`, `C` and so on) and keep only the numbers.
+3. Pair the numbers up as x and y coordinates.
+4. Close the ring if the path is open; a polygon must end where it starts.
+5. Skip paths with no `data-slug`: they are buttons and background rectangles, not constituencies.
+6. The result is still in raw SVG coordinates, which is why the next step georeferences it.
+
+The parser in @lst-parse is deliberately forgiving, because the paths come straight from a web page.
+
+## Georeferencing (Affine Transformation) {#sec-georef}
 
 The extracted SVG uses screen coordinates (pixels). To make this map useful, we must align it with the real world (Longitude/Latitude).
 
@@ -179,19 +209,14 @@ We do this by calculating the bounding box of a reference map (`data/nepal-natio
 ```{r}
 #| label: transform-geometry
 
-# 1. Load Reference Map
 if (!file.exists(national_geojson_path)) stop("Reference map not found.")
 
 nepal_ref <- st_read(national_geojson_path, quiet = TRUE)
 
-# 2. Project Reference to Web Mercator (EPSG:3857)
-# This gives us the correct target aspect ratio for a web map
-target_bbox <- st_bbox(st_transform(nepal_ref, 3857))
+target_bbox <- st_bbox(st_transform(nepal_ref, 3857)) # <1>
 
-# 3. Affine Transformation
-# Flip Y-axis (SVG top-left origin -> Map bottom-left origin)
 flip_matrix <- matrix(c(1, 0, 0, -1), ncol = 2)
-nepal_sf$geometry <- nepal_sf$geometry * flip_matrix
+nepal_sf$geometry <- nepal_sf$geometry * flip_matrix # <2>
 
 # Calculate Scale Factors
 src_bbox <- st_bbox(nepal_sf)
@@ -201,19 +226,22 @@ src_h <- src_bbox$ymax - src_bbox$ymin
 tgt_w <- target_bbox$xmax - target_bbox$xmin
 tgt_h <- target_bbox$ymax - target_bbox$ymin
 
-# Shift SVG to (0,0)
-nepal_sf$geometry <- nepal_sf$geometry - c(src_bbox$xmin, src_bbox$ymin)
+nepal_sf$geometry <- nepal_sf$geometry - c(src_bbox$xmin, src_bbox$ymin) # <3>
 
-# Scale to match Reference size
 scale_matrix <- matrix(c(tgt_w / src_w, 0, 0, tgt_h / src_h), ncol = 2)
-nepal_sf$geometry <- nepal_sf$geometry * scale_matrix
+nepal_sf$geometry <- nepal_sf$geometry * scale_matrix # <4>
 
-# Shift to Reference position
-nepal_sf$geometry <- nepal_sf$geometry + c(target_bbox$xmin, target_bbox$ymin)
+nepal_sf$geometry <- nepal_sf$geometry + c(target_bbox$xmin, target_bbox$ymin) # <5>
 
-# 4. Assign CRS (Web Mercator)
-st_crs(nepal_sf) <- 3857
+st_crs(nepal_sf) <- 3857 # <6>
 ```
+
+1. The reference map, projected to Web Mercator (EPSG:3857), gives the target size and aspect ratio for a web map.
+2. Flip the y-axis: SVG puts the origin at the top left, maps put it at the bottom left.
+3. Shift the SVG so its lower-left corner sits at (0, 0).
+4. Stretch it to the same width and height as the reference map.
+5. Shift it onto the reference map's position.
+6. Declare the coordinate system, now that the numbers really are Web Mercator metres.
 
 ```{r eval = knitr::is_html_output()}
 # Create interactive map
@@ -236,7 +264,7 @@ st_write(
 message("Rough SVG map saved to: ", rough_map_path)
 ```
 
-## Reconstruction via Wards
+## Reconstruction via Wards {#sec-wards}
 
 The transformed SVG is roughly accurate but has "jagged" borders and low-quality topology. To fix this, we use the **Wards** method:
 
@@ -251,41 +279,38 @@ This results in a map that perfectly matches official administrative boundaries.
 
 message("Reconstructing boundaries using Wards...")
 
-# 1. Load Wards Data
 if (!file.exists(wards_geojson_path)) stop("Wards GeoJSON not found.")
 wards <- st_read(wards_geojson_path, quiet = TRUE) |>
   st_make_valid()
 
-# 2. Project to Metric (UTM Zone 45N) for accurate cleanup
-# Nepal falls mostly in UTM 45N (EPSG:32645)
-wards_utm <- st_transform(wards, 32645)
+wards_utm <- st_transform(wards, 32645) # <1>
 nepal_utm <- st_transform(nepal_sf, 32645) |> st_make_valid()
 
-# 3. Assign Wards to Constituencies
 message("Matching wards to constituencies...")
-sf_use_s2(FALSE) # Use GEOS for the join
+sf_use_s2(FALSE) # <2>
 ward_centroids <- st_centroid(wards_utm)
-nearest_indices <- st_nearest_feature(ward_centroids, nepal_utm)
+nearest_indices <- st_nearest_feature(ward_centroids, nepal_utm) # <3>
 wards_utm$constituency_id <- nepal_utm$constituency_id[nearest_indices]
 
-# 4. Dissolve and Clean Slivers
 message("Dissolving geometries and removing slivers...")
-
-# SNAP TO GRID: Rounds coordinates to nearest 1mm to prevent tiny float errors
-# wards_utm <- st_set_precision(wards_utm, 1000)
 
 final_map_utm <- wards_utm |>
   group_by(constituency_id) |>
-  summarise(geometry = st_union(geom)) |>
+  summarise(geometry = st_union(geom)) |> # <4>
   st_make_valid() |>
-  # SLIVER REMOVAL: 1 meter expansion and contraction
-  st_buffer(dist = 1) |>
+  st_buffer(dist = 1) |> # <5>
   st_buffer(dist = -1) |>
   st_make_valid()
 
-# 5. Transform back to WGS84 for GeoJSON export
-final_map <- st_transform(final_map_utm, 4326)
+final_map <- st_transform(final_map_utm, 4326) # <6>
 ```
+
+1. Work in metres: Nepal falls mostly in UTM zone 45N (EPSG:32645), which keeps the cleanup accurate.
+2. Use the planar GEOS engine rather than spherical S2 for these joins.
+3. Each ward centroid is matched to the nearest rough constituency shape.
+4. Merge the wards that share a constituency into one polygon.
+5. Remove slivers by growing the shapes 1 metre and shrinking them back.
+6. Back to WGS84 (longitude and latitude) for the GeoJSON export.
 
 ```{r eval = knitr::is_html_output()}
 # Create interactive map. The widget embeds every vertex in the page, so map a
@@ -311,8 +336,8 @@ st_write(
 message("Reconstruction Complete! Saved to: ", output_geojson_path)
 ```
 
-::: {.callout-tip title="Download the output files:"}
-- [nepal_electoral_map.svg](./_output/nepal_electoral_map.svg)
-- [nepal_svg_rough.geojson](./_output/nepal_svg_rough.geojson)
-- [nepal_electoral_map.geojson](./_output/nepal_electoral_map.geojson)
+::: {.callout-tip title="Download the output files"}
+- [nepal_electoral_map.svg](./output/nepal_electoral_map.svg)
+- [nepal_svg_rough.geojson](./output/nepal_svg_rough.geojson)
+- [nepal_electoral_map.geojson](./output/nepal_electoral_map.geojson)
 :::
