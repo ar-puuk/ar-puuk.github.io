@@ -1,6 +1,8 @@
 project:
   type: website
   output-dir: docs
+  # left-aligns code in the Word versions (see the script for why)
+  post-render: scripts/fix-docx.py
   # render:
   #   - "*.qmd"
   #   - "!posts/utah-bikeways/"
@@ -22,6 +24,9 @@ website:
   draft-mode: visible
 
   repo-url: "https://github.com/ar-puuk/ar-puuk.github.io"
+  repo-branch: master
+  # "Edit this page" and "Report an issue" links in the page footer
+  repo-actions: [edit, issue]
 
   # page-navigation: false
   # back-to-top-navigation: false

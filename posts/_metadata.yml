@@ -18,7 +18,23 @@ format:
     code-link: true
     code-tools: true
     code-annotations: select
+    # long lines in code blocks wrap instead of scrolling sideways
+    code-overflow: wrap
+    # footnotes and references appear in the margin beside the text that cites them
+    reference-location: margin
+    citation-location: margin
+    # Google Scholar metadata tags (uses each post's citation block)
+    google-scholar: true
     css: ../assets/css/app-embed.css
+    # Diagrams: tighter spacing and a readable font, so a six-step flow fits the text column
+    mermaid:
+      themeVariables:
+        fontSize: "15px"
+      flowchart:
+        nodeSpacing: 22
+        rankSpacing: 34
+        padding: 8
+        curve: basis
     include-after-body: ../_includes/app-embed-js.html
   typst:
     fig-format: png
