@@ -1,7 +1,7 @@
 ---
-title: "Interactive Robocopy GUI Tool"
-image-alt: "RoboGUI Ultimate window with source and destination fields, quick presets and the generated robocopy command."
-description: "A web-based interface for generating Windows robocopy commands with ease"
+title: "Mirror: a Robocopy Command Builder"
+image-alt: "Mirror in the Conduit app: a Locations form with source and destination folders, preset buttons along the top and the generated robocopy command on the right."
+description: "A browser-based builder for Windows Robocopy commands, covering every option in robocopy /? with plain-language explanations and warnings before anything deletes files"
 author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com
@@ -11,51 +11,55 @@ categories: [Developer Tools, JavaScript, Web Apps, Open Source]
 prefer-html: true
 ---
 
-## Robocopy Command Generator
+Robocopy is the best file-copying tool built into Windows, and one of the hardest to remember: dozens of switches, several of which can delete files at the destination. **Mirror** lets you build the command visually instead. It covers every option in `robocopy /?` (97 settings), explains what each one does, and warns before anything can delete files. It runs entirely in your browser; nothing is uploaded.
 
-I've developed an interactive web-based tool that simplifies creating robocopy commands through a user-friendly graphical interface. Instead of memorizing complex command-line syntax, users can simply select options and generate commands visually.
+Mirror began as a single-page Robocopy GUI in 2025 and was redesigned as part of **Conduit**, a pair of command builders that share one design system. Its sister app is [Fetch](../wget-gui/index.qmd), the Wget builder.
 
+## Try it
+
+::: {.column-screen-inset}
 ```{=html}
-<div class="app-embed-wrapper">
+<div class="app-embed-wrapper" style="--embed-height: 820px">
   <div class="app-embed-toolbar">
-    <span class="app-embed-label">Robocopy GUI</span>
+    <span class="app-embed-label">Mirror</span>
     <button class="app-fullscreen-btn" type="button" title="Toggle fullscreen">Fullscreen</button>
   </div>
   <div class="app-embed-frame">
-    <iframe src="https://ar-puuk.github.io/robocopy-gui/" title="Robocopy GUI Tool" allowfullscreen loading="lazy"></iframe>
+    <iframe src="https://ar-puuk.github.io/robocopy-gui/" title="Mirror, a Robocopy command builder" allowfullscreen loading="lazy"></iframe>
   </div>
 </div>
 ```
+:::
 
 ::: {.app-links}
 [{{< fa arrow-up-right-from-square >}} Open app](https://ar-puuk.github.io/robocopy-gui/){.btn .btn-primary target="_blank" rel="noopener"}
 [{{< fa brands github >}} GitHub](https://github.com/ar-puuk/robocopy-gui){.btn .btn-outline-secondary target="_blank" rel="noopener"}
 :::
 
-## Features
+## How it works
 
-The tool provides an intuitive interface for:
+1. **Pick a starting point.** Choose a preset (Daily backup, Exact mirror, Archive with permissions, Fast LAN copy, or Move and clean up) or start from scratch.
+2. **Fill in the tabs.** Locations, What to do, Filters, Preserve, Performance, Automation, Logging and Advanced. Rarely used options stay hidden until you turn on **Show advanced**.
+3. **Watch the command.** It updates as you choose, with every flag explained and a clear warning for options that delete (Mirror, Move, Purge).
+4. **Add to queue.** Build several jobs, reorder them, then download one `.bat` or `.ps1` script. Stop on first failure is on by default.
 
-- **Source and Destination Selection**: Easy path input with validation
-- **Copy Options**: Checkboxes for common robocopy parameters like `/E`, `/MIR`, `/R:n`, etc.
-- **Real-time Preview**: See your robocopy command as you build it
-- **Copy to Clipboard**: One-click copying of the generated command
-- **Parameter Explanations**: Tooltips and descriptions for each option
+## Other ways in
 
-## Technical Details
+- **Find an option.** Type a name or a flag, such as `retry` or `/MT`, to search every tab at once.
+- **Paste a command.** Paste an existing `robocopy` command and the form fills in. Flags the builder does not recognise are kept under Advanced.
+- **Command palette.** `Ctrl+K` jumps to any option, preset or page, and `Ctrl+Enter` adds the current command to the queue.
+- **Profiles.** Save a full set of options and load it later. Profiles, the queue and the form are remembered in your browser.
 
-This tool is built with vanilla HTML, CSS, and JavaScript, making it lightweight and fast. It's hosted on GitHub Pages, which means it automatically updates whenever I push changes to the [source repository](https://github.com/ar-puuk/robocopy-gui).
+## Technical details
 
-The interface translates user selections into proper robocopy syntax, helping both beginners learn the command structure and experienced users save time on complex operations.
+The whole app is one self-contained `index.html` with no build step to run it, so it is light and fast and works from GitHub Pages. It is generated from a shared source, so Mirror and Fetch keep identical design tokens and components. A jsdom smoke test covers it. Icons are from [Lucide](https://lucide.dev) and the fonts are Bricolage Grotesque, Instrument Sans and JetBrains Mono. The code lives in the [source repository](https://github.com/ar-puuk/robocopy-gui).
 
-## Use Cases
-
-This tool is particularly useful for:
+## Use cases
 
 - System administrators managing file synchronization
-- IT professionals setting up backup routines  
-- Anyone needing to copy large directory structures with specific parameters
-- Learning robocopy syntax through visual exploration
+- IT professionals setting up backup routines
+- Anyone copying large directory structures with specific parameters
+- Learning Robocopy syntax by seeing what each option does
 
 ------------------------------------------------------------------------
 

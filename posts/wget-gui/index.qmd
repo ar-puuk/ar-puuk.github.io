@@ -1,7 +1,7 @@
 ---
-title: "WgetGUI Ultimate: A Fluent Command Generator"
-image-alt: "WgetGUI Ultimate window with target URL and output fields and the generated wget command."
-description: "A modern, Windows 11-inspired web interface for building complex GNU Wget commands"
+title: "Fetch: a Wget Command Builder"
+image-alt: "Fetch in the Conduit app: a Target form with a web address and save folder, preset buttons along the top and the generated wget command on the right."
+description: "A browser-based builder for GNU Wget commands, covering every option in wget 1.21 with plain-language explanations and warnings for risky choices"
 author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com
@@ -11,53 +11,55 @@ categories: [Developer Tools, JavaScript, Web Apps, Open Source]
 prefer-html: true
 ---
 
-## Wget Command Generator
+GNU Wget can download a file, a folder or a whole website, but only if you remember which of its many switches to combine. **Fetch** lets you build the command visually instead. It covers every option in `wget --help` for version 1.21 (155 settings), explains what each one does, and warns about risky choices. It runs entirely in your browser; nothing is uploaded.
 
-Following the success of my [RobocopyGUI](https://ar-puuk.github.io/robocopy-gui/) tool, I’ve developed **WgetGUI Ultimate**. This interactive web-based interface is designed to demystify the powerful but complex GNU Wget utility, allowing users to build sophisticated download strings through a clean, Fluent-style UI.
+Fetch started as a Wget companion to my Robocopy tool and was redesigned as part of **Conduit**, a pair of command builders that share one design system. Its sister app is [Mirror](../robocopy-gui/index.qmd), the Robocopy builder.
 
-Instead of wrestling with dozens of command-line switches like `-r`, `-np`, or `--limit-rate`, you can simply toggle switches and fill in fields to see your command built in real-time.
+## Try it
 
+::: {.column-screen-inset}
 ```{=html}
-<div class="app-embed-wrapper">
+<div class="app-embed-wrapper" style="--embed-height: 820px">
   <div class="app-embed-toolbar">
-    <span class="app-embed-label">WgetGUI Ultimate</span>
+    <span class="app-embed-label">Fetch</span>
     <button class="app-fullscreen-btn" type="button" title="Toggle fullscreen">Fullscreen</button>
   </div>
   <div class="app-embed-frame">
-    <iframe src="https://ar-puuk.github.io/wget-gui/" title="WgetGUI Ultimate Tool" allowfullscreen loading="lazy"></iframe>
+    <iframe src="https://ar-puuk.github.io/wget-gui/" title="Fetch, a Wget command builder" allowfullscreen loading="lazy"></iframe>
   </div>
 </div>
 ```
+:::
 
 ::: {.app-links}
 [{{< fa arrow-up-right-from-square >}} Open app](https://ar-puuk.github.io/wget-gui/){.btn .btn-primary target="_blank" rel="noopener"}
 [{{< fa brands github >}} GitHub](https://github.com/ar-puuk/wget-gui){.btn .btn-outline-secondary target="_blank" rel="noopener"}
 :::
 
-## Features
+## How it works
 
-The WgetGUI provides a comprehensive suite of options for web scraping and file retrieval:
+1. **Pick a starting point.** Choose a preset (One file, Offline site copy, Images only, Check for broken links, or Gentle crawl) or start from scratch.
+2. **Fill in the tabs.** Target, What to download, Save layout, Filters, Performance, Requests, Security, Logging and Advanced. Rarely used options stay hidden until you turn on **Show advanced**.
+3. **Watch the command.** It updates as you choose, with every flag explained and notes for risky choices such as skipping certificate checks, putting a password in the command, or crawling with no wait.
+4. **Add to queue.** Build several downloads, reorder them, then download one `.bat` or `.ps1` script. Stop on first failure is on by default.
 
-- **Quick Presets**: One-click configurations for common tasks like mirroring an entire website for offline viewing or checking for broken links (Spider mode).
-- **Recursive & Mirroring**: Easily set recursion depth, convert links for local viewing, and manage page requisites.
-- **Advanced Throttling**: Control your bandwidth usage with rate limiting and randomized wait intervals to avoid server rate-limits.
-- **Batch Queue**: Build multiple commands and export them as a single `.bat` file for Windows automation.
-- **Dark/Light Mode**: A native-feeling Windows 11 (Fluent) aesthetic that respects your system's theme preference.
+## Other ways in
 
-## Technical Details
+- **Find an option.** Type a name or a flag, such as `cookies` or `--limit-rate`, to search every tab at once.
+- **Paste a command.** Paste an existing `wget` command and the form fills in. Flags the builder does not recognise are kept under Advanced.
+- **Command palette.** `Ctrl+K` jumps to any option, preset or page, and `Ctrl+Enter` adds the current command to the queue.
+- **Profiles.** Save a full set of options and load it later. Profiles, the queue and the form are remembered in your browser.
 
-This tool is a pure client-side application built using **vanilla HTML, CSS, and JavaScript**. It uses:
-- **Fluent UI Design**: CSS variables are utilized to mimic the Windows 11 design language, providing a seamless experience for desktop users.
-- **GitHub Pages**: Hosted directly from the [source repository](https://github.com/ar-puuk/wget-gui), ensuring high availability and automatic updates.
-- **No Backend Required**: All command generation logic happens locally in your browser, ensuring your URLs and credentials remain private.
+## Technical details
 
-## Use Cases
+Fetch is one self-contained `index.html` with no build step to run it and no backend, so your URLs and credentials never leave the browser. It is generated from the shared source in the [Mirror repository](https://github.com/ar-puuk/robocopy-gui), so the two apps keep identical design tokens and components. Icons are from [Lucide](https://lucide.dev) and the fonts are Bricolage Grotesque, Instrument Sans and JetBrains Mono. The code lives in the [source repository](https://github.com/ar-puuk/wget-gui).
 
-WgetGUI is ideal for:
-- **Digital Archivists**: Creating offline mirrors of websites before they go offline.
-- **Developers**: Testing server responses and checking for broken links via the "Spider" feature.
-- **Bulk Downloaders**: Managing large lists of files by importing URL text files.
-- **Students**: Learning the syntax of GNU Wget through a visual, trial-and-error environment.
+## Use cases
+
+- **Digital archivists** creating offline mirrors of websites before they go offline
+- **Developers** checking a site for broken links
+- **Bulk downloaders** working through long lists of files from a list file
+- **Students** learning Wget syntax by seeing what each option does
 
 ------------------------------------------------------------------------
 
