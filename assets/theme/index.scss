@@ -186,6 +186,17 @@ div.quarto-post {
   position: absolute;
 }
 
+// Links inside headings keep the heading weight (Bootstrap sets links to 400, which the old
+// "Lora" face used to hide by drawing every weight in Poppins Bold)
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  font-weight: inherit;
+}
+// Sidebar labels ("On this page", "Other Formats") were bold before the font cleanup
+#quarto-margin-sidebar h2,
+#TOC h2 {
+  font-weight: 600;
+}
+
 // Headings: a softer rule under h2 and lighter section numbers
 #quarto-document-content h2 {
   margin-top: 2.4rem;
