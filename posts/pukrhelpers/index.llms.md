@@ -28,6 +28,20 @@ install.packages("pukRhelpers", repos = "https://ar-puuk.r-universe.dev") # <2>
 
 Several of these build on other people’s gists and are credited to them in the function documentation and the [README](https://github.com/ar-puuk/pukRhelpers).
 
+## 3 Try one in your browser
+
+The package itself cannot run inside a web page: it talks to ArcGIS services and databases, and it needs system libraries that browsers do not have. `st_aggregate()` is different, because it is plain `sf` and base R. The code below is copied from the package and run on the North Carolina counties that ship with `sf`.
+
+Edit anything and press **Run code**: the cells run in your browser.
+
+`st_aggregate()` comes from [a gist by rCarto](https://gist.github.com/rCarto/bb47aff0a02e808d2bf64f2d8c5db7d8), and the package credits it the same way.
+
+First, load the counties and sort them into three zones:
+
+Then define the function. It joins the geometries of each zone with `st_union()` and summarises the attributes you ask for:
+
+Now aggregate: the mean and median births per zone, with the counties merged into three shapes. Try changing `"BIR74"` to `"SID74"`, or `"mean"` to `"max"`:
+
 The code is on [GitHub](https://github.com/ar-puuk/pukRhelpers) under GPL-3.
 
 ## Citation

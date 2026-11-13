@@ -226,7 +226,7 @@ Scraping a constituency map from an election results site, converting its SVG pa
 
 Jan 2026
 
-7 min
+8 min
 
 [![Wasatch Front Housing Site Evaluator welcome dialog explaining how to select communities, filter by land use and set priorities.](./work/housing-site-evaluator/housing_site_evaluator.png)](work/housing-site-evaluator/index.llms.md)
 
@@ -246,7 +246,7 @@ This analysis calculates and compares roadway lane miles and bikeway facility mi
 
 Nov 2025
 
-17 min
+18 min
 
 ### [Building an Interactive Storymap using {mapgl}](posts/storymap_my_journey/index.llms.md)
 
@@ -294,7 +294,7 @@ An R package collecting helper functions from my day-to-day data and GIS work. M
 
 May 2025
 
-2 min
+4 min
 
 ### [Overture Maps Data Download](posts/overture-data-download/index.llms.md)
 
@@ -318,4 +318,4 @@ A 3D population density map of Nepal built in R with rayshader and Kontur popula
 
 Jan 2023
 
-9 min
+12 min

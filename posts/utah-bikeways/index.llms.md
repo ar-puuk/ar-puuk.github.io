@@ -6,7 +6,18 @@ This analysis examines the distribution of roadway and bikeway infrastructure ac
 2.  Calculate bikeway lane miles by facility type for each municipality
 3.  Compare roadway and bikeway infrastructure across municipalities
 
-All spatial data is sourced from the Utah Geospatial Resource Center (UGRC) and processed using the R spatial ecosystem.
+All spatial data is sourced from the Utah Geospatial Resource Center (UGRC) ([Utah Geospatial Resource Center 2025](#ref-ugrc-sgid)) and processed using the R spatial ecosystem. The diagram shows how the pieces fit together.
+
+``` mermaid
+flowchart LR
+  A["UGRC<br/>services"] --> B["Cached<br/>GeoPackages"]
+  B --> C["Reproject<br/>EPSG:3566"]
+  C --> D["Spatial join<br/>to boundaries"]
+  D --> E["Lane miles<br/>roads and bikeways"]
+  E --> F["Plot<br/>and CSV"]
+```
+
+Figure 1: From UGRC data to the road and bikeway comparison.
 
 # 2 Setup Environment
 
@@ -14,7 +25,9 @@ All spatial data is sourced from the Utah Geospatial Resource Center (UGRC) and 
 
 The following packages are required for this analysis. Install them if not already available in your R environment.
 
-``` downlit
+Show the install commands
+
+``` r
 install.packages("dplyr")
 install.packages("tidyr")
 install.packages("readr")
@@ -30,7 +43,9 @@ install.packages("tmap")
 
 ## 2.2 Load Packages
 
-``` downlit
+Show the package list
+
+``` r
 library(dplyr) # for data manipulation
 library(tidyr) # for tidy data operations (pivot functions)
 library(readr) # read and write tabular data
@@ -48,63 +63,82 @@ library(tmap) # view sf objects
 
 We use EPSG:3566 (NAD83(HARN) / Utah North) projection, which uses US survey feet as the base unit. This projection is appropriate for statewide analysis in Utah and ensures accurate distance calculations.
 
-``` downlit
-# Set Project CRS
-PROJECT_CRS = "EPSG:3566"
+``` r
+PROJECT_CRS = "EPSG:3566" # <1>
 
-# Set tmap mode to interactive
-tmap::tmap_mode("view")
+tmap::tmap_mode("view") # <2>
 ```
+
+1.  Every layer is reprojected to this CRS, so lengths come out in US survey feet.
+2.  `tmap` draws interactive maps in the web version of this post.
 
 # 3 Read Data from UGRC
 
 All spatial datasets are downloaded from UGRC’s ArcGIS REST services. To improve performance and enable offline work, the data is cached locally as GeoDatabase files. Each file is downloaded the first time the post is rendered and reused afterwards, so nothing needs to be fetched by hand (the statewide roads file is large and is not committed).
 
-``` downlit
-# set data folder
-dir_data <- "_data"
-fs::dir_create(dir_data) # Create a directory if it doesnt exist
+``` r
+dir_data <- "_data" # <1>
+fs::dir_create(dir_data) # <2>
 
-# UGRC downloads are paged (the roads layer is over 200 pages), so one dropped
-# connection fails the whole read. Retry a few times before giving up.
 arc_read_retry <- function(url, ..., tries = 5) {
-  for (i in seq_len(tries)) {
-    out <- tryCatch(arcgislayers::arc_read(url, ...), error = function(e) e)
-    if (!inherits(out, "error")) return(out)
-    if (i == tries) stop(out)
+  for (i in seq_len(tries)) { # <3>
+    out <- tryCatch(arcgislayers::arc_read(url, ...), error = function(e) e) # <4>
+    if (!inherits(out, "error")) return(out) # <5>
+    if (i == tries) stop(out) # <6>
     message("Download failed (attempt ", i, " of ", tries, "), retrying...")
-    Sys.sleep(5 * i)
+    Sys.sleep(5 * i) # <7>
   }
 }
 ```
+
+Listing 1: A retry wrapper for paged ArcGIS downloads
+
+1.  Downloaded layers are cached in this folder.
+2.  Created on the first render, if it does not exist yet.
+3.  UGRC downloads are paged (the roads layer is over 200 pages), so one dropped connection fails the whole read. Try up to `tries` times before giving up.
+4.  Catch the error instead of stopping, so the loop can decide what to do next.
+5.  A successful read is returned straight away.
+6.  After the last attempt, raise the error.
+7.  Wait a little longer after each failure.
+
+**Data used**
+
+- [Utah Roads](https://services1.arcgis.com/99lidPhWCzftIe9K/ArcGIS/rest/services/UtahRoads/FeatureServer/0)
+- [Bikeways](https://services1.arcgis.com/99lidPhWCzftIe9K/ArcGIS/rest/services/Bikeways/FeatureServer/0)
+- [Municipal boundaries](https://services1.arcgis.com/99lidPhWCzftIe9K/ArcGIS/rest/services/UtahMunicipalBoundaries/FeatureServer/0)
+- [County boundaries](https://services1.arcgis.com/99lidPhWCzftIe9K/ArcGIS/rest/services/UtahCountyBoundaries/FeatureServer/0)
+
+Retried downloads are described in [Listing 1](#lst-retry).
 
 ## 3.1 Utah City Boundaries
 
 Municipal boundaries are used to aggregate roadway and bikeway data by city. These boundaries represent the legal limits of incorporated municipalities in Utah.
 
-``` downlit
-# Define paths
-path_ut_cities <- file.path(dir_data, "UtahMunicipalBoundaries.gpkg")
+``` r
+path_ut_cities <- file.path(dir_data, "UtahMunicipalBoundaries.gpkg") # <1>
 
-# Download if not exists
-if (!fs::file_exists(path_ut_cities)) {
-  # Read data using arcgis package
-  sf_ut_cities <- arc_read_retry(
+if (!fs::file_exists(path_ut_cities)) { # <2>
+  sf_ut_cities <- arc_read_retry( # <3>
     "https://services1.arcgis.com/99lidPhWCzftIe9K/ArcGIS/rest/services/UtahMunicipalBoundaries/FeatureServer/0",
     crs = PROJECT_CRS
   ) |> janitor::clean_names()
-  # Write to a GeoDatabase
   sf_ut_cities |>
-    sf::st_write(path_ut_cities, layer = "UtahMunicipalBoundaries", append = FALSE)
+    sf::st_write(path_ut_cities, layer = "UtahMunicipalBoundaries", append = FALSE) # <4>
 }
 
-# Always read from the local copy, so the geometry column is the same
-# whether the file was just downloaded or already existed
-sf_ut_cities <- sf::st_read(path_ut_cities, quiet = TRUE) |>
+sf_ut_cities <- sf::st_read(path_ut_cities, quiet = TRUE) |> # <5>
   sf::st_transform(PROJECT_CRS)
 ```
 
-``` downlit
+1.  Where this layer is cached.
+2.  Download only if there is no local copy yet.
+3.  Read the feature service with the retry wrapper from [Listing 1](#lst-retry).
+4.  Write it to a GeoPackage for next time.
+5.  Always read from the local copy, so the geometry column is the same whether the file was just downloaded or already existed.
+
+The same download-once pattern repeats for the county, roads and bikeways layers below.
+
+``` r
 tmap::qtm(sf_ut_cities)
 ```
 
@@ -112,7 +146,7 @@ tmap::qtm(sf_ut_cities)
 
 County boundaries are used to aggregate roadway and bikeway data for unincorporated areas in Utah.
 
-``` downlit
+``` r
 # Define paths
 path_ut_counties <- file.path(dir_data, "UtahCountyBoundaries.gpkg")
 
@@ -134,7 +168,7 @@ sf_ut_counties <- sf::st_read(path_ut_counties, quiet = TRUE) |>
   sf::st_transform(PROJECT_CRS)
 ```
 
-``` downlit
+``` r
 tmap::qtm(sf_ut_cities)
 ```
 
@@ -142,7 +176,7 @@ tmap::qtm(sf_ut_cities)
 
 The Utah Roads dataset contains all roadway centerlines statewide, including the number of through lanes for each road segment. This forms the basis for calculating road lane miles.
 
-``` downlit
+``` r
 # Define paths
 path_ut_roads <- file.path(dir_data, "UtahRoads.gpkg")
 
@@ -164,7 +198,7 @@ sf_ut_roads <- sf::st_read(path_ut_roads, quiet = TRUE) |>
   sf::st_transform(PROJECT_CRS)
 ```
 
-``` downlit
+``` r
 tmap::qtm(sf_ut_roadways)
 ```
 
@@ -172,7 +206,7 @@ tmap::qtm(sf_ut_roadways)
 
 The Bikeways dataset contains all existing bicycle facilities in Utah. Each segment has two facility type attributes (`facility1` and `facility2`) representing the bicycle facility in each direction of travel.
 
-``` downlit
+``` r
 # Define paths
 path_ut_bikeways <- file.path(dir_data, "Bikeways.gpkg")
 
@@ -194,7 +228,7 @@ sf_ut_bikeways <- sf::st_read(path_ut_bikeways, quiet = TRUE) |>
   sf::st_transform(PROJECT_CRS)
 ```
 
-``` downlit
+``` r
 tmap::qtm(sf_ut_bikeways)
 ```
 
@@ -202,29 +236,25 @@ tmap::qtm(sf_ut_bikeways)
 
 ## 4.1 Add Unincorporated Areas
 
-``` downlit
+``` r
 tmap::qtm(sf_ut_cities, col = "blue", fill = NULL, size = 1) +
   tmap::qtm(sf_ut_counties, col = "red", fill = NULL, size = 2)
 ```
 
-``` downlit
+``` r
 # Create combined municipal boundaries including unincorporated areas
 sf_ut_municipal <- dplyr::bind_rows(
-  # Add incorporated cities
   sf_ut_cities |>
-    sf::st_make_valid() |>
+    sf::st_make_valid() |> # <1>
     dplyr::select(Name = name),
 
-  # Add unincorporated county areas
   sf_ut_counties |>
     sf::st_make_valid() |>
     dplyr::mutate(
-      # Convert county name to proper case and add "(Unincorporated)"
-      Name = paste0(stringr::str_to_title(name), " County (Unincorporated)")
+      Name = paste0(stringr::str_to_title(name), " County (Unincorporated)") # <2>
     ) |>
     dplyr::select(Name) |>
-    # Remove areas that overlap with cities
-    sf::st_difference(
+    sf::st_difference( # <3>
       sf_ut_cities |>
         sf::st_make_valid() |>
         sf::st_union() |>
@@ -232,9 +262,12 @@ sf_ut_municipal <- dplyr::bind_rows(
     )
 )
 
-# View the result
 sf_ut_municipal
 ```
+
+1.  Incorporated cities come first; `st_make_valid()` repairs any broken polygons before they are combined.
+2.  Each county becomes an “unincorporated” area, with its name in proper case.
+3.  Cut out everything that falls inside a city, so only the unincorporated remainder is left.
 
     Simple feature collection with 290 features and 1 field
     Geometry type: GEOMETRY
@@ -254,7 +287,7 @@ sf_ut_municipal
     9        Levan POLYGON ((1539952 7009592, ...
     10   Panguitch POLYGON ((1368834 6382054, ...
 
-``` downlit
+``` r
 tmap::qtm(sf_ut_municipal, fill = NULL)
 ```
 
@@ -264,19 +297,22 @@ Road lane miles are calculated by multiplying the length of each road segment by
 
 The calculation converts the geometry length from US survey feet to miles using the `units` package, which properly handles unit conversions and maintains unit awareness throughout the analysis.
 
-``` downlit
+``` r
 sf_ut_roads <- sf_ut_roads |>
     dplyr::mutate(
-        # TODO: fix thrulanes data
-        dot_thrulanes = dplyr::if_else(is.na(dot_thrulanes), 1, dot_thrulanes),
-        miles = units::set_units(sf::st_length(`geom`), "mile"),
-        lane_miles = units::set_units(dot_thrulanes * miles, "mile")
+        dot_thrulanes = dplyr::if_else(is.na(dot_thrulanes), 1, dot_thrulanes), # <1>
+        miles = units::set_units(sf::st_length(`geom`), "mile"), # <2>
+        lane_miles = units::set_units(dot_thrulanes * miles, "mile") # <3>
     )
 
 sf_ut_roads |>
   dplyr::select(dot_thrulanes, miles, lane_miles) |>
   head(20)
 ```
+
+1.  A missing through-lane count is treated as one lane (to do: fix this in the source data).
+2.  Segment length, converted from US survey feet to miles.
+3.  Lane miles are the length times the number of through lanes.
 
     Simple feature collection with 20 features and 3 fields
     Geometry type: MULTILINESTRING
@@ -311,30 +347,27 @@ sf_ut_roads |>
 
 Using spatial join, we associate each road segment with its municipality and sum the lane miles. Roads that fall outside municipal boundaries will have NA for city_name.
 
-``` downlit
+``` r
 # Calculate total lane miles by municipality
 road_miles_by_city <- sf_ut_roads |>
-
-    # Spatial join: attach each road segment to the city it falls within
-    sf::st_join(
+    sf::st_join( # <1>
       sf_ut_municipal,
       join = sf::st_intersects
     ) |>
-
-    # Group and summarize: total lane miles per city
-    dplyr::group_by(Name) |>
+    dplyr::group_by(Name) |> # <2>
     dplyr::summarize(
       total_lane_miles = sum(lane_miles, na.rm = TRUE),
       .groups = "drop"
     ) |>
+    sf::st_drop_geometry() # <3>
 
-    # Output as a non-spatial table
-    sf::st_drop_geometry()
-
-# View the results
 road_miles_by_city |>
   dplyr::arrange(dplyr::desc(total_lane_miles))
 ```
+
+1.  Spatial join: attach each road segment to the city or unincorporated area it falls within.
+2.  Group by municipality and add up the lane miles.
+3.  Keep a plain table; the geometry is no longer needed.
 
     # A tibble: 287 × 2
        Name                              total_lane_miles
@@ -351,7 +384,9 @@ road_miles_by_city |>
     10 Juab County (Unincorporated)                 4583.
     # ℹ 277 more rows
 
-**Key Finding:** Salt Lake City has the highest road lane miles among Utah municipalities, followed by St. George and West Valley City. The NA category represents roads outside municipal boundaries (unincorporated areas, state highways between cities, etc.).
+> **NOTE:**
+>
+> Salt Lake City has the highest road lane miles among Utah municipalities, followed by St. George and West Valley City. The NA category represents roads outside municipal boundaries (unincorporated areas, state highways between cities, etc.).
 
 # 5 Bikeway Miles by Municipality
 
@@ -359,9 +394,8 @@ road_miles_by_city |>
 
 We use `forcats` package to respect the hierarchy of the bicycle facilities.
 
-``` downlit
-# Define the order of facility classes
-facility_class_order <- c(
+``` r
+facility_class_order <- c( # <1>
   "Paved Path",
   "Protected Bike Lane",
   "Bike Lane",
@@ -370,10 +404,9 @@ facility_class_order <- c(
   "Other"
 )
 
-# Reclassify bike facilities into broader categories as factors
 sf_ut_bikeways <- sf_ut_bikeways |>
   dplyr::mutate(
-    facility1_class = dplyr::case_when(
+    facility1_class = dplyr::case_when( # <2>
       facility1 == "Trail or Pathway" ~ "Paved Path",
       facility1 %in% c(
         "Cycle track, at-grade, protected with parking (1A)",
@@ -409,22 +442,25 @@ sf_ut_bikeways <- sf_ut_bikeways |>
       facility2 == "Shoulder bikeway (3A)" ~ "Unmarked Route",
       TRUE ~ "Other"
     ),
-    # Convert to factors with proper ordering
-    facility1_class = factor(facility1_class, levels = facility_class_order),
+    facility1_class = factor(facility1_class, levels = facility_class_order), # <3>
     facility2_class = factor(facility2_class, levels = facility_class_order)
   )
 ```
+
+1.  The classes, from the most protected facility to the least, in the order `forcats` will respect.
+2.  Collapse UGRC’s detailed facility names into five broader classes; the same recoding is applied to `facility2` below.
+3.  Turn both columns into ordered factors, so tables and plots keep this order.
 
 ## 5.2 Calculate Bikeway Lane Miles by Facility Type
 
 Bikeway facilities are directional - a single bikeway segment can have different facility types in each direction (`facility1` and `facility2`). For this analysis, we treat each direction as a separate lane, meaning a 1-mile bikeway segment with bike lanes in both directions counts as 2 lane-miles of bike lanes.
 
-The [`pivot_longer()`](https://tidyr.tidyverse.org/reference/pivot_longer.html) function stacks `facility1` and `facility2` into separate rows, effectively doubling the mileage for segments where both directions have facilities. We then group by municipality and facility type to calculate total lane miles for each combination.
+The `pivot_longer()` function stacks `facility1` and `facility2` into separate rows, effectively doubling the mileage for segments where both directions have facilities. We then group by municipality and facility type to calculate total lane miles for each combination.
 
-``` downlit
+``` r
 # Prepare bikeways with both directions as lanes
 bikeway_miles_by_city <- sf_ut_bikeways |>
-    dplyr::filter(cartocode != "9") |> # Remove 'sidewalks' and 'virtual link' connections
+    dplyr::filter(cartocode != "9") |> # <1>
     dplyr::select( facility1_class, facility2_class) |>
 
     # Add mileage to each bikeway segment
@@ -440,14 +476,12 @@ bikeway_miles_by_city <- sf_ut_bikeways |>
     # Drop geometry from dataframe for further processing
     sf::st_drop_geometry() |>
 
-    # Treat facility1 and facility2 as separate lane directions
-    tidyr::pivot_longer(
+    tidyr::pivot_longer( # <2>
       cols = c(facility1_class, facility2_class),
       values_to = "facility_class"
     ) |>
 
-    # Apply weighting: 1.0 for bidirectional (Paved Path), 0.5 for directional facilities
-    dplyr::mutate(
+    dplyr::mutate( # <3>
       weighted_miles = dplyr::if_else(
         facility_class == "Paved Path",
         as.numeric(miles) * 0.5, # TODO: change this to 1 if needed
@@ -482,6 +516,10 @@ bikeway_miles_by_city |>
   dplyr::arrange(dplyr::desc(`All Biking Facilities`))
 ```
 
+1.  Drop “sidewalk” and “virtual link” connections.
+2.  Treat `facility1` and `facility2` as separate lane directions.
+3.  Each direction counts for half the segment length. Paths could be weighted 1.0 instead, which is the to-do in the code.
+
     # A tibble: 287 × 8
        Name           `Paved Path` `Bike Lane` `Unmarked Route` Other `Marked Route`
        <chr>                 <dbl>       <dbl>            <dbl> <dbl>          <dbl>
@@ -499,7 +537,9 @@ bikeway_miles_by_city |>
     # ℹ 2 more variables: `Protected Bike Lane` <dbl>,
     #   `All Biking Facilities` <dbl>
 
-**Key Finding:** Bikeway infrastructure varies significantly by facility type across municipalities. The dataset includes various facility types such as bike lanes, protected bike lanes, shared-use paths, and trails.
+> **NOTE:**
+>
+> Bikeway infrastructure varies significantly by facility type across municipalities. The dataset includes various facility types such as bike lanes, protected bike lanes, shared-use paths, and trails.
 
 # 6 Combine dataframes
 
@@ -509,7 +549,7 @@ The final step combines road lane miles and bikeway lane miles by facility type 
 
 Each row represents a municipality, with columns for total road lane miles followed by columns for each bikeway facility type. Cities with zero bikeway miles for a particular facility type will show 0 in that column.
 
-``` downlit
+``` r
 # Combine with roads
 combined_miles_by_city <- road_miles_by_city |>
   # Convert road lane miles to numeric
@@ -674,19 +714,21 @@ Plot.plot({
 })
 ```
 
-**Key Finding:** The ratio of bikeway lane miles to road lane miles varies considerably across Utah municipalities, indicating different levels of investment in bicycle infrastructure relative to overall roadway networks.
+> **NOTE:**
+>
+> The ratio of bikeway lane miles to road lane miles varies considerably across Utah municipalities, indicating different levels of investment in bicycle infrastructure relative to overall roadway networks.
 
 # 7 Export Final results
 
 The analysis results are exported as a CSV file for further use in reports, visualizations, or other analyses. The output directory is created automatically if it doesn’t exist.
 
-``` downlit
+``` r
 # set data folder
 dir_output <- "_output"
 fs::dir_create(dir_output) # Create a directory if it doesnt exist
 ```
 
-``` downlit
+``` r
 combined_miles_by_city |>
     readr::write_csv(
         file.path(dir_output, "miles_by_city.csv"),
@@ -701,6 +743,8 @@ combined_miles_by_city |>
 # 8 Conclusion
 
 This analysis provides a comprehensive inventory of roadway and bikeway infrastructure across Utah municipalities. The methodology is reproducible and can be updated as new data becomes available from UGRC. The spatial join approach ensures accurate attribution of infrastructure to municipalities, though users should note that roads and bikeways in unincorporated areas will appear under the NA category.
+
+Utah Geospatial Resource Center. 2025. *Utah SGID Open Data: Roads, Bikeways, Municipal Boundaries and County Boundaries*. Utah Geospatial Resource Center (UGRC). <https://gis.utah.gov/>.
 
 ## Citation
 

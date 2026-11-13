@@ -1554,20 +1554,20 @@ display:block!important;
 </ul>
 </div><div class="column" style="width:45%;">
 <h3 id="the-workaround">The Workaround</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a><span class="co"># Share a SCHEMA, not the data:</span></span>
-<span id="cb5-2"><a aria-hidden="true" tabindex="-1"></a><span class="st">&quot;My data looks like this:</span></span>
-<span id="cb5-3"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a aria-hidden="true" tabindex="-1"></a><span class="st">hh_id | persons | income_group</span></span>
-<span id="cb5-5"><a aria-hidden="true" tabindex="-1"></a><span class="st">  int |     int | chr (Low/Med/High)</span></span>
-<span id="cb5-6"><a aria-hidden="true" tabindex="-1"></a><span class="st">veh   | lat     | lng</span></span>
-<span id="cb5-7"><a aria-hidden="true" tabindex="-1"></a><span class="st">  int |   dbl   | dbl</span></span>
-<span id="cb5-8"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a aria-hidden="true" tabindex="-1"></a><span class="st">~45,000 rows. Some NAs in </span></span>
-<span id="cb5-10"><a aria-hidden="true" tabindex="-1"></a><span class="st">income_group (~8%). </span></span>
-<span id="cb5-11"><a aria-hidden="true" tabindex="-1"></a><span class="st">Write an R script to impute </span></span>
-<span id="cb5-12"><a aria-hidden="true" tabindex="-1"></a><span class="st">missing income using a </span></span>
-<span id="cb5-13"><a aria-hidden="true" tabindex="-1"></a><span class="st">k-nearest neighbors approach </span></span>
-<span id="cb5-14"><a aria-hidden="true" tabindex="-1"></a><span class="st">based on persons, veh, lat, lng.&quot;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-code-line-numbers="2-7|9-10|11-14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-label="1"></a><span class="co"># Share a SCHEMA, not the data:</span></span>
+<span id="cb5-2"><a aria-label="2"></a><span class="st">&quot;My data looks like this:</span></span>
+<span id="cb5-3"><a aria-label="3"></a></span>
+<span id="cb5-4"><a aria-label="4"></a><span class="st">hh_id | persons | income_group</span></span>
+<span id="cb5-5"><a aria-label="5"></a><span class="st">  int |     int | chr (Low/Med/High)</span></span>
+<span id="cb5-6"><a aria-label="6"></a><span class="st">veh   | lat     | lng</span></span>
+<span id="cb5-7"><a aria-label="7"></a><span class="st">  int |   dbl   | dbl</span></span>
+<span id="cb5-8"><a aria-label="8"></a></span>
+<span id="cb5-9"><a aria-label="9"></a><span class="st">~45,000 rows. Some NAs in </span></span>
+<span id="cb5-10"><a aria-label="10"></a><span class="st">income_group (~8%). </span></span>
+<span id="cb5-11"><a aria-label="11"></a><span class="st">Write an R script to impute </span></span>
+<span id="cb5-12"><a aria-label="12"></a><span class="st">missing income using a </span></span>
+<span id="cb5-13"><a aria-label="13"></a><span class="st">k-nearest neighbors approach </span></span>
+<span id="cb5-14"><a aria-label="14"></a><span class="st">based on persons, veh, lat, lng.&quot;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <aside class="notes">
 <p><strong>[~1.5 min]</strong></p>
@@ -1682,20 +1682,20 @@ display:block!important;
 </div><div class="column" style="width:45%;">
 <h3 id="claude.md-agent.md"><code>CLAUDE.md</code> / <code>AGENT.md</code></h3>
 <p>Place in your <strong>project root</strong>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu"># CLAUDE.md</span></span>
-<span id="cb8-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">## Project Context</span></span>
-<span id="cb8-3"><a aria-hidden="true" tabindex="-1"></a>WFRC travel demand model (Cube).</span>
-<span id="cb8-4"><a aria-hidden="true" tabindex="-1"></a>R + sf + data.table. Base pipe.</span>
-<span id="cb8-5"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a aria-hidden="true" tabindex="-1"></a><span class="fu">## Conventions</span></span>
-<span id="cb8-7"><a aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>EPSG:26912 for all spatial ops</span>
-<span id="cb8-8"><a aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Snake_case variable names</span>
-<span id="cb8-9"><a aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Never use <span class="in">`library(tidyverse)`</span></span>
-<span id="cb8-10"><a aria-hidden="true" tabindex="-1"></a>  — import packages individually</span>
-<span id="cb8-11"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-12"><a aria-hidden="true" tabindex="-1"></a><span class="fu">## Data</span></span>
-<span id="cb8-13"><a aria-hidden="true" tabindex="-1"></a>TAZ shapefile: data/taz_v4.shp</span>
-<span id="cb8-14"><a aria-hidden="true" tabindex="-1"></a>Count stations: data/aadt_2025.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-code-line-numbers="2-4|6-10|12-14"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a aria-label="1"></a><span class="fu"># CLAUDE.md</span></span>
+<span id="cb8-2"><a aria-label="2"></a><span class="fu">## Project Context</span></span>
+<span id="cb8-3"><a aria-label="3"></a>WFRC travel demand model (Cube).</span>
+<span id="cb8-4"><a aria-label="4"></a>R + sf + data.table. Base pipe.</span>
+<span id="cb8-5"><a aria-label="5"></a></span>
+<span id="cb8-6"><a aria-label="6"></a><span class="fu">## Conventions</span></span>
+<span id="cb8-7"><a aria-label="7"></a><span class="ss">- </span>EPSG:26912 for all spatial ops</span>
+<span id="cb8-8"><a aria-label="8"></a><span class="ss">- </span>Snake_case variable names</span>
+<span id="cb8-9"><a aria-label="9"></a><span class="ss">- </span>Never use <span class="in">`library(tidyverse)`</span></span>
+<span id="cb8-10"><a aria-label="10"></a>  — import packages individually</span>
+<span id="cb8-11"><a aria-label="11"></a></span>
+<span id="cb8-12"><a aria-label="12"></a><span class="fu">## Data</span></span>
+<span id="cb8-13"><a aria-label="13"></a>TAZ shapefile: data/taz_v4.shp</span>
+<span id="cb8-14"><a aria-label="14"></a>Count stations: data/aadt_2025.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <aside class="notes">
 <p><strong>[~1.5 min]</strong></p>

@@ -6,13 +6,27 @@ This analysis demonstrates advanced geospatial visualization techniques using R�
 **Data Source**: Kontur Population Dataset (400m H3 hexagon resolution)\
 **Projection**: ESRI:102306 (Nepal Nagarkot TM)
 
+``` mermaid
+flowchart LR
+  A["Kontur<br/>hexagons"] --> B["Reproject<br/>EPSG:6207"]
+  B --> C["Rasterize<br/>with stars"]
+  C --> D["Height<br/>matrix"]
+  D --> E["3D scene<br/>rayshader"]
+  E --> F["Path-traced<br/>render"]
+  F --> G["Labels<br/>with grid"]
+```
+
+Figure 1: From population hexagons to the annotated 3D map.
+
+The steps are explained in [Section 4.2](#sec-raster) for the raster, [Section 6.1](#sec-render) for the 3D scene and [Section 7.1](#sec-annotate) for the labels.
+
 ## 2 Environment Setup
 
 ### Package Installation and Loading
 
 Package Installation (Run Once)
 
-``` downlit
+``` r
 # Core packages for geospatial analysis
 install.packages(c("here", "sf", "ggplot2", "stars"))
 
@@ -23,8 +37,9 @@ install.packages(c("rayshader", "MetBrewer", "colorspace", "rayrender"))
 install.packages(c("png", "ragg", "systemfonts"))
 ```
 
-``` downlit
-# Load required libraries
+Show the packages
+
+``` r
 library(here)
 library(sf)
 library(stars)
@@ -41,7 +56,7 @@ library(systemfonts)
 library(grid)
 ```
 
-``` downlit
+``` r
 # Configure 3D rendering
 options(rgl.useNULL = FALSE)
 
@@ -54,7 +69,9 @@ project_crs <- "EPSG:6207"
 
 The analysis utilizes high-resolution population data from Kontur, provided in H3 hexagonal grid format at 400-meter resolution. This dataset offers superior granularity compared to traditional administrative boundary-based population estimates.
 
-``` downlit
+[H3](https://h3geo.org/) is a hierarchical hexagonal grid. Hexagons are used because every neighbour is the same distance from the centre, which makes density maps smoother than square cells.
+
+``` r
 # Load population data (H3 hexagons at 400m resolution)
 nep_hex <- sf::st_read(
   paste0(
@@ -74,7 +91,7 @@ nep_hex <- sf::st_read(
     Bounding box:  xmin: 8911286 ymin: 3041698 xmax: 9818046 ymax: 3562066
     Projected CRS: WGS 84 / Pseudo-Mercator
 
-``` downlit
+``` r
 # Load administrative boundaries
 nep_admin <- sf::st_read(
   paste0(
@@ -94,7 +111,7 @@ nep_admin <- sf::st_read(
     Bounding box:  xmin: 80.05862 ymin: 26.34776 xmax: 88.20153 ymax: 30.44694
     Geodetic CRS:  WGS 84
 
-``` downlit
+``` r
 # Create unified Nepal boundary
 nepal_boundary <- nep_admin |>
   sf::st_geometry() |>
@@ -115,8 +132,9 @@ nepal_boundary <- nep_admin |>
 
 ### Initial Data Exploration
 
-``` downlit
-# Preliminary visualization to verify data quality
+A quick map ([Figure 2](#fig-exploration)) confirms the hexagons line up with the national boundary before any 3D work starts.
+
+``` r
 ggplot2::ggplot(nep_hex) +
   ggplot2::geom_sf(ggplot2::aes(fill = population), color = "gray66", linewidth = 0) +
   ggplot2::geom_sf(data = nepal_boundary, fill = NA, color = "black",
@@ -126,30 +144,28 @@ ggplot2::ggplot(nep_hex) +
        fill = "Population")
 ```
 
-[![](index_files/figure-html/data-exploration-1.png)](index_files/figure-html/data-exploration-1.png)
+[![Map of Nepal in hexagonal cells shaded by population. The cells with the most people cluster along the southern lowlands and around Kathmandu, and the dashed outline marks the national border.](index_files/figure-html/fig-exploration-1.png)](index_files/figure-html/fig-exploration-1.png "Figure 2: Population in each 400 m hexagon, with the national boundary dashed.")
+
+Figure 2: Population in each 400 m hexagon, with the national boundary dashed.
 
 ### Raster Conversion and Matrix Preparation
 
 The conversion from vector hexagon data to raster format is essential for rayshader’s 3D rendering capabilities. This process involves calculating optimal dimensions while preserving the geographic aspect ratio.
 
-``` downlit
-# Calculate bounding box and aspect ratio
+``` r
 bbox <- sf::st_bbox(nepal_boundary)
 
-# Define corner points for aspect ratio calculation
-bottom_left <- sf::st_point(c(bbox[["xmin"]], bbox[["ymin"]])) |>
+bottom_left <- sf::st_point(c(bbox[["xmin"]], bbox[["ymin"]])) |> # <1>
   sf::st_sfc(crs = project_crs)
 bottom_right <- sf::st_point(c(bbox[["xmax"]], bbox[["ymin"]])) |>
   sf::st_sfc(crs = project_crs)
 top_left <- sf::st_point(c(bbox[["xmin"]], bbox[["ymax"]])) |>
   sf::st_sfc(crs = project_crs)
 
-# Calculate dimensions
-width <- sf::st_distance(bottom_left, bottom_right)
+width <- sf::st_distance(bottom_left, bottom_right) # <2>
 height <- sf::st_distance(bottom_left, top_left)
 
-# Determine aspect ratios
-if(width > height) {
+if(width > height) { # <3>
   w_ratio <- 1
   h_ratio <- height / width
 } else {
@@ -157,18 +173,23 @@ if(width > height) {
   w_ratio <- width / height
 }
 
-# Convert to raster with optimal resolution
-size <- 1000 * 2.5
+size <- 1000 * 2.5 # <4>
 
-pop_raster <- stars::st_rasterize(nep_hex,
+pop_raster <- stars::st_rasterize(nep_hex, # <5>
                           nx = floor(size * w_ratio),
                           ny = floor(size * h_ratio))
 
-# Create matrix for 3D rendering
-pop_matrix <- matrix(pop_raster$population,
+pop_matrix <- matrix(pop_raster$population, # <6>
                     nrow = floor(size * w_ratio),
                     ncol = floor(size * h_ratio))
 ```
+
+1.  Three corners of the bounding box are enough to measure its width and height.
+2.  Distances come out in metres, because the CRS is projected.
+3.  Scale the longer side to 1 and the shorter side in proportion, so the map keeps its shape.
+4.  The longer side of the raster is 2,500 cells, a balance between detail and render time.
+5.  Burn the hexagons into a grid of cells, each holding that area’s population.
+6.  Rayshader works on a plain matrix of heights, so the population grid becomes the heightmap.
 
 ## 5 Color Scheme Development
 
@@ -176,16 +197,16 @@ pop_matrix <- matrix(pop_raster$population,
 
 The visualization employs the “OKeeffe2” palette from MetBrewer, chosen for its warm earth tones that effectively represent population density while maintaining visual appeal and accessibility.
 
-``` downlit
-# Generate color palette
-color <- MetBrewer::met.brewer("OKeeffe2")
+``` r
+color <- MetBrewer::met.brewer("OKeeffe2") # <1>
 
-# Create texture gradient with bias toward higher values
-texture <- grDevices::colorRampPalette(color, bias = 3)(256)
+texture <- grDevices::colorRampPalette(color, bias = 3)(256) # <2>
 
-# Preview color scheme
 colorspace::swatchplot(texture)
 ```
+
+1.  The palette’s colours, from light sand to deep red.
+2.  Stretch it to 256 steps. `bias = 3` spends more of the range on the high values, so dense areas stand out against the sparse ones.
 
 [![](index_files/figure-html/color-palette-1.svg)](index_files/figure-html/color-palette-1.svg)
 
@@ -193,22 +214,19 @@ colorspace::swatchplot(texture)
 
 ### Interactive 3D Display
 
-``` downlit
-# Close any existing RGL windows
-rgl::close3d()
+``` r
+rgl::close3d() # <1>
 
-# Generate 3D visualization
 pop_matrix |>
-  rayshader::height_shade(texture = texture) |>
+  rayshader::height_shade(texture = texture) |> # <2>
   rayshader::plot_3d(
     heightmap = pop_matrix,
-    zscale = 250 / 2.5,
+    zscale = 250 / 2.5, # <3>
     solid = FALSE,
     shadowdepth = 0
   )
 
-# Set optimal camera position
-rayshader::render_camera(
+rayshader::render_camera( # <4>
   theta = 0,
   phi = 30,
   zoom = 0.4,
@@ -216,11 +234,16 @@ rayshader::render_camera(
 )
 ```
 
+1.  Close any 3D window left open by an earlier run.
+2.  Colour each cell from the palette according to its population.
+3.  The vertical exaggeration: the smaller the number, the taller the peaks.
+4.  Look from the south (`theta = 0`), tilted 30 degrees down, with a wide field of view.
+
 ### High-Quality Rendering
 
 The final rendering process utilizes rayshader’s advanced lighting system to create publication-ready visualizations with professional-grade quality and resolution.
 
-``` downlit
+``` r
 outfile <- here::here("posts/nepal-population-density/plots/final_plot.png")
 
 # Render high-quality image with timing
@@ -228,21 +251,20 @@ outfile <- here::here("posts/nepal-population-density/plots/final_plot.png")
   start_time <- Sys.time()
   cat(crayon::cyan("Rendering started:", start_time), "\n")
 
-  # Ensure output directory exists
   if(!file.exists(outfile)) {
-    png::writePNG(matrix(1), target = outfile)
+    png::writePNG(matrix(1), target = outfile) # <1>
   }
 
-  rayshader::render_highquality(
+  rayshader::render_highquality( # <2>
     filename = outfile,
     interactive = FALSE,
     lightdirection = 225,
-    lightaltitude = c(20, 80),
+    lightaltitude = c(20, 80), # <3>
     lightcolor = c(color[2], "white"),
     lightintensity = c(600, 100),
     width = 1980,
     height = 1080,
-    samples = 300
+    samples = 300 # <4>
   )
 
   end_time <- Sys.time()
@@ -251,9 +273,13 @@ outfile <- here::here("posts/nepal-population-density/plots/final_plot.png")
 }
 ```
 
-    Rendering started: 2026-11-12 23:06:08.669168 
+1.  Make sure the output file exists before the renderer writes to it.
+2.  A path-traced render: slow, but with soft shadows and realistic lighting.
+3.  Two lights, one low and warm and one high and white, shining from the south-west (225 degrees).
+4.  More samples smooth the noise of path tracing, at the cost of render time.
 
-    Rendering completed in: 10.9020450512568 
+    Rendering started: 2026-11-13 08:53:33.519664 
+    Rendering completed in: 1.80793498357137 
 
 ## 7 Post-Processing and Annotation
 
@@ -261,27 +287,28 @@ outfile <- here::here("posts/nepal-population-density/plots/final_plot.png")
 
 The final step adds the title, city labels and attribution on top of the rendered image. Instead of {magick}, it uses base {grid} for layout and the {ragg} PNG device for anti-aliased text. Two font files in the `font/` folder are registered for the session with {systemfonts}, so nothing needs to be installed in Windows: Ananda Namaste for the title, and Jost Medium (a free Google Fonts typeface in the style of Futura) for everything else.
 
-``` downlit
-# Register the bundled font (no system-wide install required)
-systemfonts::register_font(
+``` r
+systemfonts::register_font( # <1>
   "Ananda Namaste",
   plain = here::here("posts/nepal-population-density/font/Ananda Namaste 400.ttf")
 )
 
-# Jost (Google Fonts, OFL) stands in for Futura BT Medium, which is commercial
-systemfonts::register_font(
+systemfonts::register_font( # <2>
   "Jost Medium",
   plain = here::here("posts/nepal-population-density/font/Jost-500.ttf")
 )
 
-# Define text styling
-text_color <- colorspace::darken(color[7], .5)
+text_color <- colorspace::darken(color[7], .5) # <3>
 colorspace::swatchplot(text_color)
 ```
 
+1.  Register the bundled font for this session only, so nothing needs to be installed on the computer.
+2.  Jost (Google Fonts, OFL) stands in for Futura BT Medium, which is commercial.
+3.  The label colour is a darker shade of the palette, so it sits comfortably on the map.
+
 [![](index_files/figure-html/font-setup-1.svg)](index_files/figure-html/font-setup-1.svg)
 
-``` downlit
+``` r
 # Load rendered image
 render <- png::readPNG(
   here::here("posts/nepal-population-density/plots/final_plot.png")
@@ -289,11 +316,9 @@ render <- png::readPNG(
 img_h <- dim(render)[1]
 img_w <- dim(render)[2]
 
-# Place text using ImageMagick-style gravity and pixel offsets
-# (offsets move the label inward from the named edge; for "center", +x is right and +y is down)
-add_label <- function(label, gravity, dx, dy, size, alpha = 0.8,
+add_label <- function(label, gravity, dx, dy, size, alpha = 0.8, # <1>
                       family = "Jost Medium") {
-  pos <- switch(
+  pos <- switch( # <2>
     gravity,
     northeast = list(x = img_w - dx,      y = dy,             h = 1,  v = 1),
     east      = list(x = img_w - dx,      y = img_h / 2 + dy, h = 1,  v = 0.5),
@@ -301,7 +326,7 @@ add_label <- function(label, gravity, dx, dy, size, alpha = 0.8,
     center    = list(x = img_w / 2 + dx,  y = img_h / 2 + dy, h = 0.5, v = 0.5),
     southwest = list(x = dx,              y = img_h - dy,     h = 0,  v = 0)
   )
-  grid::grid.text(
+  grid::grid.text( # <3>
     label,
     x = grid::unit(pos$x, "native"),
     y = grid::unit(pos$y, "native"),
@@ -316,9 +341,12 @@ add_label <- function(label, gravity, dx, dy, size, alpha = 0.8,
 }
 ```
 
-``` downlit
-# res = 72 makes one point equal one pixel, so sizes match the image's pixel grid
-ragg::agg_png(
+1.  Labels are placed ImageMagick-style, with a named edge and pixel offsets, because that is how the original version of this map was labelled.
+2.  The offsets move a label inward from the named edge. For `"center"`, positive x is right and positive y is down.
+3.  Draw the text with `grid`, so the anti-aliased `ragg` device handles the rendering.
+
+``` r
+ragg::agg_png( # <1>
   here::here("posts/nepal-population-density/nepal_population_density.png"),
   width = img_w, height = img_h, units = "px", res = 72
 )
@@ -326,11 +354,9 @@ ragg::agg_png(
 grid::grid.newpage()
 grid::grid.raster(render, width = 1, height = 1)
 
-# Native units with y running top-down, to match pixel offsets
-grid::pushViewport(grid::viewport(xscale = c(0, img_w), yscale = c(img_h, 0)))
+grid::pushViewport(grid::viewport(xscale = c(0, img_w), yscale = c(img_h, 0))) # <2>
 
-# Title: scale "NEPAL" so its width matches the subtitle's width
-label_width <- function(label, size, family) {
+label_width <- function(label, size, family) { # <3>
   grid::convertWidth(
     grid::grobWidth(grid::textGrob(
       label, gp = grid::gpar(fontsize = size, fontfamily = family)
@@ -341,9 +367,7 @@ label_width <- function(label, size, family) {
 
 subtitle_size <- 36.5
 subtitle_width <- label_width("POPULATION DENSITY MAP", subtitle_size, "Jost Medium")
-# Ananda Namaste has side bearings and an overhanging top bar on the "n", so the
-# advance width is nudged up (x1.04) to line the stem of the "n" up with the "P"
-title_size <- 1.04 * 100 * subtitle_width / label_width("NEPAL", 100, "Ananda Namaste")
+title_size <- 1.04 * 100 * subtitle_width / label_width("NEPAL", 100, "Ananda Namaste") # <4>
 
 add_label("NEPAL", "northeast", 50, 65, title_size, alpha = 1, family = "Ananda Namaste")
 add_label("POPULATION DENSITY MAP", "northeast", 50, 235, subtitle_size, alpha = 1)
@@ -378,16 +402,23 @@ invisible(grid::popViewport())
 invisible(dev.off())
 ```
 
-[![Population Density of Nepal](nepal_population_density.png)](nepal_population_density.png "Population Density of Nepal")
+1.  At `res = 72` one point equals one pixel, so font sizes match the image’s pixel grid.
+2.  Native units with y running top-down, so the pixel offsets in `add_label()` line up.
+3.  Measures how wide a piece of text will be, so the title can be sized to match the subtitle.
+4.  “NEPAL” is scaled so its width matches the subtitle’s. Ananda Namaste has side bearings and an overhanging top bar on the “n”, so the width is nudged up by 4% to line the stem of the “n” up with the “P”.
 
-Population Density of Nepal
+[![3D population density map of Nepal. Tall orange and red columns rise from the southern lowlands and the Kathmandu valley, with low dark ground across the Himalaya. City names and the title NEPAL are printed on the map.](nepal_population_density.png)](nepal_population_density.png "Figure 3: Population density of Nepal as a 3D map: tall orange columns mark Kathmandu and the cities of the southern lowlands.")
+
+Figure 3: Population density of Nepal as a 3D map: tall orange columns mark Kathmandu and the cities of the southern lowlands.
+
+[Figure 3](#fig-final) is the finished map. Click it to enlarge.
 
 ## 8 Technical Methodology
 
 ### Spatial Data Processing Pipeline
 
 1.  **Data Transformation**: Vector hexagon data converted to standardized coordinate reference system (Nepal Nagarkot TM - ESRI:102306)
-2.  **Rasterization**: Optimal grid resolution calculated to balance detail with computational efficiency
+2.  **Rasterization**: Optimal grid resolution calculated to balance detail with computational efficiency ([Section 4.2](#sec-raster))
 3.  **Matrix Conversion**: Raster data transformed into height matrix for 3D rendering
 4.  **Texture Mapping**: Population values mapped to color gradients using perceptually uniform color spaces
 
