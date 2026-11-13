@@ -28,6 +28,20 @@ format:
     toc: true
     number-sections: true
     number-depth: 2
+    # Site look for the PDFs: Quarto's own template extended with a title banner, running
+    # header/footer and the site's colours (see assets/typst/typst-template.typ).
+    template-partials:
+      - ../assets/typst/typst-template.typ
+      - ../assets/typst/typst-show.typ
+    font-paths:
+      - ../assets/typst/fonts
+    mainfont: Poppins
+    codefont: Fira Code
+    fontsize: 9.5pt
+    linkcolor: "#B8531F"
+    margin:
+      x: 0.9in
+      y: 0.85in
   docx:
     fig-format: png
     knitr:
