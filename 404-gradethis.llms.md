@@ -431,9 +431,9 @@ performance_summary
 
 ------------------------------------------------------------------------
 
-## 🎯 Quiz Complete!
-
-**Congratulations, You are now a Transportation Data Scientist!** 🏆
+> **TIP:**
+>
+> **Congratulations, You are now a Transportation Data Scientist!** 🏆
 
 *P.S. - If you got this far, you’re definitely not lost anymore. You’re a certified Transportation Data Scientist! 🎯*
 
