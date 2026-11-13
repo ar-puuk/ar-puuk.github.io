@@ -235,7 +235,7 @@ write_csv(sizes, "_results/file_sizes.csv")
 #| echo: true
 ```
 
-::: {.callout-warning}
+::: {.callout-important}
 ## Memory Hog
 If your dataset is larger than your RAM, this script **crashes**.
 :::
