@@ -44,18 +44,24 @@
 }
 
 .research .project-category a {
-  background: color-mix(in srgb, currentColor 10%, transparent);
-  color: var(--bs-secondary-color);
-  padding: 0.25rem 0.5rem;
+  display: inline-block;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  color: var(--bs-body-color);
+  padding: 0.15rem 0.6rem;
   border-radius: var(--pb-radius-sm, 4px);
   text-decoration: none;
-  font-size: 0.85rem;
-  transition: all 0.3s ease;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
 .research .project-category a:hover {
-  background: color-mix(in srgb, currentColor 18%, transparent);
-  color: var(--bs-body-color);
+  background: color-mix(in srgb, var(--bs-link-color) 14%, transparent);
+  border-color: var(--bs-link-color);
+  color: var(--bs-link-color);
   text-decoration: none;
 }
 

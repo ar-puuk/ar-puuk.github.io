@@ -105,14 +105,14 @@ div.sourceCode {
 }
 
 // Categories
-.quarto-category {
-  background-color: $pb-primary;
-  color: $pb-bg-0;
-  border-color: $pb-primary;
+.quarto-title .quarto-categories .quarto-category.quarto-category {
+  // Quarto dims these to 60% and uppercases them with three classes; out-rank that
+  opacity: 1;
+  // The banner is navy in this theme, so the chip is tinted from cream
+  @include pb-chip($pb-text-dark, $pb-bg-0-dark);
+
   &:hover {
-    background-color: $pb-bg-0;
-    color: $pb-primary;
-    border-color: $pb-primary;
+    @include pb-chip-hover(#F2A27A, $pb-text-dark, $pb-bg-0-dark);
   }
 }
 

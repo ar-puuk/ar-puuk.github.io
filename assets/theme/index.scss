@@ -26,11 +26,11 @@ div.sourceCode.sourceCode {
 }
 
 // Shared components for the landing and About pages
-// (Quarto's Sass cache keys on this file, not on the partial: change this number after editing _components.scss to force a recompile. rev 29)
+// (Quarto's Sass cache keys on this file, not on the partial: change this number after editing _components.scss to force a recompile. rev 30)
 @import "components";
 
 // Callouts, tabsets and the announcement bar
-// (same Sass-cache note as above: change the rev number here after editing _content.scss. rev 15)
+// (same Sass-cache note as above: change the rev number here after editing _content.scss. rev 17)
 @import "content";
 
 // Import common CSS rules that both themes share
@@ -59,12 +59,14 @@ div.sourceCode.sourceCode {
 }
 
 // Categories (common hover behavior)
-.listing-category {
-  color: $pb-accent-text !important;
-  border-color: $pb-accent-text !important;
-  &:hover {
-    background-color: $pb-secondary;
-    color: white !important;
+.listing-categories .listing-category.listing-category.listing-category {
+  // Quarto styles these with up to three classes; the repeated class out-ranks that
+  @include pb-chip($body-color, $body-bg);
+  margin: 0 0.25rem 0.25rem 0;
+
+  &:hover,
+  &:focus-visible {
+    @include pb-chip-hover($pb-accent-text, $body-color, $body-bg);
   }
 }
 

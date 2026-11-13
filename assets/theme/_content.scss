@@ -10,6 +10,30 @@ $pb-callouts: (
   "warning": $callout-color-warning,
 );
 
+// ---------------------------------------------------------------- Chips
+// One chip look for the title-banner tags, the listing categories and the Research tags:
+// a tint of the text colour on whatever surface the chip sits on.
+@mixin pb-chip($fg, $bg) {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  text-decoration: none;
+  border: 1px solid mix($fg, $bg, 24%);
+  border-radius: $pb-radius-sm;
+  background-color: mix($fg, $bg, 8%);
+  color: mix($fg, $bg, 88%);
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+@mixin pb-chip-hover($accent, $fg, $bg) {
+  background-color: mix($accent, $bg, 14%);
+  border-color: $accent;
+  color: $accent;
+}
+
 // ---------------------------------------------------------------- Callouts
 // Tints mix against pure white on the light theme (the cream page background turns the
 // green and teal tints muddy) and against the page colour on the dark theme.
