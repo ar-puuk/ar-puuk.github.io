@@ -35,44 +35,41 @@ $pb-callouts: (
 }
 
 // ---------------------------------------------------------------- Callouts
-// Tints mix against pure white on the light theme (the cream page background turns the
-// green and teal tints muddy) and against the page colour on the dark theme.
+// Spec (after WFRCAnalytics/wfrc-brand): a 4px bar in the type colour, flush against a square
+// left edge, with 8px rounding on the right only; the body is a 9% tint of the type colour and
+// the title strip 16%; the icon is a filled circle in the type colour with the glyph cut out in
+// the page colour. Glyphs are alpha masks, so one rule colours all five types.
+// Tints mix against pure white on the light theme (the cream page turns the green and teal
+// tints muddy) and against the page colour on the dark theme.
 $pb-tint-base: if(lightness($body-bg) > 50%, #fff, $body-bg);
 
-div.callout.callout {
-  border-radius: $pb-radius;
-  border: 1px solid $pb-line;
-  border-left-width: 1px;
-  box-shadow: none;
-  position: relative;
-  overflow: hidden;
+$pb-callout-glyphs: (
+  note:      "%3Ccircle cx='8' cy='3.6' r='1.5'/%3E%3Crect x='6.7' y='6.6' width='2.6' height='7' rx='1.1'/%3E",
+  tip:       "%3Cpath d='M2.6 8.6l3.7 3.7 7.1-8' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E",
+  important: "%3Crect x='6.7' y='2' width='2.6' height='7.6' rx='1.2'/%3E%3Ccircle cx='8' cy='12.7' r='1.5'/%3E",
+  warning:   "%3Cpath fill-rule='evenodd' d='M8 2.1Q8.5 2.1 8.8 2.7L14.9 13.1Q15.3 13.9 14.4 13.9H1.6Q0.7 13.9 1.1 13.1L7.2 2.7Q7.5 2.1 8 2.1Z M7.15 5.8H8.85V10H7.15Z M8 10.9A1.05 1.05 0 1 0 8 13A1.05 1.05 0 1 0 8 10.9Z'/%3E",
+  caution:   "%3Cpath d='M3.6 3.6l8.8 8.8M12.4 3.6l-8.8 8.8' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'/%3E"
+);
 
-  // Accent bar over header and body: clipped by the rounded corners, so it stays straight
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 4px;
-    background-color: $pb-line;
-    z-index: 1;
-  }
+div.callout.callout {
+  box-shadow: none;
+  overflow: hidden;
   margin: 1.25rem 0;
+  font-size: 0.93rem;
   background-color: mix($body-color, $pb-tint-base, 3%);
 
   // Quarto dims the title to 85%/75% opacity; keep it at full contrast
   > div.callout-header {
     opacity: 1;
-    align-items: center;
-    padding: 0.55rem 0.9rem;
   }
   .callout-title-container {
+    font-family: $headings-font-family;
+    font-weight: 700;
+    font-size: 0.9rem;
     color: $body-color;
-    font-size: 0.95rem;
-    font-weight: 600;
   }
   .callout-body-container {
-    padding: 0.7rem 0.95rem 0.8rem;
-    font-size: 0.95rem;
+    color: $body-color;
     line-height: 1.55;
 
     > :first-child { margin-top: 0; }
@@ -104,17 +101,62 @@ div.callout.callout {
   }
 }
 
-@each $name, $c in $pb-callouts {
-  div.callout.callout-#{$name} {
-    border-color: mix($c, $pb-tint-base, 24%);
-    background-color: mix($c, $pb-tint-base, 4%);
+div.callout.callout.callout-style-default {
+  border: 0;
+  border-left: 4px solid $pb-line;
+  border-radius: 0 $pb-radius $pb-radius 0;
 
-    &::before {
+  > div.callout-header {
+    padding: 8px 14px;
+    align-items: center;
+  }
+  .callout-icon-container {
+    display: flex;
+    align-items: center;
+    padding: 0 0.6em 0 0;
+  }
+  .callout-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 1.35em;
+    height: 1.35em;
+    border-radius: 50%;
+  }
+  .callout-icon::before {
+    background-image: none !important;
+    width: 0.85em;
+    height: 0.85em;
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+            mask-position: center;
+    -webkit-mask-size: contain;
+            mask-size: contain;
+  }
+  .callout-body-container.callout-body {
+    padding: 10px 14px;
+  }
+  &.callout-titled > .callout-header + .callout-collapse > .callout-body-container,
+  &.callout-titled > .callout-body-container {
+    padding-top: 10px;
+  }
+}
+
+@each $name, $c in $pb-callouts {
+  div.callout.callout.callout-style-default.callout-#{$name} {
+    border-left-color: $c;
+    background-color: mix($c, $pb-tint-base, 9%);
+
+    > div.callout-header {
+      background-color: mix($c, $pb-tint-base, 16%);
+    }
+    .callout-icon {
       background-color: $c;
     }
-
-    &.callout-style-default > div.callout-header {
-      background-color: mix($c, $pb-tint-base, 13%);
+    .callout-icon::before {
+      background-color: $body-bg;
+      -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E#{map-get($pb-callout-glyphs, $name)}%3C/svg%3E");
+              mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E#{map-get($pb-callout-glyphs, $name)}%3C/svg%3E");
     }
     a:not(.btn) {
       text-decoration-color: $c;
