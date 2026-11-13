@@ -1,6 +1,6 @@
 > **NOTE:**
 >
-> **Developed at the Wasatch Front Regional Council (WFRC).** The application and its repository belong to WFRC; this page only summarizes my work.
+> The application and its repository belong to WFRC; this page only summarizes my work.
 
 [![The landing page, showing the five-step workflow and the privacy and traceability guarantees.](proposal_scoresheet.png)](proposal_scoresheet.png "The landing page, showing the five-step workflow and the privacy and traceability guarantees.")
 

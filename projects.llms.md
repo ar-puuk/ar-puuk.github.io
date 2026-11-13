@@ -1,12 +1,12 @@
-[![Community Profiles dashboard for the WFRC region, with headline indicator tiles, a county choropleth of median household income and two trend charts.](./work/community-profiles/community_profiles.png)](work/community-profiles/index.llms.md)
+[![The Demographic Profiles dashboard for Utah, with headline indicator tiles, a county choropleth of median household income and two trend charts.](./work/community-profiles/demographic_profiles.png)](work/community-profiles/index.llms.md)
 
-### [Community Profiles](work/community-profiles/index.llms.md)
+### [Demographic Profiles](work/community-profiles/index.llms.md)
 
-A static, map-first dashboard of Census and economic indicators for the Wasatch Front region, counties, cities and planning areas, plus the data pipeline behind it. Developed at the Wasatch Front Regional Council.
+A static, map-first dashboard of Census and economic indicators for Utah, its counties and its cities and towns, plus the data pipeline behind it. Forked from the Wasatch Front Regional Council’s Community Profiles.
 
 Nov 2026
 
-2 min
+3 min
 
 [![Proposal Evaluation Scoresheet landing page with a five-step workflow from configuring the project to exporting the PDF report.](./work/proposal-scoresheet/proposal_scoresheet.png)](work/proposal-scoresheet/index.llms.md)
 

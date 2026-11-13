@@ -1,6 +1,6 @@
 > **NOTE:**
 >
-> **Developed at the Wasatch Front Regional Council (WFRC).** The application and its repository belong to WFRC; this page only summarizes my work.
+> The application and its repository belong to WFRC; this page only summarizes my work.
 
 [![The start screen: begin from a data file or design a table from scratch, with a banner stating that data never leaves the device.](synthetic_data_generator.png)](synthetic_data_generator.png "The start screen: begin from a data file or design a table from scratch, with a banner stating that data never leaves the device.")
 

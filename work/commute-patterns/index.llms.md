@@ -1,6 +1,6 @@
 > **NOTE:**
 >
-> **Developed at the Wasatch Front Regional Council (WFRC).** The application and its repository belong to WFRC; this page only summarizes my work. It is a **modernized version of WFRC’s earlier Regional Commuter Flows map**. I did not create the original; my contribution was rebuilding it on open-source tools.
+> The application and its repository belong to WFRC; this page only summarizes my work. It is a **modernized version of WFRC’s earlier Regional Commuter Flows map**. I did not create the original; my contribution was rebuilding it on open-source tools.
 
 [![The Utah Commuter Flow Patterns map, showing inflow and outflow for Salt Lake City in 2023.](commute_patterns.png)](commute_patterns.png "The Utah Commuter Flow Patterns map, showing inflow and outflow for Salt Lake City in 2023.")
 

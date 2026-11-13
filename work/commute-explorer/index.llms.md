@@ -1,6 +1,6 @@
 > **NOTE:**
 >
-> **Developed at the Wasatch Front Regional Council (WFRC).** The application and its repository belong to WFRC; this page only summarizes my work.
+> The application and its repository belong to WFRC; this page only summarizes my work.
 
 [![The explorer’s region-wide flow map, with the year selector and Select Points button.](commute_explorer.png)](commute_explorer.png "The explorer’s region-wide flow map, with the year selector and Select Points button.")
 

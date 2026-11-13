@@ -1,6 +1,6 @@
 > **NOTE:**
 >
-> **Developed at the Wasatch Front Regional Council (WFRC).** The data, tool and repository belong to WFRC; this page only summarizes my work.
+> The data, tool and repository belong to WFRC; this page only summarizes my work.
 
 [![The explorer comparing smoothed and raw population-plus-employment density.](se2025_h3.png)](se2025_h3.png "The explorer comparing smoothed and raw population-plus-employment density.")
 

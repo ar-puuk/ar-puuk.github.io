@@ -1,6 +1,6 @@
 > **NOTE:**
 >
-> **Developed at the Wasatch Front Regional Council (WFRC).** The tool and its repository belong to WFRC; this page only summarizes my work.
+> The tool and its repository belong to WFRC; this page only summarizes my work.
 
 [![The comparison map, overlaying the model’s 2023 transit lines on a GTFS snapshot.](gtfs_vs_tdm.png)](gtfs_vs_tdm.png "The comparison map, overlaying the model’s 2023 transit lines on a GTFS snapshot.")
 

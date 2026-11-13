@@ -86,9 +86,9 @@ Tools I built at the Wasatch Front Regional Council. See [all projects](projects
 
 Origin-destination commuter flows across the Wasatch Front, on H3 cells and DuckDB-WASM.
 
-Web appJavaScript [ Community Profiles](work/community-profiles/index.llms.md)
+Web appJavaScript [ Demographic Profiles](work/community-profiles/index.llms.md)
 
-A map-first dashboard of Census and economic indicators for Wasatch Front communities.
+A map-first dashboard of Census and economic indicators for Utah, forked from WFRC's Community Profiles.
 
 PythonTypeScript [ Synthetic Data Generator](work/synthetic-data-generator/index.llms.md)
 
