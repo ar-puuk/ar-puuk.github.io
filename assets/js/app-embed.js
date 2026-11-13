@@ -23,7 +23,7 @@ document.querySelectorAll(".app-embed-wrapper").forEach((wrapper) => {
   if (!bar || !fs) return;
 
   // The fullscreen label becomes a span, so phones can show just the icon
-  fs.innerHTML = '<span class="app-action-label">Fullscreen</span>';
+  fs.innerHTML = '<i class="fa-solid fa-expand" aria-hidden="true"></i><span class="app-action-label">Fullscreen</span>';
 
   if (src) {
     try {
@@ -73,6 +73,9 @@ const setFullscreen = (wrapper, on) => {
   const btn = wrapper.querySelector(".app-fullscreen-btn");
   wrapper.classList.toggle("fullscreen", on);
   btn.querySelector(".app-action-label").textContent = on ? "Exit fullscreen" : "Fullscreen";
+  const icon = btn.querySelector("i");
+  icon.classList.toggle("fa-expand", !on);
+  icon.classList.toggle("fa-compress", on);
   btn.setAttribute("aria-pressed", String(on));
   document.body.style.overflow = on ? "hidden" : "";
   return btn;
