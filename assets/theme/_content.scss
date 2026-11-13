@@ -45,7 +45,7 @@ $pb-tint-base: if(lightness($body-bg) > 50%, #fff, $body-bg);
 
 $pb-callout-glyphs: (
   note:      "%3Ccircle cx='8' cy='3.6' r='1.5'/%3E%3Crect x='6.7' y='6.6' width='2.6' height='7' rx='1.1'/%3E",
-  tip:       "%3Cpath d='M2.6 8.6l3.7 3.7 7.1-8' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E",
+  tip:       "%3Ccircle cx='8' cy='6.2' r='3.8'/%3E%3Crect x='6' y='10.2' width='4' height='1.5' rx='0.75'/%3E%3Crect x='6.8' y='12.3' width='2.4' height='1.4' rx='0.7'/%3E",
   important: "%3Crect x='6.7' y='2' width='2.6' height='7.6' rx='1.2'/%3E%3Ccircle cx='8' cy='12.7' r='1.5'/%3E",
   warning:   "%3Cpath fill-rule='evenodd' d='M8 2.1Q8.5 2.1 8.8 2.7L14.9 13.1Q15.3 13.9 14.4 13.9H1.6Q0.7 13.9 1.1 13.1L7.2 2.7Q7.5 2.1 8 2.1Z M7.15 5.8H8.85V10H7.15Z M8 10.9A1.05 1.05 0 1 0 8 13A1.05 1.05 0 1 0 8 10.9Z'/%3E",
   caution:   "%3Cpath d='M3.6 3.6l8.8 8.8M12.4 3.6l-8.8 8.8' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'/%3E"

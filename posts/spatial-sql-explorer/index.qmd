@@ -23,7 +23,7 @@ Most of my day-to-day GIS work happens in R or Python: load a shapefile, write a
 
 I wanted something simpler: open a file, write a SQL query, see the answer on a map. No server, no accounts, no desktop GIS. That itch became **Spatial Explorer**. It started in February as a single-page app inspired by [Kyle Walker's Spatial SQL Explorer](https://personal.tcu.edu/kylewalker/urbangis/sql-explorer/), and it has since been rebuilt into a web app **and** a VS Code extension that share one engine. This post is about what it does now and why it is built the way it is.
 
-::: {.callout-note}
+::: {.callout-tip}
 ## Get it
 - **Web app**: [ar-puuk.github.io/spatial-sql-explorer](https://ar-puuk.github.io/spatial-sql-explorer/) (embedded below)
 - **VS Code extension**: *Spatial Explorer: Spatial SQL & Map Viewer*, on the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=arpuuk.spatial-explorer) or [Open VSX](https://open-vsx.org/extension/arpuuk/spatial-explorer) (Cursor, VSCodium and friends)

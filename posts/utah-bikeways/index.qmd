@@ -687,7 +687,7 @@ combined_miles_by_city |>
     )
 ```
 
-::: {.callout-note title="Download the output files"}
+::: {.callout-tip title="Download the output files:"}
 [miles_by_city.csv](./_output/miles_by_city.csv)
 :::
 
