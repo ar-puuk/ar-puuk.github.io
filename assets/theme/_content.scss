@@ -247,11 +247,20 @@ div.callout.callout {
   }
 }
 
-// ---------------------------------------------------------------- Footer
+// ---------------------------------------------------------------- Footer and navbar polish
 // Balanced lines stop the footer text wrapping to a stranded "and" on a phone
 .nav-footer .nav-footer-left,
 .nav-footer .nav-footer-right {
   text-wrap: balance;
+}
+// Light theme: the navbar icons are drawn in the light brand orange (3.3:1 on cream, and thin);
+// darken them a little. The reader-mode icon is excluded because it is painted as a mask.
+body.quarto-light .navbar .bi::before,
+body.quarto-light .navbar #quarto-search svg {
+  filter: brightness(0.85);
+}
+body.quarto-light .navbar .reader .bi::before {
+  filter: none;
 }
 // On a phone the copyright and "Made with" are two clean lines instead of wrapping mid-sentence
 @media (max-width: 575.98px) {
