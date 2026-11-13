@@ -40,8 +40,13 @@ Mirror began as a single-page Robocopy GUI in 2025 and was redesigned as part of
 
 1. **Pick a starting point.** Choose a preset (Daily backup, Exact mirror, Archive with permissions, Fast LAN copy, or Move and clean up) or start from scratch.
 2. **Fill in the tabs.** Locations, What to do, Filters, Preserve, Performance, Automation, Logging and Advanced. Rarely used options stay hidden until you turn on **Show advanced**.
-3. **Watch the command.** It updates as you choose, with every flag explained and a clear warning for options that delete (Mirror, Move, Purge).
+3. **Watch the command.** It updates as you choose, with every flag explained.
 4. **Add to queue.** Build several jobs, reorder them, then download one `.bat` or `.ps1` script. Stop on first failure is on by default.
+
+::: {.callout-caution}
+## Some options delete files
+The `/MIR` (mirror), move and purge options can remove files from the destination. The app shows a clear notice for each of them before anything can be deleted, so read it before you run the script.
+:::
 
 ## Other ways in
 

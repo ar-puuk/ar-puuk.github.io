@@ -146,7 +146,22 @@ Several features that look like dialogs are really generators of SQL, and show y
 
 ## Formats that fight back
 
-**File Geodatabases** are the format I most wanted and the hardest to read. DuckDB-WASM's GDAL build has the OpenFileGDB driver turned off for WebAssembly, so the SQL engine cannot open a `.gdb` at all, and it cannot read inside a zip either. The workaround is [gdal3.js](https://gdal3.js.org) (GDAL 3.8.4 compiled to WebAssembly), downloaded only the first time you open a geodatabase, which converts the chosen layer so DuckDB can query it. In a spike on an 818 MB geodatabase it listed layers in 87 ms and converted 4 million parcels to FlatGeobuf in 34 seconds. Compressed (CDF/SDC) geodatabases remain unreadable by any open-source reader, so that format stays marked *experimental*.
+**File Geodatabases** are the format I most wanted and the hardest to read.
+
+::: {.callout-fail}
+## What the engine cannot do
+DuckDB-WASM's GDAL build has the OpenFileGDB driver turned off for WebAssembly, so the SQL engine cannot open a `.gdb` at all, and it cannot read inside a zip either.
+:::
+
+::: {.callout-success}
+## The workaround
+[gdal3.js](https://gdal3.js.org) (GDAL 3.8.4 compiled to WebAssembly) is downloaded only the first time you open a geodatabase, and converts the chosen layer so DuckDB can query it. In a spike on an 818 MB geodatabase it listed layers in 87 ms and converted 4 million parcels to FlatGeobuf in 34 seconds.
+:::
+
+::: {.callout-caution}
+## Still unreadable
+Compressed (CDF/SDC) geodatabases remain unreadable by any open-source reader, so that format stays marked *experimental*.
+:::
 
 **GTFS feeds** are detected by what is inside the zip (stops, routes, trips, stop times and their columns), never by file name, so `GTFS.zip`, `google_transit.zip` and `data.zip` all work. A feed opens as two layers drawn together, `routes` (lines, in each route's own color) and `stops` (points), each its own table.
 
