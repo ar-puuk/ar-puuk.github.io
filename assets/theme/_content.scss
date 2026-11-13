@@ -178,11 +178,35 @@ div.callout.callout {
     -webkit-overflow-scrolling: touch;
   }
 }
-@media (max-width: 479.98px) {
-  // Keep the whole name visible next to the menu and search buttons
-  .navbar-title {
-    font-size: 0.82em;
+// Keep the whole name visible next to the menu, colour-mode and search buttons.
+// The selector is deliberately specific: the theme files set .navbar-title after this
+// partial, and a plain .navbar-title rule here would lose to them.
+@media (max-width: 575.98px) {
+  nav.navbar .navbar-brand .navbar-title {
+    font-size: 0.8em;
     letter-spacing: 0.06em;
+  }
+}
+@media (max-width: 399.98px) {
+  nav.navbar .navbar-brand .navbar-title {
+    font-size: 0.7em;
+    letter-spacing: 0.05em;
+  }
+}
+@media (max-width: 374.98px) {
+  nav.navbar .navbar-brand .navbar-title {
+    font-size: 0.6em;
+    letter-spacing: 0.03em;
+  }
+}
+@media (max-width: 349.98px) {
+  nav.navbar .navbar-brand .navbar-title {
+    font-size: 0.6em;
+    letter-spacing: 0.03em;
+  }
+  // Not enough room for the mark and the name: keep the name
+  nav.navbar .navbar-brand .navbar-logo {
+    display: none;
   }
 }
 
