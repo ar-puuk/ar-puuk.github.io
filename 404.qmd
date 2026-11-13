@@ -1097,7 +1097,7 @@ fb
 
 ---
 
-::: {.callout-note}
+::: {.callout-success}
 ## 🎯 Quiz Complete!
 **Congratulations, You are now a Transportation Data Scientist!** 🏆
 :::

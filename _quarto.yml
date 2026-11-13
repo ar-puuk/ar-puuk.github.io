@@ -151,3 +151,8 @@ format:
 # freeze computational output
 # (see https://quarto.org/docs/projects/code-execution.html#freeze)
 freeze: auto
+
+# success and fail callouts, on top of the five Quarto ships
+filters:
+  - at: pre-ast
+    path: assets/filters/custom-callouts.lua
