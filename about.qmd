@@ -201,8 +201,8 @@ Tools I built at the Wasatch Front Regional Council. See [all projects](projects
   </a>
   <a class="pb-card" href="work/community-profiles/index.html">
     <span class="pb-card-icon"><i class="bi bi-bar-chart-line"></i></span>
-    <span class="pb-card-title">Community Profiles</span>
-    <p>A map-first dashboard of Census and economic indicators for Wasatch Front communities.</p>
+    <span class="pb-card-title">Demographic Profiles</span>
+    <p>A map-first dashboard of Census and economic indicators for Utah, forked from WFRC's Community Profiles.</p>
     <span class="pb-card-tags"><span>Python</span><span>TypeScript</span></span>
   </a>
   <a class="pb-card" href="work/synthetic-data-generator/index.html">
