@@ -247,6 +247,22 @@ div.callout.callout {
   }
 }
 
+// ---------------------------------------------------------------- Footer
+// Balanced lines stop the footer text wrapping to a stranded "and" on a phone
+.nav-footer .nav-footer-left,
+.nav-footer .nav-footer-right {
+  text-wrap: balance;
+}
+// On a phone the copyright and "Made with" are two clean lines instead of wrapping mid-sentence
+@media (max-width: 575.98px) {
+  .nav-footer .footer-sep {
+    display: block;
+    height: 0;
+    font-size: 0;
+    overflow: hidden;
+  }
+}
+
 // ---------------------------------------------------------------- Citation block
 // Quarto fades the whole citation section to 90% opacity, which drops the DOI link
 // below 4.5:1 contrast; keep it at full strength.
