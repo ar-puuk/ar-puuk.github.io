@@ -56,11 +56,11 @@ $gray-200:                    darken($pb-text-dark, 30%);
 $gray-700:                    darken($pb-text-dark, 30%);
 
 // Callouts (Quarto reads these to colour the border, header tint and icon)
-$callout-color-note:         #4DB6D9;
-$callout-color-tip:          #4FC08D;
-$callout-color-important:    #F07178;
-$callout-color-caution:      #D58AB5;
-$callout-color-warning:      #F2C14E;
+$callout-color-note:         #5A9DF2;
+$callout-color-tip:          #4CC070;
+$callout-color-important:    #FF6B7F;
+$callout-color-caution:      #FF8F4A;
+$callout-color-warning:      #FFCF3F;
 
 // Hairline colour for tabsets, callouts and other content borders
 $pb-line:                    $pb-border-dark;

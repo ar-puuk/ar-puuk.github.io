@@ -55,11 +55,11 @@ $footer-fg:                   $pb-primary;
 $gray-200:                    lighten($pb-primary, 60%);
 
 // Callouts (Quarto reads these to colour the border, header tint and icon)
-$callout-color-note:         #007EA7;
-$callout-color-tip:          #2E8B62;
-$callout-color-important:    #C0392B;
-$callout-color-caution:      #8A3F6B;
-$callout-color-warning:      #C28A00;
+$callout-color-note:         #2A6FD6;
+$callout-color-tip:          #2E9B4E;
+$callout-color-important:    #D4283F;
+$callout-color-caution:      #E8590C;
+$callout-color-warning:      #D19A00;
 
 // Hairline colour for tabsets, callouts and other content borders
 $pb-line:                    $pb-border-light;

@@ -35,20 +35,21 @@ $pb-callouts: (
 }
 
 // ---------------------------------------------------------------- Callouts
-// Spec (after WFRCAnalytics/wfrc-brand): a 4px bar in the type colour, flush against a square
-// left edge, with 8px rounding on the right only; the body is a 9% tint of the type colour and
-// the title strip 16%; the icon is a filled circle in the type colour with the glyph cut out in
-// the page colour. Glyphs are alpha masks, so one rule colours all five types.
-// Tints mix against pure white on the light theme (the cream page turns the green and teal
-// tints muddy) and against the page colour on the dark theme.
+// Same five types, colours and icons as Quarto's own callouts (note blue, tip green, important
+// red, caution orange, warning yellow; the Bootstrap Icons Quarto ships), drawn with a tidier
+// design system: a bold 5px left bar in the type colour, a thin muted outline, a title strip
+// tinted from the type colour, and the page colour for the body. The icon is the Quarto glyph
+// in the type colour. Glyphs are alpha masks, so one rule colours all five types.
+// Tints mix against pure white on the light theme (the cream page turns green and blue tints
+// muddy) and against the page colour on the dark theme.
 $pb-tint-base: if(lightness($body-bg) > 50%, #fff, $body-bg);
 
 $pb-callout-glyphs: (
-  note:      "%3Ccircle cx='8' cy='3.6' r='1.5'/%3E%3Crect x='6.7' y='6.6' width='2.6' height='7' rx='1.1'/%3E",
-  tip:       "%3Ccircle cx='8' cy='6.2' r='3.8'/%3E%3Crect x='6' y='10.2' width='4' height='1.5' rx='0.75'/%3E%3Crect x='6.8' y='12.3' width='2.4' height='1.4' rx='0.7'/%3E",
-  important: "%3Crect x='6.7' y='2' width='2.6' height='7.6' rx='1.2'/%3E%3Ccircle cx='8' cy='12.7' r='1.5'/%3E",
-  warning:   "%3Cpath fill-rule='evenodd' d='M8 2.1Q8.5 2.1 8.8 2.7L14.9 13.1Q15.3 13.9 14.4 13.9H1.6Q0.7 13.9 1.1 13.1L7.2 2.7Q7.5 2.1 8 2.1Z M7.15 5.8H8.85V10H7.15Z M8 10.9A1.05 1.05 0 1 0 8 13A1.05 1.05 0 1 0 8 10.9Z'/%3E",
-  caution:   "%3Cpath d='M3.6 3.6l8.8 8.8M12.4 3.6l-8.8 8.8' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'/%3E"
+  note: "%3Cpath d='M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z'/%3E%3Cpath d='m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z'/%3E",
+  tip: "%3Cpath d='M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1z'/%3E",
+  warning: "%3Cpath d='M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z'/%3E%3Cpath d='M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z'/%3E",
+  caution: "%3Cpath d='M9.97 4.88l.953 3.811C10.158 8.878 9.14 9 8 9c-1.14 0-2.159-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12zm-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.274 3.9C6.8 3.965 7.382 4 8 4c.618 0 1.2-.036 1.725-.098zm4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257 2.391.598z'/%3E",
+  important: "%3Cpath d='M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z'/%3E%3Cpath d='M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z'/%3E"
 );
 
 div.callout.callout {
@@ -56,7 +57,7 @@ div.callout.callout {
   overflow: hidden;
   margin: 1.25rem 0;
   font-size: 0.93rem;
-  background-color: mix($body-color, $pb-tint-base, 3%);
+  background-color: transparent;
 
   // Quarto dims the title to 85%/75% opacity; keep it at full contrast
   > div.callout-header {
@@ -102,8 +103,8 @@ div.callout.callout {
 }
 
 div.callout.callout.callout-style-default {
-  border: 0;
-  border-left: 4px solid $pb-line;
+  border: 1px solid $pb-line;
+  border-left: 5px solid $pb-line;
   border-radius: 0 $pb-radius $pb-radius 0;
 
   > div.callout-header {
@@ -118,14 +119,13 @@ div.callout.callout.callout-style-default {
   .callout-icon {
     display: inline-grid;
     place-items: center;
-    width: 1.35em;
-    height: 1.35em;
-    border-radius: 50%;
+    width: 1.15em;
+    height: 1.15em;
   }
   .callout-icon::before {
     background-image: none !important;
-    width: 0.85em;
-    height: 0.85em;
+    width: 1.1em;
+    height: 1.1em;
     -webkit-mask-repeat: no-repeat;
             mask-repeat: no-repeat;
     -webkit-mask-position: center;
@@ -142,19 +142,35 @@ div.callout.callout.callout-style-default {
   }
 }
 
+// appearance="simple": same outline and bar, no title strip
+div.callout.callout.callout-style-simple {
+  border: 1px solid $pb-line;
+  border-left: 5px solid $pb-line;
+  border-radius: 0 $pb-radius $pb-radius 0;
+  padding: 0.7rem 0.9rem;
+
+  .callout-icon::before {
+    width: 1.05em;
+    height: 1.05em;
+    background-image: none !important;
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+            mask-position: center;
+    -webkit-mask-size: contain;
+            mask-size: contain;
+  }
+}
+
 @each $name, $c in $pb-callouts {
   div.callout.callout.callout-style-default.callout-#{$name} {
     border-left-color: $c;
-    background-color: mix($c, $pb-tint-base, 9%);
 
     > div.callout-header {
-      background-color: mix($c, $pb-tint-base, 16%);
-    }
-    .callout-icon {
-      background-color: $c;
+      background-color: mix($c, $pb-tint-base, 15%);
     }
     .callout-icon::before {
-      background-color: $body-bg;
+      background-color: $c;
       -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E#{map-get($pb-callout-glyphs, $name)}%3C/svg%3E");
               mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E#{map-get($pb-callout-glyphs, $name)}%3C/svg%3E");
     }
@@ -163,6 +179,18 @@ div.callout.callout.callout-style-default {
     }
     code:not(.sourceCode) {
       border-color: mix($c, $pb-tint-base, 40%);
+    }
+  }
+}
+
+@each $name, $c in $pb-callouts {
+  div.callout.callout.callout-style-simple.callout-#{$name} {
+    border-left-color: $c;
+
+    .callout-icon::before {
+      background-color: $c;
+      -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E#{map-get($pb-callout-glyphs, $name)}%3C/svg%3E");
+              mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E#{map-get($pb-callout-glyphs, $name)}%3C/svg%3E");
     }
   }
 }
