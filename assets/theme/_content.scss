@@ -26,7 +26,7 @@ $pb-callouts: (
   border-radius: $pb-radius-sm;
   background-color: mix($fg, $bg, 8%);
   color: mix($fg, $bg, 88%);
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition: background-color $pb-ease, border-color $pb-ease, color $pb-ease;
 }
 @mixin pb-chip-hover($accent, $fg, $bg) {
   background-color: mix($accent, $bg, 14%);
@@ -143,8 +143,8 @@ div.callout.callout {
       background: transparent;
       color: $body-secondary;
       font-weight: 500;
-      transition: color 0.15s ease, background-color 0.15s ease,
-        border-color 0.15s ease;
+      transition: color $pb-ease, background-color $pb-ease,
+        border-color $pb-ease;
 
       &:hover,
       &:focus-visible {

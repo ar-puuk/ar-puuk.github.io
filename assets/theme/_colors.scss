@@ -41,6 +41,8 @@ $pb-info:              #0DCAF0;  // Info color
 // Shape tokens: one radius scale for every surface (Cosmo defaults Bootstrap's to 0)
 $pb-radius:            8px;      // callouts, code blocks, cards, tabs, embeds
 $pb-radius-sm:         4px;      // chips, badges, buttons, form controls
+// Shared transition for hover and focus states
+$pb-ease:              0.15s ease;
 $enable-rounded:       true;     // Cosmo turns rounding off
 $border-radius:        $pb-radius-sm;
 $border-radius-sm:     $pb-radius-sm;

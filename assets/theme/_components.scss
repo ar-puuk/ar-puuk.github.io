@@ -87,7 +87,7 @@ p:has(> .pb-eyebrow):not(:first-child) {
   border-radius: $pb-radius;
   color: inherit;
   text-decoration: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color $pb-ease, box-shadow $pb-ease;
 
   .pb-card-icon {
     display: inline-flex;
@@ -257,7 +257,7 @@ ul.pb-badges {
     font-weight: 500;
     color: inherit;
     text-decoration: none;
-    transition: border-color 0.15s ease, color 0.15s ease;
+    transition: border-color $pb-ease, color $pb-ease;
 
     i {
       color: $pb-secondary;
@@ -337,7 +337,7 @@ div.quarto-about-trestles .about-entity .about-links {
 // pure white on the dark theme. Soften it, and light it up in the accent on hover.
 div.quarto-about-trestles .about-entity .about-link {
   border-color: $pb-rule;
-  transition: border-color 0.15s ease, color 0.15s ease;
+  transition: border-color $pb-ease, color $pb-ease;
 
   &:hover {
     border-color: $pb-secondary;
@@ -390,6 +390,20 @@ body:has(.pb-home) .quarto-about-jolla {
 
   h1.title {
     margin-bottom: 0.5rem;
+  }
+}
+
+// Phones: the headshot sat against the announcement bar and the heading was left-aligned
+// above centred text
+@media (max-width: 767.98px) {
+  body:has(.pb-home) .quarto-about-jolla {
+    .about-image {
+      margin-top: 1.25rem;
+    }
+
+    h1.title {
+      text-align: center;
+    }
   }
 }
 
