@@ -12,7 +12,7 @@ $pb-callouts: (
 
 // ---------------------------------------------------------------- Callouts
 div.callout.callout {
-  border-radius: 0.6rem;
+  border-radius: $pb-radius;
   border: 1px solid $pb-line;
   border-left-width: 4px;
   box-shadow: none;
@@ -69,7 +69,7 @@ div.callout.callout {
     .nav-link {
       border: none;
       border-bottom: 3px solid transparent;
-      border-radius: 0.5rem 0.5rem 0 0;
+      border-radius: $pb-radius $pb-radius 0 0;
       margin-bottom: -1px;
       padding: 0.5rem 0.95rem;
       background: transparent;
@@ -96,7 +96,7 @@ div.callout.callout {
   > .tab-content {
     border: 1px solid $pb-line;
     border-top: none;
-    border-radius: 0 0 0.6rem 0.6rem;
+    border-radius: 0 0 $pb-radius $pb-radius;
     padding: 1rem 1.1rem 0.4rem;
     background-color: mix($body-color, $body-bg, 3%);
 

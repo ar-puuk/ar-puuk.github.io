@@ -47,7 +47,7 @@
   background: color-mix(in srgb, currentColor 10%, transparent);
   color: var(--bs-secondary-color);
   padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
+  border-radius: var(--pb-radius-sm, 4px);
   text-decoration: none;
   font-size: 0.85rem;
   transition: all 0.3s ease;

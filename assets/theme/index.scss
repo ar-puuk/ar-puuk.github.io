@@ -10,12 +10,27 @@
 
 // Common styles that apply to both light and dark themes
 
+// Shape tokens for the plain CSS files (assets/css/*.css)
+:root {
+  --pb-radius: #{$pb-radius};
+  --pb-radius-sm: #{$pb-radius-sm};
+}
+
+// Code blocks follow the same radius as callouts and cards
+div.sourceCode.sourceCode {
+  border-radius: $pb-radius;
+
+  > pre.sourceCode {
+    border-radius: $pb-radius;
+  }
+}
+
 // Shared components for the landing and About pages
-// (Quarto's Sass cache keys on this file, not on the partial: change this number after editing _components.scss to force a recompile. rev 28)
+// (Quarto's Sass cache keys on this file, not on the partial: change this number after editing _components.scss to force a recompile. rev 29)
 @import "components";
 
 // Callouts, tabsets and the announcement bar
-// (same Sass-cache note as above: change the rev number here after editing _content.scss. rev 5)
+// (same Sass-cache note as above: change the rev number here after editing _content.scss. rev 8)
 @import "content";
 
 // Import common CSS rules that both themes share
@@ -35,7 +50,7 @@
 .btn-secondary {
   color: $pb-secondary;
   background: transparent;
-  border-radius: 5px;
+  border-radius: $pb-radius-sm;
 }
 
 .btn-primary:hover {
@@ -109,11 +124,11 @@
 // Card styling (common base)
 .card {
   border: none;
-  border-radius: 4px;
+  border-radius: $pb-radius;
 }
 
 .card-img {
-  border-radius: 4px 4px 0px 0px;
+  border-radius: $pb-radius $pb-radius 0 0;
 }
 
 // Featured image styling

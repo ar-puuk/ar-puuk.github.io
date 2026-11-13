@@ -37,3 +37,11 @@ $pb-success:           #198754;  // Success color
 $pb-warning:           #FFC107;  // Warning color
 $pb-danger:            #DC3545;  // Danger color
 $pb-info:              #0DCAF0;  // Info color
+
+// Shape tokens: one radius scale for every surface (Cosmo defaults Bootstrap's to 0)
+$pb-radius:            8px;      // callouts, code blocks, cards, tabs, embeds
+$pb-radius-sm:         4px;      // chips, badges, buttons, form controls
+$enable-rounded:       true;     // Cosmo turns rounding off
+$border-radius:        $pb-radius-sm;
+$border-radius-sm:     $pb-radius-sm;
+$border-radius-lg:     $pb-radius;
