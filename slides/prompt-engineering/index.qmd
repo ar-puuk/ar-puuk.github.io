@@ -188,7 +188,7 @@ This is a mindset shift: use the LLM as a *collaborator*, not a vending machine.
 
 ### The Workaround
 
-```r
+```{.r code-line-numbers="2-7|9-10|11-14"}
 # Share a SCHEMA, not the data:
 "My data looks like this:
 
@@ -301,7 +301,7 @@ I do this at least once per complex coding session. It takes 30 seconds and save
 
 Place in your **project root**:
 
-```markdown
+```{.markdown code-line-numbers="2-4|6-10|12-14"}
 # CLAUDE.md
 ## Project Context
 WFRC travel demand model (Cube).
