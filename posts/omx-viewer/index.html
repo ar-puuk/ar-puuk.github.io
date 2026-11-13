@@ -87,9 +87,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-80aab02424ab61b9de5d2a48eceeb93e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-2f7eb91e7f9e313fa583e6ff2f35a4b4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-80aab02424ab61b9de5d2a48eceeb93e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-388f964f9ca94ed93e1a0c04edbf5d19.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b6137b7589d3d8e3fbd1812dcd1c2d6f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-388f964f9ca94ed93e1a0c04edbf5d19.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
@@ -456,7 +456,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">October 25, 2026</p>
+        <p class="date-modified">November 12, 2026</p>
       </div>
     </div>
       
@@ -481,7 +481,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>I spent way too long writing one-off Python scripts everytime I had to check what’s inside an OMX (Open Matrix Format) file. There had to be a better way.</p>
-<p>So, I built a browser tool to preview OMX files directly. You can: - Browse individual matrices as separate tabs - Navigate to a specific row/col and see that cell’s value across all matrices at once - Run aggregations (sum, mean, median, etc.) across zones or across matrices - Do basic matrix arithmetic and export results</p>
+<p>So, I built a browser tool to preview OMX files directly. You can:</p>
+<ul>
+<li>Browse individual matrices as separate tabs</li>
+<li>Navigate to a specific row/col and see that cell’s value across all matrices at once</li>
+<li>Run aggregations (sum, mean, median, etc.) across zones or across matrices</li>
+<li>Do basic matrix arithmetic and export results</li>
+</ul>
 <p>Built on WebAssembly so it’s fast and works without any backend, right on your browser. Files in the 300 to 700 MB range are supported; the matrix grid only renders the rows and columns on screen and reads chunks on demand, so it never loads a whole matrix into memory.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1196,45 +1202,46 @@ File Viewer.”</span> April 11. <a href="https://ar-puuk.github.io/posts/omx-vi
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>I spent way too long writing one-off Python scripts everytime I had to check what's inside an OMX (Open Matrix Format) file. There had to be a better way.</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>So, I built a browser tool to preview OMX files directly. You can:</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Browse individual matrices as separate tabs</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Navigate to a specific row/col and see that cell's value across all matrices at once</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Run aggregations (sum, mean, median, etc.) across zones or across matrices</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Do basic matrix arithmetic and export results</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>Built on WebAssembly so it's fast and works without any backend, right on your browser. Files in the 300 to 700 MB range are supported; the matrix grid only renders the rows and columns on screen and reads chunks on demand, so it never loads a whole matrix into memory.</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## Update: now a VS Code extension too</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>The same engine now powers an **OMX Viewer extension for VS Code**, so <span class="in">`.omx`</span>, <span class="in">`.h5`</span> and <span class="in">`.hdf5`</span> files open in the viewer straight from the editor, with an *Export Summary as CSV* command. Install it from the <span class="co">[</span><span class="ot">VS Code Marketplace</span><span class="co">](https://marketplace.visualstudio.com/items?itemName=arpuuk.omx-viewer)</span> or <span class="co">[</span><span class="ot">Open VSX</span><span class="co">](https://open-vsx.org/extension/arpuuk/omx-viewer)</span>. The web app and the extension are versioned together, and the extension streams large files to its webview in 32 MB chunks, which lifts the practical size limit well into multi-gigabyte territory.</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>If you work with travel demand models and want to try it, the live app is embedded below.</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper"&gt;</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;OMX File Viewer&lt;/span&gt;</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/omx-viewer/" title="OMX Viewer" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open app</span><span class="co">](https://ar-puuk.github.io/omx-viewer/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/omx-viewer)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Browse individual matrices as separate tabs</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Navigate to a specific row/col and see that cell's value across all matrices at once</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Run aggregations (sum, mean, median, etc.) across zones or across matrices</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Do basic matrix arithmetic and export results</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>Built on WebAssembly so it's fast and works without any backend, right on your browser. Files in the 300 to 700 MB range are supported; the matrix grid only renders the rows and columns on screen and reads chunks on demand, so it never loads a whole matrix into memory.</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Update: now a VS Code extension too</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>The same engine now powers an **OMX Viewer extension for VS Code**, so <span class="in">`.omx`</span>, <span class="in">`.h5`</span> and <span class="in">`.hdf5`</span> files open in the viewer straight from the editor, with an *Export Summary as CSV* command. Install it from the <span class="co">[</span><span class="ot">VS Code Marketplace</span><span class="co">](https://marketplace.visualstudio.com/items?itemName=arpuuk.omx-viewer)</span> or <span class="co">[</span><span class="ot">Open VSX</span><span class="co">](https://open-vsx.org/extension/arpuuk/omx-viewer)</span>. The web app and the extension are versioned together, and the extension streams large files to its webview in 32 MB chunks, which lifts the practical size limit well into multi-gigabyte territory.</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>If you work with travel demand models and want to try it, the live app is embedded below.</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper"&gt;</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;OMX File Viewer&lt;/span&gt;</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/omx-viewer/" title="OMX Viewer" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open app</span><span class="co">](https://ar-puuk.github.io/omx-viewer/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/omx-viewer)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>If you work with travel demand model and want a quick way to preview the contents of an Open Matrix (OMX) file, give it a try. The code is on <span class="co">[</span><span class="ot">GitHub</span><span class="co">](https://github.com/ar-puuk/omx-viewer)</span> — issues and PRs welcome.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>If you work with travel demand model and want a quick way to preview the contents of an Open Matrix (OMX) file, give it a try. The code is on <span class="co">[</span><span class="ot">GitHub</span><span class="co">](https://github.com/ar-puuk/omx-viewer)</span> — issues and PRs welcome.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>© 2025–<span id="footer-year">2026</span> Pukar Bhandari ∙ Made with <a href="https://www.r-project.org/about.html" target="_blank"><i class="fa-brands fa-r-project" title="R Project" aria-label="r-project"></i></a>, <a href="https://quarto.org/" target="_blank"><img src="https://quarto.org/favicon.png" width="14" alt="Quarto"></a>, <a href="https://git-scm.com/" target="_blank"><i class="fa-brands fa-git-alt" title="Git alt logo" aria-label="git-alt"></i></a> and <a href="https://github.com/" target="_blank"><i class="fa-brands fa-github" title="GitHub octocat logo" aria-label="github"></i></a></p>
+<p>© 2025–<span id="footer-year">2026</span> Pukar Bhandari<span class="footer-sep"> ∙ </span>Made with <a href="https://www.r-project.org/about.html" target="_blank"><i class="fa-brands fa-r-project" title="R Project" aria-label="r-project"></i></a>, <a href="https://quarto.org/" target="_blank"><img src="https://quarto.org/favicon.png" width="14" alt="Quarto"></a>, <a href="https://git-scm.com/" target="_blank"><i class="fa-brands fa-git-alt" title="Git alt logo" aria-label="git-alt"></i></a> and <a href="https://github.com/" target="_blank"><i class="fa-brands fa-github" title="GitHub octocat logo" aria-label="github"></i></a></p>
 </div>   
     <div class="nav-footer-center">
 <p><a href="https://www.linkedin.com/in/arpuuk" title="LinkedIn" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" aria-label="linkedin"></i></a> &nbsp; <a href="https://github.com/ar-puuk/" title="github" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i></a> &nbsp; <a href="https://bsky.app/profile/arpuuk.bsky.social" title="Bluesky" target="_blank" rel="noopener"><i class="fa-brands fa-bluesky" aria-label="bluesky"></i></a> &nbsp; <a href="https://urbanists.social/@arpuuk" title="Mastodon" target="_blank" rel="noopener"><i class="fa-brands fa-mastodon" aria-label="mastodon"></i></a> &nbsp; <a href="https://orcid.org/0000-0002-1043-2937" title="orcid" target="_blank" rel="noopener"><i class="ai  ai-orcid" aria-label="orcid"></i></a> &nbsp; <a href="https://scholar.google.com/citations?user=vnwRlAsAAAAJ&amp;hl=en" title="Google Scholar" target="_blank" rel="noopener"><i class="ai  ai-google-scholar" aria-label="google-scholar"></i></a> &nbsp; <a href="mailto:pukar.bhandari@outlook.com" title="E-mail" target="_blank" rel="noopener"><i class="fa-solid fa-envelope" aria-label="envelope"></i></a></p>

@@ -105,9 +105,10 @@ nepal_boundary <- nep_admin |>
 
 > **NOTE:**
 >
-> **Data Sources**:\
-> - **Population Data**: [Kontur Population Dataset](https://data.humdata.org/dataset/kontur-population-nepal)\
-> - **Administrative Boundaries**: [Kontur Boundaries Dataset](https://data.humdata.org/dataset/kontur-boundaries-nepal)\
+> **Data Sources**:
+>
+> - **Population Data**: [Kontur Population Dataset](https://data.humdata.org/dataset/kontur-population-nepal)
+> - **Administrative Boundaries**: [Kontur Boundaries Dataset](https://data.humdata.org/dataset/kontur-boundaries-nepal)
 > - **Coordinate Reference System**: EPSG:6207 for accurate representation of Nepal’s geography
 
 ## 4 Data Processing and Visualization Setup
@@ -250,9 +251,9 @@ outfile <- here::here("posts/nepal-population-density/plots/final_plot.png")
 }
 ```
 
-    Rendering started: 2026-11-12 11:07:44.269246 
+    Rendering started: 2026-11-12 23:06:08.669168 
 
-    Rendering completed in: 11.1458701809247 
+    Rendering completed in: 10.9020450512568 
 
 ## 7 Post-Processing and Annotation
 

@@ -278,7 +278,9 @@ message("Reconstruction Complete! Saved to: ", output_geojson_path)
 
 > **TIP:**
 >
-> [nepal_electoral_map.svg](./_output/nepal_electoral_map.svg) [nepal_svg_rough.geojson](./_output/nepal_svg_rough.geojson) [nepal_electoral_map.geojson](./_output/nepal_electoral_map.geojson)
+> - [nepal_electoral_map.svg](./_output/nepal_electoral_map.svg)
+> - [nepal_svg_rough.geojson](./_output/nepal_svg_rough.geojson)
+> - [nepal_electoral_map.geojson](./_output/nepal_electoral_map.geojson)
 
 ## Citation
 
