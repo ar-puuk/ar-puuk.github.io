@@ -8,6 +8,19 @@ author:
 date: "2025-05-23"
 categories: [R, GIS, Developer Tools, Open Source, Data Science]
 prefer-html: true
+code-links:
+  - text: pukRhelpers on GitHub
+    icon: github
+    href: https://github.com/ar-puuk/pukRhelpers
+filters:
+  - live
+format:
+  html:
+    # the live runtime starts from Quarto's OJS engine (live-html turns this on as well)
+    ojs-engine: true
+webr:
+  packages:
+    - sf
 ---
 
 `pukRhelpers` is where the small functions I kept copying between projects ended up. It is a personal toolbox, not a polished library, and I only update it when my own work needs something. The package has continuous checks and test coverage set up, and documentation at [ar-puuk.github.io/pukRhelpers](https://ar-puuk.github.io/pukRhelpers/).
@@ -42,5 +55,103 @@ install.packages("pukRhelpers", repos = "https://ar-puuk.r-universe.dev") # <2>
 | `load_packages()` | Load, installing first if needed |
 
 Several of these build on other people's gists and are credited to them in the function documentation and the [README](https://github.com/ar-puuk/pukRhelpers).
+
+## Try one in your browser {#sec-try}
+
+The package itself cannot run inside a web page: it talks to ArcGIS services and databases, and it needs system libraries that browsers do not have. `st_aggregate()` is different, because it is plain `sf` and base R. The code below is copied from the package and run on the North Carolina counties that ship with `sf`.
+
+::: {.content-visible when-format="html"}
+Edit anything and press **Run code**: the cells run in your browser.
+:::
+
+::: {.column-margin}
+`st_aggregate()` comes from [a gist by rCarto](https://gist.github.com/rCarto/bb47aff0a02e808d2bf64f2d8c5db7d8), and the package credits it the same way.
+:::
+
+First, load the counties and sort them into three zones:
+
+```{webr}
+library(sf)
+
+nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
+nc$zone <- "ZONE_A"
+nc$zone[25:50] <- "ZONE_B"
+nc$zone[51:100] <- "ZONE_C"
+table(nc$zone)
+```
+
+Then define the function. It joins the geometries of each zone with `st_union()` and summarises the attributes you ask for:
+
+```{webr}
+st_aggregate <- function(x, by, var, fun) {
+  var <- c(by, var)
+  fun <- c("head", fun)
+  n <- length(var)
+  l <- vector("list", n)
+  for (i in 1:n) {
+    l[[i]] <- tapply(x[[var[i]]], x[[by]], add_args(fun[[i]]), n = 1, na.rm = TRUE)
+  }
+  names(l) <- var
+  st_sf(do.call(data.frame, l),
+        geometry = tapply(x[attr(x, "sf_column")], x[[by]], st_union),
+        crs = st_crs(x))
+}
+
+add_args <- function(x) {
+  rx <- get(x)
+  fx <- formals(rx)
+  fx$na.rm <- TRUE
+  fx$n <- 1
+  formals(rx) <- fx
+  rx
+}
+```
+
+Now aggregate: the mean and median births per zone, with the counties merged into three shapes. Try changing `"BIR74"` to `"SID74"`, or `"mean"` to `"max"`:
+
+```{webr}
+zones <- st_aggregate(nc, "zone", c("BIR74", "NWBIR74"), c("mean", "median"))
+zones
+plot(zones["BIR74"], main = "Mean births per county, 1974")
+```
+
+::: {.content-visible unless-format="html"}
+```r
+library(sf)
+
+nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
+nc$zone <- "ZONE_A"
+nc$zone[25:50] <- "ZONE_B"
+nc$zone[51:100] <- "ZONE_C"
+
+st_aggregate <- function(x, by, var, fun) {
+  var <- c(by, var)
+  fun <- c("head", fun)
+  n <- length(var)
+  l <- vector("list", n)
+  for (i in 1:n) {
+    l[[i]] <- tapply(x[[var[i]]], x[[by]], add_args(fun[[i]]), n = 1, na.rm = TRUE)
+  }
+  names(l) <- var
+  st_sf(do.call(data.frame, l),
+        geometry = tapply(x[attr(x, "sf_column")], x[[by]], st_union),
+        crs = st_crs(x))
+}
+
+add_args <- function(x) {
+  rx <- get(x)
+  fx <- formals(rx)
+  fx$na.rm <- TRUE
+  fx$n <- 1
+  formals(rx) <- fx
+  rx
+}
+
+zones <- st_aggregate(nc, "zone", c("BIR74", "NWBIR74"), c("mean", "median"))
+plot(zones["BIR74"], main = "Mean births per county, 1974")
+```
+
+The web version of this post runs these steps live in the browser.
+:::
 
 The code is on [GitHub](https://github.com/ar-puuk/pukRhelpers) under GPL-3.

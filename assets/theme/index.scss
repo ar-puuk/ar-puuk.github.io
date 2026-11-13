@@ -30,7 +30,7 @@ div.sourceCode.sourceCode {
 @import "components";
 
 // Callouts, tabsets and the announcement bar
-// (same Sass-cache note as above: change the rev number here after editing _content.scss. rev 25)
+// (same Sass-cache note as above: change the rev number here after editing _content.scss. rev 27)
 @import "content";
 
 // Import common CSS rules that both themes share
@@ -67,6 +67,25 @@ div.sourceCode.sourceCode {
   &:hover,
   &:focus-visible {
     @include pb-chip-hover($pb-accent-text, $body-color, $body-bg);
+  }
+}
+
+// Margin notes and margin citations: long URLs wrap inside the margin instead of running off the page
+.column-margin,
+#quarto-margin-sidebar .margin-citation,
+#quarto-margin-sidebar .footnote-item {
+  overflow-wrap: anywhere;
+}
+
+// Diagrams: on a phone a six-step flow would shrink to unreadable text, so let it keep a
+// readable width and scroll sideways inside its own box instead of widening the page
+@media (max-width: 575.98px) {
+  pre.mermaid-js {
+    overflow-x: auto;
+  }
+  pre.mermaid-js svg {
+    max-width: none !important;
+    min-width: 36rem;
   }
 }
 
