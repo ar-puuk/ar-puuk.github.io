@@ -15,6 +15,7 @@ prefer-html: true
 I spent way too long writing one-off Python scripts everytime I had to check what's inside an OMX (Open Matrix Format) file. There had to be a better way.
 
 So, I built a browser tool to preview OMX files directly. You can:
+
 - Browse individual matrices as separate tabs
 - Navigate to a specific row/col and see that cell's value across all matrices at once
 - Run aggregations (sum, mean, median, etc.) across zones or across matrices
