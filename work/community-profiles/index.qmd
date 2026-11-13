@@ -15,8 +15,10 @@ categories: [WFRC, Python, JavaScript, Transportation, Web Apps, GIS, Data Scien
 prefer-html: true
 ---
 
-::: {.callout-note appearance="simple"}
-**Developed at the Wasatch Front Regional Council (WFRC).** The application and its repository belong to WFRC; this page only summarizes my work. The app is still marked as a draft.
+::: {.callout-note}
+## Developed at the Wasatch Front Regional Council (WFRC)
+
+The application and its repository belong to WFRC; this page only summarizes my work. The app is still marked as a draft.
 :::
 
 ![The dashboard for the WFRC region: headline indicators, a county choropleth, and population and income trends.](community_profiles.png)
