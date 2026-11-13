@@ -33,6 +33,43 @@ div.sourceCode.sourceCode {
 // (same Sass-cache note as above: change the rev number here after editing _content.scss. rev 29)
 @import "content";
 
+// Scrollbars: slim, rounded and tinted from the text colour, so they follow light and dark and
+// stay out of the way of code blocks, tables, the TOC and the search panel. The thumb turns
+// the site orange on hover. Chrome, Edge and Safari take the ::-webkit-scrollbar rules (no arrow
+// buttons); Firefox takes the standard properties.
+@supports selector(::-webkit-scrollbar) {
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: color-mix(in srgb, var(--bs-body-color) 32%, transparent);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    transition: background-color 0.15s;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--bs-link-color);
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+}
+@supports not selector(::-webkit-scrollbar) {
+  :root {
+    scrollbar-color: color-mix(in srgb, var(--bs-body-color) 38%, transparent) transparent;
+  }
+  *:not(html) {
+    scrollbar-width: thin;
+  }
+}
+
 // Import common CSS rules that both themes share
 
 // Social icons (common styling)
