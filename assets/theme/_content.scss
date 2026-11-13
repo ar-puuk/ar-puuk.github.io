@@ -39,20 +39,20 @@ $pb-callouts: (
 // ---------------------------------------------------------------- Callouts
 // Spec (after WFRCAnalytics/wfrc-brand): a 4px bar in the type colour, flush against a square
 // left edge, with 8px rounding on the right only; the body is a 9% tint of the type colour and
-// the title strip 16%; the icon is a filled circle in the type colour with the glyph cut out in
-// the page colour. Glyphs are alpha masks, so one rule colours all five types.
+// the title strip 16%; the icon is the solid Bootstrap Icons glyph Quarto uses, in the type colour, with no
+// container. Glyphs are alpha masks, so one rule colours every type.
 // Tints mix against pure white on the light theme (the cream page turns the green and teal
 // tints muddy) and against the page colour on the dark theme.
 $pb-tint-base: if(lightness($body-bg) > 50%, #fff, $body-bg);
 
 $pb-callout-glyphs: (
-  note:      "%3Ccircle cx='8' cy='3.6' r='1.5'/%3E%3Crect x='6.7' y='6.6' width='2.6' height='7' rx='1.1'/%3E",
-  tip:       "%3Ccircle cx='8' cy='6.2' r='3.8'/%3E%3Crect x='6' y='10.2' width='4' height='1.5' rx='0.75'/%3E%3Crect x='6.8' y='12.3' width='2.4' height='1.4' rx='0.7'/%3E",
-  important: "%3Crect x='6.7' y='2' width='2.6' height='7.6' rx='1.2'/%3E%3Ccircle cx='8' cy='12.7' r='1.5'/%3E",
-  warning:   "%3Cpath fill-rule='evenodd' d='M8 2.1Q8.5 2.1 8.8 2.7L14.9 13.1Q15.3 13.9 14.4 13.9H1.6Q0.7 13.9 1.1 13.1L7.2 2.7Q7.5 2.1 8 2.1Z M7.15 5.8H8.85V10H7.15Z M8 10.9A1.05 1.05 0 1 0 8 13A1.05 1.05 0 1 0 8 10.9Z'/%3E",
-  caution:   "%3Cpath d='M7.5 2.2h1l.9 2.8H6.6z'/%3E%3Cpath d='M6.3 6h3.4l.7 2.2H5.6z'/%3E%3Cpath d='M5.3 9.2h5.4l.7 2.4H4.6z'/%3E%3Crect x='2.8' y='12' width='10.4' height='1.5' rx='0.75'/%3E",
-  success:   "%3Cpath d='M2.6 8.6l3.7 3.7 7.1-8' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E",
-  fail:      "%3Cpath d='M3.6 3.6l8.8 8.8M12.4 3.6l-8.8 8.8' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'/%3E"
+  note: "%3Cpath d='M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2'/%3E",
+  tip: "%3Cpath d='M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a2 2 0 0 0-.453-.618A5.98 5.98 0 0 1 2 6m3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5'/%3E",
+  important: "%3Cpath d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2'/%3E",
+  caution: "%3Cpath d='m9.97 4.88.953 3.811C10.159 8.878 9.14 9 8 9s-2.158-.122-2.923-.309L6.03 4.88C6.635 4.957 7.3 5 8 5s1.365-.043 1.97-.12m-.245-.978L8.97.88C8.718-.13 7.282-.13 7.03.88L6.275 3.9C6.8 3.965 7.382 4 8 4s1.2-.036 1.725-.098m4.396 8.613a.5.5 0 0 1 .037.96l-6 2a.5.5 0 0 1-.316 0l-6-2a.5.5 0 0 1 .037-.96l2.391-.598.565-2.257c.862.212 1.964.339 3.165.339s2.303-.127 3.165-.339l.565 2.257z'/%3E",
+  warning: "%3Cpath d='M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2'/%3E",
+  success: "%3Cpath d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z'/%3E",
+  fail: "%3Cpath d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z'/%3E"
 );
 
 div.callout.callout {
@@ -120,20 +120,19 @@ div.callout.callout.callout-style-default {
     align-items: center;
     flex: none;
     box-sizing: border-box;
-    width: calc(1.35em + 0.6em);
+    width: calc(1.3em + 0.55em);
     padding: 0 0.6em 0 0;
   }
   .callout-icon {
     display: inline-grid;
     place-items: center;
-    width: 1.35em;
-    height: 1.35em;
-    border-radius: 50%;
+    width: 1.3em;
+    height: 1.3em;
   }
   .callout-icon::before {
     background-image: none !important;
-    width: 0.85em;
-    height: 0.85em;
+    width: 1.3em;
+    height: 1.3em;
     -webkit-mask-repeat: no-repeat;
             mask-repeat: no-repeat;
     -webkit-mask-position: center;
@@ -166,11 +165,8 @@ div.callout.callout.callout-style-default {
     > div.callout-header {
       background-color: mix($c, $pb-tint-base, 16%);
     }
-    .callout-icon {
-      background-color: $c;
-    }
     .callout-icon::before {
-      background-color: $body-bg;
+      background-color: $c;
       -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E#{map-get($pb-callout-glyphs, $name)}%3C/svg%3E");
               mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E#{map-get($pb-callout-glyphs, $name)}%3C/svg%3E");
     }
