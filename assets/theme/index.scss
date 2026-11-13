@@ -30,7 +30,7 @@ div.sourceCode.sourceCode {
 @import "components";
 
 // Callouts, tabsets and the announcement bar
-// (same Sass-cache note as above: change the rev number here after editing _content.scss. rev 20)
+// (same Sass-cache note as above: change the rev number here after editing _content.scss. rev 21)
 @import "content";
 
 // Import common CSS rules that both themes share
@@ -226,7 +226,23 @@ div.sourceCode.sourceCode {
 p code:not(.sourceCode),
 li code:not(.sourceCode),
 td code:not(.sourceCode) {
-  border: 1px solid $pb-accent;
+  // a hairline tint of the accent, not a full-strength teal outline (dense lists looked boxed in)
+  border: 1px solid mix($pb-accent, $body-bg, 30%);
+  padding: 0.05em 0.35em;
+}
+
+// Comments: upright, in the muted colour the highlighter already gives them
+div.sourceCode code span.co {
+  font-style: normal;
+}
+
+// Console output: a left rule ties it to the code that produced it
+div.cell-output-stdout > pre,
+div.cell-output-stderr > pre {
+  border-left: 3px solid mix($body-color, $body-bg, 22%);
+  border-radius: 0 $pb-radius-sm $pb-radius-sm 0;
+  padding: 0.55rem 0.9rem;
+  background-color: transparent;
 }
 
 // Blockquotes (common italic styling)

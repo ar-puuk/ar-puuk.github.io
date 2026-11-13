@@ -33,12 +33,12 @@ $table-group-separator-color: lighten($pb-primary, 40%);
 $table-caption-color:         $body-secondary;
 
 // Code blocks (Light mode)
-$code-block-bg:              white;
+$code-block-bg:              $pb-bg-1;             // soft cream-dark: a white block on the cream page looked pasted in
 $code-block-border:          $pb-border-light;
 
 // Inline code (Light mode)
 $code-color:                  $pb-primary;
-$code-bg:                     $pb-accent-light;
+$code-bg:                     mix($pb-accent-light, $pb-bg-0, 60%);  // a quieter teal tint than the old E8F4F8
 
 // Table of contents
 $toc-color:                   $link-color;
