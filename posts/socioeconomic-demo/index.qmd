@@ -206,7 +206,7 @@ project_crs = "EPSG:3361"
 API authentication enables access to detailed demographic and economic datasets from the Census Bureau.
 The key configuration supports both R and Python environments for automated data retrieval workflows.
 
-::: {.callout-tip}
+::: {.callout-note}
 ### Need a Census API key?
 
 Get one for free at [census.gov/developers](https://www.census.gov/developers/)

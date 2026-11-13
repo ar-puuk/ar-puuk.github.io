@@ -336,7 +336,7 @@ st_write(
 message("Reconstruction Complete! Saved to: ", output_geojson_path)
 ```
 
-::: {.callout-tip title="Download the output files"}
+::: {.callout-note title="Download the output files"}
 - [nepal_electoral_map.svg](./output/nepal_electoral_map.svg)
 - [nepal_svg_rough.geojson](./output/nepal_svg_rough.geojson)
 - [nepal_electoral_map.geojson](./output/nepal_electoral_map.geojson)
