@@ -18,7 +18,7 @@ prefer-html: true
 ::: {.callout-note}
 ## Forked from WFRC's Community Profiles
 
-Demographic Profiles began as a fork of **Community Profiles**, which I developed at the [Wasatch Front Regional Council (WFRC)](https://wfrc.utah.gov/). WFRC is taking its own app in a more strategic-metrics direction, and allowed me to fork it and host this version in my own repository with some adjustments. The original belongs to WFRC and is described [below](#the-original). The app is still marked as a draft.
+Demographic Profiles began as a fork of **Community Profiles**, which I developed at the [Wasatch Front Regional Council (WFRC)](https://wfrc.utah.gov/). WFRC's app is evolving to cover a more diverse set of strategic metrics for planning and regional development, such as population projections, land use characteristics, transit ridership and travel characteristics. WFRC allowed me to fork it and host this version in my own repository, with some adjustments, as a demographic profile. The original belongs to WFRC and is described [below](#the-original). The app is still marked as a draft.
 :::
 
 ![Demographic Profiles for Utah: headline indicators, a county choropleth, and population and income trends.](demographic_profiles.png)
@@ -47,7 +47,7 @@ This fork is mine to maintain. I reworked the geography from the WFRC region and
 
 ## The original: WFRC's Community Profiles {#the-original}
 
-Community Profiles is the WFRC app this one was derived from. It covers the WFRC region, its counties, cities and planning areas (AOG, MPO, RPO and workshop areas). It belongs to WFRC and is unchanged for now, though WFRC expects to change it. Credit for the original, and for the Wasatch Front data work behind it, goes to the agency.
+Community Profiles is the WFRC app this one was derived from. It covers the WFRC region, its counties, cities and planning areas (AOG, MPO, RPO and workshop areas). It belongs to WFRC and is unchanged for now. It will evolve to accommodate more diverse, strategic metrics for planning and regional development, such as population projections, land use characteristics, transit ridership and travel characteristics. Credit for the original, and for the Wasatch Front data work behind it, goes to the agency.
 
 ::: {.app-links}
 [{{< fa arrow-up-right-from-square >}} Community Profiles](https://wfrcanalytics.github.io/APP-Community-Profiles/){.btn .btn-outline-secondary target="_blank" rel="noopener"}
