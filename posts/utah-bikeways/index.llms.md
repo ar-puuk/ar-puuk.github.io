@@ -293,7 +293,11 @@ tmap::qtm(sf_ut_municipal, fill = NULL)
 
 ## 4.2 Calculate Lane Miles
 
-Road lane miles are calculated by multiplying the length of each road segment by the number of through lanes. For road segments where the through lane count is missing (NA), we assume 1 lane as a conservative estimate.
+Road lane miles are calculated by multiplying the length of each road segment by the number of through lanes.
+
+> **WARNING:**
+>
+> Where a road segment’s through-lane count is missing (NA), the calculation assumes 1 lane as a conservative estimate. Fixing this in the source data is still a to-do.
 
 The calculation converts the geometry length from US survey feet to miles using the `units` package, which properly handles unit conversions and maintains unit awareness throughout the analysis.
 
@@ -453,7 +457,11 @@ sf_ut_bikeways <- sf_ut_bikeways |>
 
 ## 5.2 Calculate Bikeway Lane Miles by Facility Type
 
-Bikeway facilities are directional - a single bikeway segment can have different facility types in each direction (`facility1` and `facility2`). For this analysis, we treat each direction as a separate lane, meaning a 1-mile bikeway segment with bike lanes in both directions counts as 2 lane-miles of bike lanes.
+Bikeway facilities are directional - a single bikeway segment can have different facility types in each direction (`facility1` and `facility2`).
+
+> **IMPORTANT:**
+>
+> Each direction is treated as a separate lane, so a 1-mile bikeway segment with bike lanes in both directions counts as 2 lane-miles of bike lanes.
 
 The `pivot_longer()` function stacks `facility1` and `facility2` into separate rows, effectively doubling the mileage for segments where both directions have facilities. We then group by municipality and facility type to calculate total lane miles for each combination.
 

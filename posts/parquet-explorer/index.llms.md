@@ -9,6 +9,10 @@ Want a quick way to preview what is inside your parquet file? This is a browser-
 >
 > Since the first version it has gained support for Esri JSON geometries (rings, paths and x/y columns), clearer error messages for common failures like CORS, 403/404 and unsupported ZSTD compression (re-save with Snappy or Gzip), and a refreshed theme.
 
+> **TIP:**
+>
+> The viewer cannot read ZSTD-compressed files. Re-save the file with Snappy or Gzip compression and open it again.
+
 The live app is embedded below.
 
 Parquet File Viewer

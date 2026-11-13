@@ -655,7 +655,46 @@ SELECT * FROM ST_Read('data/links.shp') -- <4>"><pre class="sourceCode sql code-
 </section>
 <section id="formats-that-fight-back" class="level2" data-number="7">
 <h2 data-number="7" class="anchored" data-anchor-id="formats-that-fight-back"><span class="header-section-number">7</span> Formats that fight back</h2>
-<p><strong>File Geodatabases</strong> are the format I most wanted and the hardest to read. DuckDB-WASM’s GDAL build has the OpenFileGDB driver turned off for WebAssembly, so the SQL engine cannot open a <code>.gdb</code> at all, and it cannot read inside a zip either. The workaround is <a href="https://gdal3.js.org">gdal3.js</a> (GDAL 3.8.4 compiled to WebAssembly), downloaded only the first time you open a geodatabase, which converts the chosen layer so DuckDB can query it. In a spike on an 818 MB geodatabase it listed layers in 87 ms and converted 4 million parcels to FlatGeobuf in 34 seconds. Compressed (CDF/SDC) geodatabases remain unreadable by any open-source reader, so that format stays marked <em>experimental</em>.</p>
+<p><strong>File Geodatabases</strong> are the format I most wanted and the hardest to read.</p>
+<div class="pb-fail callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>What the engine cannot do
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>DuckDB-WASM’s GDAL build has the OpenFileGDB driver turned off for WebAssembly, so the SQL engine cannot open a <code>.gdb</code> at all, and it cannot read inside a zip either.</p>
+</div>
+</div>
+<div class="pb-success callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>The workaround
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><a href="https://gdal3.js.org">gdal3.js</a> (GDAL 3.8.4 compiled to WebAssembly) is downloaded only the first time you open a geodatabase, and converts the chosen layer so DuckDB can query it. In a spike on an 818 MB geodatabase it listed layers in 87 ms and converted 4 million parcels to FlatGeobuf in 34 seconds.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Still unreadable
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Compressed (CDF/SDC) geodatabases remain unreadable by any open-source reader, so that format stays marked <em>experimental</em>.</p>
+</div>
+</div>
 <p><strong>GTFS feeds</strong> are detected by what is inside the zip (stops, routes, trips, stop times and their columns), never by file name, so <code>GTFS.zip</code>, <code>google_transit.zip</code> and <code>data.zip</code> all work. A feed opens as two layers drawn together, <code>routes</code> (lines, in each route’s own color) and <code>stops</code> (points), each its own table.</p>
 </section>
 <section id="styles-that-travel" class="level2" data-number="8">
@@ -1495,7 +1534,22 @@ Several features that look like dialogs are really generators of SQL, and show y
 
 ## Formats that fight back
 
-**File Geodatabases** are the format I most wanted and the hardest to read. DuckDB-WASM's GDAL build has the OpenFileGDB driver turned off for WebAssembly, so the SQL engine cannot open a `.gdb` at all, and it cannot read inside a zip either. The workaround is [gdal3.js](https://gdal3.js.org) (GDAL 3.8.4 compiled to WebAssembly), downloaded only the first time you open a geodatabase, which converts the chosen layer so DuckDB can query it. In a spike on an 818 MB geodatabase it listed layers in 87 ms and converted 4 million parcels to FlatGeobuf in 34 seconds. Compressed (CDF/SDC) geodatabases remain unreadable by any open-source reader, so that format stays marked *experimental*.
+**File Geodatabases** are the format I most wanted and the hardest to read.
+
+::: {.callout-fail}
+## What the engine cannot do
+DuckDB-WASM's GDAL build has the OpenFileGDB driver turned off for WebAssembly, so the SQL engine cannot open a `.gdb` at all, and it cannot read inside a zip either.
+:::
+
+::: {.callout-success}
+## The workaround
+[gdal3.js](https://gdal3.js.org) (GDAL 3.8.4 compiled to WebAssembly) is downloaded only the first time you open a geodatabase, and converts the chosen layer so DuckDB can query it. In a spike on an 818 MB geodatabase it listed layers in 87 ms and converted 4 million parcels to FlatGeobuf in 34 seconds.
+:::
+
+::: {.callout-caution}
+## Still unreadable
+Compressed (CDF/SDC) geodatabases remain unreadable by any open-source reader, so that format stays marked *experimental*.
+:::
 
 **GTFS feeds** are detected by what is inside the zip (stops, routes, trips, stop times and their columns), never by file name, so `GTFS.zip`, `google_transit.zip` and `data.zip` all work. A feed opens as two layers drawn together, `routes` (lines, in each route's own color) and `stops` (points), each its own table.
 
@@ -1661,25 +1715,40 @@ The code is MIT-licensed on [GitHub](https://github.com/ar-puuk/spatial-sql-expl
 <span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a><span class="fu">## Formats that fight back</span></span>
 <span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>**File Geodatabases** are the format I most wanted and the hardest to read. DuckDB-WASM's GDAL build has the OpenFileGDB driver turned off for WebAssembly, so the SQL engine cannot open a <span class="in">`.gdb`</span> at all, and it cannot read inside a zip either. The workaround is <span class="co">[</span><span class="ot">gdal3.js</span><span class="co">](https://gdal3.js.org)</span> (GDAL 3.8.4 compiled to WebAssembly), downloaded only the first time you open a geodatabase, which converts the chosen layer so DuckDB can query it. In a spike on an 818 MB geodatabase it listed layers in 87 ms and converted 4 million parcels to FlatGeobuf in 34 seconds. Compressed (CDF/SDC) geodatabases remain unreadable by any open-source reader, so that format stays marked *experimental*.</span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>**File Geodatabases** are the format I most wanted and the hardest to read.</span>
 <span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>**GTFS feeds** are detected by what is inside the zip (stops, routes, trips, stop times and their columns), never by file name, so <span class="in">`GTFS.zip`</span>, <span class="in">`google_transit.zip`</span> and <span class="in">`data.zip`</span> all work. A feed opens as two layers drawn together, <span class="in">`routes`</span> (lines, in each route's own color) and <span class="in">`stops`</span> (points), each its own table.</span>
-<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a><span class="fu">## Styles that travel</span></span>
-<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>Styles are saved as a **QGIS `.qml` sidecar**, so a styled file looks right in QGIS too, and the app imports and exports QML, SLD and Mapbox GL style JSON. Labels are drawn with system fonts (nothing is downloaded), saved with the style, and included when you export the map image.</span>
-<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a><span class="fu">## What I'd say about scope</span></span>
-<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>The project has an explicit list of things it will *not* do: feature editing, georeferencing, a processing toolbox, notebooks, plugins, raster analysis, stacked basemaps, multiple map layers. One layer is on the map at a time; multi-file work is done in SQL. Every exception (a globe projection, polygon extrusion, terrain) was a recorded decision. For a tool whose point is "never open QGIS for basic work", staying a quick-look tool matters more than any one feature.</span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>::: {.callout-fail}</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a><span class="fu">## What the engine cannot do</span></span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>DuckDB-WASM's GDAL build has the OpenFileGDB driver turned off for WebAssembly, so the SQL engine cannot open a <span class="in">`.gdb`</span> at all, and it cannot read inside a zip either.</span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>::: {.callout-success}</span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a><span class="fu">## The workaround</span></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">gdal3.js</span><span class="co">](https://gdal3.js.org)</span> (GDAL 3.8.4 compiled to WebAssembly) is downloaded only the first time you open a geodatabase, and converts the chosen layer so DuckDB can query it. In a spike on an 818 MB geodatabase it listed layers in 87 ms and converted 4 million parcels to FlatGeobuf in 34 seconds.</span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a><span class="fu">## Privacy and network use</span></span>
-<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>Your data stays on your machine. The network is used for the engine's code (downloaded once, then cached), for basemap tiles, and for an opt-out place search that sends only the text you type.</span>
-<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a><span class="fu">## Wrapping up</span></span>
-<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>The code is MIT-licensed on <span class="co">[</span><span class="ot">GitHub</span><span class="co">](https://github.com/ar-puuk/spatial-sql-explorer)</span>, and the <span class="co">[</span><span class="ot">changelog</span><span class="co">](https://github.com/ar-puuk/spatial-sql-explorer/blob/main/CHANGELOG.md)</span> has the details of every release. The project owes a lot to <span class="co">[</span><span class="ot">GeoLibre</span><span class="co">](https://github.com/opengeos/GeoLibre)</span> and <span class="co">[</span><span class="ot">Qiusheng Wu</span><span class="co">](https://github.com/giswqs)</span>, a constant reference for the style panel, basemap picker and data-loading design, and to Kyle Walker's original Spatial SQL Explorer for the idea. If you work with spatial data and want a scratchpad that doesn't need a server, give it a try. Issues and PRs welcome.</span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>::: {.callout-caution}</span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a><span class="fu">## Still unreadable</span></span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>Compressed (CDF/SDC) geodatabases remain unreadable by any open-source reader, so that format stays marked *experimental*.</span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>**GTFS feeds** are detected by what is inside the zip (stops, routes, trips, stop times and their columns), never by file name, so <span class="in">`GTFS.zip`</span>, <span class="in">`google_transit.zip`</span> and <span class="in">`data.zip`</span> all work. A feed opens as two layers drawn together, <span class="in">`routes`</span> (lines, in each route's own color) and <span class="in">`stops`</span> (points), each its own table.</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a><span class="fu">## Styles that travel</span></span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>Styles are saved as a **QGIS `.qml` sidecar**, so a styled file looks right in QGIS too, and the app imports and exports QML, SLD and Mapbox GL style JSON. Labels are drawn with system fonts (nothing is downloaded), saved with the style, and included when you export the map image.</span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a><span class="fu">## What I'd say about scope</span></span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>The project has an explicit list of things it will *not* do: feature editing, georeferencing, a processing toolbox, notebooks, plugins, raster analysis, stacked basemaps, multiple map layers. One layer is on the map at a time; multi-file work is done in SQL. Every exception (a globe projection, polygon extrusion, terrain) was a recorded decision. For a tool whose point is "never open QGIS for basic work", staying a quick-look tool matters more than any one feature.</span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a><span class="fu">## Privacy and network use</span></span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>Your data stays on your machine. The network is used for the engine's code (downloaded once, then cached), for basemap tiles, and for an opt-out place search that sends only the text you type.</span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a><span class="fu">## Wrapping up</span></span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>The code is MIT-licensed on <span class="co">[</span><span class="ot">GitHub</span><span class="co">](https://github.com/ar-puuk/spatial-sql-explorer)</span>, and the <span class="co">[</span><span class="ot">changelog</span><span class="co">](https://github.com/ar-puuk/spatial-sql-explorer/blob/main/CHANGELOG.md)</span> has the details of every release. The project owes a lot to <span class="co">[</span><span class="ot">GeoLibre</span><span class="co">](https://github.com/opengeos/GeoLibre)</span> and <span class="co">[</span><span class="ot">Qiusheng Wu</span><span class="co">](https://github.com/giswqs)</span>, a constant reference for the style panel, basemap picker and data-loading design, and to Kyle Walker's original Spatial SQL Explorer for the idea. If you work with spatial data and want a scratchpad that doesn't need a server, give it a try. Issues and PRs welcome.</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

@@ -519,9 +519,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li><strong>Pick a starting point.</strong> Choose a preset (Daily backup, Exact mirror, Archive with permissions, Fast LAN copy, or Move and clean up) or start from scratch.</li>
 <li><strong>Fill in the tabs.</strong> Locations, What to do, Filters, Preserve, Performance, Automation, Logging and Advanced. Rarely used options stay hidden until you turn on <strong>Show advanced</strong>.</li>
-<li><strong>Watch the command.</strong> It updates as you choose, with every flag explained and a clear warning for options that delete (Mirror, Move, Purge).</li>
+<li><strong>Watch the command.</strong> It updates as you choose, with every flag explained.</li>
 <li><strong>Add to queue.</strong> Build several jobs, reorder them, then download one <code>.bat</code> or <code>.ps1</code> script. Stop on first failure is on by default.</li>
 </ol>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Some options delete files
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>/MIR</code> (mirror), move and purge options can remove files from the destination. The app shows a clear notice for each of them before anything can be deleted, so read it before you run the script.</p>
+</div>
+</div>
 </section>
 <section id="other-ways-in" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="other-ways-in"><span class="header-section-number">3</span> Other ways in</h2>
@@ -1257,30 +1270,35 @@ Builder.”</span> June 15. <a href="https://ar-puuk.github.io/posts/robocopy-gu
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Pick a starting point.** Choose a preset (Daily backup, Exact mirror, Archive with permissions, Fast LAN copy, or Move and clean up) or start from scratch.</span>
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Fill in the tabs.** Locations, What to do, Filters, Preserve, Performance, Automation, Logging and Advanced. Rarely used options stay hidden until you turn on **Show advanced**.</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Watch the command.** It updates as you choose, with every flag explained and a clear warning for options that delete (Mirror, Move, Purge).</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Watch the command.** It updates as you choose, with every flag explained.</span>
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Add to queue.** Build several jobs, reorder them, then download one <span class="in">`.bat`</span> or <span class="in">`.ps1`</span> script. Stop on first failure is on by default.</span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## Other ways in</span></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Find an option.** Type a name or a flag, such as <span class="in">`retry`</span> or <span class="in">`/MT`</span>, to search every tab at once.</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Paste a command.** Paste an existing <span class="in">`robocopy`</span> command and the form fills in. Flags the builder does not recognise are kept under Advanced.</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Command palette.** <span class="in">`Ctrl+K`</span> jumps to any option, preset or page, and <span class="in">`Ctrl+Enter`</span> adds the current command to the queue.</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Profiles.** Save a full set of options and load it later. Profiles, the queue and the form are remembered in your browser.</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>::: {.callout-caution}</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## Some options delete files</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>The <span class="in">`/MIR`</span> (mirror), move and purge options can remove files from the destination. The app shows a clear notice for each of them before anything can be deleted, so read it before you run the script.</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## Other ways in</span></span>
 <span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="fu">## Technical details</span></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>The whole app is one self-contained <span class="in">`index.html`</span> with no build step to run it, so it is light and fast and works from GitHub Pages. It is generated from a shared source, so Mirror and Fetch keep identical design tokens and components. A jsdom smoke test covers it. Icons are from <span class="co">[</span><span class="ot">Lucide</span><span class="co">](https://lucide.dev)</span> and the fonts are Bricolage Grotesque, Instrument Sans and JetBrains Mono. The code lives in the <span class="co">[</span><span class="ot">source repository</span><span class="co">](https://github.com/ar-puuk/robocopy-gui)</span>.</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="fu">## Use cases</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>System administrators managing file synchronization</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>IT professionals setting up backup routines</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Anyone copying large directory structures with specific parameters</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Learning Robocopy syntax by seeing what each option does</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Find an option.** Type a name or a flag, such as <span class="in">`retry`</span> or <span class="in">`/MT`</span>, to search every tab at once.</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Paste a command.** Paste an existing <span class="in">`robocopy`</span> command and the form fills in. Flags the builder does not recognise are kept under Advanced.</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Command palette.** <span class="in">`Ctrl+K`</span> jumps to any option, preset or page, and <span class="in">`Ctrl+Enter`</span> adds the current command to the queue.</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Profiles.** Save a full set of options and load it later. Profiles, the queue and the form are remembered in your browser.</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## Technical details</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>The whole app is one self-contained <span class="in">`index.html`</span> with no build step to run it, so it is light and fast and works from GitHub Pages. It is generated from a shared source, so Mirror and Fetch keep identical design tokens and components. A jsdom smoke test covers it. Icons are from <span class="co">[</span><span class="ot">Lucide</span><span class="co">](https://lucide.dev)</span> and the fonts are Bricolage Grotesque, Instrument Sans and JetBrains Mono. The code lives in the <span class="co">[</span><span class="ot">source repository</span><span class="co">](https://github.com/ar-puuk/robocopy-gui)</span>.</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="fu">## Use cases</span></span>
 <span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>*Want to contribute or suggest improvements? Visit the project repository at:* <span class="ot">&lt;https://github.com/ar-puuk/robocopy-gui&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>System administrators managing file synchronization</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>IT professionals setting up backup routines</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Anyone copying large directory structures with specific parameters</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Learning Robocopy syntax by seeing what each option does</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>*Want to contribute or suggest improvements? Visit the project repository at:* <span class="ot">&lt;https://github.com/ar-puuk/robocopy-gui&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

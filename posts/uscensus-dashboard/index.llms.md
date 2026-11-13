@@ -240,6 +240,10 @@ result_acs <- result_acs |>
 
 ### API Key Management
 
+> **IMPORTANT:**
+>
+> Request a free key from the [Census Bureau](https://www.census.gov/developers/) and enter it in the app. It is never stored in the source code.
+
 The application requires Census API keys but handles them securely through user input rather than hardcoding. This approach ensures:
 
 - No sensitive credentials in source code

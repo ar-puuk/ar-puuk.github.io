@@ -44,7 +44,11 @@ The editor is a single static page. It can:
 
 ## 4 Using a downloaded style
 
-A style JSON is a set of instructions that MapLibre reads and renders live, still pulling the actual data from UGRC. There is one UGRC-specific gotcha: the vector source is shaped the way Esri’s `VectorTileServer` publishes it, which Esri’s own tools resolve but generic renderers do not. MapLibre fails with `Failed to parse URL from tile/...` until the source is rewritten into the `tiles` array the style spec expects:
+A style JSON is a set of instructions that MapLibre reads and renders live, still pulling the actual data from UGRC.
+
+> **WARNING:**
+>
+> The vector source is shaped the way Esri’s `VectorTileServer` publishes it, which Esri’s own tools resolve but generic renderers do not. MapLibre fails with `Failed to parse URL from tile/...` until the source is rewritten into the `tiles` array the style spec expects. The snippet below does that rewrite.
 
 ``` js
 fetch("./ugrc-lite-edited.json") // <1>

@@ -246,7 +246,7 @@ This analysis calculates and compares roadway lane miles and bikeway facility mi
 
 Nov 2025
 
-18 min
+19 min
 
 ### [Building an Interactive Storymap using {mapgl}](posts/storymap_my_journey/index.llms.md)
 

@@ -58,6 +58,10 @@ if (!dir.exists(dirname(output_svg_path))) dir.create(dirname(output_svg_path), 
 
 We use `httr2` to fetch the webpage and `rvest` to extract the specific SVG element containing the map. We also inject some CSS to ensure the map renders correctly if viewed in a browser (e.g., setting the viewBox and handling overflow).
 
+> **WARNING:**
+>
+> The code sends a browser-like user agent, because the site can refuse bare requests, and it falls back to the SVG saved by an earlier run if the site is down.
+
 ``` r
 url <- "https://generalelection2079.ekantipur.com/heatmap"
 
@@ -231,7 +235,9 @@ The transformed SVG is roughly accurate but has “jagged” borders and low-qua
 2.  Check which rough SVG shape each Ward centroid falls into.
 3.  Dissolve (merge) the Ward polygons based on that grouping.
 
-This results in a map that perfectly matches official administrative boundaries.
+> **TIP:**
+>
+> This results in a map that perfectly matches official administrative boundaries.
 
 ``` r
 message("Reconstructing boundaries using Wards...")
