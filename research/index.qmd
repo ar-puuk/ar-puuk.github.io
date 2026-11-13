@@ -1,5 +1,7 @@
 ---
-pagetitle: Research
+title: "Research"
+pagetitle: Research | Pukar Bhandari
+title-block-banner: true
 description: |
   These are my research publications along with their accompanying materials.
 listing:
