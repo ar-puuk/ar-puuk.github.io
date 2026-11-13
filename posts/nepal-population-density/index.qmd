@@ -105,9 +105,10 @@ nepal_boundary <- nep_admin |>
 ```
 
 ::: callout-note
-**Data Sources**:\
-- **Population Data**: [Kontur Population Dataset](https://data.humdata.org/dataset/kontur-population-nepal)\
-- **Administrative Boundaries**: [Kontur Boundaries Dataset](https://data.humdata.org/dataset/kontur-boundaries-nepal)\
+**Data Sources**:
+
+- **Population Data**: [Kontur Population Dataset](https://data.humdata.org/dataset/kontur-population-nepal)
+- **Administrative Boundaries**: [Kontur Boundaries Dataset](https://data.humdata.org/dataset/kontur-boundaries-nepal)
 - **Coordinate Reference System**: EPSG:6207 for accurate representation of Nepal's geography
 :::
 
