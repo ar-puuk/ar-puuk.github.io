@@ -9,15 +9,6 @@
   font-display: swap;
 }
 
-// LORA - for headings (serif)
-@font-face {
-  font-family: 'Lora';
-  src: url('assets/fonts/Poppins-Bold.woff2') format('woff2');
-  font-weight: 400 700;
-  font-style: normal;
-  font-display: swap;
-}
-
 // POPPINS - Regular weight for body text
 @font-face {
   font-family: 'Poppins';
@@ -56,9 +47,11 @@
 
 // Font Family Variables
 $font-family-sans-serif: "Poppins", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-$font-family-serif: "Lora", serif;
+$font-family-serif: Georgia, "Times New Roman", serif;
 $font-family-monospace: "Fira Code", "Dank Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
 // Font Settings
-$headings-font-family: $font-family-serif;
-$headings-font-weight: 400;
+// Headings are Poppins Bold. (This used to point at a "Lora" @font-face that actually loaded
+// Poppins-Bold.woff2; naming the real font and weight keeps the same look.)
+$headings-font-family: $font-family-sans-serif;
+$headings-font-weight: 700;

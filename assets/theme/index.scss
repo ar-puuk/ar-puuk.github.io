@@ -30,7 +30,7 @@ div.sourceCode.sourceCode {
 @import "components";
 
 // Callouts, tabsets and the announcement bar
-// (same Sass-cache note as above: change the rev number here after editing _content.scss. rev 19)
+// (same Sass-cache note as above: change the rev number here after editing _content.scss. rev 20)
 @import "content";
 
 // Import common CSS rules that both themes share
@@ -147,6 +147,18 @@ div.sourceCode.sourceCode {
   position: absolute;
 }
 
+// Headings: a softer rule under h2 and lighter section numbers
+#quarto-document-content h2 {
+  margin-top: 2.4rem;
+  padding-bottom: 0.35rem;
+  border-bottom-color: $pb-line;
+}
+.header-section-number {
+  font-weight: 500;
+  opacity: 0.5;
+  margin-right: 0.1em;
+}
+
 // Description links
 .description a {
   text-decoration: underline !important;
@@ -159,7 +171,7 @@ div.sourceCode.sourceCode {
 .title {
   // Fluid size: 6 stacked lines on a phone at the fixed 2.5em, full size from about 600px up
   font-size: clamp(1.85rem, 1rem + 4.4vw, 2.5rem);
-  font-weight: 500;
+  font-weight: 700;
   line-height: 1.15;
   overflow-wrap: break-word;
 }
