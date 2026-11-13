@@ -1,5 +1,8 @@
 ---
-pagetitle: About
+title: "About me"
+subtitle: "Transportation analyst, data scientist and planner in Salt Lake City"
+title-block-banner: true
+pagetitle: About | Pukar Bhandari
 aliases:
   - /resume.html
   - /resume/index.html

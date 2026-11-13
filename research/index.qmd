@@ -2,8 +2,8 @@
 title: "Research"
 pagetitle: Research | Pukar Bhandari
 title-block-banner: true
-description: |
-  These are my research publications along with their accompanying materials.
+subtitle: "Publications and the materials behind them"
+description-meta: "These are my research publications along with their accompanying materials."
 listing:
   - id: articles
     contents: "articles/*/index.qmd"

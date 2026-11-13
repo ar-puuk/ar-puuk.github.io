@@ -1,5 +1,6 @@
 ---
 title: "Projects"
+subtitle: "Data apps, analyses, tools and talks from my work in transportation and GIS"
 pagetitle: Projects | Pukar Bhandari
 listing:
   contents:
