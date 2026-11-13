@@ -22,6 +22,7 @@ Education Explorer does that stitching ahead of time and puts the result on a ma
 
 ## Try it
 
+::: {.column-screen-inset}
 ```{=html}
 <div class="app-embed-wrapper">
   <div class="app-embed-toolbar">
@@ -33,6 +34,7 @@ Education Explorer does that stitching ahead of time and puts the result on a ma
   </div>
 </div>
 ```
+:::
 
 ::: {.app-links}
 [{{< fa arrow-up-right-from-square >}} Open app](https://ar-puuk.github.io/education-explorer/){.btn .btn-primary target="_blank" rel="noopener"}

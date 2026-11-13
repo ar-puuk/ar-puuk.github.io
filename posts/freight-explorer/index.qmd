@@ -24,6 +24,7 @@ So I built an explorer that does the wrangling once and ships the result as a st
 
 The live app is embedded below. Click a mode, commodity, partner state or year and every chart and the map follow.
 
+::: {.column-screen-inset}
 ```{=html}
 <div class="app-embed-wrapper">
   <div class="app-embed-toolbar">
@@ -35,6 +36,7 @@ The live app is embedded below. Click a mode, commodity, partner state or year a
   </div>
 </div>
 ```
+:::
 
 ::: {.app-links}
 [{{< fa arrow-up-right-from-square >}} Open app](https://ar-puuk.github.io/freight-explorer/){.btn .btn-primary target="_blank" rel="noopener"}

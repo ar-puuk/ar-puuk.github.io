@@ -24,6 +24,10 @@ format:
 A fork of [Community Profiles](https://github.com/WFRCAnalytics/APP-Community-Profiles), which I developed at the [Wasatch Front Regional Council (WFRC)](https://wfrc.utah.gov/), hosted in my own repository with WFRC's permission. The original belongs to WFRC ([details below](#the-original)). This app is still marked as a draft.
 :::
 
+Utah's population, housing, income, jobs and commuting figures come from several Census Bureau and Bureau of Labor Statistics sources (the American Community Survey, population estimates, LODES and QCEW), each with its own geographies and release schedule. Looking up "how has this county changed?" means piecing them together.
+
+Demographic Profiles does that ahead of time and puts the result on a map, for the state, its counties and its cities and towns. A Python pipeline writes the data to Parquet files and the browser reads them directly, so there is no server behind it.
+
 ## Try it
 
 ::: {.column-screen-inset}

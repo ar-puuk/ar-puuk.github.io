@@ -20,6 +20,7 @@ Utah's [UGRC](https://gis.utah.gov/) publishes a very good free vector basemap, 
 
 Pick a built-in theme (or drop in your own style), click a layer to edit its colors, opacity, filters or zoom range, and use **Compare against** to swipe your edit against another theme or UGRC's own live basemap.
 
+::: {.column-screen-inset}
 ```{=html}
 <div class="app-embed-wrapper">
   <div class="app-embed-toolbar">
@@ -31,6 +32,7 @@ Pick a built-in theme (or drop in your own style), click a layer to edit its col
   </div>
 </div>
 ```
+:::
 
 ::: {.app-links}
 [{{< fa arrow-up-right-from-square >}} Open app](https://ar-puuk.github.io/ugrc-styles/){.btn .btn-primary target="_blank" rel="noopener"}

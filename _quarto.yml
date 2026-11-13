@@ -35,7 +35,7 @@ website:
   announcement:
     icon: megaphone
     dismissable: true
-    content: "**New:** [Education Explorer](/posts/education-explorer/){.no-external target='_self'} and [Freight Explorer](/posts/freight-explorer/){.no-external target='_self'}, two zero-backend data apps built on public data."
+    content: "**New:** [Demographic Profiles](/work/community-profiles/){.no-external target='_self'}, a zero-backend, map-first dashboard of Census and economic indicators for Utah."
     type: primary
     position: below-navbar
 

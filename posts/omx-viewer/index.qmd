@@ -30,6 +30,7 @@ The same engine now powers an **OMX Viewer extension for VS Code**, so `.omx`, `
 
 If you work with travel demand models and want to try it, the live app is embedded below.
 
+::: {.column-screen-inset}
 ```{=html}
 <div class="app-embed-wrapper">
   <div class="app-embed-toolbar">
@@ -41,6 +42,7 @@ If you work with travel demand models and want to try it, the live app is embedd
   </div>
 </div>
 ```
+:::
 
 ::: {.app-links}
 [{{< fa arrow-up-right-from-square >}} Open app](https://ar-puuk.github.io/omx-viewer/){.btn .btn-primary target="_blank" rel="noopener"}

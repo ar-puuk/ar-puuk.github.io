@@ -33,6 +33,7 @@ I wanted something simpler: open a file, write a SQL query, see the answer on a 
 
 Use **Try sample data** for US counties, or drop in your own file. Everything runs in your tab.
 
+::: {.column-screen-inset}
 ```{=html}
 <div class="app-embed-wrapper">
   <div class="app-embed-toolbar">
@@ -44,6 +45,7 @@ Use **Try sample data** for US counties, or drop in your own file. Everything ru
   </div>
 </div>
 ```
+:::
 
 ::: {.app-links}
 [{{< fa arrow-up-right-from-square >}} Open app](https://ar-puuk.github.io/spatial-sql-explorer/){.btn .btn-primary target="_blank" rel="noopener"}

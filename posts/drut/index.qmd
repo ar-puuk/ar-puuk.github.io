@@ -59,6 +59,7 @@ The extension resolves a working `drut` language server automatically on first a
 
 The full user guide covers install, getting started, the CLI, editor and MCP references, formatter behavior and a field-by-field `drut.toml` reference.
 
+::: {.column-screen-inset}
 ```{=html}
 <div class="app-embed-wrapper">
   <div class="app-embed-toolbar">
@@ -70,6 +71,7 @@ The full user guide covers install, getting started, the CLI, editor and MCP ref
   </div>
 </div>
 ```
+:::
 
 ::: {.app-links}
 [{{< fa arrow-up-right-from-square >}} Open docs](https://ar-puuk.github.io/drut-dev/){.btn .btn-primary target="_blank" rel="noopener"}

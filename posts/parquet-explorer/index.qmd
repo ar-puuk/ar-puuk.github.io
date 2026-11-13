@@ -26,6 +26,7 @@ Since the first version it has gained support for Esri JSON geometries (rings, p
 
 The live app is embedded below.
 
+::: {.column-screen-inset}
 ```{=html}
 <div class="app-embed-wrapper">
   <div class="app-embed-toolbar">
@@ -37,6 +38,7 @@ The live app is embedded below.
   </div>
 </div>
 ```
+:::
 
 ::: {.app-links}
 [{{< fa arrow-up-right-from-square >}} Open app](https://ar-puuk.github.io/parquet-viewer/){.btn .btn-primary target="_blank" rel="noopener"}

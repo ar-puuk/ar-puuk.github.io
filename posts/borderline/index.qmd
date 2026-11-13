@@ -16,6 +16,7 @@ I spend my days around maps of the U.S., which makes it a little embarrassing ho
 
 ## Play
 
+::: {.column-screen-inset}
 ```{=html}
 <div class="app-embed-wrapper">
   <div class="app-embed-toolbar">
@@ -27,6 +28,7 @@ I spend my days around maps of the U.S., which makes it a little embarrassing ho
   </div>
 </div>
 ```
+:::
 
 ::: {.app-links}
 [{{< fa arrow-up-right-from-square >}} Open app](https://ar-puuk.github.io/borderline/){.btn .btn-primary target="_blank" rel="noopener"}
