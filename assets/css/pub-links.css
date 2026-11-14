@@ -1,0 +1,21 @@
+/* Link row at the top of a research article page (see assets/filters/pub-links.lua) */
+.pub-links {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+}
+
+.pub-links a {
+  color: var(--bs-link-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.pub-links a:hover {
+  color: var(--bs-link-hover-color);
+  text-decoration: underline;
+}

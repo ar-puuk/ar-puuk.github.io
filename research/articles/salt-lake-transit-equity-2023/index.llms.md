@@ -38,6 +38,12 @@ Doi
 
 [10.1177/03611981231170005](https://doi.org/10.1177/03611981231170005)
 
+- [ Published version](https://doi.org/10.1177/03611981231170005)
+- [ Pre-print](Zinia2023TransitEquity.pdf)
+- [ Project Website](https://ar-puuk.github.io/SLCo-Transit-Equity/)
+- [ Code & Data](https://github.com/ar-puuk/SLCo-Transit-Equity)
+- [ Add to Zotero](https://www.zotero.org/save?type=doi&q=10.1177/03611981231170005)
+
 ## Abstract
 
 Addressing social equity in public transportation remains a key challenge for many cities and planning organizations. In this study, we examined social equity dimensions of accessibility to light rail transit (LRT) stations in Salt Lake County, U.S., by employing two novel methods. First, we used the two-step floating catchment area (2SFCA) method to examine the interactions between the demand and supply of the public transit service. Second, we developed geospatial models to account for spatial bias in transit equity analysis. Results showed little evidence of inequitable access to LRT stations in Salt Lake County. The accessibility to LRT stations appeared to be generally higher in the downtown and transit catchment areas with a higher concentration of low-income and ethnic minority populations. Furthermore, we found statistically significant associations between higher transit accessibility and households which are not homeowners, and/or do not own a private motor vehicle. Our findings suggest that transit investments in Salt Lake County could leverage substantial transportation accessibility opportunities to achieve an equitable and sustainable future.
