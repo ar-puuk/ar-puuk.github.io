@@ -63,8 +63,3 @@ body.quarto-dark g[aria-label="tip"] {
   font-family: inherit;
   font-size: inherit;
 }
-
-/* the bar Quarto Live leaves behind once "Show Solution" has moved into the editor header */
-.exercise-tab-pane-header:empty {
-  display: none;
-}
