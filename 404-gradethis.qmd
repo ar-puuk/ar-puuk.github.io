@@ -6,6 +6,7 @@ format:
       packages:
         - dplyr
         - ggplot2
+        - sf
         # - gradethis
       cell-options:
         completion: true
@@ -49,7 +50,7 @@ draft: false
 
 **Uh-oh — the page you are looking for didn’t survive the latest round of funding cuts.** Try using the <a href="#" onclick="document.querySelector('#quarto-search .aa-DetachedSearchButton').click(); return false;">**{{< fa magnifying-glass >}}**</a> **search button** at the top of the page or searching on <a href="https://www.google.com/search?q=site%3Aar-puuk.github.io" target="_blank">Google</a>.
 
-**While we wait for the public comment period, why not test your Transportation & Data Science smarts?** It’s more fun than hitting the <a href="javascript:history.back()">back</a> button. Probably.
+**While we wait for the public comment period, why not test your Regional Planning & Data Science smarts?** It’s more fun than hitting the <a href="javascript:history.back()">back</a> button. Probably.
 
 
 </div>
@@ -59,48 +60,58 @@ draft: false
 ----
 
 ::: {.callout-note}
-## Welcome to the Transportation Data Science Challenge! 🚦
+## Welcome to the Regional Planning Challenge! 🚦
 
-Complete these interactive R exercises to test your skills in transportation planning and data analysis. Each exercise builds on real-world scenarios you'll encounter as a transportation professional.
+These interactive exercises use the kind of problems that come up in regional transportation planning: **safety screening, project prioritization, travel demand modeling and mapping**. Pick R or Python for each question, edit the code, and press **Run Code** and then **Submit Answer**; gradethis compares your code with the solution. All of the data is synthetic.
 :::
 
 ```{webr}
 #| context: setup
 #| include: false
+library(dplyr)
+library(ggplot2)
+library(sf)
 
-# Sample transportation data
-traffic_data <- data.frame(
-  location = c("Main St", "Oak Ave", "Park Rd", "First St", "Center Blvd", "Highway 101"),
-  aadt = c(15000, 8500, 12000, 6800, 22000, 45000),
-  speed_limit = c(35, 25, 30, 25, 45, 65),
-  lanes = c(4, 2, 3, 2, 6, 8),
-  accidents_2023 = c(12, 3, 8, 2, 18, 35),
-  congestion_hours = c(4, 2, 3, 1, 6, 8)
+# Corridor segments from a safety screening (synthetic)
+segments <- data.frame(
+  segment = c("US-89 North", "SR-201 West", "I-15 Central", "Main St",
+              "Redwood Rd", "State St", "Bangerter Hwy", "Foothill Dr"),
+  aadt = c(24000, 38000, 92000, 14500, 31000, 27500, 52000, 21000),
+  length_mi = c(3.2, 4.5, 6.0, 1.8, 3.9, 2.6, 5.4, 2.2),
+  crashes_3yr = c(48, 95, 310, 22, 118, 88, 164, 41),
+  ksi_3yr = c(3, 6, 19, 1, 9, 7, 8, 2)  # killed or seriously injured
 )
 
-# Bike share data
-bike_data <- data.frame(
-  station = paste("Station", LETTERS[1:6]),
-  daily_trips = c(45, 78, 23, 56, 89, 34),
-  distance_downtown_km = c(0.5, 2.1, 4.2, 1.8, 0.8, 3.5),
-  bike_capacity = c(20, 30, 15, 25, 35, 20)
+# Candidate projects with 0-100 scores for each goal (synthetic)
+projects <- data.frame(
+  project = c("Signal retiming", "Protected bike lanes", "BRT corridor",
+              "Interchange rebuild", "Sidewalk gap fill", "Rural shoulder widening",
+              "Transit signal priority", "Roundabout conversion"),
+  cost_m = c(2.5, 8, 45, 60, 6, 12, 4, 5.5),
+  safety = c(55, 80, 40, 60, 75, 85, 30, 90),
+  mobility = c(80, 55, 90, 85, 40, 35, 75, 60),
+  equity = c(50, 85, 80, 45, 90, 60, 70, 55)
 )
 
-# Transit data
-transit_data <- data.frame(
-  route = paste0("Route ", 1:5),
-  daily_riders = c(1200, 850, 2100, 650, 1800),
-  route_length_miles = c(12.5, 8.2, 18.3, 6.1, 15.7),
-  frequency_minutes = c(15, 20, 10, 30, 12)
-)
+# Travel demand model inputs for five zones (synthetic)
+zones <- c("Downtown", "Eastside", "Westside", "Airport", "University")
+productions <- c(1200, 900, 700, 300, 500)  # trips produced by each zone
+attractions <- c(1500, 600, 500, 700, 300)  # trips attracted to each zone
+tt <- matrix(c(
+   4, 12, 15, 20, 10,
+  12,  5, 22, 25, 14,
+  15, 22,  6, 18, 24,
+  20, 25, 18,  8, 28,
+  10, 14, 24, 28,  5
+), nrow = 5, byrow = TRUE, dimnames = list(zones, zones))  # travel time, minutes
 
-# Level of Service data
-los_data <- data.frame(
-  intersection = c("A", "B", "C", "D", "E"),
-  delay_seconds = c(10, 25, 45, 75, 120),
-  volume = c(800, 1200, 1600, 1800, 2000),
-  capacity = c(1800, 1800, 1800, 1800, 1800)
-)
+# County map (the North Carolina counties that ship with sf) with a synthetic crash rate
+region <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE) |>
+  st_transform(32119) |>
+  transmute(
+    county = NAME,
+    crash_rate = round(5 + (SID74 %% 9) * 1.3 + (NWBIR74 / BIR74) * 6, 1)
+  )
 ```
 
 ```{pyodide}
@@ -108,37 +119,37 @@ los_data <- data.frame(
 #| include: false
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
-traffic_data = pd.DataFrame({
-    "location": ["Main St", "Oak Ave", "Park Rd", "First St", "Center Blvd", "Highway 101"],
-    "aadt": [15000, 8500, 12000, 6800, 22000, 45000],
-    "speed_limit": [35, 25, 30, 25, 45, 65],
-    "lanes": [4, 2, 3, 2, 6, 8],
-    "accidents_2023": [12, 3, 8, 2, 18, 35],
-    "congestion_hours": [4, 2, 3, 1, 6, 8],
+segments = pd.DataFrame({
+    "segment": ["US-89 North", "SR-201 West", "I-15 Central", "Main St",
+                "Redwood Rd", "State St", "Bangerter Hwy", "Foothill Dr"],
+    "aadt": [24000, 38000, 92000, 14500, 31000, 27500, 52000, 21000],
+    "length_mi": [3.2, 4.5, 6.0, 1.8, 3.9, 2.6, 5.4, 2.2],
+    "crashes_3yr": [48, 95, 310, 22, 118, 88, 164, 41],
+    "ksi_3yr": [3, 6, 19, 1, 9, 7, 8, 2],
 })
 
-bike_data = pd.DataFrame({
-    "station": ["Station " + c for c in "ABCDEF"],
-    "daily_trips": [45, 78, 23, 56, 89, 34],
-    "distance_downtown_km": [0.5, 2.1, 4.2, 1.8, 0.8, 3.5],
-    "bike_capacity": [20, 30, 15, 25, 35, 20],
+projects = pd.DataFrame({
+    "project": ["Signal retiming", "Protected bike lanes", "BRT corridor",
+                "Interchange rebuild", "Sidewalk gap fill", "Rural shoulder widening",
+                "Transit signal priority", "Roundabout conversion"],
+    "cost_m": [2.5, 8, 45, 60, 6, 12, 4, 5.5],
+    "safety": [55, 80, 40, 60, 75, 85, 30, 90],
+    "mobility": [80, 55, 90, 85, 40, 35, 75, 60],
+    "equity": [50, 85, 80, 45, 90, 60, 70, 55],
 })
 
-transit_data = pd.DataFrame({
-    "route": ["Route " + str(i) for i in range(1, 6)],
-    "daily_riders": [1200, 850, 2100, 650, 1800],
-    "route_length_miles": [12.5, 8.2, 18.3, 6.1, 15.7],
-    "frequency_minutes": [15, 20, 10, 30, 12],
-})
-
-los_data = pd.DataFrame({
-    "intersection": list("ABCDE"),
-    "delay_seconds": [10, 25, 45, 75, 120],
-    "volume": [800, 1200, 1600, 1800, 2000],
-    "capacity": [1800] * 5,
-})
-
+zones = ["Downtown", "Eastside", "Westside", "Airport", "University"]
+productions = np.array([1200, 900, 700, 300, 500], dtype=float)
+attractions = np.array([1500, 600, 500, 700, 300], dtype=float)
+tt = np.array([
+    [4, 12, 15, 20, 10],
+    [12, 5, 22, 25, 14],
+    [15, 22, 6, 18, 24],
+    [20, 25, 18, 8, 28],
+    [10, 14, 24, 28, 5],
+], dtype=float)
 ```
 
 {{< include ./_includes/gradethis-py.qmd >}}
@@ -147,11 +158,11 @@ los_data = pd.DataFrame({
 
 ## 🧠 **Knowledge Test**
 
-*Test your understanding of transportation planning fundamentals*
+*Five calculations every regional planner has done at least once*
 
-### Question 1: Traffic Signal Timing ⏱️
+### Question 1: Crash Rate per 100 Million VMT 🚧
 
-If a traffic light has a 90-second cycle and the green light lasts 60 seconds, how many cars can pass through if each car takes 3 seconds to clear the intersection?
+A 3.2-mile corridor carries 24,000 vehicles per day (AADT). It had 48 crashes over 3 years. Vehicle miles traveled (VMT) over the study period is AADT × 365 days × years × length. What is the crash rate per 100 million VMT?
 
 ::: {.panel-tabset group="lang"}
 
@@ -160,30 +171,39 @@ If a traffic light has a 90-second cycle and the green light lasts 60 seconds, h
 ```{webr}
 #| exercise: know_1
 #| caption: "Knowledge Question 1"
-# Calculate how many cars can pass in one green phase
-green_time <- 60  # seconds
-time_per_car <- 3  # seconds
+aadt <- 24000
+length_mi <- 3.2
+years <- 3
+crashes <- 48
 
-# Your calculation:
-cars_per_cycle <- ______
+# Vehicle miles traveled over the whole study period
+vmt <- ______
 
-cars_per_cycle
+# Crashes per 100 million VMT
+crash_rate <- ______
+
+crash_rate
 ```
 
-::: { .solution exercise="know_1" }
+::: {.solution exercise="know_1"}
 
 ```{webr}
 #| exercise: know_1
 #| solution: true
-# Calculate how many cars can pass in one green phase
-green_time <- 60  # seconds
-time_per_car <- 3  # seconds
+aadt <- 24000
+length_mi <- 3.2
+years <- 3
+crashes <- 48
 
-# Divide green time by time per car
-cars_per_cycle <- green_time / time_per_car
+# Vehicle miles traveled over the whole study period
+vmt <- aadt * 365 * years * length_mi
 
-cars_per_cycle
+# Crashes per 100 million VMT
+crash_rate <- crashes / vmt * 1e8
+
+crash_rate
 ```
+
 :::
 
 ```{webr}
@@ -198,29 +218,39 @@ gradethis::grade_this_code()
 #| exercise: know_1_py
 #| envir: global
 #| caption: "Knowledge Question 1"
-# Calculate how many cars can pass in one green phase
-green_time = 60  # seconds
-time_per_car = 3  # seconds
+aadt = 24000
+length_mi = 3.2
+years = 3
+crashes = 48
 
-# Your calculation:
-cars_per_cycle = ______
+# Vehicle miles traveled over the whole study period
+vmt = ______
 
-cars_per_cycle
+# Crashes per 100 million VMT
+crash_rate = ______
+
+crash_rate
 ```
 
 ::: {.solution exercise="know_1_py"}
+
 ```{pyodide}
 #| exercise: know_1_py
 #| solution: true
-# Calculate how many cars can pass in one green phase
-green_time = 60  # seconds
-time_per_car = 3  # seconds
+aadt = 24000
+length_mi = 3.2
+years = 3
+crashes = 48
 
-# Divide green time by time per car
-cars_per_cycle = green_time / time_per_car
+# Vehicle miles traveled over the whole study period
+vmt = aadt * 365 * years * length_mi
 
-cars_per_cycle
+# Crashes per 100 million VMT
+crash_rate = crashes / vmt * 100_000_000
+
+crash_rate
 ```
+
 :::
 
 ```{pyodide}
@@ -231,9 +261,9 @@ grade_this_code()
 
 :::
 
-### Question 2: Level of Service 🚦
+### Question 2: Volume-Delay Function ⏱️
 
-Calculate the volume-to-capacity (V/C) ratio for an intersection with 1,600 vehicles/hour and capacity of 1,800 vehicles/hour. What LOS category does this represent? (A-C: ≤0.8, D: 0.8-0.9, E-F: >0.9)
+Assignment models slow links down as they fill up. The BPR function is `t = t0 * (1 + 0.15 * (v / c)^4)`. A link has a free-flow time of 12 minutes, a volume of 2,400 vehicles per hour and a capacity of 2,000. What is its congested travel time?
 
 ::: {.panel-tabset group="lang"}
 
@@ -242,39 +272,29 @@ Calculate the volume-to-capacity (V/C) ratio for an intersection with 1,600 vehi
 ```{webr}
 #| exercise: know_2
 #| caption: "Knowledge Question 2"
-volume <- 1600
-capacity <- 1800
+t0 <- 12      # free-flow minutes
+volume <- 2400
+capacity <- 2000
 
-# Calculate V/C ratio
-vc_ratio <- ______
+congested_time <- ______
 
-# Determine LOS category
-los_category <- ______  # Should be "A-C", "D", or "E-F"
-
-list(vc_ratio = vc_ratio, los_category = los_category)
+congested_time
 ```
 
 ::: {.solution exercise="know_2"}
+
 ```{webr}
 #| exercise: know_2
 #| solution: true
-volume <- 1600
-capacity <- 1800
+t0 <- 12      # free-flow minutes
+volume <- 2400
+capacity <- 2000
 
-# Calculate V/C ratio
-vc_ratio <- volume / capacity
+congested_time <- t0 * (1 + 0.15 * (volume / capacity)^4)
 
-# Determine LOS category based on thresholds
-los_category <- if (vc_ratio <= 0.8) {
-  "A-C"
-} else if (vc_ratio <= 0.9) {
-  "D" 
-} else {
-  "E-F"
-}
-
-list(vc_ratio = vc_ratio, los_category = los_category)
+congested_time
 ```
+
 :::
 
 ```{webr}
@@ -289,38 +309,29 @@ gradethis::grade_this_code()
 #| exercise: know_2_py
 #| envir: global
 #| caption: "Knowledge Question 2"
-volume = 1600
-capacity = 1800
+t0 = 12      # free-flow minutes
+volume = 2400
+capacity = 2000
 
-# Calculate V/C ratio
-vc_ratio = ______
+congested_time = ______
 
-# Determine LOS category
-los_category = ______  # Should be "A-C", "D", or "E-F"
-
-{"vc_ratio": vc_ratio, "los_category": los_category}
+congested_time
 ```
 
 ::: {.solution exercise="know_2_py"}
+
 ```{pyodide}
 #| exercise: know_2_py
 #| solution: true
-volume = 1600
-capacity = 1800
+t0 = 12      # free-flow minutes
+volume = 2400
+capacity = 2000
 
-# Calculate V/C ratio
-vc_ratio = volume / capacity
+congested_time = t0 * (1 + 0.15 * (volume / capacity)**4)
 
-# Determine LOS category based on thresholds
-if vc_ratio <= 0.8:
-    los_category = "A-C"
-elif vc_ratio <= 0.9:
-    los_category = "D"
-else:
-    los_category = "E-F"
-
-{"vc_ratio": vc_ratio, "los_category": los_category}
+congested_time
 ```
+
 :::
 
 ```{pyodide}
@@ -331,9 +342,9 @@ grade_this_code()
 
 :::
 
-### Question 3: Modal Split 🚌🚲🚗
+### Question 3: Gravity Model Trip Distribution 🏙️
 
-In a city where 40% of trips are by car, 25% by transit, 20% by walking, and 15% by cycling, what percentage of non-car trips are made by transit?
+Zone A produces 1,000 trips. Zone B attracts 600 trips and is 2 minutes away; zone C attracts 400 trips and is 4 minutes away. With a friction factor of `travel_time^-2`, the trips from A to B are `P * (A_B * F_B) / (A_B * F_B + A_C * F_C)`. How many trips go from A to B?
 
 ::: {.panel-tabset group="lang"}
 
@@ -342,33 +353,35 @@ In a city where 40% of trips are by car, 25% by transit, 20% by walking, and 15%
 ```{webr}
 #| exercise: know_3
 #| caption: "Knowledge Question 3"
-car_percent <- 40
-transit_percent <- 25
-walking_percent <- 20
-cycling_percent <- 15
+production_a <- 1000
+attraction_b <- 600
+attraction_c <- 400
 
-# Calculate percentage of non-car trips that are transit
-non_car_total <- ______
-transit_share_of_non_car <- ______
+friction_b <- ______   # travel time of 2 minutes
+friction_c <- ______   # travel time of 4 minutes
 
-transit_share_of_non_car
+trips_ab <- ______
+
+trips_ab
 ```
 
 ::: {.solution exercise="know_3"}
+
 ```{webr}
 #| exercise: know_3
 #| solution: true
-car_percent <- 40
-transit_percent <- 25
-walking_percent <- 20
-cycling_percent <- 15
+production_a <- 1000
+attraction_b <- 600
+attraction_c <- 400
 
-# Calculate percentage of non-car trips that are transit
-non_car_total <- 100 - car_percent  # 60%
-transit_share_of_non_car <- (transit_percent / non_car_total) * 100
+friction_b <- 2^-2   # travel time of 2 minutes
+friction_c <- 4^-2   # travel time of 4 minutes
 
-transit_share_of_non_car
+trips_ab <- production_a * (attraction_b * friction_b) / (attraction_b * friction_b + attraction_c * friction_c)
+
+trips_ab
 ```
+
 :::
 
 ```{webr}
@@ -383,33 +396,35 @@ gradethis::grade_this_code()
 #| exercise: know_3_py
 #| envir: global
 #| caption: "Knowledge Question 3"
-car_percent = 40
-transit_percent = 25
-walking_percent = 20
-cycling_percent = 15
+production_a = 1000
+attraction_b = 600
+attraction_c = 400
 
-# Calculate percentage of non-car trips that are transit
-non_car_total = ______
-transit_share_of_non_car = ______
+friction_b = ______   # travel time of 2 minutes
+friction_c = ______   # travel time of 4 minutes
 
-transit_share_of_non_car
+trips_ab = ______
+
+trips_ab
 ```
 
 ::: {.solution exercise="know_3_py"}
+
 ```{pyodide}
 #| exercise: know_3_py
 #| solution: true
-car_percent = 40
-transit_percent = 25
-walking_percent = 20
-cycling_percent = 15
+production_a = 1000
+attraction_b = 600
+attraction_c = 400
 
-# Calculate percentage of non-car trips that are transit
-non_car_total = 100 - car_percent  # 60%
-transit_share_of_non_car = (transit_percent / non_car_total) * 100
+friction_b = 2**-2   # travel time of 2 minutes
+friction_c = 4**-2   # travel time of 4 minutes
 
-transit_share_of_non_car
+trips_ab = production_a * (attraction_b * friction_b) / (attraction_b * friction_b + attraction_c * friction_c)
+
+trips_ab
 ```
+
 :::
 
 ```{pyodide}
@@ -420,9 +435,9 @@ grade_this_code()
 
 :::
 
-### Question 4: Trip Generation 🏠
+### Question 4: Mode Choice 🚌🚲🚗
 
-A residential development has 200 housing units. Using ITE trip generation rate of 9.5 trips per dwelling unit per day, calculate total daily trips. If 15% occur during PM peak hour, how many PM peak trips?
+A multinomial logit model gives each mode a utility. The probability of choosing a mode is `exp(U_mode) / sum(exp(U))`. With utilities of -1.2 for car, -1.8 for transit and -2.5 for bike, what share of travelers choose transit?
 
 ::: {.panel-tabset group="lang"}
 
@@ -431,35 +446,25 @@ A residential development has 200 housing units. Using ITE trip generation rate 
 ```{webr}
 #| exercise: know_4
 #| caption: "Knowledge Question 4"
-housing_units <- 200
-trip_rate <- 9.5
-pm_peak_percent <- 15
+utilities <- c(car = -1.2, transit = -1.8, bike = -2.5)
 
-# Calculate total daily trips
-total_daily_trips <- ______
+p_transit <- ______
 
-# Calculate PM peak hour trips  
-pm_peak_trips <- ______
-
-list(daily = total_daily_trips, pm_peak = pm_peak_trips)
+p_transit
 ```
 
 ::: {.solution exercise="know_4"}
+
 ```{webr}
 #| exercise: know_4
 #| solution: true
-housing_units <- 200
-trip_rate <- 9.5
-pm_peak_percent <- 15
+utilities <- c(car = -1.2, transit = -1.8, bike = -2.5)
 
-# Calculate total daily trips
-total_daily_trips <- housing_units * trip_rate
+p_transit <- exp(utilities["transit"]) / sum(exp(utilities))
 
-# Calculate PM peak hour trips
-pm_peak_trips <- total_daily_trips * (pm_peak_percent / 100)
-
-list(daily = total_daily_trips, pm_peak = pm_peak_trips)
+p_transit
 ```
+
 :::
 
 ```{webr}
@@ -474,35 +479,25 @@ gradethis::grade_this_code()
 #| exercise: know_4_py
 #| envir: global
 #| caption: "Knowledge Question 4"
-housing_units = 200
-trip_rate = 9.5
-pm_peak_percent = 15
+utilities = {"car": -1.2, "transit": -1.8, "bike": -2.5}
 
-# Calculate total daily trips
-total_daily_trips = ______
+p_transit = ______
 
-# Calculate PM peak hour trips
-pm_peak_trips = ______
-
-{"daily": total_daily_trips, "pm_peak": pm_peak_trips}
+p_transit
 ```
 
 ::: {.solution exercise="know_4_py"}
+
 ```{pyodide}
 #| exercise: know_4_py
 #| solution: true
-housing_units = 200
-trip_rate = 9.5
-pm_peak_percent = 15
+utilities = {"car": -1.2, "transit": -1.8, "bike": -2.5}
 
-# Calculate total daily trips
-total_daily_trips = housing_units * trip_rate
+p_transit = np.exp(utilities["transit"]) / sum(np.exp(u) for u in utilities.values())
 
-# Calculate PM peak hour trips
-pm_peak_trips = total_daily_trips * (pm_peak_percent / 100)
-
-{"daily": total_daily_trips, "pm_peak": pm_peak_trips}
+p_transit
 ```
+
 :::
 
 ```{pyodide}
@@ -513,9 +508,9 @@ grade_this_code()
 
 :::
 
-### Question 5: Transit Frequency 🚍
+### Question 5: Benefit-Cost Ratio 💰
 
-A bus route operates every 12 minutes during peak hours. How many buses pass a given stop in one hour? If each bus has 40-passenger capacity and average load is 75%, what's the hourly passenger capacity past that stop?
+A $12 million project is expected to produce $1.6 million in benefits each year for 20 years. With a 3% discount rate, the present value of an annual benefit stream is `annual * (1 - (1 + r)^-n) / r`. What is the benefit-cost ratio?
 
 ::: {.panel-tabset group="lang"}
 
@@ -524,35 +519,37 @@ A bus route operates every 12 minutes during peak hours. How many buses pass a g
 ```{webr}
 #| exercise: know_5
 #| caption: "Knowledge Question 5"
-frequency_minutes <- 12
-bus_capacity <- 40
-load_factor <- 0.75
+cost <- 12          # $ million
+annual_benefit <- 1.6   # $ million per year
+years <- 20
+rate <- 0.03
 
-# Calculate buses per hour
-buses_per_hour <- ______
+# Present value factor for a 20-year stream of equal annual benefits
+pv_factor <- ______
 
-# Calculate hourly passenger capacity
-hourly_passenger_capacity <- ______
+bcr <- ______
 
-list(buses_per_hour = buses_per_hour, hourly_capacity = hourly_passenger_capacity)
+bcr
 ```
 
 ::: {.solution exercise="know_5"}
+
 ```{webr}
 #| exercise: know_5
 #| solution: true
-frequency_minutes <- 12
-bus_capacity <- 40
-load_factor <- 0.75
+cost <- 12          # $ million
+annual_benefit <- 1.6   # $ million per year
+years <- 20
+rate <- 0.03
 
-# Calculate buses per hour
-buses_per_hour <- 60 / frequency_minutes
+# Present value factor for a 20-year stream of equal annual benefits
+pv_factor <- (1 - (1 + rate)^-years) / rate
 
-# Calculate hourly passenger capacity
-hourly_passenger_capacity <- buses_per_hour * bus_capacity * load_factor
+bcr <- annual_benefit * pv_factor / cost
 
-list(buses_per_hour = buses_per_hour, hourly_capacity = hourly_passenger_capacity)
+bcr
 ```
+
 :::
 
 ```{webr}
@@ -567,35 +564,37 @@ gradethis::grade_this_code()
 #| exercise: know_5_py
 #| envir: global
 #| caption: "Knowledge Question 5"
-frequency_minutes = 12
-bus_capacity = 40
-load_factor = 0.75
+cost = 12            # $ million
+annual_benefit = 1.6     # $ million per year
+years = 20
+rate = 0.03
 
-# Calculate buses per hour
-buses_per_hour = ______
+# Present value factor for a 20-year stream of equal annual benefits
+pv_factor = ______
 
-# Calculate hourly passenger capacity
-hourly_passenger_capacity = ______
+bcr = ______
 
-{"buses_per_hour": buses_per_hour, "hourly_capacity": hourly_passenger_capacity}
+bcr
 ```
 
 ::: {.solution exercise="know_5_py"}
+
 ```{pyodide}
 #| exercise: know_5_py
 #| solution: true
-frequency_minutes = 12
-bus_capacity = 40
-load_factor = 0.75
+cost = 12            # $ million
+annual_benefit = 1.6     # $ million per year
+years = 20
+rate = 0.03
 
-# Calculate buses per hour
-buses_per_hour = 60 / frequency_minutes
+# Present value factor for a 20-year stream of equal annual benefits
+pv_factor = (1 - (1 + rate)**-years) / rate
 
-# Calculate hourly passenger capacity
-hourly_passenger_capacity = buses_per_hour * bus_capacity * load_factor
+bcr = annual_benefit * pv_factor / cost
 
-{"buses_per_hour": buses_per_hour, "hourly_capacity": hourly_passenger_capacity}
+bcr
 ```
+
 :::
 
 ```{pyodide}
@@ -610,17 +609,11 @@ grade_this_code()
 
 ## 🚀 **Skills Test**
 
-*Put your R and dplyr skills to work with real transportation datasets*
+*Screen a corridor network, rank projects, build a trip table and map the results*
 
-### Question 1: High-Traffic Location Analysis 📊
+### Question 1: Safety Screening 🚧
 
-Using the `traffic_data` dataset, filter for locations with AADT > 15,000 and count how many locations meet this criteria.
-
-```{webr}
-#| context: setup
-#| include: false
-library(dplyr)
-```
+The `segments` table has crash counts for eight corridors over 3 years. Add each segment's crash rate per 100 million VMT and its share of crashes that were fatal or serious (KSI), rank the segments, and name the one with the highest rate.
 
 ::: {.panel-tabset group="lang"}
 
@@ -628,37 +621,56 @@ library(dplyr)
 
 ```{webr}
 #| autorun: true
-#| caption: "Traffic Data"
-# First, let's see the data
-traffic_data
+#| caption: "Corridor segments"
+segments
 ```
 
 ```{webr}
 #| exercise: skill_1
 #| caption: "Skill Question 1"
-# Filter for high-traffic locations and count them
-high_traffic <- traffic_data |>
-  filter(______)
+segments_ranked <- segments |>
+  mutate(
+    vmt_100m = aadt * 365 * 3 * length_mi / 1e8,
+    crash_rate = ______,   # crashes per 100 million VMT
+    ksi_share = ______     # share of crashes that were fatal or serious
+  ) |>
+  arrange(desc(crash_rate))
 
-# Count the results
-count_high_traffic <- ______
+top_segment <- ______
 
-count_high_traffic
+# A look at the ranking (already written for you)
+ggplot(segments_ranked, aes(x = reorder(segment, crash_rate), y = crash_rate, fill = ksi_share)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_viridis_c(option = "magma", direction = -1, name = "KSI share") +
+  labs(x = NULL, y = "Crashes per 100M VMT", title = "Crash rate by segment") +
+  theme_minimal()
 ```
 
 ::: {.solution exercise="skill_1"}
+
 ```{webr}
 #| exercise: skill_1
 #| solution: true
-# Filter for high-traffic locations and count them
-high_traffic <- traffic_data |>
-  filter(aadt > 15000)
+segments_ranked <- segments |>
+  mutate(
+    vmt_100m = aadt * 365 * 3 * length_mi / 1e8,
+    crash_rate = crashes_3yr / vmt_100m,   # crashes per 100 million VMT
+    ksi_share = ksi_3yr / crashes_3yr     # share of crashes that were fatal or serious
+  ) |>
+  arrange(desc(crash_rate))
 
-# Count the results
-count_high_traffic <- nrow(high_traffic)
+top_segment <- segments_ranked$segment[1]
 
-count_high_traffic
+# A look at the ranking (already written for you)
+ggplot(segments_ranked, aes(x = reorder(segment, crash_rate), y = crash_rate, fill = ksi_share)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_viridis_c(option = "magma", direction = -1, name = "KSI share") +
+  labs(x = NULL, y = "Crashes per 100M VMT", title = "Crash rate by segment") +
+  theme_minimal()
 ```
+
 :::
 
 ```{webr}
@@ -671,36 +683,63 @@ gradethis::grade_this_code()
 
 ```{pyodide}
 #| autorun: true
-#| caption: "Traffic Data"
-# First, let's see the data
-traffic_data
+#| caption: "Corridor segments"
+segments
 ```
 
 ```{pyodide}
 #| exercise: skill_1_py
 #| envir: global
 #| caption: "Skill Question 1"
-# Filter for high-traffic locations and count them
-high_traffic = traffic_data[______]
+segments_ranked = (
+    segments
+    .assign(vmt_100m=segments["aadt"] * 365 * 3 * segments["length_mi"] / 1e8)
+    .assign(
+        crash_rate=lambda d: ______,   # crashes per 100 million VMT
+        ksi_share=lambda d: ______,    # share of crashes that were fatal or serious
+    )
+    .sort_values("crash_rate", ascending=False)
+)
 
-# Count the results
-count_high_traffic = ______
+top_segment = ______
 
-count_high_traffic
+# A look at the ranking (already written for you)
+ranked = segments_ranked.sort_values("crash_rate")
+fig, ax = plt.subplots(figsize=(6, 4))
+bars = ax.barh(ranked["segment"], ranked["crash_rate"], color="#d96e34")
+ax.set_xlabel("Crashes per 100M VMT")
+ax.set_title("Crash rate by segment")
+plt.tight_layout()
+plt.show()
 ```
 
 ::: {.solution exercise="skill_1_py"}
+
 ```{pyodide}
 #| exercise: skill_1_py
 #| solution: true
-# Filter for high-traffic locations and count them
-high_traffic = traffic_data[traffic_data["aadt"] > 15000]
+segments_ranked = (
+    segments
+    .assign(vmt_100m=segments["aadt"] * 365 * 3 * segments["length_mi"] / 1e8)
+    .assign(
+        crash_rate=lambda d: d["crashes_3yr"] / d["vmt_100m"],   # crashes per 100 million VMT
+        ksi_share=lambda d: d["ksi_3yr"] / d["crashes_3yr"],    # share of crashes that were fatal or serious
+    )
+    .sort_values("crash_rate", ascending=False)
+)
 
-# Count the results
-count_high_traffic = len(high_traffic)
+top_segment = segments_ranked["segment"].iloc[0]
 
-count_high_traffic
+# A look at the ranking (already written for you)
+ranked = segments_ranked.sort_values("crash_rate")
+fig, ax = plt.subplots(figsize=(6, 4))
+bars = ax.barh(ranked["segment"], ranked["crash_rate"], color="#d96e34")
+ax.set_xlabel("Crashes per 100M VMT")
+ax.set_title("Crash rate by segment")
+plt.tight_layout()
+plt.show()
 ```
+
 :::
 
 ```{pyodide}
@@ -711,38 +750,72 @@ grade_this_code()
 
 :::
 
-### Question 2: Safety Rate Calculation 🔍
+### Question 2: Project Prioritization 🏗️
 
-Calculate the accident rate per 1,000 AADT for each location. Create a new column called `accident_rate` and arrange by highest rate.
+Score each candidate project with weights of 40% safety, 35% mobility and 25% equity, rank them, and see how many of the top-ranked projects fit in a $60 million program (take projects in rank order and stop when the running cost passes the budget).
 
 ::: {.panel-tabset group="lang"}
 
 ## {{< fa brands r-project >}} R
 
 ```{webr}
+#| autorun: true
+#| caption: "Candidate projects"
+projects
+```
+
+```{webr}
 #| exercise: skill_2
 #| caption: "Skill Question 2"
-# Calculate accident rates and arrange
-safety_analysis <- traffic_data |>
-  mutate(accident_rate = ______) |>
-  arrange(______)
+weights <- c(safety = 0.40, mobility = 0.35, equity = 0.25)
+budget <- 60  # $ million
 
-# Show the results
-safety_analysis
+scored <- projects |>
+  mutate(score = ______) |>
+  arrange(desc(score)) |>
+  mutate(cum_cost = cumsum(cost_m))
+
+funded <- scored |> filter(______)
+n_funded <- nrow(funded)
+
+# Score against cost, funded projects highlighted (already written for you)
+ggplot(scored, aes(x = cost_m, y = score, color = cum_cost <= budget, label = project)) +
+  geom_point(size = 4) +
+  geom_text(hjust = "inward", vjust = -1, size = 3, show.legend = FALSE) +
+  scale_color_manual(values = c("TRUE" = "#2e9b4e", "FALSE" = "#9aa0a6"),
+                     labels = c("TRUE" = "Funded", "FALSE" = "Not funded"), name = NULL) +
+  scale_x_log10() +
+  labs(x = "Cost ($ million, log scale)", y = "Weighted score", title = "Project scores and the $60M program") +
+  theme_minimal()
 ```
 
 ::: {.solution exercise="skill_2"}
+
 ```{webr}
 #| exercise: skill_2
 #| solution: true
-# Calculate accident rates and arrange
-safety_analysis <- traffic_data |>
-  mutate(accident_rate = (accidents_2023 / aadt) * 1000) |>
-  arrange(desc(accident_rate))
+weights <- c(safety = 0.40, mobility = 0.35, equity = 0.25)
+budget <- 60  # $ million
 
-# Show the results
-safety_analysis
+scored <- projects |>
+  mutate(score = safety * weights["safety"] + mobility * weights["mobility"] + equity * weights["equity"]) |>
+  arrange(desc(score)) |>
+  mutate(cum_cost = cumsum(cost_m))
+
+funded <- scored |> filter(cum_cost <= budget)
+n_funded <- nrow(funded)
+
+# Score against cost, funded projects highlighted (already written for you)
+ggplot(scored, aes(x = cost_m, y = score, color = cum_cost <= budget, label = project)) +
+  geom_point(size = 4) +
+  geom_text(hjust = "inward", vjust = -1, size = 3, show.legend = FALSE) +
+  scale_color_manual(values = c("TRUE" = "#2e9b4e", "FALSE" = "#9aa0a6"),
+                     labels = c("TRUE" = "Funded", "FALSE" = "Not funded"), name = NULL) +
+  scale_x_log10() +
+  labs(x = "Cost ($ million, log scale)", y = "Weighted score", title = "Project scores and the $60M program") +
+  theme_minimal()
 ```
+
 :::
 
 ```{webr}
@@ -752,36 +825,74 @@ gradethis::grade_this_code()
 ```
 
 ## {{< fa brands python >}} Python
+
+```{pyodide}
+#| autorun: true
+#| caption: "Candidate projects"
+projects
+```
 
 ```{pyodide}
 #| exercise: skill_2_py
 #| envir: global
 #| caption: "Skill Question 2"
-# Calculate accident rates and arrange
-safety_analysis = (
-    traffic_data
-    .assign(accident_rate=______)
-    .sort_values(______, ascending=False)
+weights = {"safety": 0.40, "mobility": 0.35, "equity": 0.25}
+budget = 60  # $ million
+
+scored = (
+    projects
+    .assign(score=lambda d: ______)
+    .sort_values("score", ascending=False)
+    .assign(cum_cost=lambda d: d["cost_m"].cumsum())
 )
 
-# Show the results
-safety_analysis
+funded = scored[______]
+n_funded = len(funded)
+
+# Score against cost, funded projects highlighted (already written for you)
+fig, ax = plt.subplots(figsize=(6, 4))
+is_funded = scored["cum_cost"] <= budget
+ax.scatter(scored["cost_m"], scored["score"], s=60,
+           c=np.where(is_funded, "#2e9b4e", "#9aa0a6"))
+ax.set_xscale("log")
+ax.set_xlabel("Cost ($ million, log scale)")
+ax.set_ylabel("Weighted score")
+ax.set_title("Project scores and the $60M program")
+plt.tight_layout()
+plt.show()
 ```
 
 ::: {.solution exercise="skill_2_py"}
+
 ```{pyodide}
 #| exercise: skill_2_py
 #| solution: true
-# Calculate accident rates and arrange
-safety_analysis = (
-    traffic_data
-    .assign(accident_rate=(traffic_data["accidents_2023"] / traffic_data["aadt"]) * 1000)
-    .sort_values("accident_rate", ascending=False)
+weights = {"safety": 0.40, "mobility": 0.35, "equity": 0.25}
+budget = 60  # $ million
+
+scored = (
+    projects
+    .assign(score=lambda d: d["safety"] * weights["safety"] + d["mobility"] * weights["mobility"] + d["equity"] * weights["equity"])
+    .sort_values("score", ascending=False)
+    .assign(cum_cost=lambda d: d["cost_m"].cumsum())
 )
 
-# Show the results
-safety_analysis
+funded = scored[scored["cum_cost"] <= budget]
+n_funded = len(funded)
+
+# Score against cost, funded projects highlighted (already written for you)
+fig, ax = plt.subplots(figsize=(6, 4))
+is_funded = scored["cum_cost"] <= budget
+ax.scatter(scored["cost_m"], scored["score"], s=60,
+           c=np.where(is_funded, "#2e9b4e", "#9aa0a6"))
+ax.set_xscale("log")
+ax.set_xlabel("Cost ($ million, log scale)")
+ax.set_ylabel("Weighted score")
+ax.set_title("Project scores and the $60M program")
+plt.tight_layout()
+plt.show()
 ```
+
 :::
 
 ```{pyodide}
@@ -792,53 +903,50 @@ grade_this_code()
 
 :::
 
-### Question 3: Transit Efficiency Analysis 🚌
+### Question 3: Map the Crash Rate 🗺️
 
-Calculate riders per mile for each transit route and identify the most efficient route (highest riders per mile).
-
-::: {.panel-tabset group="lang"}
-
-## {{< fa brands r-project >}} R
+The `region` layer holds county polygons with a synthetic crash rate per 10,000 residents. Find the county with the highest rate, then draw a choropleth that fills each county by its crash rate. (Maps use the `sf` package, so this one is R only.)
 
 ```{webr}
 #| autorun: true
-#| caption: "Transit Data"
-# Look at transit data first
-transit_data
+#| caption: "County layer (geometry hidden)"
+sf::st_drop_geometry(head(region, 6))
 ```
 
 ```{webr}
 #| exercise: skill_3
 #| caption: "Skill Question 3"
-# Calculate efficiency and find the best route
-transit_efficiency <- transit_data |>
-  mutate(riders_per_mile = ______) |>
-  arrange(______)
+# The county with the highest crash rate
+worst_county <- region$county[______]
 
-# Get the most efficient route name
-most_efficient <- transit_efficiency |>
-  slice(1) |>
-  pull(______)
+# A choropleth of the crash rate
+p <- ggplot(region) +
+  geom_sf(aes(fill = ______), color = "white", linewidth = 0.2) +
+  scale_fill_viridis_c(option = "magma", direction = -1, name = "Crashes per\n10,000 residents") +
+  labs(title = "Synthetic crash rate by county") +
+  theme_void()
 
-most_efficient
+p
 ```
 
 ::: {.solution exercise="skill_3"}
+
 ```{webr}
 #| exercise: skill_3
 #| solution: true
-# Calculate efficiency and find the best route
-transit_efficiency <- transit_data |>
-  mutate(riders_per_mile = daily_riders / route_length_miles) |>
-  arrange(desc(riders_per_mile))
+# The county with the highest crash rate
+worst_county <- region$county[which.max(region$crash_rate)]
 
-# Get the most efficient route name
-most_efficient <- transit_efficiency |>
-  slice(1) |>
-  pull(route)
+# A choropleth of the crash rate
+p <- ggplot(region) +
+  geom_sf(aes(fill = crash_rate), color = "white", linewidth = 0.2) +
+  scale_fill_viridis_c(option = "magma", direction = -1, name = "Crashes per\n10,000 residents") +
+  labs(title = "Synthetic crash rate by county") +
+  theme_void()
 
-most_efficient
+p
 ```
+
 :::
 
 ```{webr}
@@ -847,67 +955,9 @@ most_efficient
 gradethis::grade_this_code()
 ```
 
-## {{< fa brands python >}} Python
+### Question 4: Build a Trip Table 🧮
 
-```{pyodide}
-#| autorun: true
-#| caption: "Transit Data"
-# Look at transit data first
-transit_data
-```
-
-```{pyodide}
-#| exercise: skill_3_py
-#| envir: global
-#| caption: "Skill Question 3"
-# Calculate efficiency and find the best route
-transit_efficiency = (
-    transit_data
-    .assign(riders_per_mile=______)
-    .sort_values(______, ascending=False)
-)
-
-# Get the most efficient route name
-most_efficient = transit_efficiency.iloc[0][______]
-
-most_efficient
-```
-
-::: {.solution exercise="skill_3_py"}
-```{pyodide}
-#| exercise: skill_3_py
-#| solution: true
-# Calculate efficiency and find the best route
-transit_efficiency = (
-    transit_data
-    .assign(riders_per_mile=transit_data["daily_riders"] / transit_data["route_length_miles"])
-    .sort_values("riders_per_mile", ascending=False)
-)
-
-# Get the most efficient route name
-most_efficient = transit_efficiency.iloc[0]["route"]
-
-most_efficient
-```
-:::
-
-```{pyodide}
-#| exercise: skill_3_py
-#| check: true
-grade_this_code()
-```
-
-:::
-
-### Question 4: Bike Share Visualization 📈
-
-Create a scatter plot showing the relationship between distance from downtown and daily trips for bike share stations. Add a smooth trend line.
-
-```{webr}
-#| context: setup
-#| include: false
-library(ggplot2)
-```
+Use the gravity model for all five zones at once. Friction is `travel_time^-2`. Each cell of the trip table is the zone's productions, shared across destinations in proportion to `attractions * friction`. Build the friction matrix and the trip table, then check the heatmap.
 
 ::: {.panel-tabset group="lang"}
 
@@ -915,45 +965,60 @@ library(ggplot2)
 
 ```{webr}
 #| autorun: true
-#| caption: "Bike Data"
-# Look at bike data first
-bike_data
+#| caption: "Travel times (minutes)"
+tt
 ```
 
 ```{webr}
 #| exercise: skill_4
 #| caption: "Skill Question 4"
-# Create the bike share analysis plot
-bike_plot <- ggplot(bike_data, aes(x = ______, y = ______)) +
-  geom_point(size = 3, alpha = 0.7, color = "steelblue") +
-  geom_smooth(method = "lm", se = FALSE, color = "red") +
-  labs(
-    title = "Bike Share Usage vs Distance from Downtown",
-    x = "Distance from Downtown (km)",
-    y = "Daily Trips"
-  ) +
-  theme_minimal()
+friction <- ______
 
-bike_plot
+# Attractions weighted by friction, for every origin and destination
+weighted <- sweep(friction, 2, attractions, "*")
+
+# Share each origin's productions across destinations
+trips <- ______
+
+round(trips)
+
+# The trip table as a heatmap (already written for you)
+as.data.frame(as.table(round(trips))) |>
+  ggplot(aes(x = Var2, y = Var1, fill = Freq)) +
+  geom_tile(color = "white") +
+  geom_text(aes(label = Freq), size = 3.5) +
+  scale_fill_gradient(low = "#eef6f8", high = "#5aa0b4", name = "Trips") +
+  scale_y_discrete(limits = rev) +
+  labs(x = "Destination", y = "Origin", title = "Gravity model trip table") +
+  theme_minimal()
 ```
 
 ::: {.solution exercise="skill_4"}
+
 ```{webr}
 #| exercise: skill_4
 #| solution: true
-# Create the bike share analysis plot
-bike_plot <- ggplot(bike_data, aes(x = distance_downtown_km, y = daily_trips)) +
-  geom_point(size = 3, alpha = 0.7, color = "steelblue") +
-  geom_smooth(method = "lm", se = FALSE, color = "red") +
-  labs(
-    title = "Bike Share Usage vs Distance from Downtown",
-    x = "Distance from Downtown (km)",
-    y = "Daily Trips"
-  ) +
-  theme_minimal()
+friction <- tt^-2
 
-bike_plot
+# Attractions weighted by friction, for every origin and destination
+weighted <- sweep(friction, 2, attractions, "*")
+
+# Share each origin's productions across destinations
+trips <- productions * weighted / rowSums(weighted)
+
+round(trips)
+
+# The trip table as a heatmap (already written for you)
+as.data.frame(as.table(round(trips))) |>
+  ggplot(aes(x = Var2, y = Var1, fill = Freq)) +
+  geom_tile(color = "white") +
+  geom_text(aes(label = Freq), size = 3.5) +
+  scale_fill_gradient(low = "#eef6f8", high = "#5aa0b4", name = "Trips") +
+  scale_y_discrete(limits = rev) +
+  labs(x = "Destination", y = "Origin", title = "Gravity model trip table") +
+  theme_minimal()
 ```
+
 :::
 
 ```{webr}
@@ -966,165 +1031,71 @@ gradethis::grade_this_code()
 
 ```{pyodide}
 #| autorun: true
-#| caption: "Bike Data"
-# Look at bike data first
-bike_data
+#| caption: "Travel times (minutes)"
+pd.DataFrame(tt, index=zones, columns=zones)
 ```
 
 ```{pyodide}
 #| exercise: skill_4_py
 #| envir: global
 #| caption: "Skill Question 4"
-import matplotlib.pyplot as plt
+friction = ______
 
-# Create the bike share analysis plot
-fig, ax = plt.subplots(figsize=(6, 4))
-ax.scatter(bike_data[______], bike_data[______], s=50, alpha=0.7, color="steelblue")
+# Attractions weighted by friction, for every origin and destination
+weighted = friction * attractions
 
-# Add a linear trend line
-slope, intercept = np.polyfit(bike_data["distance_downtown_km"], bike_data["daily_trips"], 1)
-x_line = np.linspace(bike_data["distance_downtown_km"].min(), bike_data["distance_downtown_km"].max(), 50)
-ax.plot(x_line, slope * x_line + intercept, color="red")
+# Share each origin's productions across destinations
+trips = ______
 
-ax.set_title("Bike Share Usage vs Distance from Downtown")
-ax.set_xlabel("Distance from Downtown (km)")
-ax.set_ylabel("Daily Trips")
+# The trip table as a heatmap (already written for you)
+fig, ax = plt.subplots(figsize=(6, 4.5))
+im = ax.imshow(trips, cmap="GnBu", vmax=trips.max() * 1.4)
+ax.set_xticks(range(5), zones, rotation=30, ha="right")
+ax.set_yticks(range(5), zones)
+for i in range(5):
+    for j in range(5):
+        ax.text(j, i, f"{trips[i, j]:.0f}", ha="center", va="center", fontsize=8)
+ax.set_xlabel("Destination")
+ax.set_ylabel("Origin")
+ax.set_title("Gravity model trip table")
+fig.colorbar(im, label="Trips")
+plt.tight_layout()
 plt.show()
 ```
 
 ::: {.solution exercise="skill_4_py"}
+
 ```{pyodide}
 #| exercise: skill_4_py
 #| solution: true
-import matplotlib.pyplot as plt
+friction = tt**-2.0
 
-# Create the bike share analysis plot
-fig, ax = plt.subplots(figsize=(6, 4))
-ax.scatter(bike_data["distance_downtown_km"], bike_data["daily_trips"], s=50, alpha=0.7, color="steelblue")
+# Attractions weighted by friction, for every origin and destination
+weighted = friction * attractions
 
-# Add a linear trend line
-slope, intercept = np.polyfit(bike_data["distance_downtown_km"], bike_data["daily_trips"], 1)
-x_line = np.linspace(bike_data["distance_downtown_km"].min(), bike_data["distance_downtown_km"].max(), 50)
-ax.plot(x_line, slope * x_line + intercept, color="red")
+# Share each origin's productions across destinations
+trips = productions[:, None] * weighted / weighted.sum(axis=1, keepdims=True)
 
-ax.set_title("Bike Share Usage vs Distance from Downtown")
-ax.set_xlabel("Distance from Downtown (km)")
-ax.set_ylabel("Daily Trips")
+# The trip table as a heatmap (already written for you)
+fig, ax = plt.subplots(figsize=(6, 4.5))
+im = ax.imshow(trips, cmap="GnBu", vmax=trips.max() * 1.4)
+ax.set_xticks(range(5), zones, rotation=30, ha="right")
+ax.set_yticks(range(5), zones)
+for i in range(5):
+    for j in range(5):
+        ax.text(j, i, f"{trips[i, j]:.0f}", ha="center", va="center", fontsize=8)
+ax.set_xlabel("Destination")
+ax.set_ylabel("Origin")
+ax.set_title("Gravity model trip table")
+fig.colorbar(im, label="Trips")
+plt.tight_layout()
 plt.show()
 ```
+
 :::
 
 ```{pyodide}
 #| exercise: skill_4_py
-#| check: true
-grade_this_code()
-```
-
-:::
-
-### Question 5: Comprehensive Performance Summary 🏆
-
-Create a summary table showing for each location: total daily volume, accidents per 1000 vehicles, and congestion level (Low: <3hrs, Medium: 3-5hrs, High: >5hrs).
-
-::: {.panel-tabset group="lang"}
-
-## {{< fa brands r-project >}} R
-
-```{webr}
-#| exercise: skill_5
-#| caption: "Skill Question 5"
-# Create comprehensive performance summary
-performance_summary <- traffic_data |>
-  mutate(
-    daily_volume = ______,
-    accidents_per_1000 = ______,
-    congestion_level = case_when(
-      ______ < 3 ~ "Low",
-      ______ <= 5 ~ "Medium",
-      TRUE ~ "High"
-    )
-  ) |>
-  select(location, daily_volume, accidents_per_1000, congestion_level)
-
-performance_summary
-```
-
-::: {.solution exercise="skill_5"}
-```{webr}
-#| exercise: skill_5
-#| solution: true
-# Create comprehensive performance summary
-performance_summary <- traffic_data |>
-  mutate(
-    daily_volume = aadt,
-    accidents_per_1000 = (accidents_2023 / aadt) * 1000,
-    congestion_level = case_when(
-      congestion_hours < 3 ~ "Low",
-      congestion_hours <= 5 ~ "Medium", 
-      TRUE ~ "High"
-    )
-  ) |>
-  select(location, daily_volume, accidents_per_1000, congestion_level)
-
-performance_summary
-```
-:::
-
-```{webr}
-#| exercise: skill_5
-#| check: true
-gradethis::grade_this_code()
-```
-
-## {{< fa brands python >}} Python
-
-```{pyodide}
-#| exercise: skill_5_py
-#| envir: global
-#| caption: "Skill Question 5"
-# Create comprehensive performance summary
-performance_summary = (
-    traffic_data
-    .assign(
-        daily_volume=______,
-        accidents_per_1000=______,
-        congestion_level=np.select(
-            [______ < 3, ______ <= 5],
-            ["Low", "Medium"],
-            default="High",
-        ),
-    )
-    [["location", "daily_volume", "accidents_per_1000", "congestion_level"]]
-)
-
-performance_summary
-```
-
-::: {.solution exercise="skill_5_py"}
-```{pyodide}
-#| exercise: skill_5_py
-#| solution: true
-# Create comprehensive performance summary
-performance_summary = (
-    traffic_data
-    .assign(
-        daily_volume=traffic_data["aadt"],
-        accidents_per_1000=(traffic_data["accidents_2023"] / traffic_data["aadt"]) * 1000,
-        congestion_level=np.select(
-            [traffic_data["congestion_hours"] < 3, traffic_data["congestion_hours"] <= 5],
-            ["Low", "Medium"],
-            default="High",
-        ),
-    )
-    [["location", "daily_volume", "accidents_per_1000", "congestion_level"]]
-)
-
-performance_summary
-```
-:::
-
-```{pyodide}
-#| exercise: skill_5_py
 #| check: true
 grade_this_code()
 ```
@@ -1134,12 +1105,11 @@ grade_this_code()
 ---
 
 ::: {.callout-success}
-## 🎯 Quiz Complete!
-**Congratulations, You are now a Transportation Data Scientist!** 🏆
+## 🎯 Challenge Complete!
+**Nice work: you screened a corridor network, ranked a program of projects, built a trip table and mapped the results.** 🏆
 :::
 
-*P.S. - If you got this far, you're definitely not lost anymore. You're a certified Transportation Data Scientist! 🎯*
+*P.S. - If you got this far, you are definitely not lost anymore. That is a full regional planning workflow in four questions.*
 
 ---
-*Built with [Quarto Live](https://r-wasm.github.io/quarto-live/), [WebR](https://docs.r-wasm.org/webr/latest/) and [Pyodide](https://pyodide.org/). Feedback comes from [gradethis](https://pkgs.rstudio.com/gradethis/); the Python tabs use a port of its code checker.*
-
+*Built with [Quarto Live](https://r-wasm.github.io/quarto-live/), [WebR](https://docs.r-wasm.org/webr/latest/) and [Pyodide](https://pyodide.org/). All data is synthetic, apart from the county outlines from the sf package.*

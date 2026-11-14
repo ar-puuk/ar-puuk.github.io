@@ -6,6 +6,7 @@ format:
       packages:
         - dplyr
         - ggplot2
+        - sf
       cell-options:
         completion: true
       render-df: gt-interactive
@@ -46,7 +47,7 @@ include-in-header:
 
 **Uh-oh — the page you are looking for didn’t survive the latest round of funding cuts.** Try using the <a href="#" onclick="document.querySelector('#quarto-search .aa-DetachedSearchButton').click(); return false;">**{{< fa magnifying-glass >}}**</a> **search button** at the top of the page or searching on <a href="https://www.google.com/search?q=site%3Aar-puuk.github.io" target="_blank">Google</a>.
 
-**While we wait for the public comment period, why not test your Transportation & Data Science smarts?** It’s more fun than hitting the <a href="javascript:history.back()">back</a> button. Probably.
+**While we wait for the public comment period, why not test your Regional Planning & Data Science smarts?** It’s more fun than hitting the <a href="javascript:history.back()">back</a> button. Probably.
 
 
 </div>
@@ -55,49 +56,60 @@ include-in-header:
 
 ----
 
-::: {.callout-note}
-## Welcome to the Transportation Data Science Challenge! 🚦
 
-Complete these interactive R exercises to test your skills in transportation planning and data analysis. Each exercise builds on real-world scenarios you'll encounter as a transportation professional.
+::: {.callout-note}
+## Welcome to the Regional Planning Challenge! 🚦
+
+These interactive exercises use the kind of problems that come up in regional transportation planning: **safety screening, project prioritization, travel demand modeling and mapping**. Pick R or Python for each question, edit the code, and press **Run Code** and then **Submit Answer**. All of the data is synthetic.
 :::
 
 ```{webr}
 #| context: setup
 #| include: false
+library(dplyr)
+library(ggplot2)
+library(sf)
 
-# Sample transportation data
-traffic_data <- data.frame(
-  location = c("Main St", "Oak Ave", "Park Rd", "First St", "Center Blvd", "Highway 101"),
-  aadt = c(15000, 8500, 12000, 6800, 22000, 45000),
-  speed_limit = c(35, 25, 30, 25, 45, 65),
-  lanes = c(4, 2, 3, 2, 6, 8),
-  accidents_2023 = c(12, 3, 8, 2, 18, 35),
-  congestion_hours = c(4, 2, 3, 1, 6, 8)
+# Corridor segments from a safety screening (synthetic)
+segments <- data.frame(
+  segment = c("US-89 North", "SR-201 West", "I-15 Central", "Main St",
+              "Redwood Rd", "State St", "Bangerter Hwy", "Foothill Dr"),
+  aadt = c(24000, 38000, 92000, 14500, 31000, 27500, 52000, 21000),
+  length_mi = c(3.2, 4.5, 6.0, 1.8, 3.9, 2.6, 5.4, 2.2),
+  crashes_3yr = c(48, 95, 310, 22, 118, 88, 164, 41),
+  ksi_3yr = c(3, 6, 19, 1, 9, 7, 8, 2)  # killed or seriously injured
 )
 
-# Bike share data
-bike_data <- data.frame(
-  station = paste("Station", LETTERS[1:6]),
-  daily_trips = c(45, 78, 23, 56, 89, 34),
-  distance_downtown_km = c(0.5, 2.1, 4.2, 1.8, 0.8, 3.5),
-  bike_capacity = c(20, 30, 15, 25, 35, 20)
+# Candidate projects with 0-100 scores for each goal (synthetic)
+projects <- data.frame(
+  project = c("Signal retiming", "Protected bike lanes", "BRT corridor",
+              "Interchange rebuild", "Sidewalk gap fill", "Rural shoulder widening",
+              "Transit signal priority", "Roundabout conversion"),
+  cost_m = c(2.5, 8, 45, 60, 6, 12, 4, 5.5),
+  safety = c(55, 80, 40, 60, 75, 85, 30, 90),
+  mobility = c(80, 55, 90, 85, 40, 35, 75, 60),
+  equity = c(50, 85, 80, 45, 90, 60, 70, 55)
 )
 
-# Transit data
-transit_data <- data.frame(
-  route = paste0("Route ", 1:5),
-  daily_riders = c(1200, 850, 2100, 650, 1800),
-  route_length_miles = c(12.5, 8.2, 18.3, 6.1, 15.7),
-  frequency_minutes = c(15, 20, 10, 30, 12)
-)
+# Travel demand model inputs for five zones (synthetic)
+zones <- c("Downtown", "Eastside", "Westside", "Airport", "University")
+productions <- c(1200, 900, 700, 300, 500)  # trips produced by each zone
+attractions <- c(1500, 600, 500, 700, 300)  # trips attracted to each zone
+tt <- matrix(c(
+   4, 12, 15, 20, 10,
+  12,  5, 22, 25, 14,
+  15, 22,  6, 18, 24,
+  20, 25, 18,  8, 28,
+  10, 14, 24, 28,  5
+), nrow = 5, byrow = TRUE, dimnames = list(zones, zones))  # travel time, minutes
 
-# Level of Service data
-los_data <- data.frame(
-  intersection = c("A", "B", "C", "D", "E"),
-  delay_seconds = c(10, 25, 45, 75, 120),
-  volume = c(800, 1200, 1600, 1800, 2000),
-  capacity = c(1800, 1800, 1800, 1800, 1800)
-)
+# County map (the North Carolina counties that ship with sf) with a synthetic crash rate
+region <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE) |>
+  st_transform(32119) |>
+  transmute(
+    county = NAME,
+    crash_rate = round(5 + (SID74 %% 9) * 1.3 + (NWBIR74 / BIR74) * 6, 1)
+  )
 ```
 
 ```{pyodide}
@@ -105,47 +117,46 @@ los_data <- data.frame(
 #| include: false
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
-traffic_data = pd.DataFrame({
-    "location": ["Main St", "Oak Ave", "Park Rd", "First St", "Center Blvd", "Highway 101"],
-    "aadt": [15000, 8500, 12000, 6800, 22000, 45000],
-    "speed_limit": [35, 25, 30, 25, 45, 65],
-    "lanes": [4, 2, 3, 2, 6, 8],
-    "accidents_2023": [12, 3, 8, 2, 18, 35],
-    "congestion_hours": [4, 2, 3, 1, 6, 8],
+segments = pd.DataFrame({
+    "segment": ["US-89 North", "SR-201 West", "I-15 Central", "Main St",
+                "Redwood Rd", "State St", "Bangerter Hwy", "Foothill Dr"],
+    "aadt": [24000, 38000, 92000, 14500, 31000, 27500, 52000, 21000],
+    "length_mi": [3.2, 4.5, 6.0, 1.8, 3.9, 2.6, 5.4, 2.2],
+    "crashes_3yr": [48, 95, 310, 22, 118, 88, 164, 41],
+    "ksi_3yr": [3, 6, 19, 1, 9, 7, 8, 2],
 })
 
-bike_data = pd.DataFrame({
-    "station": ["Station " + c for c in "ABCDEF"],
-    "daily_trips": [45, 78, 23, 56, 89, 34],
-    "distance_downtown_km": [0.5, 2.1, 4.2, 1.8, 0.8, 3.5],
-    "bike_capacity": [20, 30, 15, 25, 35, 20],
+projects = pd.DataFrame({
+    "project": ["Signal retiming", "Protected bike lanes", "BRT corridor",
+                "Interchange rebuild", "Sidewalk gap fill", "Rural shoulder widening",
+                "Transit signal priority", "Roundabout conversion"],
+    "cost_m": [2.5, 8, 45, 60, 6, 12, 4, 5.5],
+    "safety": [55, 80, 40, 60, 75, 85, 30, 90],
+    "mobility": [80, 55, 90, 85, 40, 35, 75, 60],
+    "equity": [50, 85, 80, 45, 90, 60, 70, 55],
 })
 
-transit_data = pd.DataFrame({
-    "route": ["Route " + str(i) for i in range(1, 6)],
-    "daily_riders": [1200, 850, 2100, 650, 1800],
-    "route_length_miles": [12.5, 8.2, 18.3, 6.1, 15.7],
-    "frequency_minutes": [15, 20, 10, 30, 12],
-})
-
-los_data = pd.DataFrame({
-    "intersection": list("ABCDE"),
-    "delay_seconds": [10, 25, 45, 75, 120],
-    "volume": [800, 1200, 1600, 1800, 2000],
-    "capacity": [1800] * 5,
-})
+zones = ["Downtown", "Eastside", "Westside", "Airport", "University"]
+productions = np.array([1200, 900, 700, 300, 500], dtype=float)
+attractions = np.array([1500, 600, 500, 700, 300], dtype=float)
+tt = np.array([
+    [4, 12, 15, 20, 10],
+    [12, 5, 22, 25, 14],
+    [15, 22, 6, 18, 24],
+    [20, 25, 18, 8, 28],
+    [10, 14, 24, 28, 5],
+], dtype=float)
 ```
-
----
 
 ## 🧠 **Knowledge Test**
 
-*Test your understanding of transportation planning fundamentals*
+*Five calculations every regional planner has done at least once*
 
-### Question 1: Traffic Signal Timing ⏱️
+### Question 1: Crash Rate per 100 Million VMT 🚧
 
-If a traffic light has a 90-second cycle and the green light lasts 60 seconds, how many cars can pass through if each car takes 3 seconds to clear the intersection?
+A 3.2-mile corridor carries 24,000 vehicles per day (AADT). It had 48 crashes over 3 years. Vehicle miles traveled (VMT) over the study period is AADT × 365 days × years × length. What is the crash rate per 100 million VMT?
 
 ::: {.panel-tabset group="lang"}
 
@@ -154,30 +165,33 @@ If a traffic light has a 90-second cycle and the green light lasts 60 seconds, h
 ```{webr}
 #| exercise: know_1
 #| caption: "Knowledge Question 1"
-# Calculate how many cars can pass in one green phase
-green_time <- 60  # seconds
-time_per_car <- 3  # seconds
+aadt <- 24000
+length_mi <- 3.2
+years <- 3
+crashes <- 48
 
-# Your calculation:
-cars_per_cycle <- ______
+# Vehicle miles traveled over the whole study period
+vmt <- ______
 
-cars_per_cycle
+# Crashes per 100 million VMT
+crash_rate <- ______
+
+crash_rate
 ```
 
 ```{webr}
 #| exercise: know_1
 #| check: true
-# Custom feedback function
-if (!exists("cars_per_cycle")) {
-  list(correct = FALSE, message = "🚫 Please create the 'cars_per_cycle' variable and run your code.", type = "error")
-} else if (identical(cars_per_cycle, 20)) {
-  list(correct = TRUE, message = "🎯 Perfect! 20 cars can pass through in one green cycle. This is a fundamental capacity calculation used in traffic signal timing.", type = "success")
-} else if (cars_per_cycle > 20) {
-  list(correct = FALSE, message = "🤔 Too many cars! Remember, each car needs 3 seconds to clear the intersection. Try dividing the green time by the time per car.", type = "warning")
-} else if (cars_per_cycle < 20) {
-  list(correct = FALSE, message = "🚗 Not quite enough cars! How many 3-second periods fit in 60 seconds? Think: 60 ÷ 3 = ?", type = "info")
+if (!exists("vmt") || !exists("crash_rate")) {
+  list(correct = FALSE, message = "Please create both 'vmt' and 'crash_rate' and run your code.", type = "error")
+} else if (abs(crash_rate - 57.08) < 0.1) {
+  list(correct = TRUE, message = "Correct! About 57.1 crashes per 100 million VMT. Rates, not raw counts, let you compare corridors with very different traffic volumes.", type = "success")
+} else if (abs(crash_rate - 0.5708) < 0.01 || abs(crash_rate - 5708) < 10) {
+  list(correct = FALSE, message = "Close, but check the scale: the rate is crashes divided by VMT, times 100,000,000.", type = "warning")
+} else if (abs(vmt - 84096000) > 1) {
+  list(correct = FALSE, message = "Check VMT: AADT * 365 * years * length_mi.", type = "warning")
 } else {
-  list(correct = FALSE, message = "🔢 Make sure your result is a number. Check your calculation.", type = "error")
+  list(correct = FALSE, message = "Not quite. crash_rate = crashes / vmt * 100,000,000.", type = "info")
 }
 ```
 
@@ -185,36 +199,41 @@ if (!exists("cars_per_cycle")) {
 
 ```{pyodide}
 #| exercise: know_1_py
+#| envir: global
 #| caption: "Knowledge Question 1"
-# Calculate how many cars can pass in one green phase
-green_time = 60  # seconds
-time_per_car = 3  # seconds
+aadt = 24000
+length_mi = 3.2
+years = 3
+crashes = 48
 
-# Your calculation:
-cars_per_cycle = ______
+# Vehicle miles traveled over the whole study period
+vmt = ______
 
-cars_per_cycle
+# Crashes per 100 million VMT
+crash_rate = ______
+
+crash_rate
 ```
 
 ```{pyodide}
 #| exercise: know_1_py
 #| check: true
-if "cars_per_cycle" not in envir_result:
-    fb = {"correct": False, "message": "🚫 Please create the 'cars_per_cycle' variable and run your code.", "type": "error"}
-elif envir_result["cars_per_cycle"] == 20:
-    fb = {"correct": True, "message": "🎯 Perfect! 20 cars can pass through in one green cycle. This is a fundamental capacity calculation used in traffic signal timing.", "type": "success"}
-elif envir_result["cars_per_cycle"] > 20:
-    fb = {"correct": False, "message": "🤔 Too many cars! Remember, each car needs 3 seconds to clear the intersection. Try dividing the green time by the time per car.", "type": "warning"}
+if "vmt" not in envir_result or "crash_rate" not in envir_result:
+    fb = {"correct": False, "message": "Please create both 'vmt' and 'crash_rate' and run your code.", "type": "error"}
+elif abs(envir_result["crash_rate"] - 57.08) < 0.1:
+    fb = {"correct": True, "message": "Correct! About 57.1 crashes per 100 million VMT. Rates, not raw counts, let you compare corridors with very different traffic volumes.", "type": "success"}
+elif abs(envir_result["vmt"] - 84096000) > 1:
+    fb = {"correct": False, "message": "Check VMT: aadt * 365 * years * length_mi.", "type": "warning"}
 else:
-    fb = {"correct": False, "message": "🚗 Not quite enough cars! How many 3-second periods fit in 60 seconds? Think: 60 ÷ 3 = ?", "type": "info"}
+    fb = {"correct": False, "message": "Not quite. crash_rate = crashes / vmt * 100_000_000.", "type": "info"}
 fb
 ```
 
 :::
 
-### Question 2: Level of Service 🚦
+### Question 2: Volume-Delay Function ⏱️
 
-Calculate the volume-to-capacity (V/C) ratio for an intersection with 1,600 vehicles/hour and capacity of 1,800 vehicles/hour. What LOS category does this represent? (A-C: ≤0.8, D: 0.8-0.9, E-F: >0.9)
+Assignment models slow links down as they fill up. The BPR function is `t = t0 * (1 + 0.15 * (v / c)^4)`. A link has a free-flow time of 12 minutes, a volume of 2,400 vehicles per hour and a capacity of 2,000. What is its congested travel time?
 
 ::: {.panel-tabset group="lang"}
 
@@ -223,36 +242,26 @@ Calculate the volume-to-capacity (V/C) ratio for an intersection with 1,600 vehi
 ```{webr}
 #| exercise: know_2
 #| caption: "Knowledge Question 2"
-volume <- 1600
-capacity <- 1800
+t0 <- 12      # free-flow minutes
+volume <- 2400
+capacity <- 2000
 
-# Calculate V/C ratio
-vc_ratio <- ______
+congested_time <- ______
 
-# Determine LOS category
-los_category <- ______  # Should be "A-C", "D", or "E-F"
-
-list(vc_ratio = vc_ratio, los_category = los_category)
+congested_time
 ```
 
 ```{webr}
 #| exercise: know_2
 #| check: true
-if (!exists("vc_ratio") || !exists("los_category")) {
-  list(correct = FALSE, message = "🚫 Please create both 'vc_ratio' and 'los_category' variables.", type = "error")
+if (!exists("congested_time")) {
+  list(correct = FALSE, message = "Please create the 'congested_time' variable and run your code.", type = "error")
+} else if (abs(congested_time - 15.7325) < 0.05) {
+  list(correct = TRUE, message = "Correct! 15.7 minutes. At a V/C of 1.2 the link takes about 31% longer than free flow, and the fourth power makes delay climb fast above capacity.", type = "success")
+} else if (abs(congested_time - 14.16) < 0.05) {
+  list(correct = FALSE, message = "You applied 0.15 * (v/c) but not the exponent. The ratio is raised to the 4th power.", type = "warning")
 } else {
-  vc_correct <- round(vc_ratio, 3) == round(1600/1800, 3)
-  los_correct <- los_category == "D"
-  
-  if (vc_correct && los_correct) {
-    list(correct = TRUE, message = "🎯 Excellent! V/C = 0.889 puts this intersection at LOS D. This indicates approaching unstable flow with tolerable delays.", type = "success")
-  } else if (!vc_correct && los_correct) {
-    list(correct = FALSE, message = "🔢 LOS category is correct, but check your V/C calculation: volume ÷ capacity = 1600 ÷ 1800", type = "warning")
-  } else if (vc_correct && !los_correct) {
-    list(correct = FALSE, message = "📊 V/C ratio is correct (0.889), but check the LOS thresholds: 0.8-0.9 = Level D", type = "warning")
-  } else {
-    list(correct = FALSE, message = "🚦 Both calculations need work. V/C ratio = volume ÷ capacity, then check: ≤0.8=A-C, 0.8-0.9=D, >0.9=E-F", type = "error")
-  }
+  list(correct = FALSE, message = "Not quite. t0 * (1 + 0.15 * (volume / capacity)^4)", type = "info")
 }
 ```
 
@@ -260,43 +269,36 @@ if (!exists("vc_ratio") || !exists("los_category")) {
 
 ```{pyodide}
 #| exercise: know_2_py
+#| envir: global
 #| caption: "Knowledge Question 2"
-volume = 1600
-capacity = 1800
+t0 = 12      # free-flow minutes
+volume = 2400
+capacity = 2000
 
-# Calculate V/C ratio
-vc_ratio = ______
+congested_time = ______
 
-# Determine LOS category
-los_category = ______  # Should be "A-C", "D", or "E-F"
-
-{"vc_ratio": vc_ratio, "los_category": los_category}
+congested_time
 ```
 
 ```{pyodide}
 #| exercise: know_2_py
 #| check: true
-if "vc_ratio" not in envir_result or "los_category" not in envir_result:
-    fb = {"correct": False, "message": "🚫 Please create both 'vc_ratio' and 'los_category' variables.", "type": "error"}
+if "congested_time" not in envir_result:
+    fb = {"correct": False, "message": "Please create the 'congested_time' variable and run your code.", "type": "error"}
+elif abs(envir_result["congested_time"] - 15.7325) < 0.05:
+    fb = {"correct": True, "message": "Correct! 15.7 minutes. At a V/C of 1.2 the link takes about 31% longer than free flow, and the fourth power makes delay climb fast above capacity.", "type": "success"}
+elif abs(envir_result["congested_time"] - 14.16) < 0.05:
+    fb = {"correct": False, "message": "You applied 0.15 * (v/c) but not the exponent. The ratio is raised to the 4th power.", "type": "warning"}
 else:
-    vc_correct = round(envir_result["vc_ratio"], 3) == round(1600 / 1800, 3)
-    los_correct = envir_result["los_category"] == "D"
-    if vc_correct and los_correct:
-        fb = {"correct": True, "message": "🎯 Excellent! V/C = 0.889 puts this intersection at LOS D. This indicates approaching unstable flow with tolerable delays.", "type": "success"}
-    elif los_correct:
-        fb = {"correct": False, "message": "🔢 LOS category is correct, but check your V/C calculation: volume ÷ capacity = 1600 ÷ 1800", "type": "warning"}
-    elif vc_correct:
-        fb = {"correct": False, "message": "📊 V/C ratio is correct (0.889), but check the LOS thresholds: 0.8-0.9 = Level D", "type": "warning"}
-    else:
-        fb = {"correct": False, "message": "🚦 Both calculations need work. V/C ratio = volume ÷ capacity, then check: ≤0.8=A-C, 0.8-0.9=D, >0.9=E-F", "type": "error"}
+    fb = {"correct": False, "message": "Not quite. t0 * (1 + 0.15 * (volume / capacity) ** 4)", "type": "info"}
 fb
 ```
 
 :::
 
-### Question 3: Modal Split 🚌🚲🚗
+### Question 3: Gravity Model Trip Distribution 🏙️
 
-In a city where 40% of trips are by car, 25% by transit, 20% by walking, and 15% by cycling, what percentage of non-car trips are made by transit?
+Zone A produces 1,000 trips. Zone B attracts 600 trips and is 2 minutes away; zone C attracts 400 trips and is 4 minutes away. With a friction factor of `travel_time^-2`, the trips from A to B are `P * (A_B * F_B) / (A_B * F_B + A_C * F_C)`. How many trips go from A to B?
 
 ::: {.panel-tabset group="lang"}
 
@@ -305,31 +307,29 @@ In a city where 40% of trips are by car, 25% by transit, 20% by walking, and 15%
 ```{webr}
 #| exercise: know_3
 #| caption: "Knowledge Question 3"
-car_percent <- 40
-transit_percent <- 25
-walking_percent <- 20
-cycling_percent <- 15
+production_a <- 1000
+attraction_b <- 600
+attraction_c <- 400
 
-# Calculate percentage of non-car trips that are transit
-non_car_total <- ______
-transit_share_of_non_car <- ______
+friction_b <- ______   # travel time of 2 minutes
+friction_c <- ______   # travel time of 4 minutes
 
-transit_share_of_non_car
+trips_ab <- ______
+
+trips_ab
 ```
 
 ```{webr}
 #| exercise: know_3
 #| check: true
-if (!exists("transit_share_of_non_car")) {
-  list(correct = FALSE, message = "🚫 Please create the 'transit_share_of_non_car' variable and run your code.", type = "error")
-} else if (round(transit_share_of_non_car, 1) == 41.7) {
-  list(correct = TRUE, message = "🚌 Perfect! 41.7% of non-car trips are made by transit. This shows transit's importance in the sustainable transportation mix.", type = "success")
-} else if (transit_share_of_non_car == 25) {
-  list(correct = FALSE, message = "🤔 That's the overall transit share (25%). But what about just among non-car trips? Hint: transit % ÷ non-car total % × 100", type = "info")
-} else if (round(transit_share_of_non_car, 0) == 42) {
-  list(correct = FALSE, message = "🚌 Very close! 41.7% of non-car trips are made by transit. Your calculation method is correct!", type = "warning")
+if (!exists("trips_ab")) {
+  list(correct = FALSE, message = "Please create the 'trips_ab' variable and run your code.", type = "error")
+} else if (abs(trips_ab - 857.14) < 0.5) {
+  list(correct = TRUE, message = "Correct! About 857 trips. B is bigger and closer, so it gets most of A's trips. This is the core of the gravity model in most regional models.", type = "success")
+} else if (abs(trips_ab - 600) < 0.5) {
+  list(correct = FALSE, message = "That is just B's attractions. Remember to share A's 1,000 trips between B and C using the weighted attractions.", type = "warning")
 } else {
-  list(correct = FALSE, message = "📊 Remember: First find non-car total (100 - car %), then calculate: (transit %) ÷ (non-car total %) × 100", type = "error")
+  list(correct = FALSE, message = "Not quite. friction = time^-2, then production_a * (attraction_b * friction_b) / (attraction_b * friction_b + attraction_c * friction_c).", type = "info")
 }
 ```
 
@@ -337,42 +337,39 @@ if (!exists("transit_share_of_non_car")) {
 
 ```{pyodide}
 #| exercise: know_3_py
+#| envir: global
 #| caption: "Knowledge Question 3"
-car_percent = 40
-transit_percent = 25
-walking_percent = 20
-cycling_percent = 15
+production_a = 1000
+attraction_b = 600
+attraction_c = 400
 
-# Calculate percentage of non-car trips that are transit
-non_car_total = ______
-transit_share_of_non_car = ______
+friction_b = ______   # travel time of 2 minutes
+friction_c = ______   # travel time of 4 minutes
 
-transit_share_of_non_car
+trips_ab = ______
+
+trips_ab
 ```
 
 ```{pyodide}
 #| exercise: know_3_py
 #| check: true
-if "transit_share_of_non_car" not in envir_result:
-    fb = {"correct": False, "message": "🚫 Please create the 'transit_share_of_non_car' variable and run your code.", "type": "error"}
+if "trips_ab" not in envir_result:
+    fb = {"correct": False, "message": "Please create the 'trips_ab' variable and run your code.", "type": "error"}
+elif abs(envir_result["trips_ab"] - 857.14) < 0.5:
+    fb = {"correct": True, "message": "Correct! About 857 trips. B is bigger and closer, so it gets most of A's trips. This is the core of the gravity model in most regional models.", "type": "success"}
+elif abs(envir_result["trips_ab"] - 600) < 0.5:
+    fb = {"correct": False, "message": "That is just B's attractions. Remember to share A's 1,000 trips between B and C using the weighted attractions.", "type": "warning"}
 else:
-    share = envir_result["transit_share_of_non_car"]
-    if round(share, 1) == 41.7:
-        fb = {"correct": True, "message": "🚌 Perfect! 41.7% of non-car trips are made by transit. This shows transit's importance in the sustainable transportation mix.", "type": "success"}
-    elif share == 25:
-        fb = {"correct": False, "message": "🤔 That's the overall transit share (25%). But what about just among non-car trips? Hint: transit % ÷ non-car total % × 100", "type": "info"}
-    elif round(share, 0) == 42:
-        fb = {"correct": False, "message": "🚌 Very close! 41.7% of non-car trips are made by transit. Your calculation method is correct!", "type": "warning"}
-    else:
-        fb = {"correct": False, "message": "📊 Remember: First find non-car total (100 - car %), then calculate: (transit %) ÷ (non-car total %) × 100", "type": "error"}
+    fb = {"correct": False, "message": "Not quite. friction = time ** -2, then production_a * (attraction_b * friction_b) / (attraction_b * friction_b + attraction_c * friction_c).", "type": "info"}
 fb
 ```
 
 :::
 
-### Question 4: Trip Generation 🏠
+### Question 4: Mode Choice 🚌🚲🚗
 
-A residential development has 200 housing units. Using ITE trip generation rate of 9.5 trips per dwelling unit per day, calculate total daily trips. If 15% occur during PM peak hour, how many PM peak trips?
+A multinomial logit model gives each mode a utility. The probability of choosing a mode is `exp(U_mode) / sum(exp(U))`. With utilities of -1.2 for car, -1.8 for transit and -2.5 for bike, what share of travelers choose transit?
 
 ::: {.panel-tabset group="lang"}
 
@@ -381,37 +378,24 @@ A residential development has 200 housing units. Using ITE trip generation rate 
 ```{webr}
 #| exercise: know_4
 #| caption: "Knowledge Question 4"
-housing_units <- 200
-trip_rate <- 9.5
-pm_peak_percent <- 15
+utilities <- c(car = -1.2, transit = -1.8, bike = -2.5)
 
-# Calculate total daily trips
-total_daily_trips <- ______
+p_transit <- ______
 
-# Calculate PM peak hour trips  
-pm_peak_trips <- ______
-
-list(daily = total_daily_trips, pm_peak = pm_peak_trips)
+p_transit
 ```
 
 ```{webr}
 #| exercise: know_4
 #| check: true
-if (!exists("total_daily_trips") || !exists("pm_peak_trips")) {
-  list(correct = FALSE, message = "🚫 Please create both 'total_daily_trips' and 'pm_peak_trips' variables.", type = "error")
+if (!exists("p_transit")) {
+  list(correct = FALSE, message = "Please create the 'p_transit' variable and run your code.", type = "error")
+} else if (abs(as.numeric(p_transit) - 0.3013) < 0.002) {
+  list(correct = TRUE, message = "Correct! About 30% choose transit. Logit models turn utilities into shares that always sum to 100%, which is why they are the workhorse of mode choice.", type = "success")
+} else if (abs(as.numeric(p_transit) - exp(-1.8)) < 0.001) {
+  list(correct = FALSE, message = "That is exp(U) for transit alone. Divide by the sum of exp(U) across all three modes.", type = "warning")
 } else {
-  daily_correct <- total_daily_trips == 1900
-  peak_correct <- pm_peak_trips == 285
-  
-  if (daily_correct && peak_correct) {
-    list(correct = TRUE, message = "🏠 Excellent! 1,900 daily trips with 285 during PM peak. These are key numbers for traffic impact studies.", type = "success")
-  } else if (!daily_correct && peak_correct) {
-    list(correct = FALSE, message = "🏘️ PM peak trips are correct, but check daily trips: units × trip rate = 200 × 9.5", type = "warning")
-  } else if (daily_correct && !peak_correct) {
-    list(correct = FALSE, message = "🕔 Daily trips correct, but check PM peak: daily trips × 15% = 1900 × 0.15", type = "warning")
-  } else {
-    list(correct = FALSE, message = "📊 Both calculations need work. Daily = units × rate, PM peak = daily × 15%", type = "error")
-  }
+  list(correct = FALSE, message = "Not quite. exp(utilities['transit']) / sum(exp(utilities))", type = "info")
 }
 ```
 
@@ -419,44 +403,34 @@ if (!exists("total_daily_trips") || !exists("pm_peak_trips")) {
 
 ```{pyodide}
 #| exercise: know_4_py
+#| envir: global
 #| caption: "Knowledge Question 4"
-housing_units = 200
-trip_rate = 9.5
-pm_peak_percent = 15
+utilities = {"car": -1.2, "transit": -1.8, "bike": -2.5}
 
-# Calculate total daily trips
-total_daily_trips = ______
+p_transit = ______
 
-# Calculate PM peak hour trips
-pm_peak_trips = ______
-
-{"daily": total_daily_trips, "pm_peak": pm_peak_trips}
+p_transit
 ```
 
 ```{pyodide}
 #| exercise: know_4_py
 #| check: true
-if "total_daily_trips" not in envir_result or "pm_peak_trips" not in envir_result:
-    fb = {"correct": False, "message": "🚫 Please create both 'total_daily_trips' and 'pm_peak_trips' variables.", "type": "error"}
+if "p_transit" not in envir_result:
+    fb = {"correct": False, "message": "Please create the 'p_transit' variable and run your code.", "type": "error"}
+elif abs(float(envir_result["p_transit"]) - 0.3013) < 0.002:
+    fb = {"correct": True, "message": "Correct! About 30% choose transit. Logit models turn utilities into shares that always sum to 100%, which is why they are the workhorse of mode choice.", "type": "success"}
+elif abs(float(envir_result["p_transit"]) - 0.1653) < 0.001:
+    fb = {"correct": False, "message": "That is exp(U) for transit alone. Divide by the sum of exp(U) across all three modes.", "type": "warning"}
 else:
-    daily_correct = abs(envir_result["total_daily_trips"] - 1900) < 1e-9
-    peak_correct = abs(envir_result["pm_peak_trips"] - 285) < 1e-9
-    if daily_correct and peak_correct:
-        fb = {"correct": True, "message": "🏠 Excellent! 1,900 daily trips with 285 during PM peak. These are key numbers for traffic impact studies.", "type": "success"}
-    elif peak_correct:
-        fb = {"correct": False, "message": "🏘️ PM peak trips are correct, but check daily trips: units × trip rate = 200 × 9.5", "type": "warning"}
-    elif daily_correct:
-        fb = {"correct": False, "message": "🕔 Daily trips correct, but check PM peak: daily trips × 15% = 1900 × 0.15", "type": "warning"}
-    else:
-        fb = {"correct": False, "message": "📊 Both calculations need work. Daily = units × rate, PM peak = daily × 15%", "type": "error"}
+    fb = {"correct": False, "message": "Not quite. np.exp(utilities['transit']) / sum(np.exp(u) for u in utilities.values())", "type": "info"}
 fb
 ```
 
 :::
 
-### Question 5: Transit Frequency 🚍
+### Question 5: Benefit-Cost Ratio 💰
 
-A bus route operates every 12 minutes during peak hours. How many buses pass a given stop in one hour? If each bus has 40-passenger capacity and average load is 75%, what's the hourly passenger capacity past that stop?
+A $12 million project is expected to produce $1.6 million in benefits each year for 20 years. With a 3% discount rate, the present value of an annual benefit stream is `annual * (1 - (1 + r)^-n) / r`. What is the benefit-cost ratio?
 
 ::: {.panel-tabset group="lang"}
 
@@ -465,38 +439,30 @@ A bus route operates every 12 minutes during peak hours. How many buses pass a g
 ```{webr}
 #| exercise: know_5
 #| caption: "Knowledge Question 5"
-frequency_minutes <- 12
-bus_capacity <- 40
-load_factor <- 0.75
+cost <- 12          # $ million
+annual_benefit <- 1.6   # $ million per year
+years <- 20
+rate <- 0.03
 
-# Calculate buses per hour
-buses_per_hour <- ______
+# Present value factor for a 20-year stream of equal annual benefits
+pv_factor <- ______
 
-# Calculate hourly passenger capacity
-hourly_passenger_capacity <- ______
+bcr <- ______
 
-list(buses_per_hour = buses_per_hour, hourly_capacity = hourly_passenger_capacity)
+bcr
 ```
-
 
 ```{webr}
 #| exercise: know_5
 #| check: true
-if (!exists("buses_per_hour") || !exists("hourly_passenger_capacity")) {
-  list(correct = FALSE, message = "🚫 Please create both 'buses_per_hour' and 'hourly_passenger_capacity' variables.", type = "error")
+if (!exists("pv_factor") || !exists("bcr")) {
+  list(correct = FALSE, message = "Please create both 'pv_factor' and 'bcr' and run your code.", type = "error")
+} else if (abs(bcr - 1.98) < 0.02) {
+  list(correct = TRUE, message = "Correct! A BCR of about 1.98: every dollar spent returns almost two dollars of discounted benefits. Anything above 1.0 passes the basic test.", type = "success")
+} else if (abs(bcr - 32 / 12) < 0.02) {
+  list(correct = FALSE, message = "That adds up 20 years of benefits without discounting. Use the present value factor.", type = "warning")
 } else {
-  buses_correct <- buses_per_hour == 5
-  capacity_correct <- hourly_passenger_capacity == 150
-  
-  if (buses_correct && capacity_correct) {
-    list(correct = TRUE, message = "🚍 Perfect! 5 buses per hour with 150 passenger capacity. This helps determine route efficiency and passenger service levels.", type = "success")
-  } else if (!buses_correct && capacity_correct) {
-    list(correct = FALSE, message = "🕒 Passenger capacity is correct, but check buses per hour: 60 minutes ÷ frequency = 60 ÷ 12", type = "warning")
-  } else if (buses_correct && !capacity_correct) {
-    list(correct = FALSE, message = "👥 Buses per hour correct, but check capacity: buses × capacity × load factor = 5 × 40 × 0.75", type = "warning")
-  } else {
-    list(correct = FALSE, message = "🚌 Both calculations need work. Buses/hour = 60 ÷ frequency, Capacity = buses × seats × load factor", type = "error")
-  }
+  list(correct = FALSE, message = "Not quite. pv_factor = (1 - (1 + rate)^-years) / rate, then bcr = annual_benefit * pv_factor / cost.", type = "info")
 }
 ```
 
@@ -504,36 +470,32 @@ if (!exists("buses_per_hour") || !exists("hourly_passenger_capacity")) {
 
 ```{pyodide}
 #| exercise: know_5_py
+#| envir: global
 #| caption: "Knowledge Question 5"
-frequency_minutes = 12
-bus_capacity = 40
-load_factor = 0.75
+cost = 12            # $ million
+annual_benefit = 1.6     # $ million per year
+years = 20
+rate = 0.03
 
-# Calculate buses per hour
-buses_per_hour = ______
+# Present value factor for a 20-year stream of equal annual benefits
+pv_factor = ______
 
-# Calculate hourly passenger capacity
-hourly_passenger_capacity = ______
+bcr = ______
 
-{"buses_per_hour": buses_per_hour, "hourly_capacity": hourly_passenger_capacity}
+bcr
 ```
 
 ```{pyodide}
 #| exercise: know_5_py
 #| check: true
-if "buses_per_hour" not in envir_result or "hourly_passenger_capacity" not in envir_result:
-    fb = {"correct": False, "message": "🚫 Please create both 'buses_per_hour' and 'hourly_passenger_capacity' variables.", "type": "error"}
+if "pv_factor" not in envir_result or "bcr" not in envir_result:
+    fb = {"correct": False, "message": "Please create both 'pv_factor' and 'bcr' and run your code.", "type": "error"}
+elif abs(envir_result["bcr"] - 1.98) < 0.02:
+    fb = {"correct": True, "message": "Correct! A BCR of about 1.98: every dollar spent returns almost two dollars of discounted benefits. Anything above 1.0 passes the basic test.", "type": "success"}
+elif abs(envir_result["bcr"] - 32 / 12) < 0.02:
+    fb = {"correct": False, "message": "That adds up 20 years of benefits without discounting. Use the present value factor.", "type": "warning"}
 else:
-    buses_correct = abs(envir_result["buses_per_hour"] - 5) < 1e-9
-    capacity_correct = abs(envir_result["hourly_passenger_capacity"] - 150) < 1e-9
-    if buses_correct and capacity_correct:
-        fb = {"correct": True, "message": "🚍 Perfect! 5 buses per hour with 150 passenger capacity. This helps determine route efficiency and passenger service levels.", "type": "success"}
-    elif capacity_correct:
-        fb = {"correct": False, "message": "🕒 Passenger capacity is correct, but check buses per hour: 60 minutes ÷ frequency = 60 ÷ 12", "type": "warning"}
-    elif buses_correct:
-        fb = {"correct": False, "message": "👥 Buses per hour correct, but check capacity: buses × capacity × load factor = 5 × 40 × 0.75", "type": "warning"}
-    else:
-        fb = {"correct": False, "message": "🚌 Both calculations need work. Buses/hour = 60 ÷ frequency, Capacity = buses × seats × load factor", "type": "error"}
+    fb = {"correct": False, "message": "Not quite. pv_factor = (1 - (1 + rate) ** -years) / rate, then bcr = annual_benefit * pv_factor / cost.", "type": "info"}
 fb
 ```
 
@@ -543,17 +505,11 @@ fb
 
 ## 🚀 **Skills Test**
 
-*Put your R and dplyr skills to work with real transportation datasets*
+*Screen a corridor network, rank projects, build a trip table and map the results*
 
-### Question 1: High-Traffic Location Analysis 📊
+### Question 1: Safety Screening 🚧
 
-Using the `traffic_data` dataset, filter for locations with AADT > 15,000 and count how many locations meet this criteria.
-
-```{webr}
-#| context: setup
-#| include: false
-library(dplyr)
-```
+The `segments` table has crash counts for eight corridors over 3 years. Add each segment's crash rate per 100 million VMT and its share of crashes that were fatal or serious (KSI), rank the segments, and name the one with the highest rate.
 
 ::: {.panel-tabset group="lang"}
 
@@ -561,44 +517,52 @@ library(dplyr)
 
 ```{webr}
 #| autorun: true
-#| caption: "Traffic Data"
-# First, let's see the data
-traffic_data
+#| caption: "Corridor segments"
+segments
 ```
 
 ```{webr}
 #| exercise: skill_1
 #| caption: "Skill Question 1"
-# Filter for high-traffic locations and count them
-high_traffic <- traffic_data |>
-  filter(______)
+segments_ranked <- segments |>
+  mutate(
+    vmt_100m = aadt * 365 * 3 * length_mi / 1e8,
+    crash_rate = ______,   # crashes per 100 million VMT
+    ksi_share = ______     # share of crashes that were fatal or serious
+  ) |>
+  arrange(desc(crash_rate))
 
-# Count the results
-count_high_traffic <- ______
+top_segment <- ______
 
-count_high_traffic
+# A look at the ranking (already written for you)
+ggplot(segments_ranked, aes(x = reorder(segment, crash_rate), y = crash_rate, fill = ksi_share)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_viridis_c(option = "magma", direction = -1, name = "KSI share") +
+  labs(x = NULL, y = "Crashes per 100M VMT", title = "Crash rate by segment") +
+  theme_minimal()
 ```
-
 
 ```{webr}
 #| exercise: skill_1
 #| check: true
-# Custom feedback function
-if (!exists("high_traffic") || !exists("count_high_traffic")) {
-  list(correct = FALSE, message = "📊 Make sure to create both 'high_traffic' and 'count_high_traffic' variables.", type = "error")
+if (!exists("segments_ranked") || !exists("top_segment")) {
+  list(correct = FALSE, message = "Make sure to create both 'segments_ranked' and 'top_segment'.", type = "error")
+} else if (!all(c("crash_rate", "ksi_share") %in% names(segments_ranked))) {
+  list(correct = FALSE, message = "'segments_ranked' needs the columns 'crash_rate' and 'ksi_share'.", type = "error")
 } else {
-  expected_high_traffic <- traffic_data |> filter(aadt > 15000)
-  filter_correct <- identical(high_traffic, expected_high_traffic)
-  count_correct <- count_high_traffic == nrow(expected_high_traffic)
-  
-  if (filter_correct && count_correct) {
-    list(correct = TRUE, message = "🎯 Perfect! You correctly identified 3 high-traffic locations (Main St, Center Blvd, Highway 101) with AADT > 15,000. This type of analysis helps prioritize infrastructure investments.", type = "success")
-  } else if (!filter_correct && count_correct) {
-    list(correct = FALSE, message = "🔍 Count is correct, but check your filtering condition. You should use: filter(aadt > 15000)", type = "warning")
-  } else if (filter_correct && !count_correct) {
-    list(correct = FALSE, message = "📋 Filtering is correct, but check your count calculation. Use nrow() to count the filtered results.", type = "warning")
+  vmt <- segments$aadt * 365 * 3 * segments$length_mi / 1e8
+  rate_ok <- isTRUE(all.equal(sort(segments_ranked$crash_rate), sort(segments$crashes_3yr / vmt), tolerance = 1e-6))
+  ksi_ok <- isTRUE(all.equal(sort(segments_ranked$ksi_share), sort(segments$ksi_3yr / segments$crashes_3yr), tolerance = 1e-6))
+  top_ok <- identical(as.character(top_segment), "State St")
+  if (rate_ok && ksi_ok && top_ok) {
+    list(correct = TRUE, message = "Excellent! State St has the highest crash rate (about 112 per 100M VMT) even though I-15 has the most crashes. Raw counts follow volume; rates show where the risk per mile actually is.", type = "success")
+  } else if (!rate_ok) {
+    list(correct = FALSE, message = "Check crash_rate: crashes_3yr / vmt_100m.", type = "warning")
+  } else if (!ksi_ok) {
+    list(correct = FALSE, message = "Check ksi_share: ksi_3yr / crashes_3yr.", type = "warning")
   } else {
-    list(correct = FALSE, message = "🚗 Check both your filter condition (aadt > 15000) and count method (use nrow()).", type = "error")
+    list(correct = FALSE, message = "Check top_segment: the first row of the ranked table, segments_ranked$segment[1].", type = "warning")
   }
 }
 ```
@@ -607,257 +571,67 @@ if (!exists("high_traffic") || !exists("count_high_traffic")) {
 
 ```{pyodide}
 #| autorun: true
-#| caption: "Traffic Data"
-# First, let's see the data
-traffic_data
+#| caption: "Corridor segments"
+segments
 ```
 
 ```{pyodide}
 #| exercise: skill_1_py
 #| envir: global
 #| caption: "Skill Question 1"
-# Filter for high-traffic locations and count them
-high_traffic = traffic_data[______]
-
-# Count the results
-count_high_traffic = ______
-
-count_high_traffic
-```
-
-```{pyodide}
-#| exercise: skill_1_py
-#| check: true
-if "high_traffic" not in envir_result or "count_high_traffic" not in envir_result:
-    fb = {"correct": False, "message": "📊 Make sure to create both 'high_traffic' and 'count_high_traffic' variables.", "type": "error"}
-else:
-    data = envir_result["traffic_data"]
-    expected = data[data["aadt"] > 15000]
-    filter_correct = envir_result["high_traffic"].equals(expected)
-    count_correct = envir_result["count_high_traffic"] == len(expected)
-    if filter_correct and count_correct:
-        fb = {"correct": True, "message": "🎯 Perfect! You correctly identified 3 high-traffic locations (Main St, Center Blvd, Highway 101) with AADT > 15,000. This type of analysis helps prioritize infrastructure investments.", "type": "success"}
-    elif count_correct:
-        fb = {"correct": False, "message": "🔍 Count is correct, but check your filtering condition. You should use: traffic_data[traffic_data['aadt'] > 15000]", "type": "warning"}
-    elif filter_correct:
-        fb = {"correct": False, "message": "📋 Filtering is correct, but check your count calculation. Use len() to count the filtered results.", "type": "warning"}
-    else:
-        fb = {"correct": False, "message": "🚗 Check both your filter condition (aadt > 15000) and count method (use len()).", "type": "error"}
-fb
-```
-
-:::
-
-### Question 2: Safety Rate Calculation 🔍
-
-Calculate the accident rate per 1,000 AADT for each location. Create a new column called `accident_rate` and arrange by highest rate.
-
-::: {.panel-tabset group="lang"}
-
-## {{< fa brands r-project >}} R
-
-```{webr}
-#| exercise: skill_2
-#| caption: "Skill Question 2"
-# Calculate accident rates and arrange
-safety_analysis <- traffic_data |>
-  mutate(accident_rate = ______) |>
-  arrange(______)
-
-# Show the results
-safety_analysis
-```
-
-
-```{webr}
-#| exercise: skill_2
-#| check: true
-# Custom feedback function
-if (!exists("safety_analysis")) {
-  list(correct = FALSE, message = "📊 Make sure to create the 'safety_analysis' variable.", type = "error")
-} else {
-  expected_result <- traffic_data |>
-    mutate(accident_rate = (accidents_2023 / aadt) * 1000) |>
-    arrange(desc(accident_rate))
-  
-  if (!"accident_rate" %in% names(safety_analysis)) {
-    list(correct = FALSE, message = "📋 Make sure to create the 'accident_rate' column using mutate().", type = "error")
-  } else if (!identical(safety_analysis, expected_result)) {
-    unsorted_check <- traffic_data |>
-      mutate(accident_rate = (accidents_2023 / aadt) * 1000)
-    
-    if (identical(safety_analysis, unsorted_check)) {
-      list(correct = FALSE, message = "📈 Accident rate calculation is correct, but you need to arrange by desc(accident_rate) to show highest rates first.", type = "warning")
-    } else {
-      list(correct = FALSE, message = "🔢 Check your accident rate calculation: (accidents_2023 / aadt) * 1000", type = "error")
-    }
-  } else {
-    list(correct = TRUE, message = "🎯 Excellent! You've calculated accident rates per 1,000 AADT and sorted by highest risk. Park Rd has the highest rate at 0.67 accidents per 1,000 AADT, making it a priority for safety improvements.", type = "success")
-  }
-}
-```
-
-## {{< fa brands python >}} Python
-
-```{pyodide}
-#| exercise: skill_2_py
-#| envir: global
-#| caption: "Skill Question 2"
-# Calculate accident rates and arrange
-safety_analysis = (
-    traffic_data
-    .assign(accident_rate=______)
-    .sort_values(______, ascending=False)
-)
-
-# Show the results
-safety_analysis
-```
-
-```{pyodide}
-#| exercise: skill_2_py
-#| check: true
-if "safety_analysis" not in envir_result:
-    fb = {"correct": False, "message": "📊 Make sure to create the 'safety_analysis' variable.", "type": "error"}
-else:
-    result = envir_result["safety_analysis"]
-    data = envir_result["traffic_data"]
-    unsorted_check = data.assign(accident_rate=data["accidents_2023"] / data["aadt"] * 1000)
-    expected = unsorted_check.sort_values("accident_rate", ascending=False)
-    if "accident_rate" not in result.columns:
-        fb = {"correct": False, "message": "📋 Make sure to create the 'accident_rate' column using assign().", "type": "error"}
-    elif not result.equals(expected):
-        if result.equals(unsorted_check):
-            fb = {"correct": False, "message": "📈 Accident rate calculation is correct, but you need to sort by accident_rate with ascending=False to show highest rates first.", "type": "warning"}
-        else:
-            fb = {"correct": False, "message": "🔢 Check your accident rate calculation: (accidents_2023 / aadt) * 1000", "type": "error"}
-    else:
-        fb = {"correct": True, "message": "🎯 Excellent! You've calculated accident rates per 1,000 AADT and sorted by highest risk. Park Rd has the highest rate at 0.67 accidents per 1,000 AADT, making it a priority for safety improvements.", "type": "success"}
-fb
-```
-
-:::
-
-### Question 3: Transit Efficiency Analysis 🚌
-
-Calculate riders per mile for each transit route and identify the most efficient route (highest riders per mile).
-
-::: {.panel-tabset group="lang"}
-
-## {{< fa brands r-project >}} R
-
-```{webr}
-#| autorun: true
-#| caption: "Transit Data"
-# Look at transit data first
-transit_data
-```
-
-```{webr}
-#| exercise: skill_3
-#| caption: "Skill Question 3"
-# Calculate efficiency and find the best route
-transit_efficiency <- transit_data |>
-  mutate(riders_per_mile = ______) |>
-  arrange(______)
-
-# Get the most efficient route name
-most_efficient <- transit_efficiency |>
-  slice(1) |>
-  pull(______)
-
-most_efficient
-```
-
-
-```{webr}
-#| exercise: skill_3
-#| check: true
-if (!exists("transit_efficiency") || !exists("most_efficient")) {
-  list(correct = FALSE, message = "📊 Make sure to create both 'transit_efficiency' and 'most_efficient' variables.", type = "error")
-} else {
-  expected_efficiency <- transit_data |>
-    mutate(riders_per_mile = daily_riders / route_length_miles) |>
-    arrange(desc(riders_per_mile))
-  expected_most_efficient <- expected_efficiency |> slice(1) |> pull(route)
-  
-  efficiency_correct <- identical(transit_efficiency, expected_efficiency)
-  route_correct <- identical(most_efficient, expected_most_efficient)
-  
-  if (efficiency_correct && route_correct) {
-    list(correct = TRUE, message = "🎯 Perfect! Route 3 is the most efficient with 114.8 riders per mile. This analysis helps transit agencies optimize route planning and resource allocation.", type = "success")
-  } else if (!efficiency_correct && route_correct) {
-    list(correct = FALSE, message = "🚌 Most efficient route is correct, but check your efficiency calculation: daily_riders / route_length_miles", type = "warning")
-  } else if (efficiency_correct && !route_correct) {
-    list(correct = FALSE, message = "📊 Efficiency calculation is correct, but check how you're extracting the most efficient route name using pull(route)", type = "warning")
-  } else {
-    list(correct = FALSE, message = "🚍 Check both your efficiency calculation (riders ÷ miles) and route extraction (slice(1) |> pull(route))", type = "error")
-  }
-}
-```
-
-## {{< fa brands python >}} Python
-
-```{pyodide}
-#| autorun: true
-#| caption: "Transit Data"
-# Look at transit data first
-transit_data
-```
-
-```{pyodide}
-#| exercise: skill_3_py
-#| envir: global
-#| caption: "Skill Question 3"
-# Calculate efficiency and find the best route
-transit_efficiency = (
-    transit_data
-    .assign(riders_per_mile=______)
-    .sort_values(______, ascending=False)
-)
-
-# Get the most efficient route name
-most_efficient = transit_efficiency.iloc[0][______]
-
-most_efficient
-```
-
-```{pyodide}
-#| exercise: skill_3_py
-#| check: true
-if "transit_efficiency" not in envir_result or "most_efficient" not in envir_result:
-    fb = {"correct": False, "message": "📊 Make sure to create both 'transit_efficiency' and 'most_efficient' variables.", "type": "error"}
-else:
-    data = envir_result["transit_data"]
-    expected = (
-        data.assign(riders_per_mile=data["daily_riders"] / data["route_length_miles"])
-        .sort_values("riders_per_mile", ascending=False)
+segments_ranked = (
+    segments
+    .assign(vmt_100m=segments["aadt"] * 365 * 3 * segments["length_mi"] / 1e8)
+    .assign(
+        crash_rate=lambda d: ______,   # crashes per 100 million VMT
+        ksi_share=lambda d: ______,    # share of crashes that were fatal or serious
     )
-    expected_best = expected.iloc[0]["route"]
-    efficiency_correct = envir_result["transit_efficiency"].equals(expected)
-    route_correct = envir_result["most_efficient"] == expected_best
-    if efficiency_correct and route_correct:
-        fb = {"correct": True, "message": "🎯 Perfect! Route 3 is the most efficient with 114.8 riders per mile. This analysis helps transit agencies optimize route planning and resource allocation.", "type": "success"}
-    elif route_correct:
-        fb = {"correct": False, "message": "🚌 Most efficient route is correct, but check your efficiency calculation: daily_riders / route_length_miles", "type": "warning"}
-    elif efficiency_correct:
-        fb = {"correct": False, "message": "📊 Efficiency calculation is correct, but check how you're extracting the most efficient route name using iloc[0]['route']", "type": "warning"}
+    .sort_values("crash_rate", ascending=False)
+)
+
+top_segment = ______
+
+# A look at the ranking (already written for you)
+ranked = segments_ranked.sort_values("crash_rate")
+fig, ax = plt.subplots(figsize=(6, 4))
+bars = ax.barh(ranked["segment"], ranked["crash_rate"], color="#d96e34")
+ax.set_xlabel("Crashes per 100M VMT")
+ax.set_title("Crash rate by segment")
+plt.tight_layout()
+plt.show()
+```
+
+```{pyodide}
+#| exercise: skill_1_py
+#| check: true
+if "segments_ranked" not in envir_result or "top_segment" not in envir_result:
+    fb = {"correct": False, "message": "Make sure to create both 'segments_ranked' and 'top_segment'.", "type": "error"}
+elif not {"crash_rate", "ksi_share"}.issubset(envir_result["segments_ranked"].columns):
+    fb = {"correct": False, "message": "'segments_ranked' needs the columns 'crash_rate' and 'ksi_share'.", "type": "error"}
+else:
+    import numpy as np
+    seg = envir_result["segments"]
+    ranked = envir_result["segments_ranked"]
+    vmt = seg["aadt"] * 365 * 3 * seg["length_mi"] / 1e8
+    rate_ok = np.allclose(np.sort(ranked["crash_rate"]), np.sort(seg["crashes_3yr"] / vmt))
+    ksi_ok = np.allclose(np.sort(ranked["ksi_share"]), np.sort(seg["ksi_3yr"] / seg["crashes_3yr"]))
+    top_ok = str(envir_result["top_segment"]) == "State St"
+    if rate_ok and ksi_ok and top_ok:
+        fb = {"correct": True, "message": "Excellent! State St has the highest crash rate (about 112 per 100M VMT) even though I-15 has the most crashes. Raw counts follow volume; rates show where the risk per mile actually is.", "type": "success"}
+    elif not rate_ok:
+        fb = {"correct": False, "message": "Check crash_rate: d['crashes_3yr'] / d['vmt_100m'].", "type": "warning"}
+    elif not ksi_ok:
+        fb = {"correct": False, "message": "Check ksi_share: d['ksi_3yr'] / d['crashes_3yr'].", "type": "warning"}
     else:
-        fb = {"correct": False, "message": "🚍 Check both your efficiency calculation (riders ÷ miles) and route extraction (iloc[0]['route'])", "type": "error"}
+        fb = {"correct": False, "message": "Check top_segment: the first row of the ranked table, segments_ranked['segment'].iloc[0].", "type": "warning"}
 fb
 ```
 
 :::
 
-### Question 4: Bike Share Visualization 📈
+### Question 2: Project Prioritization 🏗️
 
-Create a scatter plot showing the relationship between distance from downtown and daily trips for bike share stations. Add a smooth trend line.
-
-```{webr}
-#| context: setup
-#| include: false
-library(ggplot2)
-```
+Score each candidate project with weights of 40% safety, 35% mobility and 25% equity, rank them, and see how many of the top-ranked projects fit in a $60 million program (take projects in rank order and stop when the running cost passes the budget).
 
 ::: {.panel-tabset group="lang"}
 
@@ -865,49 +639,221 @@ library(ggplot2)
 
 ```{webr}
 #| autorun: true
-#| caption: "Bike Data"
-# Look at bike data first
-bike_data
+#| caption: "Candidate projects"
+projects
+```
+
+```{webr}
+#| exercise: skill_2
+#| caption: "Skill Question 2"
+weights <- c(safety = 0.40, mobility = 0.35, equity = 0.25)
+budget <- 60  # $ million
+
+scored <- projects |>
+  mutate(score = ______) |>
+  arrange(desc(score)) |>
+  mutate(cum_cost = cumsum(cost_m))
+
+funded <- scored |> filter(______)
+n_funded <- nrow(funded)
+
+# Score against cost, funded projects highlighted (already written for you)
+ggplot(scored, aes(x = cost_m, y = score, color = cum_cost <= budget, label = project)) +
+  geom_point(size = 4) +
+  geom_text(hjust = "inward", vjust = -1, size = 3, show.legend = FALSE) +
+  scale_color_manual(values = c("TRUE" = "#2e9b4e", "FALSE" = "#9aa0a6"),
+                     labels = c("TRUE" = "Funded", "FALSE" = "Not funded"), name = NULL) +
+  scale_x_log10() +
+  labs(x = "Cost ($ million, log scale)", y = "Weighted score", title = "Project scores and the $60M program") +
+  theme_minimal()
+```
+
+```{webr}
+#| exercise: skill_2
+#| check: true
+if (!exists("scored") || !exists("n_funded")) {
+  list(correct = FALSE, message = "Make sure to create 'scored' and 'n_funded'.", type = "error")
+} else if (!"score" %in% names(scored)) {
+  list(correct = FALSE, message = "'scored' needs a 'score' column.", type = "error")
+} else {
+  expected <- 0.40 * projects$safety + 0.35 * projects$mobility + 0.25 * projects$equity
+  score_ok <- isTRUE(all.equal(sort(scored$score), sort(expected), tolerance = 1e-6))
+  funded_ok <- identical(as.integer(n_funded), 3L)
+  if (score_ok && funded_ok) {
+    list(correct = TRUE, message = "Great! Protected bike lanes, the roundabout conversion and the BRT corridor fit in $60M. Notice the BRT corridor ranks third on score but takes most of the budget, which is exactly the trade-off a prioritization table makes visible.", type = "success")
+  } else if (!score_ok) {
+    list(correct = FALSE, message = "Check the score: safety * weights['safety'] + mobility * weights['mobility'] + equity * weights['equity'].", type = "warning")
+  } else {
+    list(correct = FALSE, message = "Check the filter: keep rows where cum_cost <= budget.", type = "warning")
+  }
+}
+```
+
+## {{< fa brands python >}} Python
+
+```{pyodide}
+#| autorun: true
+#| caption: "Candidate projects"
+projects
+```
+
+```{pyodide}
+#| exercise: skill_2_py
+#| envir: global
+#| caption: "Skill Question 2"
+weights = {"safety": 0.40, "mobility": 0.35, "equity": 0.25}
+budget = 60  # $ million
+
+scored = (
+    projects
+    .assign(score=lambda d: ______)
+    .sort_values("score", ascending=False)
+    .assign(cum_cost=lambda d: d["cost_m"].cumsum())
+)
+
+funded = scored[______]
+n_funded = len(funded)
+
+# Score against cost, funded projects highlighted (already written for you)
+fig, ax = plt.subplots(figsize=(6, 4))
+is_funded = scored["cum_cost"] <= budget
+ax.scatter(scored["cost_m"], scored["score"], s=60,
+           c=np.where(is_funded, "#2e9b4e", "#9aa0a6"))
+ax.set_xscale("log")
+ax.set_xlabel("Cost ($ million, log scale)")
+ax.set_ylabel("Weighted score")
+ax.set_title("Project scores and the $60M program")
+plt.tight_layout()
+plt.show()
+```
+
+```{pyodide}
+#| exercise: skill_2_py
+#| check: true
+if "scored" not in envir_result or "n_funded" not in envir_result:
+    fb = {"correct": False, "message": "Make sure to create 'scored' and 'n_funded'.", "type": "error"}
+elif "score" not in envir_result["scored"].columns:
+    fb = {"correct": False, "message": "'scored' needs a 'score' column.", "type": "error"}
+else:
+    import numpy as np
+    p = envir_result["projects"]
+    expected = 0.40 * p["safety"] + 0.35 * p["mobility"] + 0.25 * p["equity"]
+    score_ok = np.allclose(np.sort(envir_result["scored"]["score"]), np.sort(expected))
+    funded_ok = int(envir_result["n_funded"]) == 3
+    if score_ok and funded_ok:
+        fb = {"correct": True, "message": "Great! Protected bike lanes, the roundabout conversion and the BRT corridor fit in $60M. Notice the BRT corridor ranks third on score but takes most of the budget, which is exactly the trade-off a prioritization table makes visible.", "type": "success"}
+    elif not score_ok:
+        fb = {"correct": False, "message": "Check the score: d['safety'] * weights['safety'] + d['mobility'] * weights['mobility'] + d['equity'] * weights['equity'].", "type": "warning"}
+    else:
+        fb = {"correct": False, "message": "Check the filter: scored['cum_cost'] <= budget.", "type": "warning"}
+fb
+```
+
+:::
+
+### Question 3: Map the Crash Rate 🗺️
+
+The `region` layer holds county polygons with a synthetic crash rate per 10,000 residents. Find the county with the highest rate, then draw a choropleth that fills each county by its crash rate. (Maps use the `sf` package, so this one is R only.)
+
+```{webr}
+#| autorun: true
+#| caption: "County layer (geometry hidden)"
+sf::st_drop_geometry(head(region, 6))
+```
+
+```{webr}
+#| exercise: skill_3
+#| caption: "Skill Question 3"
+# The county with the highest crash rate
+worst_county <- region$county[______]
+
+# A choropleth of the crash rate
+p <- ggplot(region) +
+  geom_sf(aes(fill = ______), color = "white", linewidth = 0.2) +
+  scale_fill_viridis_c(option = "magma", direction = -1, name = "Crashes per\n10,000 residents") +
+  labs(title = "Synthetic crash rate by county") +
+  theme_void()
+
+p
+```
+
+```{webr}
+#| exercise: skill_3
+#| check: true
+if (!exists("worst_county") || !exists("p")) {
+  list(correct = FALSE, message = "Make sure to create both 'worst_county' and the map 'p'.", type = "error")
+} else if (!inherits(p, "ggplot") || !any(vapply(p$layers, function(l) inherits(l$geom, "GeomSf"), logical(1)))) {
+  list(correct = FALSE, message = "'p' should be a ggplot with a geom_sf() layer.", type = "error")
+} else {
+  fill_expr <- paste(deparse(p$layers[[1]]$mapping$fill), collapse = "")
+  fill_ok <- grepl("crash_rate", fill_expr, fixed = TRUE)
+  county_ok <- identical(as.character(worst_county), region$county[which.max(region$crash_rate)])
+  if (fill_ok && county_ok) {
+    list(correct = TRUE, message = "Nicely done! The map fills each county by its crash rate, and you found the worst county with which.max(). Choropleths like this are how safety screening gets communicated to boards and the public.", type = "success")
+  } else if (!county_ok) {
+    list(correct = FALSE, message = "Check worst_county: use which.max(region$crash_rate) to find the row with the highest rate.", type = "warning")
+  } else {
+    list(correct = FALSE, message = "Fill the counties by the crash rate: aes(fill = crash_rate).", type = "warning")
+  }
+}
+```
+
+### Question 4: Build a Trip Table 🧮
+
+Use the gravity model for all five zones at once. Friction is `travel_time^-2`. Each cell of the trip table is the zone's productions, shared across destinations in proportion to `attractions * friction`. Build the friction matrix and the trip table, then check the heatmap.
+
+::: {.panel-tabset group="lang"}
+
+## {{< fa brands r-project >}} R
+
+```{webr}
+#| autorun: true
+#| caption: "Travel times (minutes)"
+tt
 ```
 
 ```{webr}
 #| exercise: skill_4
 #| caption: "Skill Question 4"
-# Create the bike share analysis plot
-bike_plot <- ggplot(bike_data, aes(x = ______, y = ______)) +
-  geom_point(size = 3, alpha = 0.7, color = "steelblue") +
-  geom_smooth(method = "lm", se = FALSE, color = "red") +
-  labs(
-    title = "Bike Share Usage vs Distance from Downtown",
-    x = "Distance from Downtown (km)",
-    y = "Daily Trips"
-  ) +
+friction <- ______
+
+# Attractions weighted by friction, for every origin and destination
+weighted <- sweep(friction, 2, attractions, "*")
+
+# Share each origin's productions across destinations
+trips <- ______
+
+round(trips)
+
+# The trip table as a heatmap (already written for you)
+as.data.frame(as.table(round(trips))) |>
+  ggplot(aes(x = Var2, y = Var1, fill = Freq)) +
+  geom_tile(color = "white") +
+  geom_text(aes(label = Freq), size = 3.5) +
+  scale_fill_gradient(low = "#eef6f8", high = "#5aa0b4", name = "Trips") +
+  scale_y_discrete(limits = rev) +
+  labs(x = "Destination", y = "Origin", title = "Gravity model trip table") +
   theme_minimal()
-
-bike_plot
 ```
-
 
 ```{webr}
 #| exercise: skill_4
 #| check: true
-if (!exists("bike_plot")) {
-  list(correct = FALSE, message = "📊 Make sure to create the 'bike_plot' variable.", type = "error")
-} else if (!inherits(bike_plot, "ggplot")) {
-  list(correct = FALSE, message = "📈 Make sure 'bike_plot' is a ggplot object.", type = "error")
+if (!exists("friction") || !exists("trips")) {
+  list(correct = FALSE, message = "Make sure to create both 'friction' and 'trips'.", type = "error")
+} else if (!is.matrix(trips) || !all(dim(trips) == c(5, 5))) {
+  list(correct = FALSE, message = "'trips' should be a 5 x 5 matrix.", type = "error")
 } else {
-  aes_data <- bike_plot$mapping
-  x_correct <- "distance_downtown_km" %in% as.character(aes_data$x)
-  y_correct <- "daily_trips" %in% as.character(aes_data$y)
-  
-  if (x_correct && y_correct) {
-    list(correct = TRUE, message = "🎯 Excellent visualization! Your plot shows the relationship between distance from downtown and bike share usage. The trend line reveals that stations closer to downtown tend to have higher usage - a key insight for bike share planning.", type = "success")
-  } else if (!x_correct && y_correct) {
-    list(correct = FALSE, message = "📊 Y-axis (daily_trips) is correct, but check your x-axis mapping: use distance_downtown_km", type = "warning")
-  } else if (x_correct && !y_correct) {
-    list(correct = FALSE, message = "📊 X-axis (distance_downtown_km) is correct, but check your y-axis mapping: use daily_trips", type = "warning")
+  friction_ok <- isTRUE(all.equal(as.numeric(friction), as.numeric(tt^-2)))
+  expected_w <- sweep(tt^-2, 2, attractions, "*")
+  expected <- productions * expected_w / rowSums(expected_w)
+  trips_ok <- isTRUE(all.equal(as.numeric(trips), as.numeric(expected), tolerance = 1e-6))
+  if (friction_ok && trips_ok) {
+    list(correct = TRUE, message = "Outstanding! Every row sums to that zone's productions, and the big Downtown and Airport attractions pull the most trips. This is the trip distribution step of a four-step model.", type = "success")
+  } else if (!friction_ok) {
+    list(correct = FALSE, message = "Check friction: tt^-2 (or 1 / tt^2).", type = "warning")
   } else {
-    list(correct = FALSE, message = "🚲 Check your aesthetic mappings: x = distance_downtown_km, y = daily_trips", type = "error")
+    list(correct = FALSE, message = "Check trips: productions * weighted / rowSums(weighted). Each row should add up to that zone's productions.", type = "warning")
   }
 }
 ```
@@ -916,180 +862,63 @@ if (!exists("bike_plot")) {
 
 ```{pyodide}
 #| autorun: true
-#| caption: "Bike Data"
-# Look at bike data first
-bike_data
+#| caption: "Travel times (minutes)"
+pd.DataFrame(tt, index=zones, columns=zones)
 ```
 
 ```{pyodide}
 #| exercise: skill_4_py
 #| envir: global
 #| caption: "Skill Question 4"
-import matplotlib.pyplot as plt
+friction = ______
 
-# Create the bike share analysis plot
-fig, ax = plt.subplots(figsize=(6, 4))
-ax.scatter(bike_data[______], bike_data[______], s=50, alpha=0.7, color="steelblue")
+# Attractions weighted by friction, for every origin and destination
+weighted = friction * attractions
 
-# Add a linear trend line
-slope, intercept = np.polyfit(bike_data["distance_downtown_km"], bike_data["daily_trips"], 1)
-x_line = np.linspace(bike_data["distance_downtown_km"].min(), bike_data["distance_downtown_km"].max(), 50)
-ax.plot(x_line, slope * x_line + intercept, color="red")
+# Share each origin's productions across destinations
+trips = ______
 
-ax.set_title("Bike Share Usage vs Distance from Downtown")
-ax.set_xlabel("Distance from Downtown (km)")
-ax.set_ylabel("Daily Trips")
+# The trip table as a heatmap (already written for you)
+fig, ax = plt.subplots(figsize=(6, 4.5))
+im = ax.imshow(trips, cmap="GnBu", vmax=trips.max() * 1.4)
+ax.set_xticks(range(5), zones, rotation=30, ha="right")
+ax.set_yticks(range(5), zones)
+for i in range(5):
+    for j in range(5):
+        ax.text(j, i, f"{trips[i, j]:.0f}", ha="center", va="center", fontsize=8)
+ax.set_xlabel("Destination")
+ax.set_ylabel("Origin")
+ax.set_title("Gravity model trip table")
+fig.colorbar(im, label="Trips")
+plt.tight_layout()
 plt.show()
 ```
 
 ```{pyodide}
 #| exercise: skill_4_py
 #| check: true
-if "ax" not in envir_result:
-    fb = {"correct": False, "message": "📊 Make sure to create the 'ax' variable with fig, ax = plt.subplots().", "type": "error"}
-elif len(envir_result["ax"].collections) == 0:
-    fb = {"correct": False, "message": "📈 Make sure to draw the points with ax.scatter().", "type": "error"}
+if "friction" not in envir_result or "trips" not in envir_result:
+    fb = {"correct": False, "message": "Make sure to create both 'friction' and 'trips'.", "type": "error"}
 else:
     import numpy as np
-    data = envir_result["bike_data"]
-    points = np.asarray(envir_result["ax"].collections[0].get_offsets())
-    x_correct = np.allclose(points[:, 0], data["distance_downtown_km"])
-    y_correct = np.allclose(points[:, 1], data["daily_trips"])
-    if x_correct and y_correct:
-        fb = {"correct": True, "message": "🎯 Excellent visualization! Your plot shows the relationship between distance from downtown and bike share usage. The trend line reveals that stations closer to downtown tend to have higher usage - a key insight for bike share planning.", "type": "success"}
-    elif y_correct:
-        fb = {"correct": False, "message": "📊 Y-axis (daily_trips) is correct, but check your x-axis mapping: use distance_downtown_km", "type": "warning"}
-    elif x_correct:
-        fb = {"correct": False, "message": "📊 X-axis (distance_downtown_km) is correct, but check your y-axis mapping: use daily_trips", "type": "warning"}
+    trips = np.asarray(envir_result["trips"], dtype=float)
+    friction = np.asarray(envir_result["friction"], dtype=float)
+    if trips.shape != (5, 5):
+        fb = {"correct": False, "message": "'trips' should be a 5 x 5 array.", "type": "error"}
     else:
-        fb = {"correct": False, "message": "🚲 Check your column choices: x = distance_downtown_km, y = daily_trips", "type": "error"}
-fb
-```
-
-:::
-
-### Question 5: Comprehensive Performance Summary 🏆
-
-Create a summary table showing for each location: total daily volume, accidents per 1000 vehicles, and congestion level (Low: <3hrs, Medium: 3-5hrs, High: >5hrs).
-
-::: {.panel-tabset group="lang"}
-
-## {{< fa brands r-project >}} R
-
-```{webr}
-#| exercise: skill_5
-#| caption: "Skill Question 5"
-# Create comprehensive performance summary
-performance_summary <- traffic_data |>
-  mutate(
-    daily_volume = ______,
-    accidents_per_1000 = ______,
-    congestion_level = case_when(
-      ______ < 3 ~ "Low",
-      ______ <= 5 ~ "Medium",
-      TRUE ~ "High"
-    )
-  ) |>
-  select(location, daily_volume, accidents_per_1000, congestion_level)
-
-performance_summary
-```
-
-
-```{webr}
-#| exercise: skill_5
-#| check: true
-if (!exists("performance_summary")) {
-  list(correct = FALSE, message = "📊 Make sure to create the 'performance_summary' variable.", type = "error")
-} else {
-  expected_result <- traffic_data |>
-    mutate(
-      daily_volume = aadt,
-      accidents_per_1000 = (accidents_2023 / aadt) * 1000,
-      congestion_level = case_when(
-        congestion_hours < 3 ~ "Low",
-        congestion_hours <= 5 ~ "Medium", 
-        TRUE ~ "High"
-      )
-    ) |>
-    select(location, daily_volume, accidents_per_1000, congestion_level)
-  
-  expected_cols <- c("location", "daily_volume", "accidents_per_1000", "congestion_level")
-  has_correct_cols <- all(expected_cols %in% names(performance_summary))
-  
-  if (!has_correct_cols) {
-    missing_cols <- setdiff(expected_cols, names(performance_summary))
-    list(correct = FALSE, message = paste("📋 Missing columns:", paste(missing_cols, collapse = ", ")), type = "error")
-  } else if (identical(performance_summary, expected_result)) {
-    list(correct = TRUE, message = "🎯 Outstanding! You've created a comprehensive performance dashboard showing volume, safety rates, and congestion levels. This type of integrated analysis is essential for transportation planning and helps identify priority locations for improvements.", type = "success")
-  } else {
-    daily_vol_correct <- identical(performance_summary$daily_volume, expected_result$daily_volume)
-    accidents_correct <- all(abs(performance_summary$accidents_per_1000 - expected_result$accidents_per_1000) < 0.001)
-    congestion_correct <- identical(performance_summary$congestion_level, expected_result$congestion_level)
-    
-    if (!daily_vol_correct) {
-      list(correct = FALSE, message = "📊 Check daily_volume calculation: should be the same as aadt", type = "warning")
-    } else if (!accidents_correct) {
-      list(correct = FALSE, message = "🔢 Check accidents_per_1000 calculation: (accidents_2023 / aadt) * 1000", type = "warning")
-    } else if (!congestion_correct) {
-      list(correct = FALSE, message = "🚦 Check congestion_level case_when logic: <3='Low', <=5='Medium', >5='High'", type = "warning")
-    } else {
-      list(correct = FALSE, message = "📋 Almost there! Check your mutate and select statements carefully.", type = "error")
-    }
-  }
-}
-```
-
-## {{< fa brands python >}} Python
-
-```{pyodide}
-#| exercise: skill_5_py
-#| envir: global
-#| caption: "Skill Question 5"
-# Create comprehensive performance summary
-performance_summary = (
-    traffic_data
-    .assign(
-        daily_volume=______,
-        accidents_per_1000=______,
-        congestion_level=np.select(
-            [______ < 3, ______ <= 5],
-            ["Low", "Medium"],
-            default="High",
-        ),
-    )
-    [["location", "daily_volume", "accidents_per_1000", "congestion_level"]]
-)
-
-performance_summary
-```
-
-```{pyodide}
-#| exercise: skill_5_py
-#| check: true
-if "performance_summary" not in envir_result:
-    fb = {"correct": False, "message": "📊 Make sure to create the 'performance_summary' variable.", "type": "error"}
-else:
-    import numpy as np
-    result = envir_result["performance_summary"]
-    data = envir_result["traffic_data"]
-    expected_cols = ["location", "daily_volume", "accidents_per_1000", "congestion_level"]
-    missing_cols = [c for c in expected_cols if c not in result.columns]
-    if missing_cols:
-        fb = {"correct": False, "message": "📋 Missing columns: " + ", ".join(missing_cols), "type": "error"}
-    else:
-        daily_vol_correct = bool((result["daily_volume"] == data["aadt"]).all())
-        accidents_correct = bool(np.allclose(result["accidents_per_1000"], data["accidents_2023"] / data["aadt"] * 1000, atol=0.001))
-        expected_levels = np.select([data["congestion_hours"] < 3, data["congestion_hours"] <= 5], ["Low", "Medium"], default="High")
-        congestion_correct = list(result["congestion_level"]) == list(expected_levels)
-        if daily_vol_correct and accidents_correct and congestion_correct:
-            fb = {"correct": True, "message": "🎯 Outstanding! You've created a comprehensive performance dashboard showing volume, safety rates, and congestion levels. This type of integrated analysis is essential for transportation planning and helps identify priority locations for improvements.", "type": "success"}
-        elif not daily_vol_correct:
-            fb = {"correct": False, "message": "📊 Check daily_volume calculation: should be the same as aadt", "type": "warning"}
-        elif not accidents_correct:
-            fb = {"correct": False, "message": "🔢 Check accidents_per_1000 calculation: (accidents_2023 / aadt) * 1000", "type": "warning"}
+        tt = envir_result["tt"]
+        att = envir_result["attractions"]
+        prod = envir_result["productions"]
+        friction_ok = np.allclose(friction, tt ** -2.0)
+        w = (tt ** -2.0) * att
+        expected = prod[:, None] * w / w.sum(axis=1, keepdims=True)
+        trips_ok = np.allclose(trips, expected)
+        if friction_ok and trips_ok:
+            fb = {"correct": True, "message": "Outstanding! Every row sums to that zone's productions, and the big Downtown and Airport attractions pull the most trips. This is the trip distribution step of a four-step model.", "type": "success"}
+        elif not friction_ok:
+            fb = {"correct": False, "message": "Check friction: tt ** -2.0 (or 1 / tt ** 2).", "type": "warning"}
         else:
-            fb = {"correct": False, "message": "🚦 Check congestion_level logic: <3='Low', <=5='Medium', >5='High'", "type": "warning"}
+            fb = {"correct": False, "message": "Check trips: productions[:, None] * weighted / weighted.sum(axis=1, keepdims=True). Each row should add up to that zone's productions.", "type": "warning"}
 fb
 ```
 
@@ -1098,11 +927,11 @@ fb
 ---
 
 ::: {.callout-success}
-## 🎯 Quiz Complete!
-**Congratulations, You are now a Transportation Data Scientist!** 🏆
+## 🎯 Challenge Complete!
+**Nice work: you screened a corridor network, ranked a program of projects, built a trip table and mapped the results.** 🏆
 :::
 
-*P.S. - If you got this far, you're definitely not lost anymore. You're a certified Transportation Data Scientist! 🎯*
+*P.S. - If you got this far, you are definitely not lost anymore. That is a full regional planning workflow in four questions.*
 
 ---
-*Built with [Quarto Live](https://r-wasm.github.io/quarto-live/), [WebR](https://docs.r-wasm.org/webr/latest/) and [Pyodide](https://pyodide.org/)*
+*Built with [Quarto Live](https://r-wasm.github.io/quarto-live/), [WebR](https://docs.r-wasm.org/webr/latest/) and [Pyodide](https://pyodide.org/). All data is synthetic, apart from the county outlines from the sf package.*
