@@ -6,3 +6,10 @@ google-scholar: true
 # "Cite this article" block (BibTeX/APA) at the end of the page; authors, title and
 # date come from each article's front matter
 citation: true
+
+# link row (Published version, Project Website, ...) at the top of the page, from pub-info.links
+filters:
+  - ../../assets/filters/pub-links.lua
+format:
+  html:
+    css: ../../assets/css/pub-links.css
