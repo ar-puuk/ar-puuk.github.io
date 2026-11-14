@@ -38,3 +38,5 @@ README_files/
 
 # built site is published to the gh-pages branch with `quarto publish gh-pages`
 /docs/
+
+/.luarc.json
