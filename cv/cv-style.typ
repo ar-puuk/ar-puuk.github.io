@@ -6,7 +6,7 @@
 // the previous baseline to this block's first baseline. Weak block spacing is dropped at the
 // top of a page, so a section that starts a page sits on the top margin.
 
-#let serif = ("Times New Roman", "Liberation Serif")
+#let serif = ("Liberation Serif",)
 #let pitch = 12.65pt // Word's single line spacing for 11 pt Times New Roman
 #let blue = rgb("#0000ff")
 
