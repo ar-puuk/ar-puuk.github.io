@@ -155,6 +155,20 @@ details > summary {
   color: $body-secondary;
 }
 
+// Quarto Live's "Show Solution" button lives in a tab-pane header that the extension does not
+// recolour for dark pages, so its dark outline vanished on the dark card until hovered. Give
+// it the same light outline as the neighbouring "Start Over" button.
+.exercise-tab-pane-header .btn-outline-dark {
+  --bs-btn-color: #{$body-color};
+  --bs-btn-border-color: #{$body-color};
+  --bs-btn-hover-color: #{$body-bg};
+  --bs-btn-hover-bg: #{$body-color};
+  --bs-btn-hover-border-color: #{$body-color};
+  --bs-btn-active-color: #{$body-bg};
+  --bs-btn-active-bg: #{$body-color};
+  --bs-btn-active-border-color: #{$body-color};
+}
+
 // Title banner (opposite colors for dark theme)
 .quarto-title-banner {
   background-color: $pb-bg-0 !important;  // Light background

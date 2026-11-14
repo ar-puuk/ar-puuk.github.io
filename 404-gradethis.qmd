@@ -2,6 +2,7 @@
 pagetitle: Page Not Found {gradethis}
 format:
   live-html:
+    include-after-body: _includes/exercise-solution-button.html
     webr:
       packages:
         - dplyr
