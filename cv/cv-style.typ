@@ -71,3 +71,6 @@
 }
 
 #let sub(body, before: pitch) = bullet(body, before: before, x: 81pt, glyph: "–")
+
+// Applied to the whole document (loaded by include-before-body in index.qmd)
+#show: setup

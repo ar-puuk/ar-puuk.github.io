@@ -22,7 +22,7 @@ format:
       - ../assets/fonts
     mainfont: "Liberation Serif"
     fontsize: 11pt
-    include-before-body: cv-md-begin.typ
+    include-before-body: cv-style.typ
 ---
 
 # Professional Profile {icon="circle-user" before=25.7 after=15 iw=11.9 h=11.9}
