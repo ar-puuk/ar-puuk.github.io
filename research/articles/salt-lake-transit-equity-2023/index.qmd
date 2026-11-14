@@ -29,6 +29,11 @@ pub-info:
     - name: Published version
       url: https://doi.org/10.1177/03611981231170005
       icon: fa-solid fa-scroll
+    - name: Pre-print
+      url: Zinia2023TransitEquity.pdf
+      icon: fa-solid fa-file-pdf
+      local: true
+      details-only: true
     - name: Project Website
       url: https://ar-puuk.github.io/SLCo-Transit-Equity/
       icon: fa-solid fa-globe
@@ -38,7 +43,6 @@ pub-info:
     - name: Add to Zotero
       url: https://www.zotero.org/save?type=doi&q=10.1177/03611981231170005
       icon: ai ai-zotero
-      listing-only: true
 doi: 10.1177/03611981231170005
 citation:
   type: article-journal

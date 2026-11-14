@@ -32,6 +32,7 @@
                     </li>
                     <% if (item['pub-info'].links) { %>
                         <% for (const link of item['pub-info'].links) { %>
+                        <% if (link['details-only']) continue; %>
                     <li class="project-link">
                         <% if (link.local) { %>
                         <a href="<%- item.path.replace('index.qmd', '') %><%- link.url %>">
