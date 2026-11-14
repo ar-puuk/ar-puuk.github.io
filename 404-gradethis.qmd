@@ -185,6 +185,8 @@ crash_rate <- ______
 crash_rate
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="know_1"}
 
 ```{webr}
@@ -203,6 +205,8 @@ crash_rate <- crashes / vmt * 1e8
 
 crash_rate
 ```
+
+:::
 
 :::
 
@@ -232,6 +236,8 @@ crash_rate = ______
 crash_rate
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="know_1_py"}
 
 ```{pyodide}
@@ -250,6 +256,8 @@ crash_rate = crashes / vmt * 100_000_000
 
 crash_rate
 ```
+
+:::
 
 :::
 
@@ -281,6 +289,8 @@ congested_time <- ______
 congested_time
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="know_2"}
 
 ```{webr}
@@ -294,6 +304,8 @@ congested_time <- t0 * (1 + 0.15 * (volume / capacity)^4)
 
 congested_time
 ```
+
+:::
 
 :::
 
@@ -318,6 +330,8 @@ congested_time = ______
 congested_time
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="know_2_py"}
 
 ```{pyodide}
@@ -331,6 +345,8 @@ congested_time = t0 * (1 + 0.15 * (volume / capacity)**4)
 
 congested_time
 ```
+
+:::
 
 :::
 
@@ -365,6 +381,8 @@ trips_ab <- ______
 trips_ab
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="know_3"}
 
 ```{webr}
@@ -381,6 +399,8 @@ trips_ab <- production_a * (attraction_b * friction_b) / (attraction_b * frictio
 
 trips_ab
 ```
+
+:::
 
 :::
 
@@ -408,6 +428,8 @@ trips_ab = ______
 trips_ab
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="know_3_py"}
 
 ```{pyodide}
@@ -424,6 +446,8 @@ trips_ab = production_a * (attraction_b * friction_b) / (attraction_b * friction
 
 trips_ab
 ```
+
+:::
 
 :::
 
@@ -453,6 +477,8 @@ p_transit <- ______
 p_transit
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="know_4"}
 
 ```{webr}
@@ -464,6 +490,8 @@ p_transit <- exp(utilities["transit"]) / sum(exp(utilities))
 
 p_transit
 ```
+
+:::
 
 :::
 
@@ -486,6 +514,8 @@ p_transit = ______
 p_transit
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="know_4_py"}
 
 ```{pyodide}
@@ -497,6 +527,8 @@ p_transit = np.exp(utilities["transit"]) / sum(np.exp(u) for u in utilities.valu
 
 p_transit
 ```
+
+:::
 
 :::
 
@@ -532,6 +564,8 @@ bcr <- ______
 bcr
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="know_5"}
 
 ```{webr}
@@ -549,6 +583,8 @@ bcr <- annual_benefit * pv_factor / cost
 
 bcr
 ```
+
+:::
 
 :::
 
@@ -577,6 +613,8 @@ bcr = ______
 bcr
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="know_5_py"}
 
 ```{pyodide}
@@ -594,6 +632,8 @@ bcr = annual_benefit * pv_factor / cost
 
 bcr
 ```
+
+:::
 
 :::
 
@@ -647,6 +687,8 @@ ggplot(segments_ranked, aes(x = reorder(segment, crash_rate), y = crash_rate, fi
   theme_minimal()
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="skill_1"}
 
 ```{webr}
@@ -670,6 +712,8 @@ ggplot(segments_ranked, aes(x = reorder(segment, crash_rate), y = crash_rate, fi
   labs(x = NULL, y = "Crashes per 100M VMT", title = "Crash rate by segment") +
   theme_minimal()
 ```
+
+:::
 
 :::
 
@@ -713,6 +757,8 @@ plt.tight_layout()
 plt.show()
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="skill_1_py"}
 
 ```{pyodide}
@@ -739,6 +785,8 @@ ax.set_title("Crash rate by segment")
 plt.tight_layout()
 plt.show()
 ```
+
+:::
 
 :::
 
@@ -789,6 +837,8 @@ ggplot(scored, aes(x = cost_m, y = score, color = cum_cost <= budget, label = pr
   theme_minimal()
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="skill_2"}
 
 ```{webr}
@@ -815,6 +865,8 @@ ggplot(scored, aes(x = cost_m, y = score, color = cum_cost <= budget, label = pr
   labs(x = "Cost ($ million, log scale)", y = "Weighted score", title = "Project scores and the $60M program") +
   theme_minimal()
 ```
+
+:::
 
 :::
 
@@ -862,6 +914,8 @@ plt.tight_layout()
 plt.show()
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="skill_2_py"}
 
 ```{pyodide}
@@ -892,6 +946,8 @@ ax.set_title("Project scores and the $60M program")
 plt.tight_layout()
 plt.show()
 ```
+
+:::
 
 :::
 
@@ -929,6 +985,8 @@ p <- ggplot(region) +
 p
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="skill_3"}
 
 ```{webr}
@@ -946,6 +1004,8 @@ p <- ggplot(region) +
 
 p
 ```
+
+:::
 
 :::
 
@@ -993,6 +1053,8 @@ as.data.frame(as.table(round(trips))) |>
   theme_minimal()
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="skill_4"}
 
 ```{webr}
@@ -1018,6 +1080,8 @@ as.data.frame(as.table(round(trips))) |>
   labs(x = "Destination", y = "Origin", title = "Gravity model trip table") +
   theme_minimal()
 ```
+
+:::
 
 :::
 
@@ -1063,6 +1127,8 @@ plt.tight_layout()
 plt.show()
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="skill_4_py"}
 
 ```{pyodide}
@@ -1091,6 +1157,8 @@ fig.colorbar(im, label="Trips")
 plt.tight_layout()
 plt.show()
 ```
+
+:::
 
 :::
 
