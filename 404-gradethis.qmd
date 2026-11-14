@@ -164,8 +164,9 @@ tt = np.array([
 
 A 3.2-mile corridor carries 24,000 vehicles per day (AADT). It had 48 crashes over 3 years. Vehicle miles traveled (VMT) over the study period is AADT × 365 days × years × length. What is the crash rate per 100 million VMT?
 
+::: {.panel-tabset group="lang"}
 
-#### {{< fa brands r-project >}} R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: know_1
@@ -183,6 +184,8 @@ crash_rate <- ______
 
 crash_rate
 ```
+
+::: {.solution-slot}
 
 ::: {.solution exercise="know_1"}
 
@@ -205,13 +208,15 @@ crash_rate
 
 :::
 
+:::
+
 ```{webr}
 #| exercise: know_1
 #| check: true
 gradethis::grade_this_code()
 ```
 
-#### {{< fa brands python >}} Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| exercise: know_1_py
@@ -230,6 +235,8 @@ crash_rate = ______
 
 crash_rate
 ```
+
+::: {.solution-slot}
 
 ::: {.solution exercise="know_1_py"}
 
@@ -252,19 +259,23 @@ crash_rate
 
 :::
 
+:::
+
 ```{pyodide}
 #| exercise: know_1_py
 #| check: true
 grade_this_code()
 ```
 
+:::
 
 ### Question 2: Volume-Delay Function ⏱️
 
 Assignment models slow links down as they fill up. The BPR function is `t = t0 * (1 + 0.15 * (v / c)^4)`. A link has a free-flow time of 12 minutes, a volume of 2,400 vehicles per hour and a capacity of 2,000. What is its congested travel time?
 
+::: {.panel-tabset group="lang"}
 
-#### {{< fa brands r-project >}} R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: know_2
@@ -277,6 +288,8 @@ congested_time <- ______
 
 congested_time
 ```
+
+::: {.solution-slot}
 
 ::: {.solution exercise="know_2"}
 
@@ -294,13 +307,15 @@ congested_time
 
 :::
 
+:::
+
 ```{webr}
 #| exercise: know_2
 #| check: true
 gradethis::grade_this_code()
 ```
 
-#### {{< fa brands python >}} Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| exercise: know_2_py
@@ -314,6 +329,8 @@ congested_time = ______
 
 congested_time
 ```
+
+::: {.solution-slot}
 
 ::: {.solution exercise="know_2_py"}
 
@@ -331,19 +348,23 @@ congested_time
 
 :::
 
+:::
+
 ```{pyodide}
 #| exercise: know_2_py
 #| check: true
 grade_this_code()
 ```
 
+:::
 
 ### Question 3: Gravity Model Trip Distribution 🏙️
 
 Zone A produces 1,000 trips. Zone B attracts 600 trips and is 2 minutes away; zone C attracts 400 trips and is 4 minutes away. With a friction factor of `travel_time^-2`, the trips from A to B are `P * (A_B * F_B) / (A_B * F_B + A_C * F_C)`. How many trips go from A to B?
 
+::: {.panel-tabset group="lang"}
 
-#### {{< fa brands r-project >}} R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: know_3
@@ -359,6 +380,8 @@ trips_ab <- ______
 
 trips_ab
 ```
+
+::: {.solution-slot}
 
 ::: {.solution exercise="know_3"}
 
@@ -379,13 +402,15 @@ trips_ab
 
 :::
 
+:::
+
 ```{webr}
 #| exercise: know_3
 #| check: true
 gradethis::grade_this_code()
 ```
 
-#### {{< fa brands python >}} Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| exercise: know_3_py
@@ -402,6 +427,8 @@ trips_ab = ______
 
 trips_ab
 ```
+
+::: {.solution-slot}
 
 ::: {.solution exercise="know_3_py"}
 
@@ -422,19 +449,23 @@ trips_ab
 
 :::
 
+:::
+
 ```{pyodide}
 #| exercise: know_3_py
 #| check: true
 grade_this_code()
 ```
 
+:::
 
 ### Question 4: Mode Choice 🚌🚲🚗
 
 A multinomial logit model gives each mode a utility. The probability of choosing a mode is `exp(U_mode) / sum(exp(U))`. With utilities of -1.2 for car, -1.8 for transit and -2.5 for bike, what share of travelers choose transit?
 
+::: {.panel-tabset group="lang"}
 
-#### {{< fa brands r-project >}} R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: know_4
@@ -445,6 +476,8 @@ p_transit <- ______
 
 p_transit
 ```
+
+::: {.solution-slot}
 
 ::: {.solution exercise="know_4"}
 
@@ -460,13 +493,15 @@ p_transit
 
 :::
 
+:::
+
 ```{webr}
 #| exercise: know_4
 #| check: true
 gradethis::grade_this_code()
 ```
 
-#### {{< fa brands python >}} Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| exercise: know_4_py
@@ -478,6 +513,8 @@ p_transit = ______
 
 p_transit
 ```
+
+::: {.solution-slot}
 
 ::: {.solution exercise="know_4_py"}
 
@@ -493,19 +530,23 @@ p_transit
 
 :::
 
+:::
+
 ```{pyodide}
 #| exercise: know_4_py
 #| check: true
 grade_this_code()
 ```
 
+:::
 
 ### Question 5: Benefit-Cost Ratio 💰
 
 A $12 million project is expected to produce $1.6 million in benefits each year for 20 years. With a 3% discount rate, the present value of an annual benefit stream is `annual * (1 - (1 + r)^-n) / r`. What is the benefit-cost ratio?
 
+::: {.panel-tabset group="lang"}
 
-#### {{< fa brands r-project >}} R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| exercise: know_5
@@ -522,6 +563,8 @@ bcr <- ______
 
 bcr
 ```
+
+::: {.solution-slot}
 
 ::: {.solution exercise="know_5"}
 
@@ -543,13 +586,15 @@ bcr
 
 :::
 
+:::
+
 ```{webr}
 #| exercise: know_5
 #| check: true
 gradethis::grade_this_code()
 ```
 
-#### {{< fa brands python >}} Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| exercise: know_5_py
@@ -567,6 +612,8 @@ bcr = ______
 
 bcr
 ```
+
+::: {.solution-slot}
 
 ::: {.solution exercise="know_5_py"}
 
@@ -588,12 +635,15 @@ bcr
 
 :::
 
+:::
+
 ```{pyodide}
 #| exercise: know_5_py
 #| check: true
 grade_this_code()
 ```
 
+:::
 
 ---
 
@@ -605,8 +655,9 @@ grade_this_code()
 
 The `segments` table has crash counts for eight corridors over 3 years. Add each segment's crash rate per 100 million VMT and its share of crashes that were fatal or serious (KSI), rank the segments, and name the one with the highest rate.
 
+::: {.panel-tabset group="lang"}
 
-#### {{< fa brands r-project >}} R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| autorun: true
@@ -636,6 +687,8 @@ ggplot(segments_ranked, aes(x = reorder(segment, crash_rate), y = crash_rate, fi
   theme_minimal()
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="skill_1"}
 
 ```{webr}
@@ -662,13 +715,15 @@ ggplot(segments_ranked, aes(x = reorder(segment, crash_rate), y = crash_rate, fi
 
 :::
 
+:::
+
 ```{webr}
 #| exercise: skill_1
 #| check: true
 gradethis::grade_this_code()
 ```
 
-#### {{< fa brands python >}} Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| autorun: true
@@ -702,6 +757,8 @@ plt.tight_layout()
 plt.show()
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="skill_1_py"}
 
 ```{pyodide}
@@ -731,19 +788,23 @@ plt.show()
 
 :::
 
+:::
+
 ```{pyodide}
 #| exercise: skill_1_py
 #| check: true
 grade_this_code()
 ```
 
+:::
 
 ### Question 2: Project Prioritization 🏗️
 
 Score each candidate project with weights of 40% safety, 35% mobility and 25% equity, rank them, and see how many of the top-ranked projects fit in a $60 million program (take projects in rank order and stop when the running cost passes the budget).
 
+::: {.panel-tabset group="lang"}
 
-#### {{< fa brands r-project >}} R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| autorun: true
@@ -776,6 +837,8 @@ ggplot(scored, aes(x = cost_m, y = score, color = cum_cost <= budget, label = pr
   theme_minimal()
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="skill_2"}
 
 ```{webr}
@@ -805,13 +868,15 @@ ggplot(scored, aes(x = cost_m, y = score, color = cum_cost <= budget, label = pr
 
 :::
 
+:::
+
 ```{webr}
 #| exercise: skill_2
 #| check: true
 gradethis::grade_this_code()
 ```
 
-#### {{< fa brands python >}} Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| autorun: true
@@ -849,6 +914,8 @@ plt.tight_layout()
 plt.show()
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="skill_2_py"}
 
 ```{pyodide}
@@ -882,12 +949,15 @@ plt.show()
 
 :::
 
+:::
+
 ```{pyodide}
 #| exercise: skill_2_py
 #| check: true
 grade_this_code()
 ```
 
+:::
 
 ### Question 3: Map the Crash Rate 🗺️
 
@@ -915,6 +985,8 @@ p <- ggplot(region) +
 p
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="skill_3"}
 
 ```{webr}
@@ -935,6 +1007,8 @@ p
 
 :::
 
+:::
+
 ```{webr}
 #| exercise: skill_3
 #| check: true
@@ -945,8 +1019,9 @@ gradethis::grade_this_code()
 
 Use the gravity model for all five zones at once. Friction is `travel_time^-2`. Each cell of the trip table is the zone's productions, shared across destinations in proportion to `attractions * friction`. Build the friction matrix and the trip table, then check the heatmap.
 
+::: {.panel-tabset group="lang"}
 
-#### {{< fa brands r-project >}} R
+## {{< fa brands r-project >}} R
 
 ```{webr}
 #| autorun: true
@@ -978,6 +1053,8 @@ as.data.frame(as.table(round(trips))) |>
   theme_minimal()
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="skill_4"}
 
 ```{webr}
@@ -1006,13 +1083,15 @@ as.data.frame(as.table(round(trips))) |>
 
 :::
 
+:::
+
 ```{webr}
 #| exercise: skill_4
 #| check: true
 gradethis::grade_this_code()
 ```
 
-#### {{< fa brands python >}} Python
+## {{< fa brands python >}} Python
 
 ```{pyodide}
 #| autorun: true
@@ -1048,6 +1127,8 @@ plt.tight_layout()
 plt.show()
 ```
 
+::: {.solution-slot}
+
 ::: {.solution exercise="skill_4_py"}
 
 ```{pyodide}
@@ -1079,12 +1160,15 @@ plt.show()
 
 :::
 
+:::
+
 ```{pyodide}
 #| exercise: skill_4_py
 #| check: true
 grade_this_code()
 ```
 
+:::
 
 ---
 
