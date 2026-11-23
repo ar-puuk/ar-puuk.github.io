@@ -38,11 +38,11 @@ The page design came from a visual mock-up, and the Typst templates reproduce it
 
 The first version of the maps used raster basemap tiles, and in print they looked soft: blurry contours, and labels that were hard to read. UGRC publishes the same basemap as a vector style, but no R tool could draw one under a ggplot. So I wrote [basemapper](../../posts/basemapper/index.llms.md), an R and Python package that renders vector basemaps at the figure’s own zoom and resolution, and switched the maps to it.
 
-[![Census tract map on Salt Lake City's east bench over a raster basemap with soft, partly hidden labels and blurry contours.](../../posts/basemapper/oz_tract_raster.png)](https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/blob/02ef3387d76be82796106dd97d4a01b8d6e1c444/data/map_cache/49035101402_xl.png)
+[![Census tract map on Salt Lake City's east bench over a raster basemap with soft, partly hidden labels and blurry contours.](../../posts/basemapper/oz_tract_raster.png)](../../posts/basemapper/oz_tract_raster.png)
 
 **Before:** raster basemap tiles
 
-[![The same census tract map over a UGRC Lite vector basemap with crisp hillshade, contours and roads.](oz_tract_map.png)](https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/blob/f02bfd8008e297a7775d2ac9a59461d2f339eb7e/data/map_cache/49035101402_xl.png)
+[![The same census tract map over a UGRC Lite vector basemap with crisp hillshade, contours and roads.](oz_tract_map.png)](oz_tract_map.png)
 
 **After:** UGRC Lite vector, rendered by basemapper
 

@@ -192,13 +192,13 @@ What made it work was the golden-image suite. An AI assistant will happily tell 
 
 ## 7 Back to the Opportunity Zones maps
 
-The info sheets were basemapper’s first production use, and the reason it exists. Each tract map in the [pipeline](https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets) now draws UGRC Lite through `geom_basemap()`, rendered at the report’s 200 dpi when `ggsave()` runs, at the same zoom as the old raster maps. Here is the same tract map before and after the switch, as committed to the repository; the overlay layers are identical, and only the basemap changed. Click either map to open it in the repository.
+The info sheets were basemapper’s first production use, and the reason it exists. Each tract map in the [pipeline](https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets) now draws UGRC Lite through `geom_basemap()`, rendered at the report’s 200 dpi when `ggsave()` runs, at the same zoom as the old raster maps. Here is the same tract map before and after the switch, as committed to the repository; the overlay layers are identical, and only the basemap changed.
 
-[![Census tract map on Salt Lake City's east bench, the tract outlined in dark blue with red point markers, a dashed buffer and land-use shading, over a raster basemap with soft, partly hidden labels and blurry contours.](oz_tract_raster.png)](https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/blob/02ef3387d76be82796106dd97d4a01b8d6e1c444/data/map_cache/49035101402_xl.png)
+[![Census tract map on Salt Lake City's east bench, the tract outlined in dark blue with red point markers, a dashed buffer and land-use shading, over a raster basemap with soft, partly hidden labels and blurry contours.](oz_tract_raster.png)](oz_tract_raster.png)
 
 **Before:** raster basemap tiles
 
-[![The same census tract map over a UGRC Lite vector basemap with crisp hillshade, contours and roads.](oz_tract_vector.png)](https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/blob/f02bfd8008e297a7775d2ac9a59461d2f339eb7e/data/map_cache/49035101402_xl.png)
+[![The same census tract map over a UGRC Lite vector basemap with crisp hillshade, contours and roads.](oz_tract_vector.png)](oz_tract_vector.png)
 
 **After:** UGRC Lite vector, rendered by basemapper
 

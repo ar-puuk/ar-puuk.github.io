@@ -712,15 +712,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="back-to-the-opportunity-zones-maps" class="level2" data-number="7">
 <h2 data-number="7" class="anchored" data-anchor-id="back-to-the-opportunity-zones-maps"><span class="header-section-number">7</span> Back to the Opportunity Zones maps</h2>
-<p>The info sheets were basemapper’s first production use, and the reason it exists. Each tract map in the <a href="https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets">pipeline</a> now draws UGRC Lite through <code>geom_basemap()</code>, rendered at the report’s 200 dpi when <code>ggsave()</code> runs, at the same zoom as the old raster maps. Here is the same tract map before and after the switch, as committed to the repository; the overlay layers are identical, and only the basemap changed. Click either map to open it in the repository.</p>
+<p>The info sheets were basemapper’s first production use, and the reason it exists. Each tract map in the <a href="https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets">pipeline</a> now draws UGRC Lite through <code>geom_basemap()</code>, rendered at the report’s 200 dpi when <code>ggsave()</code> runs, at the same zoom as the old raster maps. Here is the same tract map before and after the switch, as committed to the repository; the overlay layers are identical, and only the basemap changed.</p>
 <div class="quarto-layout-panel" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><a href="https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/blob/02ef3387d76be82796106dd97d4a01b8d6e1c444/data/map_cache/49035101402_xl.png"><img src="oz_tract_raster.png" class="img-fluid" alt="Census tract map on Salt Lake City's east bench, the tract outlined in dark blue with red point markers, a dashed buffer and land-use shading, over a raster basemap with soft, partly hidden labels and blurry contours."></a></p>
+<p><a href="oz_tract_raster.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="oz_tract_raster.png" class="img-fluid" alt="Census tract map on Salt Lake City's east bench, the tract outlined in dark blue with red point markers, a dashed buffer and land-use shading, over a raster basemap with soft, partly hidden labels and blurry contours."></a></p>
 <p><strong>Before:</strong> raster basemap tiles</p>
 </div>
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<p><a href="https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/blob/f02bfd8008e297a7775d2ac9a59461d2f339eb7e/data/map_cache/49035101402_xl.png"><img src="oz_tract_vector.png" class="img-fluid" alt="The same census tract map over a UGRC Lite vector basemap with crisp hillshade, contours and roads."></a></p>
+<p><a href="oz_tract_vector.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="oz_tract_vector.png" class="img-fluid" alt="The same census tract map over a UGRC Lite vector basemap with crisp hillshade, contours and roads."></a></p>
 <p><strong>After:</strong> UGRC Lite vector, rendered by basemapper</p>
 </div>
 </div>
@@ -1627,17 +1627,17 @@ Rendered Headlessly</em>. Zenodo, released November 23. <a href="https://doi.org
 <span id="cb8-215"><a href="#cb8-215" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-216"><a href="#cb8-216" aria-hidden="true" tabindex="-1"></a><span class="fu">## Back to the Opportunity Zones maps</span></span>
 <span id="cb8-217"><a href="#cb8-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-218"><a href="#cb8-218" aria-hidden="true" tabindex="-1"></a>The info sheets were basemapper's first production use, and the reason it exists. Each tract map in the <span class="co">[</span><span class="ot">pipeline</span><span class="co">](https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets)</span> now draws UGRC Lite through <span class="in">`geom_basemap()`</span>, rendered at the report's 200 dpi when <span class="in">`ggsave()`</span> runs, at the same zoom as the old raster maps. Here is the same tract map before and after the switch, as committed to the repository; the overlay layers are identical, and only the basemap changed. Click either map to open it in the repository.</span>
+<span id="cb8-218"><a href="#cb8-218" aria-hidden="true" tabindex="-1"></a>The info sheets were basemapper's first production use, and the reason it exists. Each tract map in the <span class="co">[</span><span class="ot">pipeline</span><span class="co">](https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets)</span> now draws UGRC Lite through <span class="in">`geom_basemap()`</span>, rendered at the report's 200 dpi when <span class="in">`ggsave()`</span> runs, at the same zoom as the old raster maps. Here is the same tract map before and after the switch, as committed to the repository; the overlay layers are identical, and only the basemap changed.</span>
 <span id="cb8-219"><a href="#cb8-219" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-220"><a href="#cb8-220" aria-hidden="true" tabindex="-1"></a>::: {layout-ncol="2"}</span>
 <span id="cb8-221"><a href="#cb8-221" aria-hidden="true" tabindex="-1"></a>:::: {}</span>
-<span id="cb8-222"><a href="#cb8-222" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="al">![](oz_tract_raster.png)</span><span class="ot">{.img-fluid alt="Census tract map on Salt Lake City's east bench, the tract outlined in dark blue with red point markers, a dashed buffer and land-use shading, over a raster basemap with soft, partly hidden labels and blurry contours."}</span><span class="co">](https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/blob/02ef3387d76be82796106dd97d4a01b8d6e1c444/data/map_cache/49035101402_xl.png)</span></span>
+<span id="cb8-222"><a href="#cb8-222" aria-hidden="true" tabindex="-1"></a><span class="al">![](oz_tract_raster.png)</span>{.img-fluid alt="Census tract map on Salt Lake City's east bench, the tract outlined in dark blue with red point markers, a dashed buffer and land-use shading, over a raster basemap with soft, partly hidden labels and blurry contours."}</span>
 <span id="cb8-223"><a href="#cb8-223" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-224"><a href="#cb8-224" aria-hidden="true" tabindex="-1"></a>**Before:** raster basemap tiles</span>
 <span id="cb8-225"><a href="#cb8-225" aria-hidden="true" tabindex="-1"></a>::::</span>
 <span id="cb8-226"><a href="#cb8-226" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-227"><a href="#cb8-227" aria-hidden="true" tabindex="-1"></a>:::: {}</span>
-<span id="cb8-228"><a href="#cb8-228" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="al">![](oz_tract_vector.png)</span><span class="ot">{.img-fluid alt="The same census tract map over a UGRC Lite vector basemap with crisp hillshade, contours and roads."}</span><span class="co">](https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/blob/f02bfd8008e297a7775d2ac9a59461d2f339eb7e/data/map_cache/49035101402_xl.png)</span></span>
+<span id="cb8-228"><a href="#cb8-228" aria-hidden="true" tabindex="-1"></a><span class="al">![](oz_tract_vector.png)</span>{.img-fluid alt="The same census tract map over a UGRC Lite vector basemap with crisp hillshade, contours and roads."}</span>
 <span id="cb8-229"><a href="#cb8-229" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-230"><a href="#cb8-230" aria-hidden="true" tabindex="-1"></a>**After:** UGRC Lite vector, rendered by basemapper</span>
 <span id="cb8-231"><a href="#cb8-231" aria-hidden="true" tabindex="-1"></a>::::</span>
