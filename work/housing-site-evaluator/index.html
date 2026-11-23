@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pukar Bhandari">
 <meta name="dcterms.date" content="2025-12-02">
-<meta name="description" content="Scores every parcel and H3 hexagon in the Wasatch Front region on access to jobs, transit and everyday necessities. Developed at the Wasatch Front Regional Council.">
+<meta name="description" content="Scores every parcel and H3 hexagon in the Wasatch Front region on access to jobs, transit and everyday necessities, and lets planners weight those factors on a live map. Developed at the Wasatch Front Regional Council.">
 
 <title>Housing Site Evaluator – Pukar Bhandari</title>
 <style>
@@ -52,9 +52,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8a5672f0138fe174ac385a1e2bdc95c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-4f550554e58d59d67a9ae604d350339e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-8a5672f0138fe174ac385a1e2bdc95c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-490bc4386d2044dbe0390ac645d7e280.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-f69e9b9804d5144d90bbc1b539982d35.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-490bc4386d2044dbe0390ac645d7e280.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
@@ -101,14 +101,14 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../../assets/css/index.css">
 <link rel="stylesheet" href="../../assets/css/app-embed.css">
 <meta property="og:title" content="Housing Site Evaluator – Pukar Bhandari">
-<meta property="og:description" content="Scores every parcel and H3 hexagon in the Wasatch Front region on access to jobs, transit and everyday necessities. Developed at the Wasatch Front Regional Council.">
+<meta property="og:description" content="Scores every parcel and H3 hexagon in the Wasatch Front region on access to jobs, transit and everyday necessities, and lets planners weight those factors on a live map. Developed at the Wasatch Front Regional Council.">
 <meta property="og:image" content="https://ar-puuk.github.io/work/housing-site-evaluator/housing_site_evaluator.png">
 <meta property="og:site_name" content="Pukar Bhandari">
 <meta property="og:image:height" content="880">
 <meta property="og:image:width" content="1400">
 <meta property="og:image:alt" content="Wasatch Front Housing Site Evaluator welcome dialog explaining how to select communities, filter by land use and set priorities.">
 <meta name="twitter:title" content="Housing Site Evaluator – Pukar Bhandari">
-<meta name="twitter:description" content="Scores every parcel and H3 hexagon in the Wasatch Front region on access to jobs, transit and everyday necessities. Developed at the Wasatch Front Regional Council.">
+<meta name="twitter:description" content="Scores every parcel and H3 hexagon in the Wasatch Front region on access to jobs, transit and everyday necessities, and lets planners weight those factors on a live map. Developed at the Wasatch Front Regional Council.">
 <meta name="twitter:image" content="https://ar-puuk.github.io/work/housing-site-evaluator/housing_site_evaluator.png">
 <meta name="twitter:creator" content="@arpuuk">
 <meta name="twitter:site" content="@arpuuk">
@@ -378,8 +378,8 @@ ul.task-list li input[type="checkbox"] {
             <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <div id="quarto-announcement" data-announcement-id="d427bc2c621f9106df6eeacffb0a77cd" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p><strong>New:</strong> <a href="../../work/community-profiles/" class="no-external" target="_self">Demographic Profiles</a>, a zero-backend, map-first dashboard of Census and economic indicators for Utah.</p>
+  <div id="quarto-announcement" data-announcement-id="e50c892fd6bff347bf92501715c38d0d" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>New:</strong> <a href="../../posts/basemapper/" class="no-external" target="_self">basemapper</a>, sharp vector basemaps for ggplot2, tmap, matplotlib and plotnine figures, rendered in R and Python without a browser.</p>
 </div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
@@ -387,10 +387,10 @@ ul.task-list li input[type="checkbox"] {
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">Housing Site Evaluator</h1>
-            <p class="subtitle lead">A rebuilt scoring pipeline for WFRC’s Housing Access-to-Opportunity (ATO) Calculator</p>
+            <p class="subtitle lead">A rebuilt scoring pipeline and web map for WFRC’s Housing Access-to-Opportunity (ATO) Calculator</p>
                   <div>
         <div class="description">
-          Scores every parcel and H3 hexagon in the Wasatch Front region on access to jobs, transit and everyday necessities. Developed at the Wasatch Front Regional Council.
+          Scores every parcel and H3 hexagon in the Wasatch Front region on access to jobs, transit and everyday necessities, and lets planners weight those factors on a live map. Developed at the Wasatch Front Regional Council.
         </div>
       </div>
                           <div class="quarto-categories">
@@ -434,7 +434,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">November 13, 2026</p>
+        <p class="date-modified">November 23, 2026</p>
       </div>
     </div>
       
@@ -472,9 +472,14 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>The Wasatch Front Housing Site Evaluator on its welcome screen.</figcaption>
 </figure>
 </div>
+<section id="why-it-exists" class="level2">
+<h2 class="anchored" data-anchor-id="why-it-exists">Why it exists</h2>
+<p>Where new housing goes shapes how its residents live. A home near frequent transit, a grocery store and a school gives a household options that a home at the edge of the road network does not. The Housing ATO Calculator was made to put that idea on a map: a conversation starter and a data-informed guide for housing and land-use planning, where each community decides which kinds of access matter most to it.</p>
+<p>The original tool was built by Bill Hereth at WFRC. Its data was prepared in a Jupyter notebook and served through an ArcGIS web app. The rebuild keeps the concept and the factors but replaces the machinery underneath: a reproducible R pipeline that scores the whole region, and two new interactive apps that read its output.</p>
+</section>
 <section id="what-it-does" class="level2">
 <h2 class="anchored" data-anchor-id="what-it-does">What it does</h2>
-<p>The Housing Site Evaluator helps housing and land-use planners see which places have good access to opportunity. Users choose their community, optionally filter by land use, and set priorities for eleven accessibility factors; the tool turns that into a heat map from most to least accessible.</p>
+<p>Users choose one or more communities, optionally filter by land use, and set a priority for each of eleven accessibility factors. The tool combines those priorities into a heat map from most to least accessible, which can be tilted into 3D, inspected cell by cell, saved as an image or downloaded as data.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -501,16 +506,43 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>Each factor is scored 0 to 1 per parcel and hexagon. Wasatch Choice center and Opportunity Zone layers are shown as context only; they are not part of the score.</p>
+<p>Each factor is scored 0 to 1 per parcel and per H3 hexagon (resolution 10). Wasatch Choice center and Opportunity Zone layers are shown as context only; they are not part of the score.</p>
+</section>
+<section id="how-the-scores-are-made" class="level2">
+<h2 class="anchored" data-anchor-id="how-the-scores-are-made">How the scores are made</h2>
+<p>The pipeline runs as four Quarto steps, each writing GeoParquet that the next one reads.</p>
+<ol type="1">
+<li><strong>Prepare.</strong> Download the ArcGIS layers (boundaries, transit stops and routes, bikeways, schools, healthcare, childcare, grocery stores, parks, job access by traffic analysis zone) and local parcel and building data from WFRC’s Real Estate Market Model (REMM), driven by a single source manifest.</li>
+<li><strong>Process.</strong> Generate travel-time isochrones with OpenRouteService at 5, 10, 15, 30 and about 60 minutes, using the travel mode that fits each amenity: walking for most daily needs, cycling for commuter rail and higher education, driving for healthcare and freeway exits. Bike facilities get straight-line distance bands instead. The H3 grid is built here too.</li>
+<li><strong>Join.</strong> Assign every parcel and hexagon the smallest time or distance band that reaches it, attach job access counts, and tag each with a land-use code.</li>
+<li><strong>Score.</strong> Normalize each measure to 0 to 1 and export the result for the apps and as a File Geodatabase.</li>
+</ol>
+<p>Two rules do most of the scoring work. Travel time and distance are “cost” measures, so the regional minimum scores 1 and longer trips decay toward 0; job counts are “benefit” measures, scored against the regional maximum. And three factors combine several layers with a <strong>weighted maximum</strong> rather than an average: a hexagon next to a FrontRunner station is well served by transit even if it has no local bus stop, so the best-served sub-layer wins (commuter rail counts fully, rapid bus at 0.8, local bus at 0.5).</p>
+<p>Land use needed its own logic, because neither building points nor parcel polygons cover every case. A hexagon takes the most common code among its buildings; gaps are filled by sampling the parcel underneath, then by a vote of the six neighboring hexagons when at least four agree, and anything still empty is marked “Other” rather than left blank. Ties are broken by building square footage and then alphabetically, so the same inputs always give the same answer.</p>
+</section>
+<section id="interesting-problems" class="level2">
+<h2 class="anchored" data-anchor-id="interesting-problems">Interesting problems</h2>
+<p><strong>Moving off in-memory geometry.</strong> Instead of loading millions of geometries into R memory, the rebuild runs the spatial work in DuckDB over GeoParquet. That made the pipeline faster and easier to maintain, but it brought its own problems. Bulk updates across ten million rows built up DuckDB’s undo buffers until the R session crashed, and neither checkpointing nor vacuuming released them. The fix was to give binary columns a default value instead of filling nulls afterward, keep the working database in a file, and reconnect every couple of layers.</p>
+<p><strong>A join that could not use its index.</strong> Joining points to a dissolved isochrone band means testing them against a single polygon with tens of thousands of vertices, and a spatial index cannot help with one giant shape. Cutting each band into small pieces first made the matches identical and took the join step from about 13.6 minutes to 0.6. I first did this with hand-written tiling, then switched to DuckDB’s <code>ST_Subdivide</code> once a release added it.</p>
+<p><strong>Esri geometry and browser quirks.</strong> Some features in the parcel geodatabase are stored as curved geometry types that crashed DuckDB’s reader, so that loader falls back to <code>sf</code> to linearize them. On the web side, some browser extensions strip the MIME type from the DuckDB WebAssembly download; the app catches that and loads it another way.</p>
+<p><strong>Repeatable results.</strong> Several fixes were about making two runs agree: sorting outputs by key so row order is stable, deterministic tie-breaking for land use, and isochrone requests that retry, checkpoint each batch and only publish a complete layer, so a failed API call can never leave a partial layer cached as finished.</p>
+</section>
+<section id="the-apps" class="level2">
+<h2 class="anchored" data-anchor-id="the-apps">The apps</h2>
+<p>Both apps read the same scored data and let users weight the eleven factors.</p>
+<ul>
+<li>A <strong>Shiny app</strong> in R with <code>bslib</code> and <code>mapgl</code>, with hover tooltips that show each factor’s contribution, pinnable tooltips, a screenshot control and data download.</li>
+<li>A <strong>static Vue app</strong> with MapLibre GL and DuckDB-WASM that needs no server. Data is split into one file per community, so selecting a city loads only that city. Re-weighting is instant because the score and color are computed on the GPU from a map style expression, not by redrawing features. Hexagon outlines are built in a web worker from the H3 index. It uses UGRC’s Lite, Dark and Hybrid vector basemaps and UGRC’s address search. GitHub Actions builds and deploys it to GitHub Pages and WFRC’s web server.</li>
+</ul>
 </section>
 <section id="what-i-worked-on" class="level2">
 <h2 class="anchored" data-anchor-id="what-i-worked-on">What I worked on</h2>
 <ul>
-<li>The <strong>scoring backend</strong>, rebuilt on R, DuckDB and GeoParquet instead of loading millions of geometries into R memory, which made the pipeline faster, cleaner and easier to maintain.</li>
-<li>A pipeline run as four sequential Quarto steps, from data preparation through ATO scoring, with isochrone- and buffer-based proximity measures.</li>
-<li>The interactive web apps built on top of the scores.</li>
+<li>The rebuilt scoring backend on R, DuckDB and GeoParquet, run as four sequential Quarto steps, with isochrone- and buffer-based proximity measures.</li>
+<li>The land-use assignment, normalization and composite scoring.</li>
+<li>Both interactive apps and their deployment.</li>
 </ul>
-<p>My role: developer. I authored all the commits in the rebuilt repository.</p>
+<p>My role: developer. I authored all the commits in the rebuilt repository. The app’s wording and icons were worked out with Bill Hereth, who is also listed with me as a contact for the project.</p>
 </section>
 <section id="see-it" class="level2">
 <h2 class="anchored" data-anchor-id="see-it">See it</h2>

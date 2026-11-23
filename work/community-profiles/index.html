@@ -52,9 +52,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8a5672f0138fe174ac385a1e2bdc95c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-4f550554e58d59d67a9ae604d350339e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-8a5672f0138fe174ac385a1e2bdc95c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-490bc4386d2044dbe0390ac645d7e280.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-f69e9b9804d5144d90bbc1b539982d35.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-490bc4386d2044dbe0390ac645d7e280.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
@@ -375,8 +375,8 @@ ul.task-list li input[type="checkbox"] {
             <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <div id="quarto-announcement" data-announcement-id="d427bc2c621f9106df6eeacffb0a77cd" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p><strong>New:</strong> <a href="../../work/community-profiles/" class="no-external" target="_self">Demographic Profiles</a>, a zero-backend, map-first dashboard of Census and economic indicators for Utah.</p>
+  <div id="quarto-announcement" data-announcement-id="e50c892fd6bff347bf92501715c38d0d" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>New:</strong> <a href="../../posts/basemapper/" class="no-external" target="_self">basemapper</a>, sharp vector basemaps for ggplot2, tmap, matplotlib and plotnine figures, rendered in R and Python without a browser.</p>
 </div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
@@ -432,7 +432,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">November 13, 2026</p>
+        <p class="date-modified">November 23, 2026</p>
       </div>
     </div>
       
@@ -492,15 +492,45 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Honest numbers:</strong> every value carries a method label (published for exactly that area, or aggregated from whole Census blocks), so it is clear how a figure was produced.</li>
 <li>A <strong>PDF report</strong> (a designed profile or a poster) generated in the browser for any area.</li>
 </ul>
+<section id="a-profile-is-always-as-of-one-year" class="level3">
+<h3 class="anchored" data-anchor-id="a-profile-is-always-as-of-one-year">A profile is always “as of” one year</h3>
+<p>The screens are built around a single idea: pick an area, pick a year, and everything on screen describes that area in that year. The search box in the navbar is the area picker. The compare button adds a second area, suggesting areas of the same kind first (another county for a county, another city for a city) and then the state, so Salt Lake City against Salt Lake County, or a county against Utah, are one click away. The year slider has a Play button; moving it redraws the population pyramid and the distributions, and rings that year on every trend chart.</p>
+<p>Each screen is laid out to fit on one desktop screen without scrolling, and the end-to-end tests check that it does. Every chart has a table view and a CSV download, which is also the accessible form of the data, and the tests run axe accessibility checks in light and dark mode.</p>
+</section>
+<section id="a-report-you-can-print" class="level3">
+<h3 class="anchored" data-anchor-id="a-report-you-can-print">A report you can print</h3>
+<p>The PDF report button builds a document from the view on screen: a cover with the methods, curated charts from every tab, tract maps of the area, the commute flow map, the indicator table, and a link and QR code back to the same dashboard view. The other format is a 24 by 36 inch poster of the key figures. Both are drawn as vector graphics with react-pdf, in the browser, from the same Parquet files and queries as the dashboard. The PDF code loads only on the first click.</p>
+</section>
+</section>
+<section id="how-its-built" class="level2">
+<h2 class="anchored" data-anchor-id="how-its-built">How it’s built</h2>
+<p>There are two halves, and they meet at a folder of committed Parquet files.</p>
+<p><strong>The pipeline</strong> is a Python package run with <code>uv</code>, in stages: validate every configured ACS table against every vintage, download whole ACS tables for the state, counties, places and tracts, then population estimates, LODES jobs, workers and origin-destination flows, and QCEW employment and wages. A QA stage checks that county jobs add up to the state’s and compares LODES with QCEW, and an export stage writes simplified GeoJSON for the maps. Spatial work runs in DuckDB with its spatial extension. Output is deterministic, and a stage rewrites a tracked file only when its bytes change, so with the downloads cached the whole data folder rebuilds byte for byte and a rerun leaves no git diff.</p>
+<p><strong>The front end</strong> is Svelte 5 and TypeScript, built with Vite. DuckDB-WASM opens the Parquet files over HTTP and runs every query in the browser; it is set to work even on static servers that don’t support byte-range requests. Charts are Observable Plot, maps are MapLibre on an OpenFreeMap basemap, and the commute flow map is a Flowmap.gl layer that loads only when that screen opens.</p>
+<section id="getting-the-numbers-right" class="level3">
+<h3 class="anchored" data-anchor-id="getting-the-numbers-right">Getting the numbers right</h3>
+<p>The part I spent the most care on is not the interface but whether each number means what its label says. Before the release I ran a full audit (recorded in the repository) and fixed what it found. A few examples:</p>
+<ul>
+<li>The language card counted group totals together with their own sub-rows, which roughly doubled the Spanish share.</li>
+<li>LODES reports educational attainment only for workers aged 30 and older, but the shares were divided by all jobs. Breakdowns LODES doesn’t publish for Utah, such as firm age and size, read as 0% bars; they now show as not published.</li>
+<li>A filter on the QCEW state file matched no rows, leaving the Utah benchmark blank.</li>
+</ul>
+<p>To keep these from coming back, a data-driven test checks every chart and indicator definition against Utah’s real values in every vintage. The source quirks that are in the data as published, such as one Millcreek block that holds thousands of jobs for some years and then doesn’t, are left as they are and documented on the in-app Methods page.</p>
+</section>
+<section id="where-to-draw-a-flow" class="level3">
+<h3 class="anchored" data-anchor-id="where-to-draw-a-flow">Where to draw a flow</h3>
+<p>A flow map needs a point for each area, and the middle of a polygon is often the wrong one. Each area is anchored at the job-weighted centre of its own Census blocks when that lies inside the area, otherwise at a point on its surface. Before this change, the original app’s flows for the whole WFRC region started out in the Tooele desert. Flows to the rest of the state go to a “Rest of Utah” point, placed at the weighted centre of the remaining blocks’ jobs and workers, with its outline drawn dashed so it’s clear what it stands for.</p>
+</section>
 </section>
 <section id="what-i-worked-on" class="level2">
 <h2 class="anchored" data-anchor-id="what-i-worked-on">What I worked on</h2>
 <p>Everything in it. I developed the original at WFRC, both halves of it: the Python pipeline that downloads, validates and crosswalks the Census, LODES and QCEW data into committed Parquet files, and the Svelte and TypeScript front end that reads them in the browser with DuckDB-WASM, with MapLibre maps, Observable Plot charts and a Flowmap.gl commute layer. I authored all the commits in that repository.</p>
-<p>This fork is mine to maintain. I reworked the geography from the WFRC region and its planning areas to the state, counties and cities and towns of Utah, and gave the app its own name and mark.</p>
+<p>This fork is mine to maintain. I reworked the geography from the WFRC region and its planning areas to the state, counties and cities and towns of Utah, and gave the app its own name and mark. Narrowing the scope removed a whole layer of the pipeline (the block crosswalk and the area aggregation described below); the remaining county, city and tract files were rebuilt from the cached downloads and came out unchanged.</p>
 </section>
 <section id="the-original" class="level2">
 <h2 class="anchored" data-anchor-id="the-original">The original: WFRC’s Community Profiles</h2>
 <p>Community Profiles is the WFRC app this one was derived from. It covers the WFRC region, its counties, cities and planning areas (AOG, MPO, RPO and workshop areas). It belongs to WFRC and is unchanged for now. WFRC allowed me to fork it and host this version in my own repository, with some adjustments, as a demographic profile. It will evolve to accommodate more diverse, strategic metrics for planning and regional development, such as population projections, land use characteristics, transit ridership and travel characteristics. Credit for the original, and for the Wasatch Front data work behind it, goes to the agency.</p>
+<p>The planning areas are what made the original harder. They don’t follow Census geography, so the Census publishes no figures for them. The pipeline builds them from block groups: a block group that lies partly inside an area is split using Decennial Census counts for each block, by people for tables about people, by occupied homes for tables about households, and by housing units for tables about housing. Medians can’t be added across pieces, so they are interpolated from the allocated income, rent, home value and age brackets, with a margin of error built from the bracket margins and checked against published county figures. Every such value is labelled as a WFRC estimate rather than a Census figure.</p>
 <div class="app-links">
 <p><a href="https://wfrcanalytics.github.io/APP-Community-Profiles/" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square" aria-label="arrow-up-right-from-square"></i> Community Profiles</a> <a href="https://github.com/WFRCAnalytics/APP-Community-Profiles" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i> Its repository</a> <a href="https://github.com/WFRCAnalytics" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i> WFRC on GitHub</a> <a href="https://wfrc.utah.gov/" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="fa-solid fa-globe" aria-label="globe"></i> WFRC website</a></p>
 </div>

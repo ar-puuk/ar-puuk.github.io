@@ -1,28 +1,37 @@
-## 1 Introduction
+Population demographics are fundamental to transportation planning and urban analysis. Understanding age distributions helps inform infrastructure decisions, transit planning and resource allocation. A population pyramid is the quickest way to see an age distribution, and a map is the quickest way to see where it changes. I wanted both on one screen.
 
-Population demographics are fundamental to transportation planning and urban analysis. Understanding age distributions helps inform infrastructure decisions, transit planning, and resource allocation. In this post, this blog will walk through building an interactive Shiny application that combines population pyramids with spatial visualization using {mapgl} package.
+The Population Pyramid Explorer is a Shiny app that does that for every U.S. county. It uses the [{mapgl}](https://walker-data.com/mapgl/) package’s story map layout: you scroll from a national overview to a state, where a tract-level map of median age sits behind a population pyramid for the county you pick. This post covers what it does, how the story map and the pyramid are built, and ideas for what comes next.
 
-The app allows users to explore county-level demographic data across all US states, displaying both the geographic context through an interactive map and detailed age-sex distributions through population pyramids.
+[ GitHub](https://github.com/ar-puuk/population-pyramid-explorer)
 
-## 2 Application Overview
+## 1 A quick tour
 
-The Population Pyramid Explorer features:
+The app has two sections, and scrolling moves between them.
 
-- **Interactive state selection** with smooth map transitions
-- **County-level demographic visualization** using Census tract data for context
-- **Dynamic population pyramids** showing age-sex distributions
-- **Responsive design** using MapLibre’s story map format
-- **Real-time data integration** from the US Census Bureau
+[![Story map opening screen: a panel titled US State Population Pyramid Explorer with year and state dropdowns set to 2023 and Alabama, over a globe-projected map of North America with U.S. state outlines, map controls and a small globe minimap.](state_overview.png)](state_overview.png "The first section: pick a year and a state over a globe view of the United States.")
 
-## 3 Repository and Code Access
+The first section: pick a year and a state over a globe view of the United States.
 
-The complete source code for this application is available on GitHub: [Population Pyramid Explorer Repository](https://github.com/ar-puuk/population-pyramid-explorer)
+The first section is the overview. You choose a year (2015 to 2023) and a state, over a globe-projected map of the country with state outlines, navigation controls and a small globe minimap in the corner.
 
-The repository includes additional documentation, deployment instructions, and example usage scenarios.
+Scroll down and the map flies to the chosen state, filters the outlines to it, and fills its census tracts by median age. A county picker and the population pyramid appear in the panel on the left. Hovering over a tract highlights it, and clicking it opens a popup with the county name and the tract’s median age. Scrolling back up returns to the national view.
 
-## 4 Key Dependencies and Setup
+[![Population pyramid for Autauga County, Alabama, beside a tract-level map of Alabama.](population_pyramid_explorer.png)](population_pyramid_explorer.png "The second section: a population pyramid for Autauga County, Alabama, in 2023, over a map of Alabama’s census tracts colored by median age.")
 
-The application leverages several powerful R packages for data processing, spatial analysis, and visualization:
+The second section: a population pyramid for Autauga County, Alabama, in 2023, over a map of Alabama’s census tracts colored by median age.
+
+## 2 Two Census products in one view
+
+The two halves of the screen come from two different Census Bureau products, both requested through [tidycensus](https://walker-data.com/tidycensus/):
+
+1.  **American Community Survey (ACS)** 5-year estimates for the map: median age (`B01002_001`) for every tract in the state, with geometry.
+2.  The **Population Estimates Program** for the pyramid: county population by sex and five-year age group, from the `characteristics` product.
+
+The tract layer gives spatial context, and the county estimates give the detail. Both follow the year selector, so the map and the pyramid always describe the same year.
+
+## 3 Key dependencies and setup
+
+The application uses a small set of R packages for data processing, spatial analysis and visualization:
 
 ``` r
 # Custom function to load packages, installing them first if not already installed
@@ -35,7 +44,7 @@ load_pkg <- function(pkg) {
 
 # Data manipulation and visualization
 load_pkg("dplyr")
-load_pkg("tidyr") 
+load_pkg("tidyr")
 load_pkg("ggplot2")
 load_pkg("scales")
 
@@ -51,13 +60,13 @@ load_pkg("tidycensus")
 load_pkg("shiny")
 ```
 
-The `load_pkg()` function ensures packages are installed and loaded, making deployment more robust across different environments.
+The `load_pkg()` helper installs any missing package before loading it, so the app runs on a fresh machine with one command. You do need a Census API key, installed once with `tidycensus::census_api_key()`.
 
-## 5 Application Architecture
+## 4 The story map
 
-### User Interface Design
+### User interface design
 
-The UI implements {mapgl}’s story map concept, creating a scrollable narrative experience:
+The UI is a single call to {mapgl}’s `story_maplibre()`, which places a full-screen map behind a column of scrolling sections:
 
 ``` r
 mapgl::story_maplibre(
@@ -70,62 +79,11 @@ mapgl::story_maplibre(
 )
 ```
 
-This approach provides intuitive navigation between the overview (state selection) and detailed analysis (county demographics).
+Each section holds ordinary Shiny inputs and outputs: the year and state dropdowns in `intro`, and the county picker and pyramid plot in `state_detail`.
 
-### Reactive Data Architecture
+### Drawing the map once
 
-The server logic employs several reactive components that efficiently manage data flow:
-
-**State Geometry**: Loads and transforms state boundaries using the Web Mercator projection (EPSG:3857) for optimal web mapping performance.
-
-**Census Tract Data**: Dynamically fetches median age data at the tract level, providing geographic context for county selection. The data pipeline includes coordinate reference system transformation and popup content preparation.
-
-**Population Estimates**: Retrieves detailed age-sex breakdowns from the Census Bureau’s Population Estimates API, specifically formatted for pyramid visualization.
-
-## 6 Data Processing Pipeline
-
-### Geographic Data Preparation
-
-The application processes spatial data through several key transformations:
-
-``` r
-states_sf <- tigris::states(cb = TRUE) |>
-  sf::st_transform(crs = 3857) |>
-  sf::st_zm(drop = TRUE, what = "ZM")
-```
-
-Using cartographic boundary files (`cb = TRUE`) provides simplified geometries that render faster while maintaining visual accuracy at the national scale.
-
-### Census Data Integration
-
-The demographic data pipeline combines two Census Bureau APIs:
-
-1.  **American Community Survey (ACS)** for tract-level median age visualization
-2.  **Population Estimates Program** for detailed county-level age-sex distributions
-
-The tract-level data provides spatial context with median age choropleth mapping, while county estimates power the detailed population pyramids.
-
-### Data Transformation for Visualization
-
-Population pyramid data requires specific transformations:
-
-``` r
-dplyr::mutate(
-  value = ifelse(SEX == "Male", -value, value),
-  age_min = ifelse(
-    stringr::str_detect(AGEGROUP, "under"), 0,
-    as.numeric(stringr::str_extract(AGEGROUP, "\\d+"))
-  )
-)
-```
-
-Male populations receive negative values for the traditional pyramid layout, and age groups are parsed to enable proper ordering.
-
-## 7 Interactive Mapping Features
-
-### Map Initialization and Styling
-
-The base map uses Carto’s Voyager style for clean, readable cartography:
+The map itself is rendered only once. Every change after that goes through a `maplibre_proxy()`, which updates layers on the existing map instead of rebuilding it:
 
 ``` r
 mapgl::maplibre(
@@ -137,21 +95,21 @@ mapgl::maplibre(
 mapgl::set_projection(projection = "globe")
 ```
 
-The globe projection adds visual appeal while the disabled scroll zoom prevents navigation conflicts with the story map interface.
+The base map uses Carto’s Voyager style for clean, readable cartography. Turning off scroll zoom matters in a story map: the page scroll is how you move between sections, and the map would otherwise swallow it.
 
-### Dynamic Layer Management
+State boundaries are loaded once at startup:
 
-Map layers update responsively based on user selections:
+``` r
+states_sf <- tigris::states(cb = TRUE) |>
+  sf::st_transform(crs = 3857) |>
+  sf::st_zm(drop = TRUE, what = "ZM")
+```
 
-- **State boundaries** provide national context with selective highlighting
-- **Census tract fills** show median age patterns using a continuous color scale
-- **Interactive popups** display detailed demographic information
+Cartographic boundary files (`cb = TRUE`) are simplified, so they draw quickly at the national scale. The geometries are projected to Web Mercator and any Z or M dimensions are dropped before they are handed to the map.
 
-The color scheme uses ColorBrewer’s spectral palette, providing intuitive age visualization from young (red) to old (purple).
+### Reacting to sections
 
-### Smooth Transitions
-
-Section-based navigation triggers smooth map animations:
+{mapgl}’s `on_section()` runs code when a section scrolls into view, and that is where the map changes happen. Entering the overview clears the tract layer and the legend, removes the state filter, and flies back to the whole country:
 
 ``` r
 mapgl::fly_to(
@@ -163,71 +121,72 @@ mapgl::fly_to(
 )
 ```
 
-These transitions maintain user orientation while providing engaging visual feedback.
+Entering the state section adds the tract fill layer and its legend, filters the state outlines to the chosen state, and fits the map to that state’s bounds. The tract colors interpolate between five stops from 20 to 60 years, using ColorBrewer’s spectral palette, from young (orange-red) to old (purple). Tracts without an estimate are drawn in light grey.
 
-## 8 Population Pyramid Visualization
+## 5 Building the pyramid
 
-### Chart Design Philosophy
+### Shaping the data
 
-The population pyramid uses a horizontal bar chart approach with careful attention to readability:
+A population pyramid is a horizontal bar chart with males to the left of zero and females to the right. The Population Estimates data needs a few steps to get there. The request returns several kinds of age groups (five-year bands, broader groups, all ages), so the code keeps only the rows whose label starts with “Age” and drops the “Both sexes” totals. Then:
 
-- **Dual-color scheme**: Navy for males, dark red for females
-- **Absolute value labeling**: Clear population counts despite negative male values
-- **Minimal grid lines**: Focus attention on data patterns
+``` r
+dplyr::mutate(
+  value = ifelse(SEX == "Male", -value, value),
+  age_min = ifelse(
+    stringr::str_detect(AGEGROUP, "under"), 0,
+    as.numeric(stringr::str_extract(AGEGROUP, "\\d+"))
+  )
+)
+```
 
-### Age Group Processing
+Male counts become negative so their bars point left, and the first number in each age label becomes a sort key. The age groups are then turned into a factor in that order, so “5 to 9” comes after “0 to 4” rather than after “45 to 49” as it would alphabetically.
 
-Age categories from the Census API require standardization for consistent display:
+### Chart design
+
+The pyramid is a ggplot2 chart rendered with `renderPlot()`:
+
+- **Two colors**: navy for males, dark red for females.
+- **Labels on the bars**: each bar shows its count, using the absolute value so male counts do not print as negative numbers. The same trick formats the x-axis.
+- **Minimal grid lines**, so the shape of the distribution carries the chart.
+
+The age labels from the Census API are wordy (“Age 0 to 4 years”), so the axis strips the repeated words:
 
 ``` r
 scale_y_discrete(labels = ~ stringr::str_remove_all(.x, "Age\\s|\\syears"))
 ```
 
-This removes redundant text while preserving essential age range information.
+## 6 Details that took some fiddling
 
-### Dynamic Scaling
+**Two ways of naming a tract.** The ACS returns each tract’s name as one string with the tract, county and state in it. The app splits that string into three columns to get the county name for the popup, and the split uses a regular expression that accepts either a comma or a semicolon as the separator, so it handles both forms the Census API returns.
 
-The x-axis automatically adjusts to population magnitudes using thousands formatting, ensuring readability across counties of varying sizes.
+**State and county names to FIPS codes.** The inputs hold names, but the API calls want FIPS codes. The app converts them with tidycensus’s own `validate_state()` and `validate_county()`. Those are internal functions, reached with `tidycensus:::`, which works but could break if the package changes them.
 
-## 9 Technical Implementation Notes
+**A fast county picker.** The county list comes from `tidycensus::fips_codes` for the chosen state and is loaded into a `selectizeInput()` on the server side (`server = TRUE`), with type-to-search. The first county is selected by default, so the pyramid appears as soon as you scroll down.
 
-### Performance Optimization
+**Caching.** `options(tigris_use_cache = TRUE)` keeps boundary files on disk between sessions, and `shiny::req()` holds back every request until the state and county inputs exist.
 
-Several design decisions optimize application performance:
+## 7 Ideas for later
 
-- **{tigris} caching** reduces repeated API calls for geographic data
-- **`selectize` server-side processing** handles large county lists efficiently\
-- **Reactive dependency management** prevents unnecessary data updates
+Possible extensions include:
 
-### Error Handling and Validation
-
-The application includes robust input validation:
-
-- `shiny::req()` ensures required inputs before processing
-- {tidycensus} validation functions prevent invalid state/county combinations
-- Graceful handling of missing or incomplete demographic data
-
-## 10 Future Enhancements
-
-Potential extensions to this application include:
-
-- **Multi-county comparison** capabilities
-- **Time series analysis** showing demographic changes over years\
+- **Multi-county comparison**, with two pyramids side by side
+- **Time series**, showing how a county’s pyramid changes over the years
 - **Additional demographic variables** (income, education, housing)
-- **Export functionality** for charts and data
-- **Integration with transportation metrics** for comprehensive planning analysis
+- **Export functionality** for the chart and the data
+- **Integration with transportation metrics** for planning analysis
+- **Highlighting the selected county** on the state map
+- **Pre-built tract layers**, so the state view opens without waiting for a live Census download
 
-## 11 Conclusion
+## 8 Try it locally
 
-This Population Pyramid Explorer demonstrates the power of combining modern web mapping with demographic visualization. By leveraging R’s robust ecosystem for spatial data and statistical graphics, we can create compelling tools for understanding population patterns that inform transportation planning and policy decisions.
+The app is a single `app.R`. Clone the [repository](https://github.com/ar-puuk/population-pyramid-explorer), install the packages, set your Census API key, and run it:
 
-The modular architecture makes it straightforward to extend the application with additional demographic variables or geographic scales, while the story map format provides an intuitive user experience that encourages exploration and discovery.
+``` r
+tidycensus::census_api_key("YOUR_KEY_HERE", install = TRUE)
+shiny::runApp("app.R")
+```
 
-Whether you’re a transportation planner analyzing ridership demographics, an urban researcher studying neighborhood change, or a policy analyst examining service delivery patterns, this application framework provides a foundation for demographic-geographic analysis that can be adapted to various planning contexts.
-
-------------------------------------------------------------------------
-
-*Want to contribute or suggest improvements? Visit the project repository at:* <https://github.com/ar-puuk/population-pyramid-explorer>
+A free key is available from the [Census Bureau](https://www.census.gov/developers/). The code is under the MIT license, and suggestions and pull requests are welcome.
 
 ## Citation
 

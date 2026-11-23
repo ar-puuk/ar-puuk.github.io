@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pukar Bhandari">
 <meta name="dcterms.date" content="2026-04-11">
-<meta name="description" content="A browser-based viewer for OMX matrix files from travel demand models. It runs on WebAssembly, so the data never leaves your computer.">
+<meta name="description" content="A browser-based viewer for OMX matrix files from travel demand models. It runs on WebAssembly, so the data never leaves your computer. Here is what it does and what it took to scroll a multi-hundred-megabyte matrix in a browser tab.">
 
 <title>Building a Client-Side Open Matrix (OMX) File Viewer – Pukar Bhandari</title>
 <style>
@@ -87,9 +87,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-43d431d6ae33725d0208b2e07b15352c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-0a1ee58fbaa3f5d8041b8bafbf34ceb4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-43d431d6ae33725d0208b2e07b15352c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dd52e5adb6025a2d72185450488676d8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b1919c9cd559971cd531f5718ff5c6da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-dd52e5adb6025a2d72185450488676d8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
@@ -133,14 +133,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../../assets/css/index.css">
 <link rel="stylesheet" href="../../assets/css/app-embed.css">
 <meta property="og:title" content="Building a Client-Side Open Matrix (OMX) File Viewer – Pukar Bhandari">
-<meta property="og:description" content="A browser-based viewer for OMX matrix files from travel demand models. It runs on WebAssembly, so the data never leaves your computer.">
+<meta property="og:description" content="A browser-based viewer for OMX matrix files from travel demand models. It runs on WebAssembly, so the data never leaves your computer. Here is what it does and what it took to scroll a multi-hundred-megabyte matrix in a browser tab.">
 <meta property="og:image" content="https://ar-puuk.github.io/posts/omx-viewer/omx_viewer.png">
 <meta property="og:site_name" content="Pukar Bhandari">
 <meta property="og:image:height" content="868">
 <meta property="og:image:width" content="1914">
 <meta property="og:image:alt" content="OMX Viewer showing a 3,629 by 3,629 trip matrix as a scrollable table with a file info side panel.">
 <meta name="twitter:title" content="Building a Client-Side Open Matrix (OMX) File Viewer – Pukar Bhandari">
-<meta name="twitter:description" content="A browser-based viewer for OMX matrix files from travel demand models. It runs on WebAssembly, so the data never leaves your computer.">
+<meta name="twitter:description" content="A browser-based viewer for OMX matrix files from travel demand models. It runs on WebAssembly, so the data never leaves your computer. Here is what it does and what it took to scroll a multi-hundred-megabyte matrix in a browser tab.">
 <meta name="twitter:image" content="https://ar-puuk.github.io/posts/omx-viewer/omx_viewer.png">
 <meta name="twitter:creator" content="@arpuuk">
 <meta name="twitter:site" content="@arpuuk">
@@ -418,8 +418,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <div id="quarto-announcement" data-announcement-id="d427bc2c621f9106df6eeacffb0a77cd" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p><strong>New:</strong> <a href="../../work/community-profiles/" class="no-external" target="_self">Demographic Profiles</a>, a zero-backend, map-first dashboard of Census and economic indicators for Utah.</p>
+  <div id="quarto-announcement" data-announcement-id="e50c892fd6bff347bf92501715c38d0d" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>New:</strong> <a href="../../posts/basemapper/" class="no-external" target="_self">basemapper</a>, sharp vector basemaps for ggplot2, tmap, matplotlib and plotnine figures, rendered in R and Python without a browser.</p>
 </div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
@@ -427,10 +427,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <div class="quarto-title-block"><div><h1 class="title">Building a Client-Side Open Matrix (OMX) File Viewer</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
-            <p class="subtitle lead">Built on webassembly, works in browser, and data never leaves your computer</p>
+            <p class="subtitle lead">Built on WebAssembly, it runs in the browser, and the data never leaves your computer</p>
                   <div>
         <div class="description">
-          A browser-based viewer for OMX matrix files from travel demand models. It runs on WebAssembly, so the data never leaves your computer.
+          A browser-based viewer for OMX matrix files from travel demand models. It runs on WebAssembly, so the data never leaves your computer. Here is what it does and what it took to scroll a multi-hundred-megabyte matrix in a browser tab.
         </div>
       </div>
                           <div class="quarto-categories">
@@ -464,7 +464,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">November 13, 2026</p>
+        <p class="date-modified">November 23, 2026</p>
       </div>
     </div>
       
@@ -474,12 +474,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Section">
-    
+    <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#whats-in-an-omx-file-and-why-its-awkward-to-peek-at" id="toc-whats-in-an-omx-file-and-why-its-awkward-to-peek-at" class="nav-link active" data-scroll-target="#whats-in-an-omx-file-and-why-its-awkward-to-peek-at"><span class="header-section-number">1</span> What’s in an OMX file, and why it’s awkward to peek at</a></li>
+  <li><a href="#a-quick-tour" id="toc-a-quick-tour" class="nav-link" data-scroll-target="#a-quick-tour"><span class="header-section-number">2</span> A quick tour</a></li>
+  <li><a href="#how-it-works" id="toc-how-it-works" class="nav-link" data-scroll-target="#how-it-works"><span class="header-section-number">3</span> How it works</a></li>
+  <li><a href="#the-interesting-problems" id="toc-the-interesting-problems" class="nav-link" data-scroll-target="#the-interesting-problems"><span class="header-section-number">4</span> The interesting problems</a>
+  <ul class="collapse">
+  <li><a href="#no-matrices-found" id="toc-no-matrices-found" class="nav-link" data-scroll-target="#no-matrices-found">“No matrices found”</a></li>
+  <li><a href="#a-grid-that-took-two-minutes-to-fill" id="toc-a-grid-that-took-two-minutes-to-fill" class="nav-link" data-scroll-target="#a-grid-that-took-two-minutes-to-fill">A grid that took two minutes to fill</a></li>
+  <li><a href="#summaries-without-running-out-of-memory" id="toc-summaries-without-running-out-of-memory" class="nav-link" data-scroll-target="#summaries-without-running-out-of-memory">Summaries without running out of memory</a></li>
+  <li><a href="#go-to-cell-off-by-a-column" id="toc-go-to-cell-off-by-a-column" class="nav-link" data-scroll-target="#go-to-cell-off-by-a-column">Go to cell, off by a column</a></li>
+  <li><a href="#bringing-it-to-vs-code" id="toc-bringing-it-to-vs-code" class="nav-link" data-scroll-target="#bringing-it-to-vs-code">Bringing it to VS Code</a></li>
+  </ul></li>
+  <li><a href="#limits" id="toc-limits" class="nav-link" data-scroll-target="#limits"><span class="header-section-number">5</span> Limits</a></li>
+  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next"><span class="header-section-number">6</span> What’s next</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/edit/master/posts/omx-viewer/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></div>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
 <!-- main -->
 <main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content" tabindex="-1">
 
@@ -488,15 +506,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>I spent way too long writing one-off Python scripts everytime I had to check what’s inside an OMX (Open Matrix Format) file. There had to be a better way.</p>
-<p>So, I built a browser tool to preview OMX files directly. You can:</p>
-<ul>
-<li>Browse individual matrices as separate tabs</li>
-<li>Navigate to a specific row/col and see that cell’s value across all matrices at once</li>
-<li>Run aggregations (sum, mean, median, etc.) across zones or across matrices</li>
-<li>Do basic matrix arithmetic and export results</li>
-</ul>
-<p>Built on WebAssembly so it’s fast and works without any backend, right on your browser. Files in the 300 to 700 MB range are supported; the matrix grid only renders the rows and columns on screen and reads chunks on demand, so it never loads a whole matrix into memory.</p>
+<p>I spent way too long writing one-off Python scripts every time I had to check what’s inside an OMX (Open Matrix Format) file. There had to be a better way.</p>
+<p>So I built a browser tool to preview OMX files directly: drop a file on the page and you can scroll through every matrix in it, look up any cell, summarize rows and columns, and do simple arithmetic between matrices, with nothing installed and nothing uploaded. This post covers why I wanted it, what it does, and the handful of problems that made “just show the numbers” harder than it sounds.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -525,11 +536,86 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="app-links">
 <p><a href="https://ar-puuk.github.io/omx-viewer/" class="btn btn-primary" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square" aria-label="arrow-up-right-from-square"></i> Open app</a> <a href="https://github.com/ar-puuk/omx-viewer" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
 </div>
-<p>If you work with travel demand model and want a quick way to preview the contents of an Open Matrix (OMX) file, give it a try. The code is on <a href="https://github.com/ar-puuk/omx-viewer">GitHub</a> — issues and PRs welcome.</p>
+<section id="whats-in-an-omx-file-and-why-its-awkward-to-peek-at" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="whats-in-an-omx-file-and-why-its-awkward-to-peek-at"><span class="header-section-number">1</span> What’s in an OMX file, and why it’s awkward to peek at</h2>
+<p>Travel demand models move a lot of zone-to-zone data around: trip tables by purpose and mode, travel time and cost skims, and so on. OMX is the common exchange format for these. It is a convention on top of HDF5: one file holds several named square matrices, all with the same zone dimensions, plus optional lookup tables of zone labels.</p>
+<pre class="text"><code>file.omx (HDF5)
+├── /data/
+│   ├── TAZ_AUTO      (float32 or float64, N × N)
+│   ├── TAZ_TRANSIT
+│   └── ...
+├── /lookup/
+│   └── zone_labels   (length N)
+└── root attributes: OMX_VERSION, SHAPE</code></pre>
+<p>HDF5 is a binary format, so you can’t just open it in a text editor or a spreadsheet. The usual answer is a few lines of Python with <code>openmatrix</code> or <code>h5py</code>, which is fine once, and tedious the twentieth time you want to know “what matrices are in this skim file, and does zone 1,204 to 87 look sensible?” I wanted something closer to a file preview: open, look, close.</p>
+</section>
+<section id="a-quick-tour" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="a-quick-tour"><span class="header-section-number">2</span> A quick tour</h2>
+<ul>
+<li><strong>Matrix tabs</strong>: every matrix in the file gets its own tab.</li>
+<li><strong>A scrollable grid</strong> of the whole matrix, with zone labels in the headers when the file has them. Only the rows and columns on screen are ever rendered, so a 3,629 × 3,629 skim scrolls like a small table.</li>
+<li><strong>Go to cell</strong>: type a row and column (by the zone IDs shown in the headers) and the grid scrolls to centre that cell.</li>
+<li><strong>Cross-matrix inspector</strong>: click a cell to pin it, and a side panel shows that same origin-destination pair in every matrix in the file at once. Because all matrices in an OMX file share the same zones, this is a quick way to compare, say, auto and transit times for one pair.</li>
+<li><strong>Summaries</strong>: sum, min, max, mean, median, standard deviation or count of non-zero values, by row or by column, for the active matrix or for all matrices side by side, downloadable as CSV.</li>
+<li><strong>Arithmetic</strong>: add, subtract, multiply or divide two matrices element by element; the result opens as a temporary tab.</li>
+<li><strong>Number formatting</strong> with a choice of decimal places and compact notation (1.2M), and a light or dark theme.</li>
+</ul>
+</section>
+<section id="how-it-works" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="how-it-works"><span class="header-section-number">3</span> How it works</h2>
+<p>It is a static site (Svelte 5, TypeScript and Vite) hosted on GitHub Pages, with no backend. The HDF5 parsing is done by <a href="https://github.com/usnistgov/h5wasm">h5wasm</a>, which compiles the HDF5 C library to WebAssembly. When you drop a file, its bytes are written into h5wasm’s in-memory file system and opened as an HDF5 file; from then on the app reads slices of datasets rather than whole matrices.</p>
+<p>Three pieces do most of the work:</p>
+<ul>
+<li><strong>Chunked reads with a cache.</strong> The grid asks for blocks of rows (200 by default, aligned to the dataset’s own HDF5 chunk shape when it has one) through h5wasm’s <code>slice()</code>. Each tab keeps a small least-recently-used cache of these blocks, so scrolling back and forth doesn’t re-read the file.</li>
+<li><strong>A two-way virtualized grid.</strong> <a href="https://tanstack.com/virtual">TanStack Virtual</a> virtualizes rows and columns independently, so only about 30 rows and 20 columns exist in the page at any moment, whatever the matrix size.</li>
+<li><strong>A worker for arithmetic.</strong> Element-wise operations run in a plain Web Worker. The two input matrices are handed over as transferable <code>Float64Array</code> buffers, so they move between threads without being copied.</li>
+</ul>
+<p>h5wasm itself stays on the main thread. That sounds backwards, but every scroll event needs a slice, and sending each request to a worker and back would add serialization cost on exactly the path that has to feel instant.</p>
+</section>
+<section id="the-interesting-problems" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="the-interesting-problems"><span class="header-section-number">4</span> The interesting problems</h2>
+<section id="no-matrices-found" class="level3">
+<h3 class="anchored" data-anchor-id="no-matrices-found">“No matrices found”</h3>
+<p>In the first deployed version, opening a real file failed with “No matrices found.” The parser was looking for matrices under <code>/matrices/</code> with lowercase attributes, as the original OMX specification describes. Real-world files put them under <code>/data/</code> with uppercase <code>SHAPE</code> and <code>OMX_VERSION</code>. The parser now looks the group up case-insensitively, accepts either name, and falls back to reading the shape from the first matrix if the <code>SHAPE</code> attribute is missing.</p>
+</section>
+<section id="a-grid-that-took-two-minutes-to-fill" class="level3">
+<h3 class="anchored" data-anchor-id="a-grid-that-took-two-minutes-to-fill">A grid that took two minutes to fill</h3>
+<p>My test file was a skim with 23 matrices of 3,629 × 3,629 float32 values, about 1.2 GB. The grid’s skeleton appeared immediately, but the numbers took one to two minutes to show up. There turned out to be two separate bugs, both about Svelte 5’s reactivity rather than about HDF5:</p>
+<ol type="1">
+<li>The function that schedules a row fetch (with a 50 ms debounce) was being called from inside the template, so every re-render reset the timer and the fetch kept getting postponed. It now runs from a plain <code>onscroll</code> handler that computes the visible rows from <code>scrollTop</code> directly.</li>
+<li>Fetched blocks were stored in a <code>Map</code>, and Svelte 5 does not track <code>Map.set()</code>. The data was there, but nothing told the grid to redraw. A version counter that increments on every cache insert, and that the cell lookup reads, fixed it.</li>
+</ol>
+<p>A third bug was hiding behind those: when the visible rows spanned two blocks (rows 180 to 210, say), only the first block was requested. After those fixes, values appear as soon as the grid does.</p>
+</section>
+<section id="summaries-without-running-out-of-memory" class="level3">
+<h3 class="anchored" data-anchor-id="summaries-without-running-out-of-memory">Summaries without running out of memory</h3>
+<p>The first version of the summary panel used DuckDB-WASM: register each matrix as a table, then run SQL aggregates. On the test file it failed with an out-of-memory error. DuckDB-WASM had a memory limit of about 512 MB, a single 3,629-column matrix took about 105 MB as a table, and “all matrices” meant 23 of them.</p>
+<p>The replacement is much simpler. Aggregation streams through the matrix one 200-row block at a time (200 × 3,629 × 4 bytes is about 2.9 MB) and accumulates per-row or per-column results in a plain loop, one matrix at a time, yielding to the event loop between blocks so the page stays responsive. Peak memory is one block plus the results. Median by column is the expensive case, since it has to sort a full column. DuckDB is no longer used anywhere in the app, and it was removed when the code was restructured for the VS Code extension.</p>
+</section>
+<section id="go-to-cell-off-by-a-column" class="level3">
+<h3 class="anchored" data-anchor-id="go-to-cell-off-by-a-column">Go to cell, off by a column</h3>
+<p>Centering the grid on a cell sounds trivial, and took several commits. Cells were positioned as flex items <em>and</em> shifted with a CSS transform, so each column’s offset was applied twice and the effective column width doubled. Separately, the horizontal and vertical scrolls were two calls that raced each other. Absolute positioning and a single <code>scrollTo({ top, left })</code> fixed both. Later, the navigator was changed to accept the zone IDs shown in the headers instead of raw zero-based indexes, which had been landing one row or column off.</p>
+</section>
+<section id="bringing-it-to-vs-code" class="level3">
+<h3 class="anchored" data-anchor-id="bringing-it-to-vs-code">Bringing it to VS Code</h3>
+<p>In July I restructured the repository into a shared engine with two apps on top: the web app and a VS Code extension. The parsing, aggregation, worker and the whole viewer UI are host-independent, since a VS Code webview is just a Chromium page. What differs is how the file arrives, how theme colours are resolved, and how worker scripts are located.</p>
+<p>Getting the file into the webview had its own surprises. VS Code’s webview messaging turned out not to preserve typed arrays, so the extension sends base64 instead. For files above roughly 400 MB, a single base64 string exceeded V8’s maximum string length and failed before the webview received a byte; the extension now sends the file in 32 MB pieces that the webview reassembles into one preallocated buffer.</p>
+<p>A smaller fix from the same release is worth mentioning: zone labels and matrix names come from the file, so they are now sanitized before going into exported CSVs, to stop a crafted file from injecting a spreadsheet formula.</p>
+</section>
+</section>
+<section id="limits" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="limits"><span class="header-section-number">5</span> Limits</h2>
+<p>The web app reads the whole file into the browser’s memory before opening it, so the README recommends files up to about 700 MB and warns above 750 MB. Arithmetic needs both matrices in memory, roughly twice the matrix size. Streaming summaries on a 10,000 × 10,000 matrix take seconds rather than milliseconds. The app needs cross-origin isolation for WebAssembly, which GitHub Pages can’t configure with headers, so a small service worker (<code>coi-serviceworker</code>) adds them in the browser.</p>
+</section>
+<section id="whats-next" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="whats-next"><span class="header-section-number">6</span> What’s next</h2>
+<p>The <a href="https://github.com/ar-puuk/omx-viewer/blob/main/docs/plan.md">plan</a> for a second stage is geospatial: load a zone geometry file alongside the matrix, join it by zone ID, and show a row or column as a choropleth, or the largest flows as desire lines on a map. None of that is built yet.</p>
+<p>The first working version was generated with Claude, and much of the later work was done the same way; the commit history and the design notes in the repository record what broke and why. If you work with travel demand models and want a quick way to preview the contents of an Open Matrix (OMX) file, give it a try. The code is on <a href="https://github.com/ar-puuk/omx-viewer">GitHub</a>, and issues and PRs are welcome.</p>
 
 
 <!-- -->
 
+</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{bhandari2026,
   author = {Bhandari, Pukar},
@@ -1195,59 +1281,132 @@ File Viewer.”</span> April 11. <a href="https://ar-puuk.github.io/posts/omx-vi
   <script type="application/javascript">
   window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Building a Client-Side Open Matrix (OMX) File Viewer"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "A browser-based viewer for OMX matrix files from travel demand models. It runs on WebAssembly, so the data never leaves your computer."</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">image-alt:</span><span class="co"> "OMX Viewer showing a 3,629 by 3,629 trip matrix as a scrollable table with a file info side panel."</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> Built on webassembly, works in browser, and data never leaves your computer</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "omx_viewer.png"</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Pukar Bhandari</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">    email: pukar.bhandari@outlook.com</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2026-04-11"</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [JavaScript, Travel Demand Modeling, Web Apps, Open Source, Transportation, Data Science]</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>I spent way too long writing one-off Python scripts everytime I had to check what's inside an OMX (Open Matrix Format) file. There had to be a better way.</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>So, I built a browser tool to preview OMX files directly. You can:</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Browse individual matrices as separate tabs</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Navigate to a specific row/col and see that cell's value across all matrices at once</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Run aggregations (sum, mean, median, etc.) across zones or across matrices</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Do basic matrix arithmetic and export results</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>Built on WebAssembly so it's fast and works without any backend, right on your browser. Files in the 300 to 700 MB range are supported; the matrix grid only renders the rows and columns on screen and reads chunks on demand, so it never loads a whole matrix into memory.</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Update: now a VS Code extension too</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>The same engine now powers an **OMX Viewer extension for VS Code**, so <span class="in">`.omx`</span>, <span class="in">`.h5`</span> and <span class="in">`.hdf5`</span> files open in the viewer straight from the editor, with an *Export Summary as CSV* command. Install it from the <span class="co">[</span><span class="ot">VS Code Marketplace</span><span class="co">](https://marketplace.visualstudio.com/items?itemName=arpuuk.omx-viewer)</span> or <span class="co">[</span><span class="ot">Open VSX</span><span class="co">](https://open-vsx.org/extension/arpuuk/omx-viewer)</span>. The web app and the extension are versioned together, and the extension streams large files to its webview in 32 MB chunks, which lifts the practical size limit well into multi-gigabyte territory.</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>If you work with travel demand models and want to try it, the live app is embedded below.</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>::: {.column-screen-inset}</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper"&gt;</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;OMX File Viewer&lt;/span&gt;</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/omx-viewer/" title="OMX Viewer" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open app</span><span class="co">](https://ar-puuk.github.io/omx-viewer/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/omx-viewer)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>If you work with travel demand model and want a quick way to preview the contents of an Open Matrix (OMX) file, give it a try. The code is on <span class="co">[</span><span class="ot">GitHub</span><span class="co">](https://github.com/ar-puuk/omx-viewer)</span> — issues and PRs welcome.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Building a Client-Side Open Matrix (OMX) File Viewer"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "A browser-based viewer for OMX matrix files from travel demand models. It runs on WebAssembly, so the data never leaves your computer. Here is what it does and what it took to scroll a multi-hundred-megabyte matrix in a browser tab."</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">image-alt:</span><span class="co"> "OMX Viewer showing a 3,629 by 3,629 trip matrix as a scrollable table with a file info side panel."</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> Built on WebAssembly, it runs in the browser, and the data never leaves your computer</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "omx_viewer.png"</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Pukar Bhandari</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">    email: pukar.bhandari@outlook.com</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2026-04-11"</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="an">date-modified:</span><span class="co"> "2026-11-23"</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [JavaScript, Travel Demand Modeling, Web Apps, Open Source, Transportation, Data Science]</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>I spent way too long writing one-off Python scripts every time I had to check what's inside an OMX (Open Matrix Format) file. There had to be a better way.</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>So I built a browser tool to preview OMX files directly: drop a file on the page and you can scroll through every matrix in it, look up any cell, summarize rows and columns, and do simple arithmetic between matrices, with nothing installed and nothing uploaded. This post covers why I wanted it, what it does, and the handful of problems that made "just show the numbers" harder than it sounds.</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Update: now a VS Code extension too</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>The same engine now powers an **OMX Viewer extension for VS Code**, so <span class="in">`.omx`</span>, <span class="in">`.h5`</span> and <span class="in">`.hdf5`</span> files open in the viewer straight from the editor, with an *Export Summary as CSV* command. Install it from the <span class="co">[</span><span class="ot">VS Code Marketplace</span><span class="co">](https://marketplace.visualstudio.com/items?itemName=arpuuk.omx-viewer)</span> or <span class="co">[</span><span class="ot">Open VSX</span><span class="co">](https://open-vsx.org/extension/arpuuk/omx-viewer)</span>. The web app and the extension are versioned together, and the extension streams large files to its webview in 32 MB chunks, which lifts the practical size limit well into multi-gigabyte territory.</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>If you work with travel demand models and want to try it, the live app is embedded below.</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>::: {.column-screen-inset}</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper"&gt;</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;OMX File Viewer&lt;/span&gt;</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/omx-viewer/" title="OMX Viewer" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open app</span><span class="co">](https://ar-puuk.github.io/omx-viewer/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/omx-viewer)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## What's in an OMX file, and why it's awkward to peek at</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>Travel demand models move a lot of zone-to-zone data around: trip tables by purpose and mode, travel time and cost skims, and so on. OMX is the common exchange format for these. It is a convention on top of HDF5: one file holds several named square matrices, all with the same zone dimensions, plus optional lookup tables of zone labels.</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="in">```text</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="in">file.omx (HDF5)</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="in">├── /data/</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="in">│   ├── TAZ_AUTO      (float32 or float64, N × N)</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="in">│   ├── TAZ_TRANSIT</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="in">│   └── ...</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="in">├── /lookup/</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="in">│   └── zone_labels   (length N)</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="in">└── root attributes: OMX_VERSION, SHAPE</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>HDF5 is a binary format, so you can't just open it in a text editor or a spreadsheet. The usual answer is a few lines of Python with <span class="in">`openmatrix`</span> or <span class="in">`h5py`</span>, which is fine once, and tedious the twentieth time you want to know "what matrices are in this skim file, and does zone 1,204 to 87 look sensible?" I wanted something closer to a file preview: open, look, close.</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="fu">## A quick tour</span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Matrix tabs**: every matrix in the file gets its own tab.</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**A scrollable grid** of the whole matrix, with zone labels in the headers when the file has them. Only the rows and columns on screen are ever rendered, so a 3,629 × 3,629 skim scrolls like a small table.</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Go to cell**: type a row and column (by the zone IDs shown in the headers) and the grid scrolls to centre that cell.</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Cross-matrix inspector**: click a cell to pin it, and a side panel shows that same origin-destination pair in every matrix in the file at once. Because all matrices in an OMX file share the same zones, this is a quick way to compare, say, auto and transit times for one pair.</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Summaries**: sum, min, max, mean, median, standard deviation or count of non-zero values, by row or by column, for the active matrix or for all matrices side by side, downloadable as CSV.</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Arithmetic**: add, subtract, multiply or divide two matrices element by element; the result opens as a temporary tab.</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Number formatting** with a choice of decimal places and compact notation (1.2M), and a light or dark theme.</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="fu">## How it works</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>It is a static site (Svelte 5, TypeScript and Vite) hosted on GitHub Pages, with no backend. The HDF5 parsing is done by <span class="co">[</span><span class="ot">h5wasm</span><span class="co">](https://github.com/usnistgov/h5wasm)</span>, which compiles the HDF5 C library to WebAssembly. When you drop a file, its bytes are written into h5wasm's in-memory file system and opened as an HDF5 file; from then on the app reads slices of datasets rather than whole matrices.</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>Three pieces do most of the work:</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Chunked reads with a cache.** The grid asks for blocks of rows (200 by default, aligned to the dataset's own HDF5 chunk shape when it has one) through h5wasm's <span class="in">`slice()`</span>. Each tab keeps a small least-recently-used cache of these blocks, so scrolling back and forth doesn't re-read the file.</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**A two-way virtualized grid.** <span class="co">[</span><span class="ot">TanStack Virtual</span><span class="co">](https://tanstack.com/virtual)</span> virtualizes rows and columns independently, so only about 30 rows and 20 columns exist in the page at any moment, whatever the matrix size.</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**A worker for arithmetic.** Element-wise operations run in a plain Web Worker. The two input matrices are handed over as transferable <span class="in">`Float64Array`</span> buffers, so they move between threads without being copied.</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>h5wasm itself stays on the main thread. That sounds backwards, but every scroll event needs a slice, and sending each request to a worker and back would add serialization cost on exactly the path that has to feel instant.</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a><span class="fu">## The interesting problems</span></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a><span class="fu">### "No matrices found"</span></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>In the first deployed version, opening a real file failed with "No matrices found." The parser was looking for matrices under <span class="in">`/matrices/`</span> with lowercase attributes, as the original OMX specification describes. Real-world files put them under <span class="in">`/data/`</span> with uppercase <span class="in">`SHAPE`</span> and <span class="in">`OMX_VERSION`</span>. The parser now looks the group up case-insensitively, accepts either name, and falls back to reading the shape from the first matrix if the <span class="in">`SHAPE`</span> attribute is missing.</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a><span class="fu">### A grid that took two minutes to fill</span></span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>My test file was a skim with 23 matrices of 3,629 × 3,629 float32 values, about 1.2 GB. The grid's skeleton appeared immediately, but the numbers took one to two minutes to show up. There turned out to be two separate bugs, both about Svelte 5's reactivity rather than about HDF5:</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>The function that schedules a row fetch (with a 50 ms debounce) was being called from inside the template, so every re-render reset the timer and the fetch kept getting postponed. It now runs from a plain <span class="in">`onscroll`</span> handler that computes the visible rows from <span class="in">`scrollTop`</span> directly.</span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Fetched blocks were stored in a <span class="in">`Map`</span>, and Svelte 5 does not track <span class="in">`Map.set()`</span>. The data was there, but nothing told the grid to redraw. A version counter that increments on every cache insert, and that the cell lookup reads, fixed it.</span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a>A third bug was hiding behind those: when the visible rows spanned two blocks (rows 180 to 210, say), only the first block was requested. After those fixes, values appear as soon as the grid does.</span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a><span class="fu">### Summaries without running out of memory</span></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a>The first version of the summary panel used DuckDB-WASM: register each matrix as a table, then run SQL aggregates. On the test file it failed with an out-of-memory error. DuckDB-WASM had a memory limit of about 512 MB, a single 3,629-column matrix took about 105 MB as a table, and "all matrices" meant 23 of them.</span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a>The replacement is much simpler. Aggregation streams through the matrix one 200-row block at a time (200 × 3,629 × 4 bytes is about 2.9 MB) and accumulates per-row or per-column results in a plain loop, one matrix at a time, yielding to the event loop between blocks so the page stays responsive. Peak memory is one block plus the results. Median by column is the expensive case, since it has to sort a full column. DuckDB is no longer used anywhere in the app, and it was removed when the code was restructured for the VS Code extension.</span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a><span class="fu">### Go to cell, off by a column</span></span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>Centering the grid on a cell sounds trivial, and took several commits. Cells were positioned as flex items *and* shifted with a CSS transform, so each column's offset was applied twice and the effective column width doubled. Separately, the horizontal and vertical scrolls were two calls that raced each other. Absolute positioning and a single <span class="in">`scrollTo({ top, left })`</span> fixed both. Later, the navigator was changed to accept the zone IDs shown in the headers instead of raw zero-based indexes, which had been landing one row or column off.</span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a><span class="fu">### Bringing it to VS Code</span></span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a>In July I restructured the repository into a shared engine with two apps on top: the web app and a VS Code extension. The parsing, aggregation, worker and the whole viewer UI are host-independent, since a VS Code webview is just a Chromium page. What differs is how the file arrives, how theme colours are resolved, and how worker scripts are located.</span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a>Getting the file into the webview had its own surprises. VS Code's webview messaging turned out not to preserve typed arrays, so the extension sends base64 instead. For files above roughly 400 MB, a single base64 string exceeded V8's maximum string length and failed before the webview received a byte; the extension now sends the file in 32 MB pieces that the webview reassembles into one preallocated buffer.</span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a>A smaller fix from the same release is worth mentioning: zone labels and matrix names come from the file, so they are now sanitized before going into exported CSVs, to stop a crafted file from injecting a spreadsheet formula.</span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a><span class="fu">## Limits</span></span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a>The web app reads the whole file into the browser's memory before opening it, so the README recommends files up to about 700 MB and warns above 750 MB. Arithmetic needs both matrices in memory, roughly twice the matrix size. Streaming summaries on a 10,000 × 10,000 matrix take seconds rather than milliseconds. The app needs cross-origin isolation for WebAssembly, which GitHub Pages can't configure with headers, so a small service worker (<span class="in">`coi-serviceworker`</span>) adds them in the browser.</span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a><span class="fu">## What's next</span></span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a>The <span class="co">[</span><span class="ot">plan</span><span class="co">](https://github.com/ar-puuk/omx-viewer/blob/main/docs/plan.md)</span> for a second stage is geospatial: load a zone geometry file alongside the matrix, join it by zone ID, and show a row or column as a choropleth, or the largest flows as desire lines on a map. None of that is built yet.</span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a>The first working version was generated with Claude, and much of the later work was done the same way; the commit history and the design notes in the repository record what broke and why. If you work with travel demand models and want a quick way to preview the contents of an Open Matrix (OMX) file, give it a try. The code is on <span class="co">[</span><span class="ot">GitHub</span><span class="co">](https://github.com/ar-puuk/omx-viewer)</span>, and issues and PRs are welcome.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
@@ -1257,7 +1416,7 @@ File Viewer.”</span> April 11. <a href="https://ar-puuk.github.io/posts/omx-vi
 </div>   
     <div class="nav-footer-center">
 <p><a href="https://www.linkedin.com/in/arpuuk" title="LinkedIn" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" aria-label="linkedin"></i></a> &nbsp; <a href="https://github.com/ar-puuk/" title="github" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i></a> &nbsp; <a href="https://bsky.app/profile/arpuuk.bsky.social" title="Bluesky" target="_blank" rel="noopener"><i class="fa-brands fa-bluesky" aria-label="bluesky"></i></a> &nbsp; <a href="https://urbanists.social/@arpuuk" title="Mastodon" target="_blank" rel="noopener"><i class="fa-brands fa-mastodon" aria-label="mastodon"></i></a> &nbsp; <a href="https://orcid.org/0000-0002-1043-2937" title="orcid" target="_blank" rel="noopener"><i class="ai  ai-orcid" aria-label="orcid"></i></a> &nbsp; <a href="https://scholar.google.com/citations?user=vnwRlAsAAAAJ&amp;hl=en" title="Google Scholar" target="_blank" rel="noopener"><i class="ai  ai-google-scholar" aria-label="google-scholar"></i></a> &nbsp; <a href="mailto:pukar.bhandari@outlook.com" title="E-mail" target="_blank" rel="noopener"><i class="fa-solid fa-envelope" aria-label="envelope"></i></a></p>
-<div class="toc-actions"><ul><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/edit/master/posts/omx-viewer/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/edit/master/posts/omx-viewer/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">

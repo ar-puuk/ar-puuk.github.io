@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pukar Bhandari">
 <meta name="dcterms.date" content="2026-05-14">
-<meta name="description" content="Calculates the D variables of urban form (density, diversity, design, destinations, demographics, distance to transit) for the Wasatch Front region at H3 resolution. Developed at the Wasatch Front Regional Council.">
+<meta name="description" content="Calculates the D variables of urban form (density, diversity, design, destinations, demographics, distance to transit) for the Wasatch Front region at H3 resolution, with neighbor smoothing and a swipe map to compare smoothed and raw values. Developed at the Wasatch Front Regional Council.">
 
 <title>SE 2025 Urban Form D Variables (H3) – Pukar Bhandari</title>
 <style>
@@ -52,9 +52,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8a5672f0138fe174ac385a1e2bdc95c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-4f550554e58d59d67a9ae604d350339e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-8a5672f0138fe174ac385a1e2bdc95c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-490bc4386d2044dbe0390ac645d7e280.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-f69e9b9804d5144d90bbc1b539982d35.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-490bc4386d2044dbe0390ac645d7e280.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
@@ -101,14 +101,14 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../../assets/css/index.css">
 <link rel="stylesheet" href="../../assets/css/app-embed.css">
 <meta property="og:title" content="SE 2025 Urban Form D Variables (H3) – Pukar Bhandari">
-<meta property="og:description" content="Calculates the D variables of urban form (density, diversity, design, destinations, demographics, distance to transit) for the Wasatch Front region at H3 resolution. Developed at the Wasatch Front Regional Council.">
+<meta property="og:description" content="Calculates the D variables of urban form (density, diversity, design, destinations, demographics, distance to transit) for the Wasatch Front region at H3 resolution, with neighbor smoothing and a swipe map to compare smoothed and raw values. Developed at the Wasatch Front Regional Council.">
 <meta property="og:image" content="https://ar-puuk.github.io/work/se2025-h3/se2025_h3.png">
 <meta property="og:site_name" content="Pukar Bhandari">
 <meta property="og:image:height" content="880">
 <meta property="og:image:width" content="1400">
 <meta property="og:image:alt" content="Map of H3 hexagons on the Wasatch Front shaded by population and employment density, with a smoothed versus raw swipe divider.">
 <meta name="twitter:title" content="SE 2025 Urban Form D Variables (H3) – Pukar Bhandari">
-<meta name="twitter:description" content="Calculates the D variables of urban form (density, diversity, design, destinations, demographics, distance to transit) for the Wasatch Front region at H3 resolution. Developed at the Wasatch Front Regional Council.">
+<meta name="twitter:description" content="Calculates the D variables of urban form (density, diversity, design, destinations, demographics, distance to transit) for the Wasatch Front region at H3 resolution, with neighbor smoothing and a swipe map to compare smoothed and raw values. Developed at the Wasatch Front Regional Council.">
 <meta name="twitter:image" content="https://ar-puuk.github.io/work/se2025-h3/se2025_h3.png">
 <meta name="twitter:creator" content="@arpuuk">
 <meta name="twitter:site" content="@arpuuk">
@@ -378,8 +378,8 @@ ul.task-list li input[type="checkbox"] {
             <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <div id="quarto-announcement" data-announcement-id="d427bc2c621f9106df6eeacffb0a77cd" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p><strong>New:</strong> <a href="../../work/community-profiles/" class="no-external" target="_self">Demographic Profiles</a>, a zero-backend, map-first dashboard of Census and economic indicators for Utah.</p>
+  <div id="quarto-announcement" data-announcement-id="e50c892fd6bff347bf92501715c38d0d" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>New:</strong> <a href="../../posts/basemapper/" class="no-external" target="_self">basemapper</a>, sharp vector basemaps for ggplot2, tmap, matplotlib and plotnine figures, rendered in R and Python without a browser.</p>
 </div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
@@ -390,7 +390,7 @@ ul.task-list li input[type="checkbox"] {
             <p class="subtitle lead">Six urban-form measures on H3 hexagons for the WFRC and MAG region</p>
                   <div>
         <div class="description">
-          Calculates the D variables of urban form (density, diversity, design, destinations, demographics, distance to transit) for the Wasatch Front region at H3 resolution. Developed at the Wasatch Front Regional Council.
+          Calculates the D variables of urban form (density, diversity, design, destinations, demographics, distance to transit) for the Wasatch Front region at H3 resolution, with neighbor smoothing and a swipe map to compare smoothed and raw values. Developed at the Wasatch Front Regional Council.
         </div>
       </div>
                           <div class="quarto-categories">
@@ -433,7 +433,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">November 13, 2026</p>
+        <p class="date-modified">November 23, 2026</p>
       </div>
     </div>
       
@@ -471,9 +471,14 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>The explorer comparing smoothed and raw population-plus-employment density.</figcaption>
 </figure>
 </div>
-<section id="what-it-does" class="level2">
-<h2 class="anchored" data-anchor-id="what-it-does">What it does</h2>
-<p>The “D variables” are a standard framework for measuring how urban form relates to travel behavior (Cervero and Kockelman, 1997; Ewing and Cervero, 2010). This project calculates them for the WFRC and MAG region from WFRC’s SE 2025 socioeconomic data, at H3 resolution 9 and 8.</p>
+<section id="why-the-d-variables" class="level2">
+<h2 class="anchored" data-anchor-id="why-the-d-variables">Why the D variables</h2>
+<p>The “D variables” are a standard framework for describing the parts of the built environment most strongly tied to how people travel: whether they drive, take transit or walk, and how far (Cervero and Kockelman, 1997; Ewing and Cervero, 2010). Measuring them consistently across a region gives planners and modelers a common way to compare places.</p>
+<p>WFRC’s SE 2025 socioeconomic data (households, population, residential units and jobs by sector, from the parcel-level Real Estate Market Model) is the natural starting point. This project turns it, together with census, transit and amenity data, into a set of D variables on a uniform grid of H3 hexagons at resolutions 9 and 8, and an explorer for browsing them.</p>
+<p>The project began as a smaller job, smoothing the SE data across neighboring hexagons, and grew into a full D-variable pipeline with the smoothing built into each variable.</p>
+</section>
+<section id="what-it-calculates" class="level2">
+<h2 class="anchored" data-anchor-id="what-it-calculates">What it calculates</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -488,19 +493,19 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td>Density</td>
-<td>Residents and workers per square mile</td>
+<td>Residential units plus jobs (converted to household equivalents) per square mile</td>
 </tr>
 <tr class="even">
 <td>Diversity</td>
-<td>Balance of homes and jobs (land-use mix)</td>
+<td>Balance of households and jobs: 1 when they are in balance, near 0 for a purely residential or purely employment area</td>
 </tr>
 <tr class="odd">
 <td>Design</td>
-<td>Street-network connectivity</td>
+<td>Street-network connectivity, with 4-way intersections scored 1 and T-intersections 0.5</td>
 </tr>
 <tr class="even">
 <td>Destinations</td>
-<td>Proximity to activity centers and everyday amenities, with seven sub-components</td>
+<td>Overlap with Wasatch Choice centers (60%) plus the presence of six everyday amenities (40%): healthcare, high school, grocery, city hall, park and EMS, each also kept as its own column</td>
 </tr>
 <tr class="odd">
 <td>Demographics</td>
@@ -508,17 +513,39 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td>Distance to transit</td>
-<td>Distance to the nearest frequent-service stop</td>
+<td>Distance to the nearest frequent stop: a weekday median headway of 15 minutes or less, or commuter or heavy rail</td>
 </tr>
 </tbody>
 </table>
-<p>A supplementary <strong>Rental Housing Attainability Index</strong>, developed by Cascadia Partners with WFRC and UTA, is included alongside them.</p>
-<p>Because urban form describes the environment a person <em>experiences</em>, not the contents of an arbitrary polygon, each variable is <strong>spatially smoothed</strong> across neighboring hexagons. The explorer’s swipe control compares the smoothed value with the raw one.</p>
+<p>A supplementary <strong>Rental Housing Attainability Index</strong>, developed by Cascadia Partners with WFRC and UTA, is included alongside them. It averages the multifamily share of housing units with the share of renters paying less than 30% of income on rent, on a 0 to 100 scale. The raw SE counts are carried through too, so population, households and jobs by sector can be explored in the same map.</p>
+</section>
+<section id="smoothing-what-a-place-is-like-not-what-is-inside-a-hexagon" class="level2">
+<h2 class="anchored" data-anchor-id="smoothing-what-a-place-is-like-not-what-is-inside-a-hexagon">Smoothing: what a place is like, not what is inside a hexagon</h2>
+<p>A level-9 hexagon covers only about 0.04 square miles. A park one block away matters just as much to a resident whether or not it falls inside the same hexagon, and raw per-hexagon values produce sharp edges at cell boundaries that nobody actually experiences.</p>
+<p>So each variable is <strong>smoothed</strong> across up to three rings of neighbors, roughly a half-mile radius. The cell itself keeps 40% of the weight and the rings get 30%, 20% and 10%, so a hexagon’s own character still dominates. The detail that matters is that smoothing is applied to the <strong>inputs</strong> of each formula, not its output. Smoothed density is still people and jobs per square mile, computed from smoothed counts, rather than an average of neighboring density scores. For ratios like diversity or the attainability index, the counts are smoothed first and then divided.</p>
+<p>At the edge of the study area, missing neighbors contribute nothing and their weight is not handed to the neighbors that are present, so a boundary cell is not dominated by the few cells around it. Every variable is also stored unsmoothed, and the explorer’s swipe control puts the two side by side.</p>
+<p>Level 8 follows two rules. Raw counts are a plain sum of each cell’s seven level-9 children, so regional totals match exactly at both resolutions. The D variables are recomputed on the level-8 grid with their own smoothing, so each score means the same thing at its own scale.</p>
+</section>
+<section id="choices-worth-explaining" class="level2">
+<h2 class="anchored" data-anchor-id="choices-worth-explaining">Choices worth explaining</h2>
+<p><strong>Income diversity took three tries.</strong> The first version used one minus the Gini coefficient of household income. The second switched to Shannon entropy, so that a mixed-income area scored well regardless of how wealthy it was, but entropy values clustered near the top and were hard to read. The current index splits the region’s households into three income tiers, with the breakpoints drawn from the regional distribution so each tier holds about a third of households, and scores each hexagon as the smallest tier share divided by the largest. A score of 1 means all three tiers are equally present; 0 means at least one is missing entirely. A wealthy area where everyone earns about the same scores low, not because incomes are high but because there is no mix. The same rework fixed a bug that had cut the income brackets off at $75,000.</p>
+<p><strong>Filling in counties outside the model.</strong> The SE 2025 data covers only the core travel-model area. For Box Elder, Tooele, Morgan, Cache, Summit and Wasatch counties, the grid is extended using the Utah Statewide Travel Model’s own SE 2025 data, spread from traffic analysis zones onto hexagons by area. New hexagons are created only inside cities, towns and census-designated places, since covering whole counties would add a large number of hexagons over empty land.</p>
+<p><strong>A buffer or the grid?</strong> Cascadia Partners computed the multifamily share with a quarter-mile buffer. I recomputed it in the pipeline as a point-in-hexagon count with the standard ring smoothing. A check script reproduced Cascadia’s buffer values almost exactly, so the reason for the switch is consistency with the rest of the pipeline, not a correction, and the documentation says so.</p>
+<p><strong>Small data bugs with large effects.</strong> Point layers from the state’s ArcGIS services were at first cached with every coordinate at (0, 0) until the request named a coordinate system explicitly. GDAL’s File Geodatabase writer can produce a corrupt spatial index that makes features vanish when zoomed in, so the pipeline deletes that index before zipping and also writes a GeoPackage copy.</p>
+</section>
+<section id="the-explorer" class="level2">
+<h2 class="anchored" data-anchor-id="the-explorer">The explorer</h2>
+<p>The explorer is a Vite, React and TypeScript app on MapLibre GL, deployed to GitHub Pages. Choosing a variable shows a swipe map, smoothed on the left and raw on the right; for plain counts that have no smoothed version, it becomes a single full-width map. A hover panel lists every variable for the focused hexagon, and a histogram legend shows the distribution.</p>
+<p>The map switches from level 8 to level 9 at zoom 11. The hexagons were first served as GeoJSON and are now PMTiles written straight from R, so the browser loads only the tiles in view. Both levels load together and their opacities crossfade over a zoom range, computed on the GPU, which removed a flash of bare basemap during the switch. Thinning features at low zoom and rounding stored values cut the level-9 tiles by more than half. Color classes are Fisher natural breaks computed in R, pooled across smoothed and raw values so both sides of the swipe share a scale.</p>
+</section>
+<section id="outputs" class="level2">
+<h2 class="anchored" data-anchor-id="outputs">Outputs</h2>
+<p>The pipeline is a single R script with documented, editable parameters at the top: smoothing weights, the jobs-to-household ratio, Wasatch Choice center weights and the income-tier mode. Remote layers are cached locally in full, and filters are applied when they are read, so a filter can change without downloading again. It writes a File Geodatabase and a GeoPackage with level-9 and level-8 layers, the PMTiles and break metadata for the app, and a methodology document that describes each formula.</p>
 </section>
 <section id="what-i-worked-on" class="level2">
 <h2 class="anchored" data-anchor-id="what-i-worked-on">What I worked on</h2>
-<p>The R pipeline that computes and smooths the variables, and the interactive explorer for browsing them.</p>
-<p>My role: developer. I authored all the commits in the repository.</p>
+<p>The R pipeline that computes and smooths the variables, the extension to counties outside the model area, the integration of the Rental Housing Attainability Index, and the interactive explorer.</p>
+<p>My role: developer. I authored all the commits in the repository. The Rental Housing Attainability Index method is Cascadia Partners’ work with WFRC and UTA.</p>
 </section>
 <section id="see-it" class="level2">
 <h2 class="anchored" data-anchor-id="see-it">See it</h2>

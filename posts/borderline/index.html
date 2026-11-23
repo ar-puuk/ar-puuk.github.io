@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pukar Bhandari">
 <meta name="dcterms.date" content="2026-09-21">
-<meta name="description" content="A browser geography game for U.S. states and counties, built as plain static HTML, CSS and JavaScript with no build step.">
+<meta name="description" content="A browser geography game for U.S. states and counties, built as plain static HTML, CSS and JavaScript with no build step. Here is how it plays, and the projection, hit-testing and caching problems behind it.">
 
 <title>Borderline: A U.S. Geography Guessing Game – Pukar Bhandari</title>
 <style>
@@ -87,9 +87,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-43d431d6ae33725d0208b2e07b15352c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-0a1ee58fbaa3f5d8041b8bafbf34ceb4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-43d431d6ae33725d0208b2e07b15352c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dd52e5adb6025a2d72185450488676d8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b1919c9cd559971cd531f5718ff5c6da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-dd52e5adb6025a2d72185450488676d8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
@@ -133,14 +133,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../../assets/css/index.css">
 <link rel="stylesheet" href="../../assets/css/app-embed.css">
 <meta property="og:title" content="Borderline: A U.S. Geography Guessing Game – Pukar Bhandari">
-<meta property="og:description" content="A browser geography game for U.S. states and counties, built as plain static HTML, CSS and JavaScript with no build step.">
+<meta property="og:description" content="A browser geography game for U.S. states and counties, built as plain static HTML, CSS and JavaScript with no build step. Here is how it plays, and the projection, hit-testing and caching problems behind it.">
 <meta property="og:image" content="https://ar-puuk.github.io/posts/borderline/borderline.png">
 <meta property="og:site_name" content="Pukar Bhandari">
 <meta property="og:image:height" content="880">
 <meta property="og:image:width" content="1400">
 <meta property="og:image:alt" content="Borderline game start screen with mode, difficulty, timing and round options and a Play button, in a dark theme.">
 <meta name="twitter:title" content="Borderline: A U.S. Geography Guessing Game – Pukar Bhandari">
-<meta name="twitter:description" content="A browser geography game for U.S. states and counties, built as plain static HTML, CSS and JavaScript with no build step.">
+<meta name="twitter:description" content="A browser geography game for U.S. states and counties, built as plain static HTML, CSS and JavaScript with no build step. Here is how it plays, and the projection, hit-testing and caching problems behind it.">
 <meta name="twitter:image" content="https://ar-puuk.github.io/posts/borderline/borderline.png">
 <meta name="twitter:creator" content="@arpuuk">
 <meta name="twitter:site" content="@arpuuk">
@@ -418,8 +418,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <div id="quarto-announcement" data-announcement-id="d427bc2c621f9106df6eeacffb0a77cd" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p><strong>New:</strong> <a href="../../work/community-profiles/" class="no-external" target="_self">Demographic Profiles</a>, a zero-backend, map-first dashboard of Census and economic indicators for Utah.</p>
+  <div id="quarto-announcement" data-announcement-id="e50c892fd6bff347bf92501715c38d0d" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>New:</strong> <a href="../../posts/basemapper/" class="no-external" target="_self">basemapper</a>, sharp vector basemaps for ggplot2, tmap, matplotlib and plotnine figures, rendered in R and Python without a browser.</p>
 </div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
@@ -427,10 +427,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <div class="quarto-title-block"><div><h1 class="title">Borderline: A U.S. Geography Guessing Game</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
-            <p class="subtitle lead">Name a state, click its outline — no interior borders to give it away</p>
+            <p class="subtitle lead">Name a state or county, click its outline, with no interior borders to give it away</p>
                   <div>
         <div class="description">
-          A browser geography game for U.S. states and counties, built as plain static HTML, CSS and JavaScript with no build step.
+          A browser geography game for U.S. states and counties, built as plain static HTML, CSS and JavaScript with no build step. Here is how it plays, and the projection, hit-testing and caching problems behind it.
         </div>
       </div>
                           <div class="quarto-categories">
@@ -462,7 +462,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">November 13, 2026</p>
+        <p class="date-modified">November 23, 2026</p>
       </div>
     </div>
       
@@ -477,8 +477,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#play" id="toc-play" class="nav-link active" data-scroll-target="#play"><span class="header-section-number">1</span> Play</a></li>
-  <li><a href="#how-it-plays" id="toc-how-it-plays" class="nav-link" data-scroll-target="#how-it-plays"><span class="header-section-number">2</span> How it plays</a></li>
-  <li><a href="#under-the-hood" id="toc-under-the-hood" class="nav-link" data-scroll-target="#under-the-hood"><span class="header-section-number">3</span> Under the hood</a></li>
+  <li><a href="#the-idea-no-interior-borders" id="toc-the-idea-no-interior-borders" class="nav-link" data-scroll-target="#the-idea-no-interior-borders"><span class="header-section-number">2</span> The idea: no interior borders</a></li>
+  <li><a href="#how-it-plays" id="toc-how-it-plays" class="nav-link" data-scroll-target="#how-it-plays"><span class="header-section-number">3</span> How it plays</a></li>
+  <li><a href="#under-the-hood" id="toc-under-the-hood" class="nav-link" data-scroll-target="#under-the-hood"><span class="header-section-number">4</span> Under the hood</a></li>
+  <li><a href="#the-interesting-parts" id="toc-the-interesting-parts" class="nav-link" data-scroll-target="#the-interesting-parts"><span class="header-section-number">5</span> The interesting parts</a>
+  <ul class="collapse">
+  <li><a href="#one-projection-for-the-country-another-for-each-state" id="toc-one-projection-for-the-country-another-for-each-state" class="nav-link" data-scroll-target="#one-projection-for-the-country-another-for-each-state">One projection for the country, another for each state</a></li>
+  <li><a href="#did-the-click-land-inside" id="toc-did-the-click-land-inside" class="nav-link" data-scroll-target="#did-the-click-land-inside">Did the click land inside?</a></li>
+  <li><a href="#county-names-are-not-in-the-data" id="toc-county-names-are-not-in-the-data" class="nav-link" data-scroll-target="#county-names-are-not-in-the-data">County names are not in the data</a></li>
+  <li><a href="#keeping-a-fast-first-load" id="toc-keeping-a-fast-first-load" class="nav-link" data-scroll-target="#keeping-a-fast-first-load">Keeping a fast first load</a></li>
+  <li><a href="#the-offline-bug-that-hid-a-fix" id="toc-the-offline-bug-that-hid-a-fix" class="nav-link" data-scroll-target="#the-offline-bug-that-hid-a-fix">The offline bug that hid a fix</a></li>
+  <li><a href="#tests-that-look-at-pixels" id="toc-tests-that-look-at-pixels" class="nav-link" data-scroll-target="#tests-that-look-at-pixels">Tests that look at pixels</a></li>
+  </ul></li>
+  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next"><span class="header-section-number">6</span> What’s next</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/edit/master/posts/borderline/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
 </nav>
@@ -495,6 +506,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>I spend my days around maps of the U.S., which makes it a little embarrassing how often I cannot place a county. Borderline is the fix: you are given a place name, you click where you think it is on a black outline map, and you find out how close to “borderline” your geography really is.</p>
+<p>It is a small game, but it turned out to be a good excuse to deal with some real cartography problems in plain JavaScript: which projection to draw a single state in, how to tell whether a click landed inside a county with a coastline full of islands, and how to keep an offline web app from serving stale code forever.</p>
 <section id="play" class="level2 page-columns page-full" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="play"><span class="header-section-number">1</span> Play</h2>
 <div class="column-screen-inset">
@@ -512,21 +524,69 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a href="https://ar-puuk.github.io/borderline/" class="btn btn-primary" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square" aria-label="arrow-up-right-from-square"></i> Open app</a> <a href="https://github.com/ar-puuk/borderline" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
 </div>
 </section>
-<section id="how-it-plays" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="how-it-plays"><span class="header-section-number">2</span> How it plays</h2>
-<ul>
-<li><strong>States mode</strong>: the outline of the U.S. appears with no interior borders. Click inside the named state to score. Miss, and the correct state is highlighted.</li>
-<li><strong>Counties mode</strong>: pick a state and the map zooms to its outline. You get county names, or the locally correct equivalent (parishes, boroughs and so on).</li>
-<li><strong>Easy or Hard</strong>: Easy keeps every answered shape colored on the map as a running record; Hard clears it between guesses.</li>
-<li><strong>Untimed or Blitz</strong>: choose 10, 25 or all rounds, or race a 60-second clock.</li>
-<li><strong>Zoom and pan</strong> for fiddly shapes like tiny islands and thin coastal counties.</li>
-</ul>
-<p>The game remembers your best score per mode in <code>localStorage</code>, and once you have missed something enough times it surfaces a “you struggle most with” list. At the end, <strong>Retry these</strong> replays just what you got wrong, and <strong>Copy result</strong> puts a Wordle-style summary on your clipboard to share.</p>
+<section id="the-idea-no-interior-borders" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="the-idea-no-interior-borders"><span class="header-section-number">2</span> The idea: no interior borders</h2>
+<p>Most map quizzes show you every state line and ask you to pick one. That turns the game into shape recognition with a lot of help: once you have found the neighbours, the answer is the only blank piece left. Borderline draws only the outer outline. In States mode you see the outline of the country and nothing inside it; in Counties mode you pick a state, the map zooms to that state’s outline, and again there are no county lines. You have to know roughly where Kansas is, not just what it looks like.</p>
 </section>
-<section id="under-the-hood" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="under-the-hood"><span class="header-section-number">3</span> Under the hood</h2>
-<p>It is pure static HTML, CSS and JavaScript (ES modules): no build step, no server, no CDN, built to live on GitHub Pages. Boundary data comes from the U.S. Census Bureau via <a href="https://github.com/topojson/us-atlas">us-atlas</a>. Keeping it dependency-free means it loads fast and is easy for anyone to read and fork.</p>
-<p>The code is on <a href="https://github.com/ar-puuk/borderline">GitHub</a> — it is still borderline playable, so bug reports are welcome.</p>
+<section id="how-it-plays" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="how-it-plays"><span class="header-section-number">3</span> How it plays</h2>
+<ul>
+<li><strong>States mode</strong>: click inside the named state to score. Miss, and the correct state is highlighted in red and your click is marked, so you can see how far off you were.</li>
+<li><strong>Counties mode</strong>: you get county names, or the locally correct equivalent: parishes in Louisiana, boroughs and census areas in Alaska, and independent cities in Virginia, Maryland, Missouri and Nevada.</li>
+<li><strong>Easy or Hard</strong>: Easy keeps every answered shape on the map (green for a hit, red with a diagonal hatch for a miss) as a running record of the game; Hard clears it between guesses.</li>
+<li><strong>Untimed or Blitz</strong>: choose 10, 25 or all rounds, or race a 60-second clock. Counties mode hides round counts a state can’t fill: county totals run from 3 in Delaware to 254 in Texas, so Delaware only offers “All”.</li>
+<li><strong>Zoom and pan</strong> for fiddly shapes like tiny islands and thin coastal counties: scroll or pinch to zoom, drag to pan, or use the on-map buttons. The view resets every round.</li>
+</ul>
+<p>The game remembers your best score per mode, round count, state and difficulty in <code>localStorage</code>, and across all your games it keeps a per-place miss rate. Once something has been asked at least twice and you keep getting it wrong, it shows up in a “you struggle most with” list on the start screen. At the end of a game, <strong>Retry these</strong> replays just what you missed, and <strong>Copy result</strong> puts a Wordle-style summary (score, a green and red grid of the rounds in order, and a link) on your clipboard.</p>
+<p>The start screen’s settings are also mirrored into the URL, so the address bar is always a link to the current setup. For example, <code>?mode=counties&amp;state=Texas&amp;difficulty=hard&amp;rounds=25&amp;play=1</code> drops you straight into 25 rounds of Texas counties on Hard.</p>
+</section>
+<section id="under-the-hood" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="under-the-hood"><span class="header-section-number">4</span> Under the hood</h2>
+<p>Borderline is pure static HTML, CSS and JavaScript (ES modules): no build step, no server, no CDN, built to live on GitHub Pages. The map is drawn on a <code>&lt;canvas&gt;</code>. Boundary data comes from the U.S. Census Bureau via <a href="https://github.com/topojson/us-atlas">us-atlas</a>, which packages TIGER/Line boundaries as TopoJSON. The two libraries it needs, <code>topojson-client</code> and <code>d3-geo</code>, are bundled once with esbuild into small ES modules and committed to the repository, and the fonts (Space Grotesk and Space Mono) are self-hosted. Keeping it dependency-free means it loads fast and is easy for anyone to read and fork.</p>
+<p>The code is split into small modules: <code>game.js</code> is the round and scoring state machine, <code>mapData.js</code> loads the topology and builds prompt lists and labels, <code>geometry.js</code> holds projections and hit-testing, <code>renderer.js</code> does the canvas drawing, and <code>stats.js</code> tracks the lifetime miss rates.</p>
+</section>
+<section id="the-interesting-parts" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="the-interesting-parts"><span class="header-section-number">5</span> The interesting parts</h2>
+<section id="one-projection-for-the-country-another-for-each-state" class="level3">
+<h3 class="anchored" data-anchor-id="one-projection-for-the-country-another-for-each-state">One projection for the country, another for each state</h3>
+<p>States mode uses us-atlas’s pre-projected Albers USA file, with Alaska and Hawaii already scaled into insets. That is the familiar look for a whole-country map, and since the coordinates are already in pixel space, <code>d3.geoPath()</code> can draw them with a null projection.</p>
+<p>The first version of Counties mode reused the same Albers coordinates and simply zoomed into one state’s bounding box. It looked wrong. Albers is a conic projection whose meridians converge toward the pole; at continental scale you never notice, but zoomed into a single rectangular state like Utah, Wyoming or Colorado the whole state visibly tilts. The fix was to switch Counties mode to the <em>unprojected</em> (longitude and latitude) county file and fit a fresh Web Mercator projection to each state’s extent every time the canvas resizes. Utah and Wyoming came out as clean, upright rectangles.</p>
+<p>Alaska then broke that fix. Its Aleutian chain crosses the 180° meridian, and a plain Mercator fit sees a feature spanning almost 360° of longitude, so the state shrinks to a speck. <code>d3.geoBounds</code> is spherical-aware and reports a crossing feature with its west edge greater than its east edge, so the fitting function checks for exactly that and rotates the projection to centre on the state’s own longitude before fitting:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> [[west]<span class="op">,</span> [east]] <span class="op">=</span> <span class="fu">geoBounds</span>(feature)<span class="op">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> crossesAntimeridian <span class="op">=</span> west <span class="op">&gt;</span> east<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> centerLon <span class="op">=</span> crossesAntimeridian</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">?</span> (((west <span class="op">+</span> east <span class="op">+</span> <span class="dv">360</span>) <span class="op">/</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">180</span>) <span class="op">%</span> <span class="dv">360</span>) <span class="op">-</span> <span class="dv">180</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span> (west <span class="op">+</span> east) <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="fu">geoMercator</span>()<span class="op">.</span><span class="fu">rotate</span>([<span class="op">-</span>centerLon<span class="op">,</span> <span class="dv">0</span>])<span class="op">.</span><span class="fu">fitExtent</span>([[x0<span class="op">,</span> y0]<span class="op">,</span> [x1<span class="op">,</span> y1]]<span class="op">,</span> feature)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A related bug from the very first day went the other way: the bounding-box helper used <code>d3.geoBounds</code> on the already-projected Albers coordinates, and since that function expects degrees, it silently returned the whole world. The rule I ended up with is planar bounds for projected data, spherical bounds for longitude and latitude.</p>
+</section>
+<section id="did-the-click-land-inside" class="level3">
+<h3 class="anchored" data-anchor-id="did-the-click-land-inside">Did the click land inside?</h3>
+<p>Hit-testing reuses the drawing code. The target feature is turned into a <code>Path2D</code> in the same pixel space the renderer draws in, and a tiny off-screen canvas answers <code>isPointInPath()</code>. Because the path comes from the same projection as the picture, the answer matches what you see, including holes and multi-part shapes. Zoom and pan sit on top as a separate view transform, which the click handler inverts before the per-mode inversion, so hit-testing stays correct at any zoom level. Pointer handling tells a tap from a drag or pinch with a movement threshold and a pointer count, so panning never registers as a guess.</p>
+</section>
+<section id="county-names-are-not-in-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="county-names-are-not-in-the-data">County names are not in the data</h3>
+<p>The county <code>name</code> property has no suffix, so the game adds one. Louisiana gets “Parish”. Alaska’s units (boroughs, census areas, consolidated municipalities, and “City and Borough” units like Juneau and Sitka) come from a hand-written lookup table, because they can’t be derived from the data. For the states with independent cities, the FIPS code decides: codes of 500 and above are cities, so the game can tell “Baltimore County” from “Baltimore City” and “Richmond County” from “Richmond City”. As a safety net, any name that still collides within a state gets its FIPS code appended. Washington, D.C. is never prompted (it would be a single-pixel target), though its outline stays on the map.</p>
+</section>
+<section id="keeping-a-fast-first-load" class="level3">
+<h3 class="anchored" data-anchor-id="keeping-a-fast-first-load">Keeping a fast first load</h3>
+<p>The county file is about 840 KB, against about 80 KB for the states, so it is fetched only the first time you switch to Counties mode. A player who only plays States never downloads it.</p>
+</section>
+<section id="the-offline-bug-that-hid-a-fix" class="level3">
+<h3 class="anchored" data-anchor-id="the-offline-bug-that-hid-a-fix">The offline bug that hid a fix</h3>
+<p>Borderline is an installable progressive web app: a service worker precaches the app shell on first visit and serves it cache-first afterward, so the game works with no network. That design has a sharp edge, which I found the hard way. A fix for Blitz mode getting stuck in a background tab (the countdown relied on <code>setInterval</code> ticks, which browsers throttle in hidden tabs; it now checks a wall-clock deadline) was correct in the source but never reached anyone who had already visited, because the cache name had not changed since the service worker was added. Their browsers kept serving the first cached <code>main.js</code>. The fix was to bump the cache name, add a regression test that seeds a stale cache and checks it gets purged on activation, and write a note in the README: any commit that touches a precached file must bump the cache name.</p>
+</section>
+<section id="tests-that-look-at-pixels" class="level3">
+<h3 class="anchored" data-anchor-id="tests-that-look-at-pixels">Tests that look at pixels</h3>
+<p>The game itself has zero dependencies, but there is a dev-only Playwright suite. It checks the things that actually broke during development: hit-testing across all states and the trickiest county cases (Utah’s tilt, Alaska’s antimeridian, Hawaii’s scattered islands, Virginia’s name collisions), Easy and Hard history by reading rendered canvas pixels, pan and zoom correctness, offline loading with the network disabled, and Blitz timing with a mocked clock instead of a real 60-second wait. A few counties are so thin or scattered that a random click point can miss them, so those checks use a 60% floor; a real regression drops the hit rate to zero, which is what the suite is there to catch.</p>
+<p>One feature didn’t survive: I added a typed-answer box so screen-reader users could play unaided, then removed it the same day. The prompt already names the place (“Find Kansas”), so typing the name back tested nothing about geography. The canvas does keep a live <code>aria-label</code> and announces each result through an <code>aria-live</code> region, and every control is a real button.</p>
+</section>
+</section>
+<section id="whats-next" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="whats-next"><span class="header-section-number">6</span> What’s next</h2>
+<p>The data is a fixed vintage from us-atlas: Connecticut still has its eight traditional counties rather than the newer planning regions, and Puerto Rico is not in the Albers files the game uses. Swapping in newer Census data would mean updating that handling.</p>
+<p>The code is on <a href="https://github.com/ar-puuk/borderline">GitHub</a>. It is still borderline playable, so bug reports are welcome.</p>
 
 
 <!-- -->
@@ -1196,58 +1256,117 @@ Game.”</span> September 21. <a href="https://ar-puuk.github.io/posts/borderlin
   <script type="application/javascript">
   window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Borderline: A U.S. Geography Guessing Game"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">image-alt:</span><span class="co"> "Borderline game start screen with mode, difficulty, timing and round options and a Play button, in a dark theme."</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> Name a state, click its outline — no interior borders to give it away</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> A browser geography game for U.S. states and counties, built as plain static HTML, CSS and JavaScript with no build step.</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "borderline.png"</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Pukar Bhandari</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">    email: pukar.bhandari@outlook.com</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2026-09-21"</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [JavaScript, Web Apps, Open Source, GIS]</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>I spend my days around maps of the U.S., which makes it a little embarrassing how often I cannot place a county. Borderline is the fix: you are given a place name, you click where you think it is on a black outline map, and you find out how close to "borderline" your geography really is.</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Play</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>::: {.column-screen-inset}</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper"&gt;</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;Borderline&lt;/span&gt;</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/borderline/" title="Borderline geography game" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open app</span><span class="co">](https://ar-puuk.github.io/borderline/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/borderline)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## How it plays</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**States mode**: the outline of the U.S. appears with no interior borders. Click inside the named state to score. Miss, and the correct state is highlighted.</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Counties mode**: pick a state and the map zooms to its outline. You get county names, or the locally correct equivalent (parishes, boroughs and so on).</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Easy or Hard**: Easy keeps every answered shape colored on the map as a running record; Hard clears it between guesses.</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Untimed or Blitz**: choose 10, 25 or all rounds, or race a 60-second clock.</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Zoom and pan** for fiddly shapes like tiny islands and thin coastal counties.</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>The game remembers your best score per mode in <span class="in">`localStorage`</span>, and once you have missed something enough times it surfaces a "you struggle most with" list. At the end, **Retry these** replays just what you got wrong, and **Copy result** puts a Wordle-style summary on your clipboard to share.</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="fu">## Under the hood</span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>It is pure static HTML, CSS and JavaScript (ES modules): no build step, no server, no CDN, built to live on GitHub Pages. Boundary data comes from the U.S. Census Bureau via <span class="co">[</span><span class="ot">us-atlas</span><span class="co">](https://github.com/topojson/us-atlas)</span>. Keeping it dependency-free means it loads fast and is easy for anyone to read and fork.</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>The code is on <span class="co">[</span><span class="ot">GitHub</span><span class="co">](https://github.com/ar-puuk/borderline)</span> — it is still borderline playable, so bug reports are welcome.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Borderline: A U.S. Geography Guessing Game"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">image-alt:</span><span class="co"> "Borderline game start screen with mode, difficulty, timing and round options and a Play button, in a dark theme."</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> Name a state or county, click its outline, with no interior borders to give it away</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> A browser geography game for U.S. states and counties, built as plain static HTML, CSS and JavaScript with no build step. Here is how it plays, and the projection, hit-testing and caching problems behind it.</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "borderline.png"</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Pukar Bhandari</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">    email: pukar.bhandari@outlook.com</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2026-09-21"</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="an">date-modified:</span><span class="co"> "2026-11-23"</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [JavaScript, Web Apps, Open Source, GIS]</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>I spend my days around maps of the U.S., which makes it a little embarrassing how often I cannot place a county. Borderline is the fix: you are given a place name, you click where you think it is on a black outline map, and you find out how close to "borderline" your geography really is.</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>It is a small game, but it turned out to be a good excuse to deal with some real cartography problems in plain JavaScript: which projection to draw a single state in, how to tell whether a click landed inside a county with a coastline full of islands, and how to keep an offline web app from serving stale code forever.</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Play</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>::: {.column-screen-inset}</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper"&gt;</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;Borderline&lt;/span&gt;</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/borderline/" title="Borderline geography game" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open app</span><span class="co">](https://ar-puuk.github.io/borderline/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/borderline)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="fu">## The idea: no interior borders</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>Most map quizzes show you every state line and ask you to pick one. That turns the game into shape recognition with a lot of help: once you have found the neighbours, the answer is the only blank piece left. Borderline draws only the outer outline. In States mode you see the outline of the country and nothing inside it; in Counties mode you pick a state, the map zooms to that state's outline, and again there are no county lines. You have to know roughly where Kansas is, not just what it looks like.</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## How it plays</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**States mode**: click inside the named state to score. Miss, and the correct state is highlighted in red and your click is marked, so you can see how far off you were.</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Counties mode**: you get county names, or the locally correct equivalent: parishes in Louisiana, boroughs and census areas in Alaska, and independent cities in Virginia, Maryland, Missouri and Nevada.</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Easy or Hard**: Easy keeps every answered shape on the map (green for a hit, red with a diagonal hatch for a miss) as a running record of the game; Hard clears it between guesses.</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Untimed or Blitz**: choose 10, 25 or all rounds, or race a 60-second clock. Counties mode hides round counts a state can't fill: county totals run from 3 in Delaware to 254 in Texas, so Delaware only offers "All".</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Zoom and pan** for fiddly shapes like tiny islands and thin coastal counties: scroll or pinch to zoom, drag to pan, or use the on-map buttons. The view resets every round.</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>The game remembers your best score per mode, round count, state and difficulty in <span class="in">`localStorage`</span>, and across all your games it keeps a per-place miss rate. Once something has been asked at least twice and you keep getting it wrong, it shows up in a "you struggle most with" list on the start screen. At the end of a game, **Retry these** replays just what you missed, and **Copy result** puts a Wordle-style summary (score, a green and red grid of the rounds in order, and a link) on your clipboard.</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>The start screen's settings are also mirrored into the URL, so the address bar is always a link to the current setup. For example, <span class="in">`?mode=counties&amp;state=Texas&amp;difficulty=hard&amp;rounds=25&amp;play=1`</span> drops you straight into 25 rounds of Texas counties on Hard.</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="fu">## Under the hood</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>Borderline is pure static HTML, CSS and JavaScript (ES modules): no build step, no server, no CDN, built to live on GitHub Pages. The map is drawn on a <span class="in">`&lt;canvas&gt;`</span>. Boundary data comes from the U.S. Census Bureau via <span class="co">[</span><span class="ot">us-atlas</span><span class="co">](https://github.com/topojson/us-atlas)</span>, which packages TIGER/Line boundaries as TopoJSON. The two libraries it needs, <span class="in">`topojson-client`</span> and <span class="in">`d3-geo`</span>, are bundled once with esbuild into small ES modules and committed to the repository, and the fonts (Space Grotesk and Space Mono) are self-hosted. Keeping it dependency-free means it loads fast and is easy for anyone to read and fork.</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>The code is split into small modules: <span class="in">`game.js`</span> is the round and scoring state machine, <span class="in">`mapData.js`</span> loads the topology and builds prompt lists and labels, <span class="in">`geometry.js`</span> holds projections and hit-testing, <span class="in">`renderer.js`</span> does the canvas drawing, and <span class="in">`stats.js`</span> tracks the lifetime miss rates.</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="fu">## The interesting parts</span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="fu">### One projection for the country, another for each state</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>States mode uses us-atlas's pre-projected Albers USA file, with Alaska and Hawaii already scaled into insets. That is the familiar look for a whole-country map, and since the coordinates are already in pixel space, <span class="in">`d3.geoPath()`</span> can draw them with a null projection.</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>The first version of Counties mode reused the same Albers coordinates and simply zoomed into one state's bounding box. It looked wrong. Albers is a conic projection whose meridians converge toward the pole; at continental scale you never notice, but zoomed into a single rectangular state like Utah, Wyoming or Colorado the whole state visibly tilts. The fix was to switch Counties mode to the *unprojected* (longitude and latitude) county file and fit a fresh Web Mercator projection to each state's extent every time the canvas resizes. Utah and Wyoming came out as clean, upright rectangles.</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>Alaska then broke that fix. Its Aleutian chain crosses the 180° meridian, and a plain Mercator fit sees a feature spanning almost 360° of longitude, so the state shrinks to a speck. <span class="in">`d3.geoBounds`</span> is spherical-aware and reports a crossing feature with its west edge greater than its east edge, so the fitting function checks for exactly that and rotates the projection to centre on the state's own longitude before fitting:</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="in">```js</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> [[west]<span class="op">,</span> [east]] <span class="op">=</span> <span class="fu">geoBounds</span>(feature)<span class="op">;</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> crossesAntimeridian <span class="op">=</span> west <span class="op">&gt;</span> east<span class="op">;</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> centerLon <span class="op">=</span> crossesAntimeridian</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>  <span class="op">?</span> (((west <span class="op">+</span> east <span class="op">+</span> <span class="dv">360</span>) <span class="op">/</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">180</span>) <span class="op">%</span> <span class="dv">360</span>) <span class="op">-</span> <span class="dv">180</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span> (west <span class="op">+</span> east) <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="fu">geoMercator</span>()<span class="op">.</span><span class="fu">rotate</span>([<span class="op">-</span>centerLon<span class="op">,</span> <span class="dv">0</span>])<span class="op">.</span><span class="fu">fitExtent</span>([[x0<span class="op">,</span> y0]<span class="op">,</span> [x1<span class="op">,</span> y1]]<span class="op">,</span> feature)<span class="op">;</span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>A related bug from the very first day went the other way: the bounding-box helper used <span class="in">`d3.geoBounds`</span> on the already-projected Albers coordinates, and since that function expects degrees, it silently returned the whole world. The rule I ended up with is planar bounds for projected data, spherical bounds for longitude and latitude.</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a><span class="fu">### Did the click land inside?</span></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>Hit-testing reuses the drawing code. The target feature is turned into a <span class="in">`Path2D`</span> in the same pixel space the renderer draws in, and a tiny off-screen canvas answers <span class="in">`isPointInPath()`</span>. Because the path comes from the same projection as the picture, the answer matches what you see, including holes and multi-part shapes. Zoom and pan sit on top as a separate view transform, which the click handler inverts before the per-mode inversion, so hit-testing stays correct at any zoom level. Pointer handling tells a tap from a drag or pinch with a movement threshold and a pointer count, so panning never registers as a guess.</span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a><span class="fu">### County names are not in the data</span></span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>The county <span class="in">`name`</span> property has no suffix, so the game adds one. Louisiana gets "Parish". Alaska's units (boroughs, census areas, consolidated municipalities, and "City and Borough" units like Juneau and Sitka) come from a hand-written lookup table, because they can't be derived from the data. For the states with independent cities, the FIPS code decides: codes of 500 and above are cities, so the game can tell "Baltimore County" from "Baltimore City" and "Richmond County" from "Richmond City". As a safety net, any name that still collides within a state gets its FIPS code appended. Washington, D.C. is never prompted (it would be a single-pixel target), though its outline stays on the map.</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a><span class="fu">### Keeping a fast first load</span></span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>The county file is about 840 KB, against about 80 KB for the states, so it is fetched only the first time you switch to Counties mode. A player who only plays States never downloads it.</span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a><span class="fu">### The offline bug that hid a fix</span></span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>Borderline is an installable progressive web app: a service worker precaches the app shell on first visit and serves it cache-first afterward, so the game works with no network. That design has a sharp edge, which I found the hard way. A fix for Blitz mode getting stuck in a background tab (the countdown relied on <span class="in">`setInterval`</span> ticks, which browsers throttle in hidden tabs; it now checks a wall-clock deadline) was correct in the source but never reached anyone who had already visited, because the cache name had not changed since the service worker was added. Their browsers kept serving the first cached <span class="in">`main.js`</span>. The fix was to bump the cache name, add a regression test that seeds a stale cache and checks it gets purged on activation, and write a note in the README: any commit that touches a precached file must bump the cache name.</span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a><span class="fu">### Tests that look at pixels</span></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>The game itself has zero dependencies, but there is a dev-only Playwright suite. It checks the things that actually broke during development: hit-testing across all states and the trickiest county cases (Utah's tilt, Alaska's antimeridian, Hawaii's scattered islands, Virginia's name collisions), Easy and Hard history by reading rendered canvas pixels, pan and zoom correctness, offline loading with the network disabled, and Blitz timing with a mocked clock instead of a real 60-second wait. A few counties are so thin or scattered that a random click point can miss them, so those checks use a 60% floor; a real regression drops the hit rate to zero, which is what the suite is there to catch.</span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a>One feature didn't survive: I added a typed-answer box so screen-reader users could play unaided, then removed it the same day. The prompt already names the place ("Find Kansas"), so typing the name back tested nothing about geography. The canvas does keep a live <span class="in">`aria-label`</span> and announces each result through an <span class="in">`aria-live`</span> region, and every control is a real button.</span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a><span class="fu">## What's next</span></span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>The data is a fixed vintage from us-atlas: Connecticut still has its eight traditional counties rather than the newer planning regions, and Puerto Rico is not in the Albers files the game uses. Swapping in newer Census data would mean updating that handling.</span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>The code is on <span class="co">[</span><span class="ot">GitHub</span><span class="co">](https://github.com/ar-puuk/borderline)</span>. It is still borderline playable, so bug reports are welcome.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

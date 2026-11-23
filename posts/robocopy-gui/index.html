@@ -87,9 +87,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-43d431d6ae33725d0208b2e07b15352c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-0a1ee58fbaa3f5d8041b8bafbf34ceb4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-43d431d6ae33725d0208b2e07b15352c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dd52e5adb6025a2d72185450488676d8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b1919c9cd559971cd531f5718ff5c6da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-dd52e5adb6025a2d72185450488676d8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
@@ -418,8 +418,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <div id="quarto-announcement" data-announcement-id="d427bc2c621f9106df6eeacffb0a77cd" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p><strong>New:</strong> <a href="../../work/community-profiles/" class="no-external" target="_self">Demographic Profiles</a>, a zero-backend, map-first dashboard of Census and economic indicators for Utah.</p>
+  <div id="quarto-announcement" data-announcement-id="e50c892fd6bff347bf92501715c38d0d" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>New:</strong> <a href="../../posts/basemapper/" class="no-external" target="_self">basemapper</a>, sharp vector basemaps for ggplot2, tmap, matplotlib and plotnine figures, rendered in R and Python without a browser.</p>
 </div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
@@ -427,6 +427,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <div class="quarto-title-block"><div><h1 class="title">Mirror: a Robocopy Command Builder</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+            <p class="subtitle lead">A form for Windows’ most useful file-copy command, built so the options that delete files are impossible to miss</p>
                   <div>
         <div class="description">
           A browser-based builder for Windows Robocopy commands, covering every option in robocopy /? with plain-language explanations and warnings before anything deletes files
@@ -461,7 +462,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">November 13, 2026</p>
+        <p class="date-modified">November 23, 2026</p>
       </div>
     </div>
       
@@ -476,10 +477,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#try-it" id="toc-try-it" class="nav-link active" data-scroll-target="#try-it"><span class="header-section-number">1</span> Try it</a></li>
-  <li><a href="#how-it-works" id="toc-how-it-works" class="nav-link" data-scroll-target="#how-it-works"><span class="header-section-number">2</span> How it works</a></li>
-  <li><a href="#other-ways-in" id="toc-other-ways-in" class="nav-link" data-scroll-target="#other-ways-in"><span class="header-section-number">3</span> Other ways in</a></li>
-  <li><a href="#technical-details" id="toc-technical-details" class="nav-link" data-scroll-target="#technical-details"><span class="header-section-number">4</span> Technical details</a></li>
-  <li><a href="#use-cases" id="toc-use-cases" class="nav-link" data-scroll-target="#use-cases"><span class="header-section-number">5</span> Use cases</a></li>
+  <li><a href="#the-problem-with-robocopy" id="toc-the-problem-with-robocopy" class="nav-link" data-scroll-target="#the-problem-with-robocopy"><span class="header-section-number">2</span> The problem with Robocopy</a></li>
+  <li><a href="#a-quick-tour" id="toc-a-quick-tour" class="nav-link" data-scroll-target="#a-quick-tour"><span class="header-section-number">3</span> A quick tour</a>
+  <ul class="collapse">
+  <li><a href="#other-ways-in" id="toc-other-ways-in" class="nav-link" data-scroll-target="#other-ways-in">Other ways in</a></li>
+  </ul></li>
+  <li><a href="#how-it-works" id="toc-how-it-works" class="nav-link" data-scroll-target="#how-it-works"><span class="header-section-number">4</span> How it works</a>
+  <ul class="collapse">
+  <li><a href="#one-list-of-options-drives-everything" id="toc-one-list-of-options-drives-everything" class="nav-link" data-scroll-target="#one-list-of-options-drives-everything">One list of options drives everything</a></li>
+  <li><a href="#reading-a-command-back-in" id="toc-reading-a-command-back-in" class="nav-link" data-scroll-target="#reading-a-command-back-in">Reading a command back in</a></li>
+  <li><a href="#scripts-that-stop-at-the-right-time" id="toc-scripts-that-stop-at-the-right-time" class="nav-link" data-scroll-target="#scripts-that-stop-at-the-right-time">Scripts that stop at the right time</a></li>
+  <li><a href="#two-apps-one-source" id="toc-two-apps-one-source" class="nav-link" data-scroll-target="#two-apps-one-source">Two apps, one source</a></li>
+  </ul></li>
+  <li><a href="#how-it-got-here" id="toc-how-it-got-here" class="nav-link" data-scroll-target="#how-it-got-here"><span class="header-section-number">5</span> How it got here</a></li>
+  <li><a href="#who-it-is-for" id="toc-who-it-is-for" class="nav-link" data-scroll-target="#who-it-is-for"><span class="header-section-number">6</span> Who it is for</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/edit/master/posts/robocopy-gui/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
 </nav>
@@ -496,7 +507,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Robocopy is the best file-copying tool built into Windows, and one of the hardest to remember: dozens of switches, several of which can delete files at the destination. <strong>Mirror</strong> lets you build the command visually instead. It covers every option in <code>robocopy /?</code> (97 settings), explains what each one does, and warns before anything can delete files. It runs entirely in your browser; nothing is uploaded.</p>
-<p>Mirror began as a single-page Robocopy GUI in 2025 and was redesigned as part of <strong>Conduit</strong>, a pair of command builders that share one design system. Its sister app is <a href="../../posts/wget-gui/index.html">Fetch</a>, the Wget builder.</p>
+<p>Mirror began as a single-page Robocopy GUI in 2025 and was redesigned as part of <strong>Conduit</strong>, a pair of command builders that share one design system. Its sister app is <a href="../../posts/wget-gui/index.html">Fetch</a>, the Wget builder. This post covers why I wanted it, what it does, and how the two apps are built from one source.</p>
 <section id="try-it" class="level2 page-columns page-full" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="try-it"><span class="header-section-number">1</span> Try it</h2>
 <div class="column-screen-inset">
@@ -514,8 +525,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a href="https://ar-puuk.github.io/robocopy-gui/" class="btn btn-primary" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square" aria-label="arrow-up-right-from-square"></i> Open app</a> <a href="https://github.com/ar-puuk/robocopy-gui" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
 </div>
 </section>
-<section id="how-it-works" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="how-it-works"><span class="header-section-number">2</span> How it works</h2>
+<section id="the-problem-with-robocopy" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="the-problem-with-robocopy"><span class="header-section-number">2</span> The problem with Robocopy</h2>
+<p>Robocopy can do almost anything with files: copy only what changed, keep permissions and timestamps, retry over a flaky network, copy with many threads at once, log everything, and run on a schedule. All of that is switches on one command line, and the switches are terse. <code>/MIR</code>, <code>/PURGE</code>, <code>/MOV</code> and <code>/MOVE</code> look harmless and can each remove files, either from the destination or from the source. A typical backup line ends up looking like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">robocopy</span> <span class="st">"D:\Projects"</span> <span class="st">"</span><span class="dt">\\</span><span class="st">server\share\backup"</span> /E /XO /MT:16 /R:3 /W:5 /Z /FFT /NP /LOG:backup.log</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If you write one of these a year, you look every switch up again each time, and you hope you did not mix up <code>/MOV</code> and <code>/MOVE</code>. I wanted a form that writes the command for me, says in plain words what each part does, and makes the dangerous parts impossible to miss.</p>
+</section>
+<section id="a-quick-tour" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="a-quick-tour"><span class="header-section-number">3</span> A quick tour</h2>
 <ol type="1">
 <li><strong>Pick a starting point.</strong> Choose a preset (Daily backup, Exact mirror, Archive with permissions, Fast LAN copy, or Move and clean up) or start from scratch.</li>
 <li><strong>Fill in the tabs.</strong> Locations, What to do, Filters, Preserve, Performance, Automation, Logging and Advanced. Rarely used options stay hidden until you turn on <strong>Show advanced</strong>.</li>
@@ -535,9 +552,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The <code>/MIR</code> (mirror), move and purge options can remove files from the destination. The app shows a clear notice for each of them before anything can be deleted, so read it before you run the script.</p>
 </div>
 </div>
-</section>
-<section id="other-ways-in" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="other-ways-in"><span class="header-section-number">3</span> Other ways in</h2>
+<p>Every command gets one of three labels: “No destructive options”, “Review before you run”, or “This can delete files”. Unless the label is the first one, and while Preview only (<code>/L</code>) is off, the warning comes with a <strong>Turn on preview only</strong> button, so the first run just lists what would happen. Mirror also points out combinations that do not do what you might expect: copy threads cannot be combined with a packet pause, telling Mirror to leave extra files alone means it will not delete them, and adding <code>/PURGE</code> to <code>/MIR</code> changes nothing because mirror already purges.</p>
+<section id="other-ways-in" class="level3">
+<h3 class="anchored" data-anchor-id="other-ways-in">Other ways in</h3>
 <ul>
 <li><strong>Find an option.</strong> Type a name or a flag, such as <code>retry</code> or <code>/MT</code>, to search every tab at once.</li>
 <li><strong>Paste a command.</strong> Paste an existing <code>robocopy</code> command and the form fills in. Flags the builder does not recognise are kept under Advanced.</li>
@@ -545,12 +562,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Profiles.</strong> Save a full set of options and load it later. Profiles, the queue and the form are remembered in your browser.</li>
 </ul>
 </section>
-<section id="technical-details" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="technical-details"><span class="header-section-number">4</span> Technical details</h2>
-<p>The whole app is one self-contained <code>index.html</code> with no build step to run it, so it is light and fast and works from GitHub Pages. It is generated from a shared source, so Mirror and Fetch keep identical design tokens and components. A jsdom smoke test covers it. Icons are from <a href="https://lucide.dev">Lucide</a> and the fonts are Bricolage Grotesque, Instrument Sans and JetBrains Mono. The code lives in the <a href="https://github.com/ar-puuk/robocopy-gui">source repository</a>.</p>
 </section>
-<section id="use-cases" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="use-cases"><span class="header-section-number">5</span> Use cases</h2>
+<section id="how-it-works" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="how-it-works"><span class="header-section-number">4</span> How it works</h2>
+<section id="one-list-of-options-drives-everything" class="level3">
+<h3 class="anchored" data-anchor-id="one-list-of-options-drives-everything">One list of options drives everything</h3>
+<p>Each Robocopy option is written once, as a small declarative entry: its flag, a label, a one-line explanation, which tab it belongs to, whether it is advanced, and, for the risky ones, a risk level and the warning to show. For example, the “What to do” choice lists Copy, Mirror (<code>/MIR</code>, “Deletes in destination”), Move and Move files only. The form, the colored command, the per-flag explanations, the search, the command palette and the risk label are all generated from that one list, so adding an option in one place makes it show up everywhere.</p>
+</section>
+<section id="reading-a-command-back-in" class="level3">
+<h3 class="anchored" data-anchor-id="reading-a-command-back-in">Reading a command back in</h3>
+<p>Pasting a command runs the same list in reverse. The parser splits the text into tokens while keeping quoted paths together, joins lines that were continued with <code>^</code>, and drops a leading <code>robocopy</code> or <code>robocopy.exe</code>. Robocopy’s switches are case-insensitive, so it matches them in upper case, and it understands both bare switches (<code>/E</code>) and switches with values (<code>/MT:16</code>, <code>/LOG:backup.log</code>). Switches that take a list, such as <code>/XD</code> for skipped folders, consume the following words until the next switch. Whatever is left is positional: the first two are the source and destination, and anything after them becomes the file patterns. Anything it does not recognise is not thrown away but kept in the <strong>Extra flags</strong> field under Advanced, so a pasted command never silently loses part of itself.</p>
+</section>
+<section id="scripts-that-stop-at-the-right-time" class="level3">
+<h3 class="anchored" data-anchor-id="scripts-that-stop-at-the-right-time">Scripts that stop at the right time</h3>
+<p>Robocopy does not use exit codes the way most programs do. Codes 0 to 7 all mean success (they report whether files were copied, skipped or found extra at the destination), and only 8 and above mean that something failed. A script that treats any non-zero code as an error would stop after every successful copy. So when stop on first failure is on, the <code>.bat</code> export checks <code>if errorlevel 8 goto :failed</code> after each Robocopy job, and the PowerShell export checks <code>$LASTEXITCODE -ge 8</code>. Both exports are written with Windows line endings, and the <code>.ps1</code> file is saved as UTF-8 with a byte order mark.</p>
+</section>
+<section id="two-apps-one-source" class="level3">
+<h3 class="anchored" data-anchor-id="two-apps-one-source">Two apps, one source</h3>
+<p>Mirror and Fetch share one source file, <code>design/shell.html</code>, which contains both tools plus a page documenting the design system. A small Node script, <code>design/build.js</code>, turns it into two self-contained <code>index.html</code> files: it keeps one tool’s definitions, swaps in that app’s name, accent color, defaults and navigation, replaces sample paths with ones under <code>%USERPROFILE%</code>, and adds saving to browser storage. Every replacement checks that its target text exists and the build stops with an error if not, so a change to the shared source cannot quietly produce a half-built app. A jsdom smoke test then loads each built page and clicks through it: tabs, search, the command palette, adding to the queue, downloading both script formats, and saving a profile.</p>
+<p>The result has no build step to run and no backend, so it is light and works from GitHub Pages. Icons are from <a href="https://lucide.dev">Lucide</a> and the fonts are Bricolage Grotesque, Instrument Sans and JetBrains Mono. The code lives in the <a href="https://github.com/ar-puuk/robocopy-gui">source repository</a>.</p>
+</section>
+</section>
+<section id="how-it-got-here" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="how-it-got-here"><span class="header-section-number">5</span> How it got here</h2>
+<p>The first version, in June 2025, was a single HTML page generated with Gemini 2.5 Pro and then updated with Claude Sonnet 4. It grouped options into a few sections and could add commands to a batch and download them as one <code>.bat</code> file. In December 2025 I gave it a Fluent-style redesign with Gemini Pro, and the same month built a Wget counterpart in the same style.</p>
+<p>In November 2026 I rebuilt both as Conduit, with Claude as a pair programmer. That redesign added the tabs, the risk labels, search, the command palette, paste-to-fill, profiles, PowerShell export and coverage of every option in <code>robocopy /?</code>. The hand-drawn icons were replaced with unmodified Lucide icons, inlined so the app is still one file.</p>
+</section>
+<section id="who-it-is-for" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="who-it-is-for"><span class="header-section-number">6</span> Who it is for</h2>
 <ul>
 <li>System administrators managing file synchronization</li>
 <li>IT professionals setting up backup routines</li>
@@ -1228,77 +1267,113 @@ Builder.”</span> June 15. <a href="https://ar-puuk.github.io/posts/robocopy-gu
   <script type="application/javascript">
   window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Mirror: a Robocopy Command Builder"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">image-alt:</span><span class="co"> "Mirror in the Conduit app: a Locations form with source and destination folders, preset buttons along the top and the generated robocopy command on the right."</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "A browser-based builder for Windows Robocopy commands, covering every option in robocopy /? with plain-language explanations and warnings before anything deletes files"</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Pukar Bhandari</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    email: pukar.bhandari@outlook.com</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "robocopy_gui.png"</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2025-06-15"</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [Developer Tools, JavaScript, Web Apps, Open Source]</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>Robocopy is the best file-copying tool built into Windows, and one of the hardest to remember: dozens of switches, several of which can delete files at the destination. **Mirror** lets you build the command visually instead. It covers every option in <span class="in">`robocopy /?`</span> (97 settings), explains what each one does, and warns before anything can delete files. It runs entirely in your browser; nothing is uploaded.</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>Mirror began as a single-page Robocopy GUI in 2025 and was redesigned as part of **Conduit**, a pair of command builders that share one design system. Its sister app is <span class="co">[</span><span class="ot">Fetch</span><span class="co">](../wget-gui/index.qmd)</span>, the Wget builder.</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## Try it</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>::: {.column-screen-inset}</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper" style="--embed-height: 820px"&gt;</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;Mirror&lt;/span&gt;</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/robocopy-gui/" title="Mirror, a Robocopy command builder" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open app</span><span class="co">](https://ar-puuk.github.io/robocopy-gui/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/robocopy-gui)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="fu">## How it works</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Pick a starting point.** Choose a preset (Daily backup, Exact mirror, Archive with permissions, Fast LAN copy, or Move and clean up) or start from scratch.</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Fill in the tabs.** Locations, What to do, Filters, Preserve, Performance, Automation, Logging and Advanced. Rarely used options stay hidden until you turn on **Show advanced**.</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Watch the command.** It updates as you choose, with every flag explained.</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Add to queue.** Build several jobs, reorder them, then download one <span class="in">`.bat`</span> or <span class="in">`.ps1`</span> script. Stop on first failure is on by default.</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>::: {.callout-caution}</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## Some options delete files</span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>The <span class="in">`/MIR`</span> (mirror), move and purge options can remove files from the destination. The app shows a clear notice for each of them before anything can be deleted, so read it before you run the script.</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## Other ways in</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Find an option.** Type a name or a flag, such as <span class="in">`retry`</span> or <span class="in">`/MT`</span>, to search every tab at once.</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Paste a command.** Paste an existing <span class="in">`robocopy`</span> command and the form fills in. Flags the builder does not recognise are kept under Advanced.</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Command palette.** <span class="in">`Ctrl+K`</span> jumps to any option, preset or page, and <span class="in">`Ctrl+Enter`</span> adds the current command to the queue.</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Profiles.** Save a full set of options and load it later. Profiles, the queue and the form are remembered in your browser.</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## Technical details</span></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>The whole app is one self-contained <span class="in">`index.html`</span> with no build step to run it, so it is light and fast and works from GitHub Pages. It is generated from a shared source, so Mirror and Fetch keep identical design tokens and components. A jsdom smoke test covers it. Icons are from <span class="co">[</span><span class="ot">Lucide</span><span class="co">](https://lucide.dev)</span> and the fonts are Bricolage Grotesque, Instrument Sans and JetBrains Mono. The code lives in the <span class="co">[</span><span class="ot">source repository</span><span class="co">](https://github.com/ar-puuk/robocopy-gui)</span>.</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="fu">## Use cases</span></span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>System administrators managing file synchronization</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>IT professionals setting up backup routines</span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Anyone copying large directory structures with specific parameters</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Learning Robocopy syntax by seeing what each option does</span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>*Want to contribute or suggest improvements? Visit the project repository at:* <span class="ot">&lt;https://github.com/ar-puuk/robocopy-gui&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Mirror: a Robocopy Command Builder"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">image-alt:</span><span class="co"> "Mirror in the Conduit app: a Locations form with source and destination folders, preset buttons along the top and the generated robocopy command on the right."</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> A form for Windows' most useful file-copy command, built so the options that delete files are impossible to miss</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "A browser-based builder for Windows Robocopy commands, covering every option in robocopy /? with plain-language explanations and warnings before anything deletes files"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Pukar Bhandari</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">    email: pukar.bhandari@outlook.com</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "robocopy_gui.png"</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2025-06-15"</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="an">date-modified:</span><span class="co"> "2026-11-23"</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [Developer Tools, JavaScript, Web Apps, Open Source]</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>Robocopy is the best file-copying tool built into Windows, and one of the hardest to remember: dozens of switches, several of which can delete files at the destination. **Mirror** lets you build the command visually instead. It covers every option in <span class="in">`robocopy /?`</span> (97 settings), explains what each one does, and warns before anything can delete files. It runs entirely in your browser; nothing is uploaded.</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>Mirror began as a single-page Robocopy GUI in 2025 and was redesigned as part of **Conduit**, a pair of command builders that share one design system. Its sister app is <span class="co">[</span><span class="ot">Fetch</span><span class="co">](../wget-gui/index.qmd)</span>, the Wget builder. This post covers why I wanted it, what it does, and how the two apps are built from one source.</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Try it</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>::: {.column-screen-inset}</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper" style="--embed-height: 820px"&gt;</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;Mirror&lt;/span&gt;</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/robocopy-gui/" title="Mirror, a Robocopy command builder" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open app</span><span class="co">](https://ar-puuk.github.io/robocopy-gui/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/robocopy-gui)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="fu">## The problem with Robocopy</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>Robocopy can do almost anything with files: copy only what changed, keep permissions and timestamps, retry over a flaky network, copy with many threads at once, log everything, and run on a schedule. All of that is switches on one command line, and the switches are terse. <span class="in">`/MIR`</span>, <span class="in">`/PURGE`</span>, <span class="in">`/MOV`</span> and <span class="in">`/MOVE`</span> look harmless and can each remove files, either from the destination or from the source. A typical backup line ends up looking like this:</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="in">```sh</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="ex">robocopy</span> <span class="st">"D:\Projects"</span> <span class="st">"</span><span class="dt">\\</span><span class="st">server\share\backup"</span> /E /XO /MT:16 /R:3 /W:5 /Z /FFT /NP /LOG:backup.log</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>If you write one of these a year, you look every switch up again each time, and you hope you did not mix up <span class="in">`/MOV`</span> and <span class="in">`/MOVE`</span>. I wanted a form that writes the command for me, says in plain words what each part does, and makes the dangerous parts impossible to miss.</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## A quick tour</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Pick a starting point.** Choose a preset (Daily backup, Exact mirror, Archive with permissions, Fast LAN copy, or Move and clean up) or start from scratch.</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Fill in the tabs.** Locations, What to do, Filters, Preserve, Performance, Automation, Logging and Advanced. Rarely used options stay hidden until you turn on **Show advanced**.</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Watch the command.** It updates as you choose, with every flag explained.</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Add to queue.** Build several jobs, reorder them, then download one <span class="in">`.bat`</span> or <span class="in">`.ps1`</span> script. Stop on first failure is on by default.</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>::: {.callout-caution}</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="fu">## Some options delete files</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>The <span class="in">`/MIR`</span> (mirror), move and purge options can remove files from the destination. The app shows a clear notice for each of them before anything can be deleted, so read it before you run the script.</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>Every command gets one of three labels: "No destructive options", "Review before you run", or "This can delete files". Unless the label is the first one, and while Preview only (<span class="in">`/L`</span>) is off, the warning comes with a **Turn on preview only** button, so the first run just lists what would happen. Mirror also points out combinations that do not do what you might expect: copy threads cannot be combined with a packet pause, telling Mirror to leave extra files alone means it will not delete them, and adding <span class="in">`/PURGE`</span> to <span class="in">`/MIR`</span> changes nothing because mirror already purges.</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="fu">### Other ways in</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Find an option.** Type a name or a flag, such as <span class="in">`retry`</span> or <span class="in">`/MT`</span>, to search every tab at once.</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Paste a command.** Paste an existing <span class="in">`robocopy`</span> command and the form fills in. Flags the builder does not recognise are kept under Advanced.</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Command palette.** <span class="in">`Ctrl+K`</span> jumps to any option, preset or page, and <span class="in">`Ctrl+Enter`</span> adds the current command to the queue.</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Profiles.** Save a full set of options and load it later. Profiles, the queue and the form are remembered in your browser.</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="fu">## How it works</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="fu">### One list of options drives everything</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>Each Robocopy option is written once, as a small declarative entry: its flag, a label, a one-line explanation, which tab it belongs to, whether it is advanced, and, for the risky ones, a risk level and the warning to show. For example, the "What to do" choice lists Copy, Mirror (<span class="in">`/MIR`</span>, "Deletes in destination"), Move and Move files only. The form, the colored command, the per-flag explanations, the search, the command palette and the risk label are all generated from that one list, so adding an option in one place makes it show up everywhere.</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a><span class="fu">### Reading a command back in</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>Pasting a command runs the same list in reverse. The parser splits the text into tokens while keeping quoted paths together, joins lines that were continued with <span class="in">`^`</span>, and drops a leading <span class="in">`robocopy`</span> or <span class="in">`robocopy.exe`</span>. Robocopy's switches are case-insensitive, so it matches them in upper case, and it understands both bare switches (<span class="in">`/E`</span>) and switches with values (<span class="in">`/MT:16`</span>, <span class="in">`/LOG:backup.log`</span>). Switches that take a list, such as <span class="in">`/XD`</span> for skipped folders, consume the following words until the next switch. Whatever is left is positional: the first two are the source and destination, and anything after them becomes the file patterns. Anything it does not recognise is not thrown away but kept in the **Extra flags** field under Advanced, so a pasted command never silently loses part of itself.</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="fu">### Scripts that stop at the right time</span></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>Robocopy does not use exit codes the way most programs do. Codes 0 to 7 all mean success (they report whether files were copied, skipped or found extra at the destination), and only 8 and above mean that something failed. A script that treats any non-zero code as an error would stop after every successful copy. So when stop on first failure is on, the <span class="in">`.bat`</span> export checks <span class="in">`if errorlevel 8 goto :failed`</span> after each Robocopy job, and the PowerShell export checks <span class="in">`$LASTEXITCODE -ge 8`</span>. Both exports are written with Windows line endings, and the <span class="in">`.ps1`</span> file is saved as UTF-8 with a byte order mark.</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a><span class="fu">### Two apps, one source</span></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>Mirror and Fetch share one source file, <span class="in">`design/shell.html`</span>, which contains both tools plus a page documenting the design system. A small Node script, <span class="in">`design/build.js`</span>, turns it into two self-contained <span class="in">`index.html`</span> files: it keeps one tool's definitions, swaps in that app's name, accent color, defaults and navigation, replaces sample paths with ones under <span class="in">`%USERPROFILE%`</span>, and adds saving to browser storage. Every replacement checks that its target text exists and the build stops with an error if not, so a change to the shared source cannot quietly produce a half-built app. A jsdom smoke test then loads each built page and clicks through it: tabs, search, the command palette, adding to the queue, downloading both script formats, and saving a profile.</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>The result has no build step to run and no backend, so it is light and works from GitHub Pages. Icons are from <span class="co">[</span><span class="ot">Lucide</span><span class="co">](https://lucide.dev)</span> and the fonts are Bricolage Grotesque, Instrument Sans and JetBrains Mono. The code lives in the <span class="co">[</span><span class="ot">source repository</span><span class="co">](https://github.com/ar-puuk/robocopy-gui)</span>.</span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a><span class="fu">## How it got here</span></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>The first version, in June 2025, was a single HTML page generated with Gemini 2.5 Pro and then updated with Claude Sonnet 4. It grouped options into a few sections and could add commands to a batch and download them as one <span class="in">`.bat`</span> file. In December 2025 I gave it a Fluent-style redesign with Gemini Pro, and the same month built a Wget counterpart in the same style.</span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>In November 2026 I rebuilt both as Conduit, with Claude as a pair programmer. That redesign added the tabs, the risk labels, search, the command palette, paste-to-fill, profiles, PowerShell export and coverage of every option in <span class="in">`robocopy /?`</span>. The hand-drawn icons were replaced with unmodified Lucide icons, inlined so the app is still one file.</span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a><span class="fu">## Who it is for</span></span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>System administrators managing file synchronization</span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>IT professionals setting up backup routines</span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Anyone copying large directory structures with specific parameters</span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Learning Robocopy syntax by seeing what each option does</span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>*Want to contribute or suggest improvements? Visit the project repository at:* <span class="ot">&lt;https://github.com/ar-puuk/robocopy-gui&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

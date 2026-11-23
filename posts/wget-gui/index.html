@@ -87,9 +87,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-43d431d6ae33725d0208b2e07b15352c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-0a1ee58fbaa3f5d8041b8bafbf34ceb4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-43d431d6ae33725d0208b2e07b15352c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dd52e5adb6025a2d72185450488676d8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b1919c9cd559971cd531f5718ff5c6da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-dd52e5adb6025a2d72185450488676d8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
@@ -418,8 +418,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <div id="quarto-announcement" data-announcement-id="d427bc2c621f9106df6eeacffb0a77cd" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p><strong>New:</strong> <a href="../../work/community-profiles/" class="no-external" target="_self">Demographic Profiles</a>, a zero-backend, map-first dashboard of Census and economic indicators for Utah.</p>
+  <div id="quarto-announcement" data-announcement-id="e50c892fd6bff347bf92501715c38d0d" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>New:</strong> <a href="../../posts/basemapper/" class="no-external" target="_self">basemapper</a>, sharp vector basemaps for ggplot2, tmap, matplotlib and plotnine figures, rendered in R and Python without a browser.</p>
 </div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
@@ -427,6 +427,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <div class="quarto-title-block"><div><h1 class="title">Fetch: a Wget Command Builder</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+            <p class="subtitle lead">A form that knows which Wget options belong together, and says so when a choice is risky</p>
                   <div>
         <div class="description">
           A browser-based builder for GNU Wget commands, covering every option in wget 1.21 with plain-language explanations and warnings for risky choices
@@ -461,7 +462,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">November 13, 2026</p>
+        <p class="date-modified">November 23, 2026</p>
       </div>
     </div>
       
@@ -476,10 +477,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#try-it" id="toc-try-it" class="nav-link active" data-scroll-target="#try-it"><span class="header-section-number">1</span> Try it</a></li>
-  <li><a href="#how-it-works" id="toc-how-it-works" class="nav-link" data-scroll-target="#how-it-works"><span class="header-section-number">2</span> How it works</a></li>
-  <li><a href="#other-ways-in" id="toc-other-ways-in" class="nav-link" data-scroll-target="#other-ways-in"><span class="header-section-number">3</span> Other ways in</a></li>
-  <li><a href="#technical-details" id="toc-technical-details" class="nav-link" data-scroll-target="#technical-details"><span class="header-section-number">4</span> Technical details</a></li>
-  <li><a href="#use-cases" id="toc-use-cases" class="nav-link" data-scroll-target="#use-cases"><span class="header-section-number">5</span> Use cases</a></li>
+  <li><a href="#why-wget-needs-a-builder" id="toc-why-wget-needs-a-builder" class="nav-link" data-scroll-target="#why-wget-needs-a-builder"><span class="header-section-number">2</span> Why Wget needs a builder</a></li>
+  <li><a href="#a-quick-tour" id="toc-a-quick-tour" class="nav-link" data-scroll-target="#a-quick-tour"><span class="header-section-number">3</span> A quick tour</a>
+  <ul class="collapse">
+  <li><a href="#other-ways-in" id="toc-other-ways-in" class="nav-link" data-scroll-target="#other-ways-in">Other ways in</a></li>
+  </ul></li>
+  <li><a href="#how-it-works" id="toc-how-it-works" class="nav-link" data-scroll-target="#how-it-works"><span class="header-section-number">4</span> How it works</a></li>
+  <li><a href="#how-it-got-here" id="toc-how-it-got-here" class="nav-link" data-scroll-target="#how-it-got-here"><span class="header-section-number">5</span> How it got here</a></li>
+  <li><a href="#who-it-is-for" id="toc-who-it-is-for" class="nav-link" data-scroll-target="#who-it-is-for"><span class="header-section-number">6</span> Who it is for</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/edit/master/posts/wget-gui/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
 </nav>
@@ -496,7 +501,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>GNU Wget can download a file, a folder or a whole website, but only if you remember which of its many switches to combine. <strong>Fetch</strong> lets you build the command visually instead. It covers every option in <code>wget --help</code> for version 1.21 (155 settings), explains what each one does, and warns about risky choices. It runs entirely in your browser; nothing is uploaded.</p>
-<p>Fetch started as a Wget companion to my Robocopy tool and was redesigned as part of <strong>Conduit</strong>, a pair of command builders that share one design system. Its sister app is <a href="../../posts/robocopy-gui/index.html">Mirror</a>, the Robocopy builder.</p>
+<p>Fetch started as a Wget companion to my Robocopy tool and was redesigned as part of <strong>Conduit</strong>, a pair of command builders that share one design system. Its sister app is <a href="../../posts/robocopy-gui/index.html">Mirror</a>, the Robocopy builder. This post covers what Fetch is for, what it does, and the parts of building it that were specific to Wget.</p>
 <section id="try-it" class="level2 page-columns page-full" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="try-it"><span class="header-section-number">1</span> Try it</h2>
 <div class="column-screen-inset">
@@ -514,17 +519,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a href="https://ar-puuk.github.io/wget-gui/" class="btn btn-primary" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square" aria-label="arrow-up-right-from-square"></i> Open app</a> <a href="https://github.com/ar-puuk/wget-gui" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
 </div>
 </section>
-<section id="how-it-works" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="how-it-works"><span class="header-section-number">2</span> How it works</h2>
+<section id="why-wget-needs-a-builder" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="why-wget-needs-a-builder"><span class="header-section-number">2</span> Why Wget needs a builder</h2>
+<p>Downloading one file with Wget is easy. Everything past that is a combination of options that only work well together. A usable offline copy of a documentation site, for example, needs Wget to follow links, stay below the starting folder, fetch the images and stylesheets each page uses, rewrite links so they point at the saved copies, give pages a proper extension, and slow down so the server is not hammered:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> <span class="at">--mirror</span> <span class="at">--no-parent</span> <span class="at">--page-requisites</span> <span class="at">--convert-links</span> <span class="at">--adjust-extension</span> <span class="dt">\</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">--wait</span><span class="op">=</span>1 <span class="at">--random-wait</span> <span class="at">--limit-rate</span><span class="op">=</span>2m <span class="at">--tries</span><span class="op">=</span>5 <span class="st">"https://docs.example.org/handbook/"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Leave out one of those and the copy is incomplete, or the crawl is much ruder to the server than it needs to be. Some options are also risky in ways that are not obvious from their names: <code>--no-check-certificate</code> accepts any certificate, even a fake one, and a password typed into the command ends up in your shell history. I wanted a form that knows these combinations, explains each flag in plain words, and says so when a choice is risky.</p>
+</section>
+<section id="a-quick-tour" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="a-quick-tour"><span class="header-section-number">3</span> A quick tour</h2>
 <ol type="1">
 <li><strong>Pick a starting point.</strong> Choose a preset (One file, Offline site copy, Images only, Check for broken links, or Gentle crawl) or start from scratch.</li>
 <li><strong>Fill in the tabs.</strong> Target, What to download, Save layout, Filters, Performance, Requests, Security, Logging and Advanced. Rarely used options stay hidden until you turn on <strong>Show advanced</strong>.</li>
 <li><strong>Watch the command.</strong> It updates as you choose, with every flag explained and notes for risky choices such as skipping certificate checks, putting a password in the command, or crawling with no wait.</li>
 <li><strong>Add to queue.</strong> Build several downloads, reorder them, then download one <code>.bat</code> or <code>.ps1</code> script. Stop on first failure is on by default.</li>
 </ol>
-</section>
-<section id="other-ways-in" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="other-ways-in"><span class="header-section-number">3</span> Other ways in</h2>
+<p>The presets are where most of the Wget knowledge lives. <strong>Offline site copy</strong> is the command above. <strong>Images only</strong> follows links two levels deep and keeps only common image types. <strong>Check for broken links</strong> uses <code>--spider</code> to test every address without downloading anything and writes the results to a log. <strong>Gentle crawl</strong> waits three seconds between requests, limits the speed and skips large archives and installers.</p>
+<p>The “What to download” tab starts with one choice that sets the shape of the whole command: one file, follow links to a chosen depth (<code>-r</code>), or mirror the site (<code>--mirror</code>). Mirror is flagged “Can be very large”, with a note to set a wait and a speed limit. Fetch also catches combinations that do not do what you might expect:</p>
+<ul>
+<li>following links with no wait, which sends requests back to back;</li>
+<li>saving as one file (<code>-O</code>) while following links, which puts every page into that one file;</li>
+<li>“skip files you already have” (<code>--no-clobber</code>) together with “only download newer files” (<code>--timestamping</code>), which cannot be combined;</li>
+<li>quiet output with a progress bar, which still shows the bar.</li>
+</ul>
+<section id="other-ways-in" class="level3">
+<h3 class="anchored" data-anchor-id="other-ways-in">Other ways in</h3>
 <ul>
 <li><strong>Find an option.</strong> Type a name or a flag, such as <code>cookies</code> or <code>--limit-rate</code>, to search every tab at once.</li>
 <li><strong>Paste a command.</strong> Paste an existing <code>wget</code> command and the form fills in. Flags the builder does not recognise are kept under Advanced.</li>
@@ -532,12 +551,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Profiles.</strong> Save a full set of options and load it later. Profiles, the queue and the form are remembered in your browser.</li>
 </ul>
 </section>
-<section id="technical-details" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="technical-details"><span class="header-section-number">4</span> Technical details</h2>
-<p>Fetch is one self-contained <code>index.html</code> with no build step to run it and no backend, so your URLs and credentials never leave the browser. It is generated from the shared source in the <a href="https://github.com/ar-puuk/robocopy-gui">Mirror repository</a>, so the two apps keep identical design tokens and components. Icons are from <a href="https://lucide.dev">Lucide</a> and the fonts are Bricolage Grotesque, Instrument Sans and JetBrains Mono. The code lives in the <a href="https://github.com/ar-puuk/wget-gui">source repository</a>.</p>
 </section>
-<section id="use-cases" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="use-cases"><span class="header-section-number">5</span> Use cases</h2>
+<section id="how-it-works" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="how-it-works"><span class="header-section-number">4</span> How it works</h2>
+<p>Fetch is generated from the same source as Mirror, so the engine is shared: each option is written once as a declarative entry (flag, label, explanation, tab, risk), and the form, the command, the explanations, search, the palette and the parser are all built from that list. The <a href="../../posts/robocopy-gui/index.html#how-it-works">Mirror post</a> explains that part and the build in more detail. The interesting differences come from Wget itself.</p>
+<p><strong>Long flags out, short flags in.</strong> Wget has a short and a long form for many options (<code>-k</code> and <code>--convert-links</code>). Fetch writes the long form for most options, so a saved script explains itself when you come back to it months later, but each option also lists its short aliases, so a pasted command using <code>-k -p -E</code> fills the form just as well.</p>
+<p><strong>Case matters.</strong> Robocopy’s switches are case-insensitive; Wget’s are not (<code>-E</code> and <code>-e</code> are different options). The parser matches Robocopy flags in upper case and Wget flags exactly as typed. It understands both <code>--tries=5</code> and <code>--tries 5</code>, and treats the last address on the line as the URL. As in Mirror, anything it does not recognise is kept in the <strong>Extra flags</strong> field rather than dropped.</p>
+<p><strong>Secrets are flagged, not stored somewhere else.</strong> Fetch has fields for HTTP, FTP and proxy passwords because Wget does, and each one carries the same caution: a password typed here appears in the command text and in your shell history. There is no backend, so the URLs and credentials never leave the browser, but the script you download is plain text like any other.</p>
+<p><strong>A different idea of failure.</strong> In the exported scripts, a Robocopy job counts as failed only at exit code 8 or above, because Robocopy uses the lower codes to report success. Wget uses non-zero codes for errors, so Fetch’s scripts stop on any non-zero exit code when stop on first failure is on.</p>
+<p>Like Mirror, Fetch is one self-contained <code>index.html</code> with no build step to run it. It is generated from the shared source in the <a href="https://github.com/ar-puuk/robocopy-gui">Mirror repository</a>, so the two apps keep identical design tokens and components, with an orange accent for Fetch where Mirror is green. Icons are from <a href="https://lucide.dev">Lucide</a> and the fonts are Bricolage Grotesque, Instrument Sans and JetBrains Mono. The code lives in the <a href="https://github.com/ar-puuk/wget-gui">source repository</a>.</p>
+</section>
+<section id="how-it-got-here" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="how-it-got-here"><span class="header-section-number">5</span> How it got here</h2>
+<p>The first Fetch, in December 2025, was a Wget version of the Robocopy GUI in a Fluent-style design inspired by Windows 11, with toggles for flags, tooltips, and a queue exported as one <code>.bat</code> file. In November 2026 I rebuilt it alongside Mirror as part of Conduit, with Claude as a pair programmer. The rebuild added full coverage of <code>wget --help</code>, the tabs and presets, risk notes, search, the command palette, paste-to-fill, profiles and PowerShell export.</p>
+</section>
+<section id="who-it-is-for" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="who-it-is-for"><span class="header-section-number">6</span> Who it is for</h2>
 <ul>
 <li><strong>Digital archivists</strong> creating offline mirrors of websites before they go offline</li>
 <li><strong>Developers</strong> checking a site for broken links</li>
@@ -1215,72 +1244,108 @@ January 25. <a href="https://ar-puuk.github.io/posts/wget-gui/">https://ar-puuk.
   <script type="application/javascript">
   window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Fetch: a Wget Command Builder"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">image-alt:</span><span class="co"> "Fetch in the Conduit app: a Target form with a web address and save folder, preset buttons along the top and the generated wget command on the right."</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "A browser-based builder for GNU Wget commands, covering every option in wget 1.21 with plain-language explanations and warnings for risky choices"</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Pukar Bhandari</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    email: pukar.bhandari@outlook.com</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "wget_gui.png"</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2026-01-25"</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [Developer Tools, JavaScript, Web Apps, Open Source]</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>GNU Wget can download a file, a folder or a whole website, but only if you remember which of its many switches to combine. **Fetch** lets you build the command visually instead. It covers every option in <span class="in">`wget --help`</span> for version 1.21 (155 settings), explains what each one does, and warns about risky choices. It runs entirely in your browser; nothing is uploaded.</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>Fetch started as a Wget companion to my Robocopy tool and was redesigned as part of **Conduit**, a pair of command builders that share one design system. Its sister app is <span class="co">[</span><span class="ot">Mirror</span><span class="co">](../robocopy-gui/index.qmd)</span>, the Robocopy builder.</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## Try it</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>::: {.column-screen-inset}</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper" style="--embed-height: 820px"&gt;</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;Fetch&lt;/span&gt;</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/wget-gui/" title="Fetch, a Wget command builder" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open app</span><span class="co">](https://ar-puuk.github.io/wget-gui/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/wget-gui)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="fu">## How it works</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Pick a starting point.** Choose a preset (One file, Offline site copy, Images only, Check for broken links, or Gentle crawl) or start from scratch.</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Fill in the tabs.** Target, What to download, Save layout, Filters, Performance, Requests, Security, Logging and Advanced. Rarely used options stay hidden until you turn on **Show advanced**.</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Watch the command.** It updates as you choose, with every flag explained and notes for risky choices such as skipping certificate checks, putting a password in the command, or crawling with no wait.</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Add to queue.** Build several downloads, reorder them, then download one <span class="in">`.bat`</span> or <span class="in">`.ps1`</span> script. Stop on first failure is on by default.</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## Other ways in</span></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Find an option.** Type a name or a flag, such as <span class="in">`cookies`</span> or <span class="in">`--limit-rate`</span>, to search every tab at once.</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Paste a command.** Paste an existing <span class="in">`wget`</span> command and the form fills in. Flags the builder does not recognise are kept under Advanced.</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Command palette.** <span class="in">`Ctrl+K`</span> jumps to any option, preset or page, and <span class="in">`Ctrl+Enter`</span> adds the current command to the queue.</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Profiles.** Save a full set of options and load it later. Profiles, the queue and the form are remembered in your browser.</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="fu">## Technical details</span></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>Fetch is one self-contained <span class="in">`index.html`</span> with no build step to run it and no backend, so your URLs and credentials never leave the browser. It is generated from the shared source in the <span class="co">[</span><span class="ot">Mirror repository</span><span class="co">](https://github.com/ar-puuk/robocopy-gui)</span>, so the two apps keep identical design tokens and components. Icons are from <span class="co">[</span><span class="ot">Lucide</span><span class="co">](https://lucide.dev)</span> and the fonts are Bricolage Grotesque, Instrument Sans and JetBrains Mono. The code lives in the <span class="co">[</span><span class="ot">source repository</span><span class="co">](https://github.com/ar-puuk/wget-gui)</span>.</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="fu">## Use cases</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Digital archivists** creating offline mirrors of websites before they go offline</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Developers** checking a site for broken links</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Bulk downloaders** working through long lists of files from a list file</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Students** learning Wget syntax by seeing what each option does</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>*Feedback and contributions are welcome! Check out the project on GitHub:* <span class="ot">&lt;https://github.com/ar-puuk/wget-gui&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Fetch: a Wget Command Builder"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">image-alt:</span><span class="co"> "Fetch in the Conduit app: a Target form with a web address and save folder, preset buttons along the top and the generated wget command on the right."</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> A form that knows which Wget options belong together, and says so when a choice is risky</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "A browser-based builder for GNU Wget commands, covering every option in wget 1.21 with plain-language explanations and warnings for risky choices"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Pukar Bhandari</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">    email: pukar.bhandari@outlook.com</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "wget_gui.png"</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2026-01-25"</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="an">date-modified:</span><span class="co"> "2026-11-23"</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [Developer Tools, JavaScript, Web Apps, Open Source]</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>GNU Wget can download a file, a folder or a whole website, but only if you remember which of its many switches to combine. **Fetch** lets you build the command visually instead. It covers every option in <span class="in">`wget --help`</span> for version 1.21 (155 settings), explains what each one does, and warns about risky choices. It runs entirely in your browser; nothing is uploaded.</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>Fetch started as a Wget companion to my Robocopy tool and was redesigned as part of **Conduit**, a pair of command builders that share one design system. Its sister app is <span class="co">[</span><span class="ot">Mirror</span><span class="co">](../robocopy-gui/index.qmd)</span>, the Robocopy builder. This post covers what Fetch is for, what it does, and the parts of building it that were specific to Wget.</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Try it</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>::: {.column-screen-inset}</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper" style="--embed-height: 820px"&gt;</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;Fetch&lt;/span&gt;</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/wget-gui/" title="Fetch, a Wget command builder" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open app</span><span class="co">](https://ar-puuk.github.io/wget-gui/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/wget-gui)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why Wget needs a builder</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>Downloading one file with Wget is easy. Everything past that is a combination of options that only work well together. A usable offline copy of a documentation site, for example, needs Wget to follow links, stay below the starting folder, fetch the images and stylesheets each page uses, rewrite links so they point at the saved copies, give pages a proper extension, and slow down so the server is not hammered:</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="in">```sh</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> <span class="at">--mirror</span> <span class="at">--no-parent</span> <span class="at">--page-requisites</span> <span class="at">--convert-links</span> <span class="at">--adjust-extension</span> <span class="dt">\</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>     <span class="at">--wait</span><span class="op">=</span>1 <span class="at">--random-wait</span> <span class="at">--limit-rate</span><span class="op">=</span>2m <span class="at">--tries</span><span class="op">=</span>5 <span class="st">"https://docs.example.org/handbook/"</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>Leave out one of those and the copy is incomplete, or the crawl is much ruder to the server than it needs to be. Some options are also risky in ways that are not obvious from their names: <span class="in">`--no-check-certificate`</span> accepts any certificate, even a fake one, and a password typed into the command ends up in your shell history. I wanted a form that knows these combinations, explains each flag in plain words, and says so when a choice is risky.</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## A quick tour</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Pick a starting point.** Choose a preset (One file, Offline site copy, Images only, Check for broken links, or Gentle crawl) or start from scratch.</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Fill in the tabs.** Target, What to download, Save layout, Filters, Performance, Requests, Security, Logging and Advanced. Rarely used options stay hidden until you turn on **Show advanced**.</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Watch the command.** It updates as you choose, with every flag explained and notes for risky choices such as skipping certificate checks, putting a password in the command, or crawling with no wait.</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Add to queue.** Build several downloads, reorder them, then download one <span class="in">`.bat`</span> or <span class="in">`.ps1`</span> script. Stop on first failure is on by default.</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>The presets are where most of the Wget knowledge lives. **Offline site copy** is the command above. **Images only** follows links two levels deep and keeps only common image types. **Check for broken links** uses `--spider` to test every address without downloading anything and writes the results to a log. **Gentle crawl** waits three seconds between requests, limits the speed and skips large archives and installers.</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>The "What to download" tab starts with one choice that sets the shape of the whole command: one file, follow links to a chosen depth (<span class="in">`-r`</span>), or mirror the site (<span class="in">`--mirror`</span>). Mirror is flagged "Can be very large", with a note to set a wait and a speed limit. Fetch also catches combinations that do not do what you might expect:</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>following links with no wait, which sends requests back to back;</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>saving as one file (<span class="in">`-O`</span>) while following links, which puts every page into that one file;</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>"skip files you already have" (<span class="in">`--no-clobber`</span>) together with "only download newer files" (<span class="in">`--timestamping`</span>), which cannot be combined;</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>quiet output with a progress bar, which still shows the bar.</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="fu">### Other ways in</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Find an option.** Type a name or a flag, such as <span class="in">`cookies`</span> or <span class="in">`--limit-rate`</span>, to search every tab at once.</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Paste a command.** Paste an existing <span class="in">`wget`</span> command and the form fills in. Flags the builder does not recognise are kept under Advanced.</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Command palette.** <span class="in">`Ctrl+K`</span> jumps to any option, preset or page, and <span class="in">`Ctrl+Enter`</span> adds the current command to the queue.</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Profiles.** Save a full set of options and load it later. Profiles, the queue and the form are remembered in your browser.</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="fu">## How it works</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>Fetch is generated from the same source as Mirror, so the engine is shared: each option is written once as a declarative entry (flag, label, explanation, tab, risk), and the form, the command, the explanations, search, the palette and the parser are all built from that list. The <span class="co">[</span><span class="ot">Mirror post</span><span class="co">](../robocopy-gui/index.qmd#how-it-works)</span> explains that part and the build in more detail. The interesting differences come from Wget itself.</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>**Long flags out, short flags in.** Wget has a short and a long form for many options (<span class="in">`-k`</span> and <span class="in">`--convert-links`</span>). Fetch writes the long form for most options, so a saved script explains itself when you come back to it months later, but each option also lists its short aliases, so a pasted command using <span class="in">`-k -p -E`</span> fills the form just as well.</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>**Case matters.** Robocopy's switches are case-insensitive; Wget's are not (`-E` and `-e` are different options). The parser matches Robocopy flags in upper case and Wget flags exactly as typed. It understands both `--tries=5` and `--tries 5`, and treats the last address on the line as the URL. As in Mirror, anything it does not recognise is kept in the **Extra flags** field rather than dropped.</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>**Secrets are flagged, not stored somewhere else.** Fetch has fields for HTTP, FTP and proxy passwords because Wget does, and each one carries the same caution: a password typed here appears in the command text and in your shell history. There is no backend, so the URLs and credentials never leave the browser, but the script you download is plain text like any other.</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>**A different idea of failure.** In the exported scripts, a Robocopy job counts as failed only at exit code 8 or above, because Robocopy uses the lower codes to report success. Wget uses non-zero codes for errors, so Fetch's scripts stop on any non-zero exit code when stop on first failure is on.</span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>Like Mirror, Fetch is one self-contained <span class="in">`index.html`</span> with no build step to run it. It is generated from the shared source in the <span class="co">[</span><span class="ot">Mirror repository</span><span class="co">](https://github.com/ar-puuk/robocopy-gui)</span>, so the two apps keep identical design tokens and components, with an orange accent for Fetch where Mirror is green. Icons are from <span class="co">[</span><span class="ot">Lucide</span><span class="co">](https://lucide.dev)</span> and the fonts are Bricolage Grotesque, Instrument Sans and JetBrains Mono. The code lives in the <span class="co">[</span><span class="ot">source repository</span><span class="co">](https://github.com/ar-puuk/wget-gui)</span>.</span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a><span class="fu">## How it got here</span></span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>The first Fetch, in December 2025, was a Wget version of the Robocopy GUI in a Fluent-style design inspired by Windows 11, with toggles for flags, tooltips, and a queue exported as one <span class="in">`.bat`</span> file. In November 2026 I rebuilt it alongside Mirror as part of Conduit, with Claude as a pair programmer. The rebuild added full coverage of <span class="in">`wget --help`</span>, the tabs and presets, risk notes, search, the command palette, paste-to-fill, profiles and PowerShell export.</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a><span class="fu">## Who it is for</span></span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Digital archivists** creating offline mirrors of websites before they go offline</span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Developers** checking a site for broken links</span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Bulk downloaders** working through long lists of files from a list file</span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Students** learning Wget syntax by seeing what each option does</span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a>*Feedback and contributions are welcome! Check out the project on GitHub:* <span class="ot">&lt;https://github.com/ar-puuk/wget-gui&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

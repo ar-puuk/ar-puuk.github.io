@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pukar Bhandari">
 <meta name="dcterms.date" content="2026-07-02">
-<meta name="description" content="A web map for comparing the base-year transit network in the Wasatch Front travel demand model with GTFS transit data. Developed at the Wasatch Front Regional Council.">
+<meta name="description" content="A web map for comparing the base-year transit network in the Wasatch Front travel demand model with GTFS transit data, built as an R Shiny app and a static browser app. Developed at the Wasatch Front Regional Council.">
 
 <title>GTFS vs.&nbsp;TDM Transit Network Comparison – Pukar Bhandari</title>
 <style>
@@ -52,9 +52,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8a5672f0138fe174ac385a1e2bdc95c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-4f550554e58d59d67a9ae604d350339e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-8a5672f0138fe174ac385a1e2bdc95c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-490bc4386d2044dbe0390ac645d7e280.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-f69e9b9804d5144d90bbc1b539982d35.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-490bc4386d2044dbe0390ac645d7e280.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
@@ -101,14 +101,14 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../../assets/css/index.css">
 <link rel="stylesheet" href="../../assets/css/app-embed.css">
 <meta property="og:title" content="GTFS vs.&nbsp;TDM Transit Network Comparison – Pukar Bhandari">
-<meta property="og:description" content="A web map for comparing the base-year transit network in the Wasatch Front travel demand model with GTFS transit data. Developed at the Wasatch Front Regional Council.">
+<meta property="og:description" content="A web map for comparing the base-year transit network in the Wasatch Front travel demand model with GTFS transit data, built as an R Shiny app and a static browser app. Developed at the Wasatch Front Regional Council.">
 <meta property="og:image" content="https://ar-puuk.github.io/work/gtfs-vs-tdm/gtfs_vs_tdm.png">
 <meta property="og:site_name" content="Pukar Bhandari">
 <meta property="og:image:height" content="785">
 <meta property="og:image:width" content="1384">
 <meta property="og:image:alt" content="Map comparing GTFS transit lines and stops with travel demand model transit lines along the Wasatch Front.">
 <meta name="twitter:title" content="GTFS vs.&nbsp;TDM Transit Network Comparison – Pukar Bhandari">
-<meta name="twitter:description" content="A web map for comparing the base-year transit network in the Wasatch Front travel demand model with GTFS transit data. Developed at the Wasatch Front Regional Council.">
+<meta name="twitter:description" content="A web map for comparing the base-year transit network in the Wasatch Front travel demand model with GTFS transit data, built as an R Shiny app and a static browser app. Developed at the Wasatch Front Regional Council.">
 <meta name="twitter:image" content="https://ar-puuk.github.io/work/gtfs-vs-tdm/gtfs_vs_tdm.png">
 <meta name="twitter:creator" content="@arpuuk">
 <meta name="twitter:site" content="@arpuuk">
@@ -378,8 +378,8 @@ ul.task-list li input[type="checkbox"] {
             <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <div id="quarto-announcement" data-announcement-id="d427bc2c621f9106df6eeacffb0a77cd" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p><strong>New:</strong> <a href="../../work/community-profiles/" class="no-external" target="_self">Demographic Profiles</a>, a zero-backend, map-first dashboard of Census and economic indicators for Utah.</p>
+  <div id="quarto-announcement" data-announcement-id="e50c892fd6bff347bf92501715c38d0d" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>New:</strong> <a href="../../posts/basemapper/" class="no-external" target="_self">basemapper</a>, sharp vector basemaps for ggplot2, tmap, matplotlib and plotnine figures, rendered in R and Python without a browser.</p>
 </div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
@@ -390,7 +390,7 @@ ul.task-list li input[type="checkbox"] {
             <p class="subtitle lead">Visually checking the travel demand model’s transit network against published GTFS</p>
                   <div>
         <div class="description">
-          A web map for comparing the base-year transit network in the Wasatch Front travel demand model with GTFS transit data. Developed at the Wasatch Front Regional Council.
+          A web map for comparing the base-year transit network in the Wasatch Front travel demand model with GTFS transit data, built as an R Shiny app and a static browser app. Developed at the Wasatch Front Regional Council.
         </div>
       </div>
                           <div class="quarto-categories">
@@ -432,7 +432,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">November 13, 2026</p>
+        <p class="date-modified">November 23, 2026</p>
       </div>
     </div>
       
@@ -470,20 +470,40 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>The comparison map, overlaying the model’s 2023 transit lines on a GTFS snapshot.</figcaption>
 </figure>
 </div>
+<section id="why-compare-the-two" class="level2">
+<h2 class="anchored" data-anchor-id="why-compare-the-two">Why compare the two</h2>
+<p>The regional travel demand model (TDM) represents transit service, meaning routes, stops and the line-haul network, for a defined base year. The model’s transit results depend on that network, so the base year should match the service that was actually running. GTFS feeds, which transit agencies publish for trip planners and apps, describe the same service as it was actually operated. Putting the two side by side is the most direct way to check the model’s network.</p>
+<p>Before this tool, that check was a manual QGIS project: convert a GTFS feed to GIS layers, load the model’s transit lines, and compare. The conversion lost information along the way, including each route’s own colour, its route type and the separate shapes of its variants. This tool puts both on one map so the two can be checked against each other, with any feed.</p>
+<p>It is deliberately a <strong>visual validation</strong> tool: there is no automated route matching or coverage-gap scoring. A person looks at the alignment and decides.</p>
+</section>
 <section id="what-it-does" class="level2">
 <h2 class="anchored" data-anchor-id="what-it-does">What it does</h2>
-<p>The regional travel demand model (TDM) represents transit service, meaning routes, stops and the line-haul network, for a defined base year. GTFS feeds describe the same service as it was actually operated. This tool puts both on one map so the two can be checked against each other.</p>
-<p>It is deliberately a <strong>visual validation</strong> tool: there is no automated route matching or coverage-gap scoring. A person looks at the alignment and decides.</p>
 <ul>
 <li><strong>Overlay or swipe</strong>: draw both networks on one map, or compare them side by side with a swipe control.</li>
 <li><strong>Flexible GTFS sources</strong>: a saved snapshot, a feed URL, a calendar date resolved to the historical UTA snapshot closest to it, or an uploaded GTFS zip.</li>
 <li><strong>TDM options</strong>: the base year or forecast scenarios, and line types (rail, BRT, core, express, local), each shown as lines, stops or both.</li>
+<li><strong>Details on demand</strong>: hovering a line names it, and clicking a route or stop opens a panel. For GTFS that includes the agency, the number of trips and stops served, the route’s website, and for stops the stop code and wheelchair boarding information.</li>
+<li><strong>Validity dates</strong>: the map shows the date range the loaded feed covers, read from the feed itself.</li>
 <li>Basemaps that follow light and dark mode.</li>
 </ul>
+<p>The base year is the default, since comparing a forecast scenario with present-day GTFS isn’t meaningful, but the forecast networks stay available for anyone who wants to see them.</p>
+</section>
+<section id="how-its-built" class="level2">
+<h2 class="anchored" data-anchor-id="how-its-built">How it’s built</h2>
+<p>The tool exists in two forms, sharing the same data and the same logic.</p>
+<p><strong>An R Shiny app</strong> came first. It uses <code>tidytransit</code> to read GTFS, <code>sf</code> to read the model network, and <code>mapgl</code> for the MapLibre map and the swipe view. Both datasets are processed live from their original files: the GTFS zips as downloaded, and the model’s network as exported, a zipped file geodatabase read in place through GDAL’s virtual file system. There is no processed copy of either to keep in sync, and the pipeline discovers the model’s transit groups from the geodatabase itself, so it keeps working as new groups are added. The app’s colours, fonts and logos come from WFRC’s brand repository, included as a git submodule.</p>
+<p><strong>A static web app</strong>, the one linked below, is a port to Svelte and TypeScript built with Vite, so it can run on GitHub Pages with no R server behind it. The model network is converted to GeoJSON ahead of time with GDAL and committed. GTFS is parsed in the browser.</p>
+</section>
+<section id="interesting-problems" class="level2">
+<h2 class="anchored" data-anchor-id="interesting-problems">Interesting problems</h2>
+<p><strong>Making the model’s lines the right colour.</strong> The comparison reads best when a model route is drawn in the same colour as the real route it represents, so a mismatch stands out. The model doesn’t store route colours, so they have to be inferred. Rail is matched by named line (the TRAX lines, the S-Line and FrontRunner). For buses, the model’s route name almost always contains the real route number once the agency prefix and leading zeros are stripped (S513 becomes 513), and flex routes map to their F-prefixed names. That name crosswalk gives 71 of the 75 base-year bus routes their exact colour from the GTFS feed. The rest fall back to a rule based on mode and headway: the base-year network doesn’t tag frequent “core” routes, so a local route with a best headway of 15 minutes or less is coloured as core. A spatial check against the live network found that this rule, with the per-line rail colours, raised the colour match from 77% to 89%, and the crosswalk caught a route the rule had wrong. The crosswalk is limited to the base year, because some forecast-only project codes happened to end in digits that matched unrelated present-day routes.</p>
+<p><strong>Parsing GTFS in a browser.</strong> There was no maintained JavaScript library that turns a GTFS zip into route shapes and stops in the browser; the purpose-built packages I found were Node-only. So the static app has its own port of the R pipeline, using <code>unzipit</code> and <code>papaparse</code>, and was checked against the R app on the same feed: the known route colours and the feed’s validity range match exactly. The parsing runs in a Web Worker so the page stays responsive. Before parsing, the app reads the uncompressed size of the largest files straight from the zip’s index and warns about feeds large enough to strain the browser. Setting that limit took measurement rather than a guess: UTA’s feed is about 4 MB as a zip but over 25 MB uncompressed, because the stop times compress so well, so a first guess of 10 MB would have rejected the very feed the tool is for.</p>
+<p><strong>Historical feeds without a backend.</strong> The “by date” source asks the Mobility Database, which archives past GTFS feeds, for the UTA snapshot that was in service closest to a chosen date. Its API requires a personal token. A server could hold a shared one, but the static app deliberately has no server, and anything shipped in a public JavaScript bundle can be read by anyone. So each visitor supplies their own free token, which is stored only in their own browser. The same constraint shows up with the feed URL source: most transit agencies’ servers don’t allow cross-origin requests from a browser, so when that fails the app says why and suggests downloading the zip and uploading it instead. A set of dated UTA snapshots committed to the repository covers the common case with no setup at all.</p>
+<p><strong>Swipe mode and clustering.</strong> In the R app’s overlay view, GTFS stops cluster at low zoom. In its swipe view they don’t, because <code>mapgl</code>’s compare widget drops the clustering options when it builds each side’s map; that is a limit of the package rather than of this app.</p>
 </section>
 <section id="what-i-worked-on" class="level2">
 <h2 class="anchored" data-anchor-id="what-i-worked-on">What I worked on</h2>
-<p>The comparison app and the pipeline that turns GTFS feeds into route shapes and stops, including colors derived from each route’s own color.</p>
+<p>The comparison app and the pipeline that turns GTFS feeds into route shapes and stops, including colors derived from each route’s own color. That covers both versions: the R Shiny app and the static Svelte port, along with the colour matching for the model network and the Mobility Database lookup.</p>
 <p>My role: developer. I authored all the commits in the repository.</p>
 </section>
 <section id="see-it" class="level2">

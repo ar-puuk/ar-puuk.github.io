@@ -1,6 +1,6 @@
 Utah’s [UGRC](https://gis.utah.gov/) publishes a very good free vector basemap, the “Lite” basemap, as three Esri vector-tile services: `VectorHillshade`, `LiteBase` and `LiteLabels`. It has one look. If your app is dark, or you want something warmer, you are rewriting hundreds of layer styles by hand.
 
-`ugrc-styles` generates alternate themes from the live UGRC services, and ships a visual editor so you can tweak, compare and download them without touching JSON.
+`ugrc-styles` is my answer to that. It is two things in one repository: a small Python tool that generates alternate themes from the live UGRC services, and a visual editor in the browser for tweaking, comparing and downloading any of them without touching JSON. This post covers why it exists, how a theme gets generated, the bugs that taught me the most, and what the editor does.
 
 ## 1 Try the editor
 
@@ -22,29 +22,82 @@ Select a layer on the left to edit it.
 
 [ Open app](https://ar-puuk.github.io/ugrc-styles/) [ GitHub](https://github.com/ar-puuk/ugrc-styles)
 
-## 2 The themes
+## 2 Why restyling a basemap is harder than it sounds
 
-- **shadow**: a dark restyling built from the color tokens of [Protomaps](https://protomaps.com/)’ dark flavor.
-- **sol**: a warm light restyling based on [CARTO](https://carto.com/)’s Voyager colors, using UGRC’s colorful `Vector_Overlay` icon set in place of the muted grayscale icons.
+A MapLibre style is a JSON file: a list of layers, each saying which part of the vector tiles to draw and how (“draw this road class in this color, this wide, from this zoom”). Changing the look of a basemap means changing those paint values. For UGRC’s Lite basemap that is a lot of layers, and they are not organised the way you would hope. ArcGIS Pro’s vector tile publisher writes a separate layer for each zoom band, so a single road class can appear as a dozen or more near-identical copies, each with its own color.
 
-Neither theme vendors UGRC’s style definitions. Every build **fetches the three services live**, then rewrites their `paint` colors against the theme’s palette. The palette itself also comes from a live source (Protomaps’ flavor, or CARTO’s public Voyager style JSON), plus a small file of theme-specific tokens that source has no equivalent for. Only the generated output is committed, so it can be used without running any code.
+Two other things make a hand edit fragile. The style lives on UGRC’s servers and changes when they update it, so a copy edited by hand goes stale. And the highway shields and point icons are raster images in sprite sheets, which no paint property can recolor.
 
-Sprites are the other half. Highway shields and base icons are raster PNGs, which can’t be recolored through paint properties, so the generator reworks the sprite sheets too (inverting them for a dark theme, for example).
+So rather than editing a style, I wanted to describe a theme as a set of rules and regenerate it from UGRC’s current style whenever I like.
 
-## 3 The editor
+## 3 How a theme is generated
 
-The editor is a single static page. It can:
+The project started as a dark version of Lite, built with one-off R and Python scripts. On 23 September 2026 I rebuilt it as a proper Python package managed with [uv](https://docs.astral.sh/uv/), and the following day restructured it so the repository could hold several themes side by side.
+
+Each build does the same few steps:
+
+1.  **Fetch UGRC’s three styles live.** UGRC’s style definitions are never copied into the repository. Every run pulls them fresh from the ArcGIS endpoints listed in `config/services.json`.
+
+2.  **Fetch the theme’s palette live too.** A theme names a palette source. The first dark theme read its colors from [Protomaps](https://protomaps.com/)’ dark flavor; **sol**, a warm light theme, reads them straight out of [CARTO](https://carto.com/)’s public Voyager style JSON. A small `palette_extra.json` adds the few tokens that source has no equivalent for, with a rule that nothing in it may duplicate a value the live source already provides.
+
+3.  **Apply the theme’s rules.** Each service has a rules file. A rule matches layers by source layer, type or id (all regular expressions) and sets paint values, usually by palette token:
+
+    ``` json
+    { "note": "contours",
+      "match": { "source_layer": "^Contours" },
+      "paint": { "line-color": "@contour", "line-opacity": 0.3 } }
+    ```
+
+4.  **Fall back for everything else.** Any color no rule touched gets a generic treatment from `fallback.json`: fills, lines and circles keep their hue but have their lightness squeezed into a band (high and pastel for sol) and their saturation reduced, while label text gets a muted tint. That way a layer UGRC adds next month still comes out looking like part of the theme.
+
+5.  **Rework the sprites.** For a dark theme, the generator inverts every icon’s lightness in HLS space, which keeps a red shield red instead of turning it cyan the way an RGB invert would. Sol goes another way: it swaps in UGRC’s colorful `Vector_Overlay` icon set (built for their Hybrid basemap) in place of Lite’s muted grayscale icons, using a map from Lite’s icon names to Vector_Overlay’s, and pastes back the few icons that have no equivalent there, such as trailheads and the railroad tie marks.
+
+Only the generated styles and sprites are committed, so anyone can use them without running the code. Regenerating is `uv run ugrc-styles`, and adding a theme means adding a directory under `config/themes/`; nothing in the code or the web page changes.
+
+## 4 Bugs that taught me something
+
+A few problems from the first week shaped how the project works now.
+
+**Layer order is not alphabetical.** The config loader originally read each theme’s three services in alphabetical order. That put `VectorHillshade` last, and since later layers draw on top, the hillshade covered every fill and label underneath it. Services now load in the order `services.json` declares them: hillshade, base, labels, bottom to top.
+
+**A renderer bug that looked like missing data.** With MapLibre GL JS 4.7.1, `LiteBase` tiles failed to decode (“Unimplemented type: 3”) whenever another source was on the map, leaving rectangular holes with no roads or water. `LiteBase` alone rendered fine. I reproduced it in isolation at the failing coordinates and confirmed it went away on 5.24.0, the last release that still shipped a UMD bundle, and moved the page to that version.
+
+**Respect the original’s precision.** UGRC tunes each trail layer’s dash pattern against its line width, so every width and zoom tier ends up with the same effective dash length (around 2.7 px). My first attempt at Voyager-style trails replaced those dashes with one new ratio, and neighbouring tiers fell out of phase into a messy line. The fix was to let a rule *scale* Esri’s own values instead of replacing them, which keeps their alignment and lengthens the dash.
+
+**Keep the output Esri-shaped.** UGRC planned to host the generated dark styles on ArcGIS Online, not only use them in MapLibre. So the build keeps Esri’s own `url` reference to the vector tile server rather than rewriting it into a MapLibre `tiles` array, and the generated files differ from UGRC’s only in paint and sprites. The price is the one gotcha described [below](#using-a-downloaded-style).
+
+**The attribution was “me”.** UGRC’s hosted tile server sets its source’s attribution text to the literal string `"me"`, apparently left over from a template. The editor strips it when rendering and credits UGRC and MapLibre itself.
+
+## 5 The themes now
+
+- **sol**: the warm light restyling on CARTO’s Voyager colors, with UGRC’s colorful `Vector_Overlay` icons.
+- **Dark**: UGRC’s official dark basemap, loaded live from their three ArcGIS items. For a while the repository generated its own dark theme, called **shadow**. In November 2026 its paint and layout were identical to UGRC’s official dark basemap, so I removed my copy and load theirs directly instead.
+- **Lite**: UGRC’s original, also loaded live, for comparison.
+
+## 6 The editor
+
+The editor started on 24 September as a separate page next to a simple swipe-compare demo, and the two were merged into one page the same day. It is fully static: no backend, no build step, with drafts stored in your browser. It can:
 
 - group layers the way UGRC’s own layer ids do (for example “PARKS & REC”) and filter them by id;
-- edit colors, opacity, numbers, enums, filters and zoom ranges, with a raw-JSON fallback for anything else;
-- **apply one edit to every layer that shares the same value**, which matters because UGRC splits one road class across a dozen or more zoom-band layers;
+- edit colors, opacity, numbers, enums, filters and zoom ranges, add any property the style spec allows for that layer type, and fall back to raw JSON for anything else;
+- **apply one edit to every sibling layer**, which matters because UGRC splits one road class across a dozen or more zoom-band layers;
 - inspect the map: hover or click to see which layer is drawing what is under the cursor, then jump to it;
 - swipe-compare against any theme, UGRC’s live basemap, or your upload, with an address search on either map;
-- autosave for crash recovery, and download one combined style or the three separate service files.
+- undo and redo, autosave for crash recovery, and download one combined style or the three separate service files.
 
-## 4 Using a downloaded style
+A few of these took more thought than they look.
 
-A style JSON is a set of instructions that MapLibre reads and renders live, still pulling the actual data from UGRC.
+**Finding siblings.** Grouping zoom-band copies by name seemed obvious, but UGRC’s naming is not consistent: the same `_N` suffix means “zoom variant” in one feature family and “a different thing” (a contour interval, say) in another. What is reliable is that every copy of one class shares the same source layer, layer type and `filter`, and until someone edits it, the same value. So bulk-apply matches on all of those plus the property’s current value, and it is an opt-in checkbox (“also apply to N sibling layers”) that only appears when there is a match.
+
+**Not building an expression editor.** Maputnik has a visual editor for `interpolate`, `match` and `step` expressions, and I planned one too. Then I checked UGRC’s live styles: across all 547 `LiteBase` and `LiteLabels` layers at the time there were no such expressions at all, only plain values, zoom-band copies, and in 26 places the older zoom-only `{stops: [...]}` function. So the editor got a small editor for those `stops` instead, and the expression editor was dropped.
+
+**A download you can upload again.** UGRC hosts the basemap as three files, so the editor can split an edited style back into those three. The combined download also doubles as a way to carry a session to another computer, but re-uploading it used to lose the three-service split. The combined file now stores what it needs to split again in the style’s `metadata`, which renderers ignore. And if you upload just one of the three services on its own, the editor recognises it from the service name in Esri’s tile URLs and warns you instead of treating it as a whole basemap.
+
+**A gentle highlight.** When you hover a layer in the list, the map highlights it with one slow, eased rise and fall of the layer’s own paint rather than a repeated flash, since a big layer like county fills flashing quickly could be a seizure risk.
+
+## 7 Using a downloaded style
+
+A style JSON is a set of instructions that MapLibre reads and renders live, still pulling the actual data from UGRC. It is not tied to MapLibre: Esri’s tile servers use version 8 of the Mapbox GL style specification, so the same file works with MapLibre GL JS, Mapbox GL JS or Esri’s ArcGIS JavaScript API.
 
 > **WARNING:**
 >
@@ -69,7 +122,13 @@ fetch("./ugrc-lite-edited.json") // <1>
 3.  Rewrite it into an explicit `tiles` template.
 4.  Hand the fixed style to MapLibre, centered on Salt Lake City.
 
-For the fastest look with no code, drop the file into [Maputnik](https://maplibre.org/maputnik/). Regenerating the themes is `uv run ugrc-styles`, and adding a theme is a new directory under `config/themes/`. The code is on [GitHub](https://github.com/ar-puuk/ugrc-styles).
+For the fastest look with no code, drop the file into [Maputnik](https://maplibre.org/maputnik/). Unless something you use expects UGRC’s three-file layout, download the combined style: it is the single file the snippet above expects.
+
+## 8 What’s next
+
+The repository keeps a short backlog of editor ideas in [`PIPELINE.md`](https://github.com/ar-puuk/ugrc-styles/blob/main/PIPELINE.md). The ones I find most useful are a button that exports the current swipe comparison as one image, a shareable link that encodes only the properties you changed, and MapLibre’s label collision boxes as a debug overlay, which would answer the recurring “why is this label not showing at this zoom?” question directly. New themes are a directory of rules away.
+
+I built the generator and the editor with Claude as a pair programmer. The code is on [GitHub](https://github.com/ar-puuk/ugrc-styles) under the MIT license, and the basemap data and tiles are UGRC’s.
 
 ## Citation
 

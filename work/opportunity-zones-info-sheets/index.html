@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pukar Bhandari">
 <meta name="dcterms.date" content="2026-05-28">
-<meta name="description" content="A Quarto and R pipeline that builds county summary and per-tract detail PDFs for Utah’s Opportunity Zones 2.0 eligible list. Developed at the Wasatch Front Regional Council.">
+<meta name="description" content="A Quarto, R and Typst pipeline that turns a dozen regional GIS layers into a one-page profile for every census tract on Utah’s Opportunity Zones 2.0 eligible list. Developed at the Wasatch Front Regional Council.">
 
 <title>Opportunity Zones 2.0 Tract Info Sheets – Pukar Bhandari</title>
 <style>
@@ -52,9 +52,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8a5672f0138fe174ac385a1e2bdc95c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-4f550554e58d59d67a9ae604d350339e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-8a5672f0138fe174ac385a1e2bdc95c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-490bc4386d2044dbe0390ac645d7e280.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-f69e9b9804d5144d90bbc1b539982d35.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-490bc4386d2044dbe0390ac645d7e280.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
@@ -101,19 +101,19 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../../assets/css/index.css">
 <link rel="stylesheet" href="../../assets/css/app-embed.css">
 <meta property="og:title" content="Opportunity Zones 2.0 Tract Info Sheets – Pukar Bhandari">
-<meta property="og:description" content="A Quarto and R pipeline that builds county summary and per-tract detail PDFs for Utah’s Opportunity Zones 2.0 eligible list. Developed at the Wasatch Front Regional Council.">
-<meta property="og:image" content="https://ar-puuk.github.io/work/opportunity-zones-info-sheets/oz_tract_map.png">
+<meta property="og:description" content="A Quarto, R and Typst pipeline that turns a dozen regional GIS layers into a one-page profile for every census tract on Utah’s Opportunity Zones 2.0 eligible list. Developed at the Wasatch Front Regional Council.">
+<meta property="og:image" content="https://ar-puuk.github.io/work/opportunity-zones-info-sheets/oz_detail_page.png">
 <meta property="og:site_name" content="Pukar Bhandari">
-<meta property="og:image:height" content="954">
-<meta property="og:image:width" content="681">
-<meta property="og:image:alt" content="Map of a census tract outlined in dark blue with transit and land-use context.">
+<meta property="og:image:height" content="1224">
+<meta property="og:image:width" content="1584">
+<meta property="og:image:alt" content="A tract detail page for Salt Lake County: a header with the tract name and investment likelihood, four key measures, a tract map and panels of housing, transit, auto access and growth metrics.">
 <meta name="twitter:title" content="Opportunity Zones 2.0 Tract Info Sheets – Pukar Bhandari">
-<meta name="twitter:description" content="A Quarto and R pipeline that builds county summary and per-tract detail PDFs for Utah’s Opportunity Zones 2.0 eligible list. Developed at the Wasatch Front Regional Council.">
-<meta name="twitter:image" content="https://ar-puuk.github.io/work/opportunity-zones-info-sheets/oz_tract_map.png">
+<meta name="twitter:description" content="A Quarto, R and Typst pipeline that turns a dozen regional GIS layers into a one-page profile for every census tract on Utah’s Opportunity Zones 2.0 eligible list. Developed at the Wasatch Front Regional Council.">
+<meta name="twitter:image" content="https://ar-puuk.github.io/work/opportunity-zones-info-sheets/oz_detail_page.png">
 <meta name="twitter:creator" content="@arpuuk">
 <meta name="twitter:site" content="@arpuuk">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image:alt" content="Map of a census tract outlined in dark blue with transit and land-use context.">
+<meta name="twitter:image:alt" content="A tract detail page for Salt Lake County: a header with the tract name and investment likelihood, four key measures, a tract map and panels of housing, transit, auto access and growth metrics.">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
@@ -378,8 +378,8 @@ ul.task-list li input[type="checkbox"] {
             <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <div id="quarto-announcement" data-announcement-id="d427bc2c621f9106df6eeacffb0a77cd" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p><strong>New:</strong> <a href="../../work/community-profiles/" class="no-external" target="_self">Demographic Profiles</a>, a zero-backend, map-first dashboard of Census and economic indicators for Utah.</p>
+  <div id="quarto-announcement" data-announcement-id="e50c892fd6bff347bf92501715c38d0d" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>New:</strong> <a href="../../posts/basemapper/" class="no-external" target="_self">basemapper</a>, sharp vector basemaps for ggplot2, tmap, matplotlib and plotnine figures, rendered in R and Python without a browser.</p>
 </div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
@@ -390,7 +390,7 @@ ul.task-list li input[type="checkbox"] {
             <p class="subtitle lead">Auto-generated PDF info sheets for every eligible census tract in the WFRC and MAG region</p>
                   <div>
         <div class="description">
-          A Quarto and R pipeline that builds county summary and per-tract detail PDFs for Utah’s Opportunity Zones 2.0 eligible list. Developed at the Wasatch Front Regional Council.
+          A Quarto, R and Typst pipeline that turns a dozen regional GIS layers into a one-page profile for every census tract on Utah’s Opportunity Zones 2.0 eligible list. Developed at the Wasatch Front Regional Council.
         </div>
       </div>
                           <div class="quarto-categories">
@@ -431,7 +431,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">November 13, 2026</p>
+        <p class="date-modified">November 23, 2026</p>
       </div>
     </div>
       
@@ -465,48 +465,63 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="oz_tract_map.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="A tract-level map from one of the info sheets: the tract outline, with Wasatch Choice centers, rail stops and nearby land use."><img src="oz_tract_map.png" class="img-fluid figure-img" style="width:50.0%" alt="Map of a census tract outlined in dark blue with transit and land-use context."></a></p>
-<figcaption>A tract-level map from one of the info sheets: the tract outline, with Wasatch Choice centers, rail stops and nearby land use.</figcaption>
+<p><a href="oz_detail_page.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="One tract’s detail page: four key measures across the top, the tract map on the left, and panels for the tract profile, Wasatch Choice centers, housing, transit, auto access and projected growth."><img src="oz_detail_page.png" class="img-fluid figure-img" alt="A landscape tract detail page for census tract 49035101402 in Salt Lake County (University of Utah main campus). A dark header shows the tract name and an 'Investment likelihood: Likely' badge. Four cards show center coverage of 16.4%, an access-to-opportunities index of 48.9, 0 planned households per acre and 2.3 ERU per acre of projected growth. Below are the tract map and tables of population, housing, transit, auto access and growth figures."></a></p>
+<figcaption>One tract’s detail page: four key measures across the top, the tract map on the left, and panels for the tract profile, Wasatch Choice centers, housing, transit, auto access and projected growth.</figcaption>
 </figure>
 </div>
-<section id="what-it-does" class="level2">
-<h2 class="anchored" data-anchor-id="what-it-does">What it does</h2>
-<p>Utah’s Opportunity Zones 2.0 eligible-tract list is a long list of census tracts, and investors and local governments need to weigh land use and transportation access tract by tract. This pipeline produces landscape PDF info sheets for every tract on the list, to support OZ 2.0 investment siting decisions.</p>
-<p>Each county gets two documents:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>PDF</th>
-<th>Content</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Summary</strong></td>
-<td>A one-page table with all tracts in the county side by side</td>
-</tr>
-<tr class="even">
-<td><strong>Detail</strong></td>
-<td>One page per tract, with a large map, key metrics and five data panels</td>
-</tr>
-</tbody>
-</table>
-<p>The maps show Wasatch Choice centers, small-area-plan buffers, rail and BRT stops and freeway exits. Counties run in WFRC order (Box Elder, Weber, Davis, Salt Lake, Tooele, Morgan) and then MAG (Utah, Summit, Wasatch).</p>
+<section id="why-tract-level-info-sheets" class="level2">
+<h2 class="anchored" data-anchor-id="why-tract-level-info-sheets">Why tract-level info sheets</h2>
+<p>Opportunity Zones offer federal tax incentives for investment in designated census tracts. With the second round of the program (OZ 2.0), Utah has a long list of eligible tracts, and the people weighing them, from local governments to investors, need to compare tracts on the things that make investment work: land that can be developed, access to jobs, transit, planned housing and expected growth.</p>
+<p>That information exists, but it is spread across a dozen regional datasets maintained by different teams: Wasatch Choice centers, station area plans, the Access to Opportunities index, small-area growth forecasts, census demographics and the housing unit inventory. The info sheets bring it together into one consistent page per tract, and a one-page table per county to compare tracts side by side.</p>
+</section>
+<section id="whats-on-a-page" class="level2">
+<h2 class="anchored" data-anchor-id="whats-on-a-page">What’s on a page</h2>
+<p>Each detail page is built to be read in under a minute:</p>
+<ul>
+<li><strong>The header</strong> names the tract (with a descriptive name, such as “SLC - U of U Main Campus”), its acreage, and the Urban Institute’s investment likelihood rating.</li>
+<li><strong>Four key measures</strong> across the top: how much of the tract lies in a metropolitan, urban or city center; a 0 to 100 Access to Opportunities index combining driving and transit access to jobs and households; planned housing density from station area plans; and projected growth from 2027 to 2037 in equivalent residential units (ERU) per developable acre.</li>
+<li><strong>The map</strong> shows the tract with Wasatch Choice centers, station area plan buffers, rail and BRT stops and freeway exits.</li>
+<li><strong>Six panels</strong> give the detail behind the headline numbers: the tract profile, center and district coverage, housing and demographics, transit, auto access and projected growth.</li>
+</ul>
+<p>The county summary puts every tract in a county on one page with the same measures, and an Excel workbook carries all of it with live formulas, plus a PDF version that prints the workbook as Excel would.</p>
+</section>
+<section id="how-its-built" class="level2">
+<h2 class="anchored" data-anchor-id="how-its-built">How it’s built</h2>
+<p>The pipeline is a Quarto project in R, in four stages:</p>
+<ol type="1">
+<li><strong>Load.</strong> GIS layers are pulled from ArcGIS services and local sources and cached as GeoPackages, then read with <code>sf</code> using SQL and spatial filters so only the needed features come in.</li>
+<li><strong>Calculate.</strong> Per-tract metrics: center and station-area overlaps, housing joins, Access to Opportunities scores weighted by developable acres, and growth forecasts area-proportioned from traffic analysis zones.</li>
+<li><strong>Map.</strong> A ggplot per tract, saved at 200 dpi and cached so the summary and detail documents share them.</li>
+<li><strong>Render.</strong> Parameterized Quarto documents render each county’s summary and detail PDFs with Typst, which gives precise control over a dense, fixed landscape layout.</li>
+</ol>
+<p>The page design came from a visual mock-up, and the Typst templates reproduce it to the point (literally: the mock’s pixel sizes convert directly to points). Fonts ship with the repository, and R packages are pinned with <code>renv</code>, so anyone can regenerate the full set when the eligible list or the underlying data changes.</p>
+<section id="sharper-maps-with-basemapper" class="level3">
+<h3 class="anchored" data-anchor-id="sharper-maps-with-basemapper">Sharper maps with basemapper</h3>
+<p>The first version of the maps used raster basemap tiles, and in print they looked soft: blurry contours, and labels that were hard to read. UGRC publishes the same basemap as a vector style, but no R tool could draw one under a ggplot. So I wrote <a href="../../posts/basemapper/index.html">basemapper</a>, an R and Python package that renders vector basemaps at the figure’s own zoom and resolution, and switched the maps to it.</p>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/blob/02ef3387d76be82796106dd97d4a01b8d6e1c444/data/map_cache/49035101402_xl.png"><img src="../../posts/basemapper/oz_tract_raster.png" class="img-fluid" alt="Census tract map on Salt Lake City's east bench over a raster basemap with soft, partly hidden labels and blurry contours."></a></p>
+<p><strong>Before:</strong> raster basemap tiles</p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/blob/f02bfd8008e297a7775d2ac9a59461d2f339eb7e/data/map_cache/49035101402_xl.png"><img src="oz_tract_map.png" class="img-fluid" alt="The same census tract map over a UGRC Lite vector basemap with crisp hillshade, contours and roads."></a></p>
+<p><strong>After:</strong> UGRC Lite vector, rendered by basemapper</p>
+</div>
+</div>
+</div>
+</section>
 </section>
 <section id="what-i-worked-on" class="level2">
 <h2 class="anchored" data-anchor-id="what-i-worked-on">What I worked on</h2>
-<p>The whole pipeline: caching and joining the GIS sources, computing per-tract metrics, generating the maps, and rendering the PDFs with Quarto and Typst. R packages are managed with <code>renv</code> so the reports can be regenerated when the eligible list or underlying data changes.</p>
-<p>My role: developer. I authored all the commits in the repository.</p>
+<p>The whole pipeline: caching and joining the GIS sources, computing the per-tract metrics, generating the maps, designing and building the Typst layouts, and producing the Excel workbook. I authored all the commits in the repository, and wrote basemapper along the way.</p>
+<p>The current release covers 108 eligible tracts across Box Elder, Weber, Davis, Salt Lake, Tooele and Utah counties.</p>
 </section>
 <section id="see-it" class="level2">
 <h2 class="anchored" data-anchor-id="see-it">See it</h2>
-<p>This project produces PDFs rather than a web app, so the source is the best place to look.</p>
+<p>The reports and their source are public on GitHub.</p>
 <div class="app-links">
-<p><a href="https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets" class="btn btn-primary" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
+<p><a href="https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets" class="btn btn-primary" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</a> <a href="https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/blob/main/output/detail/Salt_Lake_OZ_Detail.pdf" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="fa-solid fa-file-pdf" aria-label="file-pdf"></i> Salt Lake County detail sheets</a> <a href="https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/tree/main/output" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="fa-solid fa-file-excel" aria-label="file-excel"></i> Workbook</a></p>
 </div>
 
 

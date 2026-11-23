@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Pukar Bhandari">
+<meta name="dcterms.date" content="2026-11-23">
+<meta name="description" content="Static maps in R and Python could only use raster tiles for basemaps. basemapper renders MapLibre vector styles at the figure’s own zoom and resolution, as PNG or true vector SVG, without a browser or GPU. Here is what it does and what it took to build.">
+
+<title>basemapper: Vector Basemaps for R and Python, Rendered Headlessly – Pukar Bhandari</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../assets/images/pb-logo.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-8764c335dad511aad077ef15741b5bc9.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-dd52e5adb6025a2d72185450488676d8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b1919c9cd559971cd531f5718ff5c6da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-dd52e5adb6025a2d72185450488676d8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/academicons-1.9.4/size.css" rel="stylesheet">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": true,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "/"
+  ],
+  "show-item-context": true,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<!-- Optimized Font Preloading -->
+
+
+
+<!-- Body text font (Poppins Regular) -->
+
+<link rel="preload" href="../../assets/fonts/Poppins-Regular.woff2" as="font" type="font/woff2" crossorigin="">
+
+
+
+<link rel="stylesheet" href="../../assets/css/index.css">
+<link rel="stylesheet" href="../../assets/css/app-embed.css">
+<meta property="og:title" content="basemapper: Vector Basemaps for R and Python, Rendered Headlessly – Pukar Bhandari">
+<meta property="og:description" content="Static maps in R and Python could only use raster tiles for basemaps. basemapper renders MapLibre vector styles at the figure’s own zoom and resolution, as PNG or true vector SVG, without a browser or GPU. Here is what it does and what it took to build.">
+<meta property="og:image" content="https://ar-puuk.github.io/posts/basemapper/ugrc_lite_vector.png">
+<meta property="og:site_name" content="Pukar Bhandari">
+<meta property="og:image:height" content="1120">
+<meta property="og:image:width" content="1800">
+<meta property="og:image:alt" content="UGRC Lite vector basemap of downtown Salt Lake City and Liberty Park, rendered by basemapper, with street names, TRAX lines and highway shields.">
+<meta name="twitter:title" content="basemapper: Vector Basemaps for R and Python, Rendered Headlessly – Pukar Bhandari">
+<meta name="twitter:description" content="Static maps in R and Python could only use raster tiles for basemaps. basemapper renders MapLibre vector styles at the figure’s own zoom and resolution, as PNG or true vector SVG, without a browser or GPU. Here is what it does and what it took to build.">
+<meta name="twitter:image" content="https://ar-puuk.github.io/posts/basemapper/ugrc_lite_vector.png">
+<meta name="twitter:creator" content="@arpuuk">
+<meta name="twitter:site" content="@arpuuk">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image:alt" content="UGRC Lite vector basemap of downtown Salt Lake City and Liberty Park, rendered by basemapper, with street names, TRAX lines and highway shields.">
+<meta name="citation_title" content="basemapper: Vector Basemaps for R and Python, Rendered Headlessly">
+<meta name="citation_author" content="Pukar Bhandari">
+<meta name="citation_publication_date" content="2026-11-23">
+<meta name="citation_cover_date" content="2026-11-23">
+<meta name="citation_year" content="2026">
+<meta name="citation_online_date" content="2026-11-23">
+<meta name="citation_fulltext_html_url" content="https://ar-puuk.github.io/posts/basemapper/">
+<meta name="citation_doi" content="10.5281/zenodo.24457061">
+<meta name="citation_language" content="en-US">
+<meta name="citation_publisher" content="Zenodo">
+</head>
+
+<body class="floating nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      refreshSafariScrollbar();
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-xl " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/images/pb-logo.svg" alt="" class="navbar-logo light-content">
+    <img src="../../assets/images/pb-logo.svg" alt="" class="navbar-logo dark-content">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Pukar Bhandari</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../research/index.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-socials" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Socials</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-socials">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/ar-puuk/" target="_blank"><i class="bi bi-github" role="img">
+</i> 
+ <span class="dropdown-text">Github</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.linkedin.com/in/arpuuk" target="_blank"><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="dropdown-text">LinkedIn</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://urbanists.social/@arpuuk" target="_blank"><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="dropdown-text">Mastodon</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://bsky.app/profile/arpuuk.bsky.social" target="_blank"><i class="bi bi-bluesky" role="img">
+</i> 
+ <span class="dropdown-text">Bluesky</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="mailto:pukar.bhandari@outlook.com" target="_blank"><i class="bi bi-envelope-fill" role="img">
+</i> 
+ <span class="dropdown-text">E-mail</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../projects.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+            <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <div id="quarto-announcement" data-announcement-id="e50c892fd6bff347bf92501715c38d0d" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>New:</strong> <a href="../../posts/basemapper/" class="no-external" target="_self">basemapper</a>, sharp vector basemaps for ggplot2, tmap, matplotlib and plotnine figures, rendered in R and Python without a browser.</p>
+</div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <div class="quarto-title-block"><div><h1 class="title">basemapper: Vector Basemaps for R and Python, Rendered Headlessly</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+            <p class="subtitle lead">Why I ended up porting MapLibre GL JS’s renderer to Rust to get a sharp basemap under a ggplot</p>
+                  <div>
+        <div class="description">
+          Static maps in R and Python could only use raster tiles for basemaps. basemapper renders MapLibre vector styles at the figure’s own zoom and resolution, as PNG or true vector SVG, without a browser or GPU. Here is what it does and what it took to build.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Rust</div>
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">Python</div>
+                <div class="quarto-category">GIS</div>
+                <div class="quarto-category">Developer Tools</div>
+                <div class="quarto-category">Open Source</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Pukar Bhandari <a href="mailto:pukar.bhandari@outlook.com" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 23, 2026</p>
+      </div>
+    </div>
+    
+      <div>
+      <div class="quarto-title-meta-heading">Modified</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date-modified">November 23, 2026</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Section">
+    <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-map-that-started-it" id="toc-the-map-that-started-it" class="nav-link active" data-scroll-target="#the-map-that-started-it"><span class="header-section-number">1</span> The map that started it</a></li>
+  <li><a href="#the-trouble-with-tiles-in-a-static-figure" id="toc-the-trouble-with-tiles-in-a-static-figure" class="nav-link" data-scroll-target="#the-trouble-with-tiles-in-a-static-figure"><span class="header-section-number">2</span> The trouble with tiles in a static figure</a></li>
+  <li><a href="#a-quick-tour" id="toc-a-quick-tour" class="nav-link" data-scroll-target="#a-quick-tour"><span class="header-section-number">3</span> A quick tour</a>
+  <ul class="collapse">
+  <li><a href="#in-a-plot" id="toc-in-a-plot" class="nav-link" data-scroll-target="#in-a-plot">In a plot</a></li>
+  <li><a href="#only-the-parts-you-want" id="toc-only-the-parts-you-want" class="nav-link" data-scroll-target="#only-the-parts-you-want">Only the parts you want</a></li>
+  </ul></li>
+  <li><a href="#under-the-hood" id="toc-under-the-hood" class="nav-link" data-scroll-target="#under-the-hood"><span class="header-section-number">4</span> Under the hood</a></li>
+  <li><a href="#the-hard-parts" id="toc-the-hard-parts" class="nav-link" data-scroll-target="#the-hard-parts"><span class="header-section-number">5</span> The hard parts</a>
+  <ul class="collapse">
+  <li><a href="#first-attempt-borrow-a-gpu-renderer" id="toc-first-attempt-borrow-a-gpu-renderer" class="nav-link" data-scroll-target="#first-attempt-borrow-a-gpu-renderer">First attempt: borrow a GPU renderer</a></li>
+  <li><a href="#second-attempt-port-maplibre-to-the-cpu" id="toc-second-attempt-port-maplibre-to-the-cpu" class="nav-link" data-scroll-target="#second-attempt-port-maplibre-to-the-cpu">Second attempt: port MapLibre to the CPU</a></li>
+  <li><a href="#measuring-instead-of-eyeballing" id="toc-measuring-instead-of-eyeballing" class="nav-link" data-scroll-target="#measuring-instead-of-eyeballing">Measuring instead of eyeballing</a></li>
+  <li><a href="#svg-that-is-actually-vector" id="toc-svg-that-is-actually-vector" class="nav-link" data-scroll-target="#svg-that-is-actually-vector">SVG that is actually vector</a></li>
+  <li><a href="#windows-r-and-rust" id="toc-windows-r-and-rust" class="nav-link" data-scroll-target="#windows-r-and-rust">Windows, R and Rust</a></li>
+  </ul></li>
+  <li><a href="#building-it-with-claude" id="toc-building-it-with-claude" class="nav-link" data-scroll-target="#building-it-with-claude"><span class="header-section-number">6</span> Building it with Claude</a></li>
+  <li><a href="#back-to-the-opportunity-zones-maps" id="toc-back-to-the-opportunity-zones-maps" class="nav-link" data-scroll-target="#back-to-the-opportunity-zones-maps"><span class="header-section-number">7</span> Back to the Opportunity Zones maps</a></li>
+  <li><a href="#what-it-doesnt-do-yet" id="toc-what-it-doesnt-do-yet" class="nav-link" data-scroll-target="#what-it-doesnt-do-yet"><span class="header-section-number">8</span> What it doesn’t do (yet)</a></li>
+  <li><a href="#cite-it" id="toc-cite-it" class="nav-link" data-scroll-target="#cite-it"><span class="header-section-number">9</span> Cite it</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/edit/master/posts/basemapper/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div><div class="quarto-code-links"><h2>Code Links</h2><ul><li><a href="https://github.com/ar-puuk/basemapper"><i class="bi bi-github"></i>basemapper on GitHub</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content" tabindex="-1">
+
+
+
+
+
+
+<p>Every static map I make has two halves: the data I care about, and the basemap underneath that tells the reader where they are. In R and Python I have great tools for the first half. For the second half, I had been putting up with blurry tiles for years.</p>
+<p>This post introduces <strong>basemapper</strong>, an R and Python package (with a Rust core) that renders vector basemaps straight into ggplot2, tmap, matplotlib and plotnine figures. It is also the story of how a small annoyance on a work project turned into a software port of MapLibre GL JS’s rendering pipeline, checked pixel by pixel against the real thing.</p>
+<div class="app-links">
+<p><a href="https://ar-puuk.github.io/basemapper/" class="btn btn-primary" target="_blank" rel="noopener"><i class="fa-solid fa-book" aria-label="book"></i> Docs</a> <a href="https://github.com/ar-puuk/basemapper" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</a> <a href="https://doi.org/10.5281/zenodo.24457061" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="ai  ai-doi" aria-label="doi"></i> DOI</a></p>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="ugrc_lite_vector.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="UGRC’s Lite vector basemap (hillshade, base and labels) over downtown Salt Lake City, rendered by basemapper at zoom 13.4 and 2× pixel ratio."><img src="ugrc_lite_vector.png" class="img-fluid figure-img" alt="UGRC Lite vector basemap of downtown Salt Lake City and Liberty Park, rendered by basemapper, with street names, TRAX lines and highway shields."></a></p>
+<figcaption>UGRC’s Lite vector basemap (hillshade, base and labels) over downtown Salt Lake City, rendered by basemapper at zoom 13.4 and 2× pixel ratio.</figcaption>
+</figure>
+</div>
+<section id="the-map-that-started-it" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="the-map-that-started-it"><span class="header-section-number">1</span> The map that started it</h2>
+<p>In mid-2026 I was building the <a href="../../work/opportunity-zones-info-sheets/index.html">Opportunity Zones 2.0 info sheets</a> at the Wasatch Front Regional Council: a Quarto pipeline that produces a PDF page for every eligible census tract in the region, each with a large map of the tract and its surroundings. These pages go to investors and local governments, so the maps had to read well in print.</p>
+<p>The Utah Geospatial Resource Center (UGRC) publishes a lovely basemap called Lite, and it publishes it two ways: as pre-drawn raster tiles, and as a vector tile style meant for MapLibre in a web browser. The R and Python basemap tools I knew only speak raster tiles. So the maps got the raster version, and the result looked like this: soft contours, labels that were hard to read, and a place name half hidden under a label box.</p>
+<p>The vector version of the same basemap exists, looks far better, and is free. I just had no way to put it under a ggplot.</p>
+</section>
+<section id="the-trouble-with-tiles-in-a-static-figure" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="the-trouble-with-tiles-in-a-static-figure"><span class="header-section-number">2</span> The trouble with tiles in a static figure</h2>
+<p>Raster tiles were designed for slippy web maps. Each tile is a 256 or 512 pixel image drawn for one whole zoom level, and a web map shows them at exactly that size. A static figure breaks both assumptions:</p>
+<ul>
+<li><strong>Your figure’s extent picks a fractional zoom.</strong> A tract that fits the panel at zoom 15.6 gets tiles drawn for zoom 15 or 16, resampled to fit. Labels end up too small or too large, and always a little soft.</li>
+<li><strong>Your figure has its own resolution.</strong> A 300 dpi PDF wants three times as many pixels as a screen. Raster tiles for screens get upscaled, and print shows it.</li>
+<li><strong>The design is baked in.</strong> You cannot turn off the points of interest, drop the labels, or keep only roads and water. You get the picture the tile server drew.</li>
+</ul>
+<p>A vector style fixes all three, because the map is drawn on demand from geometry and a style sheet. The catch is that vector styles are drawn by MapLibre GL JS, which runs in a browser on a GPU. You can screenshot a browser canvas, but that gives you a screen-resolution image of a web page, not a print-quality figure, and it drags a headless browser into your R session.</p>
+<p>Here is the difference on one view of downtown Salt Lake City, both panels at zoom 15.6 and 2× pixel ratio. The left panel is UGRC Lite as raster tiles from UGRC Discover; the right panel is the same basemap from its vector style, rendered by basemapper. The bottom row enlarges the outlined area around the Courthouse TRAX station.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="raster_vs_vector.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="UGRC Lite as raster tiles (left) and as a vector style rendered by basemapper (right), same view and output size."><img src="raster_vs_vector.png" class="img-fluid figure-img" alt="Side-by-side maps of downtown Salt Lake City around the Courthouse TRAX station. The raster-tile version on the left has small, blurry labels and soft edges when enlarged; the basemapper vector version on the right has larger, sharp labels and crisp lines and station icon."></a></p>
+<figcaption>UGRC Lite as raster tiles (left) and as a vector style rendered by basemapper (right), same view and output size.</figcaption>
+</figure>
+</div>
+<p>What I wanted was MapLibre’s output, at any zoom and any resolution, without a browser, callable from R and Python.</p>
+</section>
+<section id="a-quick-tour" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="a-quick-tour"><span class="header-section-number">3</span> A quick tour</h2>
+<p>basemapper’s central object is a map view: a style, a size, and either a centre and zoom or a bounding box. From there you can render it to a PNG, an array, a georeferenced raster or a true vector SVG.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Python</a></li></ul>
+<div class="tab-content" data-group="language">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(basemapper)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">basemap</span>(<span class="st">"UGRC.Lite"</span>, <span class="dv">800</span>, <span class="dv">600</span>, <span class="at">center =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">111.8887</span>, <span class="fl">40.7556</span>), <span class="at">zoom =</span> <span class="fl">12.4</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">pixel_ratio =</span> <span class="dv">2</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">render_png</span>(m, <span class="at">path =</span> <span class="st">"slc.png"</span>)   <span class="co"># 1600 x 1200, drawn natively at zoom 12.4</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">render_svg</span>(m, <span class="at">path =</span> <span class="st">"slc.svg"</span>)   <span class="co"># true vector; labels stay editable text</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">render_raster</span>(m)             <span class="co"># a terra SpatRaster in EPSG:3857</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> basemapper</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> basemapper.basemap(<span class="st">"UGRC.Lite"</span>, <span class="dv">800</span>, <span class="dv">600</span>, center<span class="op">=</span>(<span class="op">-</span><span class="fl">111.8887</span>, <span class="fl">40.7556</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                       zoom<span class="op">=</span><span class="fl">12.4</span>, pixel_ratio<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>m.render_png(path<span class="op">=</span><span class="st">"slc.png"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>m.render_svg(path<span class="op">=</span><span class="st">"slc.svg"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> m.render_array()              <span class="co"># (1200, 1600, 4) uint8 array</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<p><code>"UGRC.Lite"</code> is a name from basemapper’s catalogue, which uses the same provider names as leaflet (<code>"OpenFreeMap.Positron"</code>, <code>"CartoDB.Voyager"</code>, <code>"Esri.WorldImagery"</code> and so on). Some names stand for several services stacked together: UGRC Lite is really three styles, a hillshade, a base map and a labels layer, and basemapper draws them as one map. Anything that is not in the catalogue can be passed directly: a style URL, a tile URL template, a TileJSON, a PMTiles archive, an ArcGIS service, or a WMS or WMTS endpoint.</p>
+<section id="in-a-plot" class="level3">
+<h3 class="anchored" data-anchor-id="in-a-plot">In a plot</h3>
+<p>Most of the time I don’t want a picture of a basemap, I want a basemap under my data. Each plotting library gets a layer that works out the extent, projection and pixel size from the plot itself:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="language">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">Python</a></li></ul>
+<div class="tab-content" data-group="language">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(basemapper)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>capitol <span class="ot">&lt;-</span> <span class="fu">st_sfc</span>(<span class="fu">st_point</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">111.888</span>, <span class="fl">40.777</span>)), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="dv">26912</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_buffer</span>(<span class="dv">800</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(capitol) <span class="sc">+</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_basemap</span>(<span class="st">"UGRC.Lite"</span>) <span class="sc">+</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"navy"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"capitol.png"</span>, p, <span class="at">width =</span> <span class="dv">6</span>, <span class="at">height =</span> <span class="dv">4</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shapely.geometry <span class="im">import</span> Point</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> basemapper <span class="im">import</span> add_basemap</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>capitol <span class="op">=</span> gpd.GeoSeries([Point(<span class="op">-</span><span class="fl">111.888</span>, <span class="fl">40.777</span>)], crs<span class="op">=</span><span class="dv">4326</span>).to_crs(<span class="dv">26912</span>).<span class="bu">buffer</span>(<span class="dv">800</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>capitol.plot(ax<span class="op">=</span>ax, facecolor<span class="op">=</span><span class="st">"none"</span>, edgecolor<span class="op">=</span><span class="st">"navy"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>add_basemap(ax, <span class="st">"UGRC.Lite"</span>, crs<span class="op">=</span>capitol.crs)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">"capitol.png"</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="ggplot_capitol.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="The R example’s output: an 800 m buffer around the Utah State Capitol over UGRC Lite, saved with ggsave(dpi = 300)."><img src="ggplot_capitol.png" class="img-fluid figure-img" style="width:75.0%" alt="A ggplot2 map with latitude and longitude axes: a navy circle around the Utah State Capitol over a UGRC Lite vector basemap with streets, Memory Grove and hillshade, and a UGRC attribution line in the corner."></a></p>
+<figcaption>The R example’s output: an 800 m buffer around the Utah State Capitol over UGRC Lite, saved with <code>ggsave(dpi = 300)</code>.</figcaption>
+</figure>
+</div>
+<p>The important detail is <em>when</em> the basemap is drawn. <code>geom_basemap()</code> renders when the plot is drawn on a device, at that device’s size and resolution, so <code>ggsave(dpi = 300)</code> gets a basemap drawn at 300 dpi rather than a screen image stretched to fit. The matplotlib layer does the same at <code>savefig()</code> time. tmap gets <code>tm_basemap()</code>, and plotnine gets its own <code>geom_basemap()</code>. The providers’ attribution goes in the corner by default, and <code>get_attribution()</code> returns it as text for a caption.</p>
+</section>
+<section id="only-the-parts-you-want" class="level3">
+<h3 class="anchored" data-anchor-id="only-the-parts-you-want">Only the parts you want</h3>
+<p>Because the map is drawn from a style, basemapper can leave things out. <code>labels = FALSE</code> drops the labels, <code>labels = "only"</code> keeps just the labels on a transparent background, and <code>features</code> keeps or drops whole parts of the map (water, parks, roads, buildings, terrain, points of interest and a few more). Those names work across the common vector tile schemas (OpenMapTiles, Protomaps, Shortbread) and Esri’s layer names, so you don’t need to learn each style’s layer ids. When you do want that control, <code>layers</code> takes layer ids with <code>*</code> wildcards, and <code>list_layers()</code> previews what a render will draw.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Terrain, water, parks and roads only, no labels</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">basemap</span>(<span class="st">"UGRC.Lite"</span>, <span class="at">labels =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"terrain"</span>, <span class="st">"water"</span>, <span class="st">"parks"</span>, <span class="st">"roads"</span>), ...)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Satellite imagery under UGRC Lite's labels</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">basemap</span>(<span class="fu">c</span>(<span class="st">"Esri.WorldImagery"</span>, <span class="fu">basemap_provider</span>(<span class="st">"UGRC.Lite"</span>, <span class="at">labels =</span> <span class="st">"only"</span>)), ...)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="parts_features.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="UGRC Lite with only terrain, water, parks and roads, and no labels."><img src="parts_features.png" class="img-fluid figure-img" alt="A quiet basemap of the Salt Lake Valley with grey hillshade on the Wasatch Front, the Jordan River, green parks and a grey road network, and no labels."></a></p>
+<figcaption>UGRC Lite with only terrain, water, parks and roads, and no labels.</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="parts_imagery_labels.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Esri World Imagery with UGRC Lite’s labels drawn on top."><img src="parts_imagery_labels.png" class="img-fluid figure-img" alt="Satellite imagery of downtown Salt Lake City with street names, TRAX station icons and a US-89 shield from UGRC Lite drawn on top."></a></p>
+<figcaption>Esri World Imagery with UGRC Lite’s labels drawn on top.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>The left panel is the kind of quiet background I want under a choropleth. The right one builds a hybrid map out of two providers that were never designed to go together.</p>
+</section>
+</section>
+<section id="under-the-hood" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="under-the-hood"><span class="header-section-number">4</span> Under the hood</h2>
+<p>basemapper is three packages around one Rust crate. The crate, <code>basemapper-core</code>, does all the work: it reads the style, chooses tiles, fetches them (with a disk cache, so re-running a report doesn’t download everything again), and renders. The R package binds it with <a href="https://extendr.github.io/">extendr</a>, the Python package with <a href="https://pyo3.rs/">PyO3</a> and maturin. Both are thin: they turn a plot or a bounding box into a request and hand the pixels back. That is also why the R, Python and Rust APIs have the same functions, argument names and defaults; there is only one implementation to describe.</p>
+<p>Raster sources are the easy half: fetch the tiles that cover the view, then composite them. Vector styles are where all the time went.</p>
+</section>
+<section id="the-hard-parts" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="the-hard-parts"><span class="header-section-number">5</span> The hard parts</h2>
+<section id="first-attempt-borrow-a-gpu-renderer" class="level3">
+<h3 class="anchored" data-anchor-id="first-attempt-borrow-a-gpu-renderer">First attempt: borrow a GPU renderer</h3>
+<p>The first working version, in June, rendered vector tiles with <a href="https://github.com/maplibre/maplibre-rs">maplibre-rs</a>, an experimental Rust port of MapLibre that draws with wgpu. It produced maps, but it was the wrong tool for this job:</p>
+<ul>
+<li>It needed a GPU, or a software stand-in for one, and the platform graphics libraries to go with it. That is a lot to ask of an R package installed on a locked-down office laptop or a CI runner.</li>
+<li>It rendered tile by tile, so roads and labels broke at tile edges. I worked around the seams by drawing the whole tile grid in one pass, but that was a fix on top of a fix.</li>
+<li>It built from my own fork, and needed <code>protoc</code> (the Protocol Buffers compiler) installed just to compile.</li>
+<li>Its output was <em>similar</em> to MapLibre’s. It was not MapLibre’s.</li>
+</ul>
+<p>That last point mattered most. A basemap style is designed by someone looking at it in MapLibre. If my renderer interprets a line width, a halo or a label collision a little differently, the map stops looking like what its designer intended.</p>
+</section>
+<section id="second-attempt-port-maplibre-to-the-cpu" class="level3">
+<h3 class="anchored" data-anchor-id="second-attempt-port-maplibre-to-the-cpu">Second attempt: port MapLibre to the CPU</h3>
+<p>So in November I replaced it with a renderer of basemapper’s own: a software port of MapLibre GL JS’s rendering pipeline. Not a renderer <em>inspired by</em> MapLibre, but its behaviour ported from the TypeScript source and its shaders, one module at a time: vector tile decoding, the style expression language, line tessellation, fills, circles, and, the biggest piece, the symbol pipeline that shapes, places and collides labels.</p>
+<p>The rule was to reproduce what MapLibre does on the GPU, including the parts that look like accidents:</p>
+<ul>
+<li>Colours are blended premultiplied, in float32, and stored to 8 bits with round-half-to-even, as the GPU does. (<code>0.3 × 255</code> is exactly 76.5 in float32, and it stores as 76, not 77.)</li>
+<li>Each tile’s geometry is clipped to the tile square, as MapLibre’s stencil test does, so features repeated in neighbouring tiles’ buffers are never drawn twice.</li>
+<li>Primitives are sampled at pixel centres with the GPU’s top-left rule, and edges get their softness from MapLibre’s own shader formulas rather than from a generic antialiasing pass.</li>
+<li>Labels follow MapLibre’s line breaking, glyph rounding, anchor choice and collision grid, in MapLibre’s order. Right-to-left scripts are shaped as MapLibre’s RTL plugin shapes them, and CJK text can run vertically.</li>
+</ul>
+<p>My favourite bug from this stretch: point-of-interest icons that were sometimes one pixel off. Their edges sat 0.0175 px from a pixel centre. The reference images come from MapLibre running on SwiftShader, a software GPU that snaps vertex positions to a 1/16 px grid before deciding which pixels a triangle covers. On that grid the edge landed on the other side of the pixel centre. Snapping vertices the same way fixed the icons, and across the whole test suite it cut the number of mismatched pixels by a fifth and the mean colour difference by two thirds.</p>
+<p>Dropping the GPU engine also shrank the project: the dependency tree went from 468 crates to 243, and building it now needs nothing but a Rust toolchain. No GPU, no <code>protoc</code>, no system libraries, no fork.</p>
+</section>
+<section id="measuring-instead-of-eyeballing" class="level3">
+<h3 class="anchored" data-anchor-id="measuring-instead-of-eyeballing">Measuring instead of eyeballing</h3>
+<p>None of that is possible without a way to tell “the same” from “close”. basemapper’s test suite has well over a hundred golden-image cases. Each one is a fixture with a style and exactly the tiles, fonts and icons one view needs, plus a reference image of that view rendered by MapLibre GL JS itself in headless Chromium. The test renders the same fixture with basemapper and counts pixels that differ by more than 24/255 in any channel.</p>
+<p>The cases cover CARTO’s Positron, Dark Matter and Voyager and the full UGRC Lite stack at every MapLibre zoom from 1 to 22 over Salt Lake City, plus fractional zooms, 2× pixel ratio, multi-source styles from OpenFreeMap and Versatiles, raster tiles, layer filtering and SVG output. Every case has a limit on how far it may differ, and the limits only ever go down. Most cases now differ from MapLibre in well under a tenth of a percent of pixels. When something regressed, a small viewer with side-by-side, swipe, blink and diff modes showed exactly where.</p>
+<p>This changed how the work felt. Instead of “does this look right?” the question was always “why is this pixel different?”, and that question has an answer you can find in MapLibre’s source.</p>
+</section>
+<section id="svg-that-is-actually-vector" class="level3">
+<h3 class="anchored" data-anchor-id="svg-that-is-actually-vector">SVG that is actually vector</h3>
+<p>For print and for editing in Illustrator or Inkscape, a PNG is not enough, so basemapper also writes the same view as SVG: real paths for fills and lines, and labels as editable <code>&lt;text&gt;</code>, each glyph placed where MapLibre placed it, with the style’s fonts embedded. Matching MapLibre here meant translating its conventions into SVG’s: dash lengths in MapLibre’s units, round caps that SVG would otherwise extend past the dash, and lines thinner than a pixel stroked at the width that gives the same visual weight. The golden tests rasterise each SVG and score it against the same MapLibre reference; the full UGRC stack at zoom 12.4 comes out 0.23% of pixels off.</p>
+</section>
+<section id="windows-r-and-rust" class="level3">
+<h3 class="anchored" data-anchor-id="windows-r-and-rust">Windows, R and Rust</h3>
+<p>The least glamorous part was getting <code>install.packages</code>-style installs to work on Windows. R on Windows is built with the GNU toolchain, so the Rust code has to be too (the MSVC toolchain cannot import R.dll’s exported global variables). RTools45’s GCC 14 dropped a library that Rust’s GNU target still links against, so the package build now creates an empty stand-in for it. And for a while <code>library(basemapper)</code> crashed outright with an access violation, until the import library marked R’s handful of exported global variables as data rather than functions. None of this is visible to users now, which is the point.</p>
+</section>
+</section>
+<section id="building-it-with-claude" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="building-it-with-claude"><span class="header-section-number">6</span> Building it with Claude</h2>
+<p>I built basemapper with Claude as a pair programmer, and it is fair to say the project would not exist otherwise: porting a large part of a mature graphics library is far more code than I could write on evenings and weekends. Claude was very good at the mechanical bulk of that work, reading MapLibre’s TypeScript and shaders and porting them faithfully, and at writing the tests and tooling around them.</p>
+<p>What made it work was the golden-image suite. An AI assistant will happily tell you a renderer looks right. A test that counts mismatched pixels against MapLibre does not care how confident anyone sounds, and a ratchet that never loosens means progress sticks. My job was mostly deciding what “correct” meant, choosing what to measure next, and reading diffs.</p>
+</section>
+<section id="back-to-the-opportunity-zones-maps" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="back-to-the-opportunity-zones-maps"><span class="header-section-number">7</span> Back to the Opportunity Zones maps</h2>
+<p>The info sheets were basemapper’s first production use, and the reason it exists. Each tract map in the <a href="https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets">pipeline</a> now draws UGRC Lite through <code>geom_basemap()</code>, rendered at the report’s 200 dpi when <code>ggsave()</code> runs, at the same zoom as the old raster maps. Here is the same tract map before and after the switch, as committed to the repository; the overlay layers are identical, and only the basemap changed. Click either map to open it in the repository.</p>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/blob/02ef3387d76be82796106dd97d4a01b8d6e1c444/data/map_cache/49035101402_xl.png"><img src="oz_tract_raster.png" class="img-fluid" alt="Census tract map on Salt Lake City's east bench, the tract outlined in dark blue with red point markers, a dashed buffer and land-use shading, over a raster basemap with soft, partly hidden labels and blurry contours."></a></p>
+<p><strong>Before:</strong> raster basemap tiles</p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><a href="https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/blob/f02bfd8008e297a7775d2ac9a59461d2f339eb7e/data/map_cache/49035101402_xl.png"><img src="oz_tract_vector.png" class="img-fluid" alt="The same census tract map over a UGRC Lite vector basemap with crisp hillshade, contours and roads."></a></p>
+<p><strong>After:</strong> UGRC Lite vector, rendered by basemapper</p>
+</div>
+</div>
+</div>
+<p>Peak names, contour lines and the Heritage State Park label are now readable, and the hillshade has the detail the raster tiles smeared away. More about that project is on its <a href="../../work/opportunity-zones-info-sheets/index.html">project page</a>.</p>
+</section>
+<section id="what-it-doesnt-do-yet" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="what-it-doesnt-do-yet"><span class="header-section-number">8</span> What it doesn’t do (yet)</h2>
+<p>basemapper renders <em>basemaps</em>. Style features meant for data visualisation or interactive 3D, such as heatmap layers, point clustering and 3D terrain, are skipped with a warning (and line gradients draw in a single colour); draw that kind of data with your plotting library on top instead. Output is always Web Mercator, which <code>geom_basemap()</code> and friends reproject for you.</p>
+<p>It is also new: for now it installs from GitHub and compiles the Rust core, so you need a <a href="https://rustup.rs">Rust toolchain</a> (and, on Windows, RTools45 and the <code>x86_64-pc-windows-gnu</code> target):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="st">"ar-puuk/basemapper/r-basemapper"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="st">"basemapper @ git+https://github.com/ar-puuk/basemapper#subdirectory=py-basemapper"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>CRAN, R-universe, PyPI and conda packages will follow after a longer testing period. Until then, the <a href="https://ar-puuk.github.io/basemapper/">documentation</a> has guides for <a href="https://ar-puuk.github.io/basemapper/r/">R</a>, <a href="https://ar-puuk.github.io/basemapper/python/">Python</a> and <a href="https://ar-puuk.github.io/basemapper/rust/">Rust</a>, and every map in them is drawn by the code shown next to it. If you try it and a style renders differently from MapLibre, please <a href="https://github.com/ar-puuk/basemapper/issues">open an issue</a>: with the golden-image setup, a mismatch is a test case waiting to be written.</p>
+</section>
+<section id="cite-it" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="cite-it"><span class="header-section-number">9</span> Cite it</h2>
+<p>basemapper is archived on Zenodo with the DOI <a href="https://doi.org/10.5281/zenodo.24457061">10.5281/zenodo.24457061</a>, which always points to the latest release. The code is on <a href="https://github.com/ar-puuk/basemapper">GitHub</a> under the MIT license.</p>
+
+
+<!-- -->
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@software{bhandari2026,
+  author = {Bhandari, Pukar},
+  publisher = {Zenodo},
+  title = {Basemapper: {Vector} {Basemaps} for {R} and {Python,}
+    {Rendered} {Headlessly}},
+  date = {2026-11-23},
+  url = {https://ar-puuk.github.io/posts/basemapper/},
+  doi = {10.5281/zenodo.24457061},
+  langid = {en-US}
+}
+</code></pre><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-bhandari2026" class="csl-entry quarto-appendix-citeas" role="listitem">
+Bhandari, Pukar. 2026. <em>Basemapper: Vector Basemaps for R and Python,
+Rendered Headlessly</em>. Zenodo, released November 23. <a href="https://doi.org/10.5281/zenodo.24457061">https://doi.org/10.5281/zenodo.24457061</a>.
+</div></div></section></div></main> <!-- /main -->
+<script>
+  // keep the footer copyright range current without editing _quarto.yml each year
+  document.addEventListener("DOMContentLoaded", function () {
+    var el = document.getElementById("footer-year");
+    if (el) el.textContent = new Date().getFullYear();
+  });
+</script>
+<script src="../../assets/js/app-embed.js" defer=""></script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const cellDetails = window.document.querySelectorAll(".cell details.code-fold");
+        for (let i=0; i<cellDetails.length; i++) {
+          const details = cellDetails[i];
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell div.sourceCode.cell-code");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/ar-puuk\.github\.io");
+      const newWindowLabel = "(opens in a new tab)";
+      const newWindowNoteId = "quarto-ext-newwindow-label";
+      // Links reference one hidden label through aria-describedby, so the
+      // announcement never changes their accessible name.
+      var describeNewWindow = (link) => {
+        if (!window.document.getElementById(newWindowNoteId)) {
+          var newWindowNote = window.document.createElement("span");
+          newWindowNote.id = newWindowNoteId;
+          newWindowNote.hidden = true;
+          newWindowNote.textContent = newWindowLabel;
+          window.document.body.appendChild(newWindowNote);
+        }
+        var describedBy = (link.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
+        if (!describedBy.includes(newWindowNoteId)) {
+          describedBy.push(newWindowNoteId);
+          link.setAttribute("aria-describedby", describedBy.join(" "));
+        }
+      }
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            describeNewWindow(link);
+          if (!link.classList.contains('no-external-icon')) {
+            // default icon
+            link.classList.add("external");
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            trigger: 'click',
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            plugins: [hideOnEscAndFocusOut],
+            positionFixed: true,
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "basemapper: Vector Basemaps for R and Python, Rendered Headlessly"</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="an">image-alt:</span><span class="co"> "UGRC Lite vector basemap of downtown Salt Lake City and Liberty Park, rendered by basemapper, with street names, TRAX lines and highway shields."</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> Why I ended up porting MapLibre GL JS's renderer to Rust to get a sharp basemap under a ggplot</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> Static maps in R and Python could only use raster tiles for basemaps. basemapper renders MapLibre vector styles at the figure's own zoom and resolution, as PNG or true vector SVG, without a browser or GPU. Here is what it does and what it took to build.</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "ugrc_lite_vector.png"</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Pukar Bhandari</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">    email: pukar.bhandari@outlook.com</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2026-11-23"</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="an">date-modified:</span><span class="co"> "2026-11-23"</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [Rust, R, Python, GIS, Developer Tools, Open Source]</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="an">citation:</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">  type: software</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">  doi: 10.5281/zenodo.24457061</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">  publisher: Zenodo</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="an">code-links:</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">  - text: basemapper on GitHub</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">    icon: github</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">    href: https://github.com/ar-puuk/basemapper</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>Every static map I make has two halves: the data I care about, and the basemap underneath that tells the reader where they are. In R and Python I have great tools for the first half. For the second half, I had been putting up with blurry tiles for years.</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>This post introduces **basemapper**, an R and Python package (with a Rust core) that renders vector basemaps straight into ggplot2, tmap, matplotlib and plotnine figures. It is also the story of how a small annoyance on a work project turned into a software port of MapLibre GL JS's rendering pipeline, checked pixel by pixel against the real thing.</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa book &gt;}} Docs</span><span class="co">](https://ar-puuk.github.io/basemapper/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/basemapper)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; ai doi &gt;}} DOI</span><span class="co">](https://doi.org/10.5281/zenodo.24457061)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="al">![UGRC's Lite vector basemap (hillshade, base and labels) over downtown Salt Lake City, rendered by basemapper at zoom 13.4 and 2× pixel ratio.](ugrc_lite_vector.png)</span>{fig-alt="UGRC Lite vector basemap of downtown Salt Lake City and Liberty Park, rendered by basemapper, with street names, TRAX lines and highway shields."}</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## The map that started it</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>In mid-2026 I was building the <span class="co">[</span><span class="ot">Opportunity Zones 2.0 info sheets</span><span class="co">](../../work/opportunity-zones-info-sheets/index.qmd)</span> at the Wasatch Front Regional Council: a Quarto pipeline that produces a PDF page for every eligible census tract in the region, each with a large map of the tract and its surroundings. These pages go to investors and local governments, so the maps had to read well in print.</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>The Utah Geospatial Resource Center (UGRC) publishes a lovely basemap called Lite, and it publishes it two ways: as pre-drawn raster tiles, and as a vector tile style meant for MapLibre in a web browser. The R and Python basemap tools I knew only speak raster tiles. So the maps got the raster version, and the result looked like this: soft contours, labels that were hard to read, and a place name half hidden under a label box.</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>The vector version of the same basemap exists, looks far better, and is free. I just had no way to put it under a ggplot.</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## The trouble with tiles in a static figure</span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>Raster tiles were designed for slippy web maps. Each tile is a 256 or 512 pixel image drawn for one whole zoom level, and a web map shows them at exactly that size. A static figure breaks both assumptions:</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Your figure's extent picks a fractional zoom.** A tract that fits the panel at zoom 15.6 gets tiles drawn for zoom 15 or 16, resampled to fit. Labels end up too small or too large, and always a little soft.</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Your figure has its own resolution.** A 300 dpi PDF wants three times as many pixels as a screen. Raster tiles for screens get upscaled, and print shows it.</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**The design is baked in.** You cannot turn off the points of interest, drop the labels, or keep only roads and water. You get the picture the tile server drew.</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>A vector style fixes all three, because the map is drawn on demand from geometry and a style sheet. The catch is that vector styles are drawn by MapLibre GL JS, which runs in a browser on a GPU. You can screenshot a browser canvas, but that gives you a screen-resolution image of a web page, not a print-quality figure, and it drags a headless browser into your R session.</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>Here is the difference on one view of downtown Salt Lake City, both panels at zoom 15.6 and 2× pixel ratio. The left panel is UGRC Lite as raster tiles from UGRC Discover; the right panel is the same basemap from its vector style, rendered by basemapper. The bottom row enlarges the outlined area around the Courthouse TRAX station.</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a><span class="al">![UGRC Lite as raster tiles (left) and as a vector style rendered by basemapper (right), same view and output size.](raster_vs_vector.png)</span>{fig-alt="Side-by-side maps of downtown Salt Lake City around the Courthouse TRAX station. The raster-tile version on the left has small, blurry labels and soft edges when enlarged; the basemapper vector version on the right has larger, sharp labels and crisp lines and station icon."}</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>What I wanted was MapLibre's output, at any zoom and any resolution, without a browser, callable from R and Python.</span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a><span class="fu">## A quick tour</span></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>basemapper's central object is a map view: a style, a size, and either a centre and zoom or a bounding box. From there you can render it to a PNG, an array, a georeferenced raster or a true vector SVG.</span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset group="language"}</span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a><span class="fu">## R</span></span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(basemapper)</span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">basemap</span>(<span class="st">"UGRC.Lite"</span>, <span class="dv">800</span>, <span class="dv">600</span>, <span class="at">center =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">111.8887</span>, <span class="fl">40.7556</span>), <span class="at">zoom =</span> <span class="fl">12.4</span>,</span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>             <span class="at">pixel_ratio =</span> <span class="dv">2</span>)</span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a><span class="fu">render_png</span>(m, <span class="at">path =</span> <span class="st">"slc.png"</span>)   <span class="co"># 1600 x 1200, drawn natively at zoom 12.4</span></span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a><span class="fu">render_svg</span>(m, <span class="at">path =</span> <span class="st">"slc.svg"</span>)   <span class="co"># true vector; labels stay editable text</span></span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">render_raster</span>(m)             <span class="co"># a terra SpatRaster in EPSG:3857</span></span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a><span class="fu">## Python</span></span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> basemapper</span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> basemapper.basemap(<span class="st">"UGRC.Lite"</span>, <span class="dv">800</span>, <span class="dv">600</span>, center<span class="op">=</span>(<span class="op">-</span><span class="fl">111.8887</span>, <span class="fl">40.7556</span>),</span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a>                       zoom<span class="op">=</span><span class="fl">12.4</span>, pixel_ratio<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a>m.render_png(path<span class="op">=</span><span class="st">"slc.png"</span>)</span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a>m.render_svg(path<span class="op">=</span><span class="st">"slc.svg"</span>)</span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> m.render_array()              <span class="co"># (1200, 1600, 4) uint8 array</span></span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a><span class="in">`"UGRC.Lite"`</span> is a name from basemapper's catalogue, which uses the same provider names as leaflet (<span class="in">`"OpenFreeMap.Positron"`</span>, <span class="in">`"CartoDB.Voyager"`</span>, <span class="in">`"Esri.WorldImagery"`</span> and so on). Some names stand for several services stacked together: UGRC Lite is really three styles, a hillshade, a base map and a labels layer, and basemapper draws them as one map. Anything that is not in the catalogue can be passed directly: a style URL, a tile URL template, a TileJSON, a PMTiles archive, an ArcGIS service, or a WMS or WMTS endpoint.</span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a><span class="fu">### In a plot</span></span>
+<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a>Most of the time I don't want a picture of a basemap, I want a basemap under my data. Each plotting library gets a layer that works out the extent, projection and pixel size from the plot itself:</span>
+<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset group="language"}</span>
+<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a><span class="fu">## R</span></span>
+<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(basemapper)</span>
+<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a>capitol <span class="ot">&lt;-</span> <span class="fu">st_sfc</span>(<span class="fu">st_point</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">111.888</span>, <span class="fl">40.777</span>)), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="dv">26912</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_buffer</span>(<span class="dv">800</span>)</span>
+<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(capitol) <span class="sc">+</span></span>
+<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_basemap</span>(<span class="st">"UGRC.Lite"</span>) <span class="sc">+</span></span>
+<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"navy"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>)</span>
+<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"capitol.png"</span>, p, <span class="at">width =</span> <span class="dv">6</span>, <span class="at">height =</span> <span class="dv">4</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb8-115"><a href="#cb8-115" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a><span class="fu">## Python</span></span>
+<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-119"><a href="#cb8-119" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
+<span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shapely.geometry <span class="im">import</span> Point</span>
+<span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> basemapper <span class="im">import</span> add_basemap</span>
+<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a>capitol <span class="op">=</span> gpd.GeoSeries([Point(<span class="op">-</span><span class="fl">111.888</span>, <span class="fl">40.777</span>)], crs<span class="op">=</span><span class="dv">4326</span>).to_crs(<span class="dv">26912</span>).<span class="bu">buffer</span>(<span class="dv">800</span>)</span>
+<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<span id="cb8-128"><a href="#cb8-128" aria-hidden="true" tabindex="-1"></a>capitol.plot(ax<span class="op">=</span>ax, facecolor<span class="op">=</span><span class="st">"none"</span>, edgecolor<span class="op">=</span><span class="st">"navy"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb8-129"><a href="#cb8-129" aria-hidden="true" tabindex="-1"></a>add_basemap(ax, <span class="st">"UGRC.Lite"</span>, crs<span class="op">=</span>capitol.crs)</span>
+<span id="cb8-130"><a href="#cb8-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-131"><a href="#cb8-131" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">"capitol.png"</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="cb8-132"><a href="#cb8-132" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-133"><a href="#cb8-133" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-134"><a href="#cb8-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-135"><a href="#cb8-135" aria-hidden="true" tabindex="-1"></a><span class="al">![The R example's output: an 800 m buffer around the Utah State Capitol over UGRC Lite, saved with `ggsave(dpi = 300)`.](ggplot_capitol.png)</span>{fig-alt="A ggplot2 map with latitude and longitude axes: a navy circle around the Utah State Capitol over a UGRC Lite vector basemap with streets, Memory Grove and hillshade, and a UGRC attribution line in the corner." width="75%"}</span>
+<span id="cb8-136"><a href="#cb8-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-137"><a href="#cb8-137" aria-hidden="true" tabindex="-1"></a>The important detail is *when* the basemap is drawn. <span class="in">`geom_basemap()`</span> renders when the plot is drawn on a device, at that device's size and resolution, so <span class="in">`ggsave(dpi = 300)`</span> gets a basemap drawn at 300 dpi rather than a screen image stretched to fit. The matplotlib layer does the same at <span class="in">`savefig()`</span> time. tmap gets <span class="in">`tm_basemap()`</span>, and plotnine gets its own <span class="in">`geom_basemap()`</span>. The providers' attribution goes in the corner by default, and <span class="in">`get_attribution()`</span> returns it as text for a caption.</span>
+<span id="cb8-138"><a href="#cb8-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-139"><a href="#cb8-139" aria-hidden="true" tabindex="-1"></a><span class="fu">### Only the parts you want</span></span>
+<span id="cb8-140"><a href="#cb8-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-141"><a href="#cb8-141" aria-hidden="true" tabindex="-1"></a>Because the map is drawn from a style, basemapper can leave things out. <span class="in">`labels = FALSE`</span> drops the labels, <span class="in">`labels = "only"`</span> keeps just the labels on a transparent background, and <span class="in">`features`</span> keeps or drops whole parts of the map (water, parks, roads, buildings, terrain, points of interest and a few more). Those names work across the common vector tile schemas (OpenMapTiles, Protomaps, Shortbread) and Esri's layer names, so you don't need to learn each style's layer ids. When you do want that control, <span class="in">`layers`</span> takes layer ids with <span class="in">`*`</span> wildcards, and <span class="in">`list_layers()`</span> previews what a render will draw.</span>
+<span id="cb8-142"><a href="#cb8-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-143"><a href="#cb8-143" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb8-144"><a href="#cb8-144" aria-hidden="true" tabindex="-1"></a><span class="co"># Terrain, water, parks and roads only, no labels</span></span>
+<span id="cb8-145"><a href="#cb8-145" aria-hidden="true" tabindex="-1"></a><span class="fu">basemap</span>(<span class="st">"UGRC.Lite"</span>, <span class="at">labels =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb8-146"><a href="#cb8-146" aria-hidden="true" tabindex="-1"></a>        <span class="at">features =</span> <span class="fu">c</span>(<span class="st">"terrain"</span>, <span class="st">"water"</span>, <span class="st">"parks"</span>, <span class="st">"roads"</span>), ...)</span>
+<span id="cb8-147"><a href="#cb8-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-148"><a href="#cb8-148" aria-hidden="true" tabindex="-1"></a><span class="co"># Satellite imagery under UGRC Lite's labels</span></span>
+<span id="cb8-149"><a href="#cb8-149" aria-hidden="true" tabindex="-1"></a><span class="fu">basemap</span>(<span class="fu">c</span>(<span class="st">"Esri.WorldImagery"</span>, <span class="fu">basemap_provider</span>(<span class="st">"UGRC.Lite"</span>, <span class="at">labels =</span> <span class="st">"only"</span>)), ...)</span>
+<span id="cb8-150"><a href="#cb8-150" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-151"><a href="#cb8-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-152"><a href="#cb8-152" aria-hidden="true" tabindex="-1"></a>::: {layout-ncol="2"}</span>
+<span id="cb8-153"><a href="#cb8-153" aria-hidden="true" tabindex="-1"></a><span class="al">![UGRC Lite with only terrain, water, parks and roads, and no labels.](parts_features.png)</span>{fig-alt="A quiet basemap of the Salt Lake Valley with grey hillshade on the Wasatch Front, the Jordan River, green parks and a grey road network, and no labels."}</span>
+<span id="cb8-154"><a href="#cb8-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-155"><a href="#cb8-155" aria-hidden="true" tabindex="-1"></a><span class="al">![Esri World Imagery with UGRC Lite's labels drawn on top.](parts_imagery_labels.png)</span>{fig-alt="Satellite imagery of downtown Salt Lake City with street names, TRAX station icons and a US-89 shield from UGRC Lite drawn on top."}</span>
+<span id="cb8-156"><a href="#cb8-156" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-157"><a href="#cb8-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-158"><a href="#cb8-158" aria-hidden="true" tabindex="-1"></a>The left panel is the kind of quiet background I want under a choropleth. The right one builds a hybrid map out of two providers that were never designed to go together.</span>
+<span id="cb8-159"><a href="#cb8-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-160"><a href="#cb8-160" aria-hidden="true" tabindex="-1"></a><span class="fu">## Under the hood</span></span>
+<span id="cb8-161"><a href="#cb8-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-162"><a href="#cb8-162" aria-hidden="true" tabindex="-1"></a>basemapper is three packages around one Rust crate. The crate, <span class="in">`basemapper-core`</span>, does all the work: it reads the style, chooses tiles, fetches them (with a disk cache, so re-running a report doesn't download everything again), and renders. The R package binds it with <span class="co">[</span><span class="ot">extendr</span><span class="co">](https://extendr.github.io/)</span>, the Python package with <span class="co">[</span><span class="ot">PyO3</span><span class="co">](https://pyo3.rs/)</span> and maturin. Both are thin: they turn a plot or a bounding box into a request and hand the pixels back. That is also why the R, Python and Rust APIs have the same functions, argument names and defaults; there is only one implementation to describe.</span>
+<span id="cb8-163"><a href="#cb8-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-164"><a href="#cb8-164" aria-hidden="true" tabindex="-1"></a>Raster sources are the easy half: fetch the tiles that cover the view, then composite them. Vector styles are where all the time went.</span>
+<span id="cb8-165"><a href="#cb8-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-166"><a href="#cb8-166" aria-hidden="true" tabindex="-1"></a><span class="fu">## The hard parts</span></span>
+<span id="cb8-167"><a href="#cb8-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-168"><a href="#cb8-168" aria-hidden="true" tabindex="-1"></a><span class="fu">### First attempt: borrow a GPU renderer</span></span>
+<span id="cb8-169"><a href="#cb8-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-170"><a href="#cb8-170" aria-hidden="true" tabindex="-1"></a>The first working version, in June, rendered vector tiles with <span class="co">[</span><span class="ot">maplibre-rs</span><span class="co">](https://github.com/maplibre/maplibre-rs)</span>, an experimental Rust port of MapLibre that draws with wgpu. It produced maps, but it was the wrong tool for this job:</span>
+<span id="cb8-171"><a href="#cb8-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-172"><a href="#cb8-172" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>It needed a GPU, or a software stand-in for one, and the platform graphics libraries to go with it. That is a lot to ask of an R package installed on a locked-down office laptop or a CI runner.</span>
+<span id="cb8-173"><a href="#cb8-173" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>It rendered tile by tile, so roads and labels broke at tile edges. I worked around the seams by drawing the whole tile grid in one pass, but that was a fix on top of a fix.</span>
+<span id="cb8-174"><a href="#cb8-174" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>It built from my own fork, and needed <span class="in">`protoc`</span> (the Protocol Buffers compiler) installed just to compile.</span>
+<span id="cb8-175"><a href="#cb8-175" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Its output was *similar* to MapLibre's. It was not MapLibre's.</span>
+<span id="cb8-176"><a href="#cb8-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-177"><a href="#cb8-177" aria-hidden="true" tabindex="-1"></a>That last point mattered most. A basemap style is designed by someone looking at it in MapLibre. If my renderer interprets a line width, a halo or a label collision a little differently, the map stops looking like what its designer intended.</span>
+<span id="cb8-178"><a href="#cb8-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-179"><a href="#cb8-179" aria-hidden="true" tabindex="-1"></a><span class="fu">### Second attempt: port MapLibre to the CPU</span></span>
+<span id="cb8-180"><a href="#cb8-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-181"><a href="#cb8-181" aria-hidden="true" tabindex="-1"></a>So in November I replaced it with a renderer of basemapper's own: a software port of MapLibre GL JS's rendering pipeline. Not a renderer *inspired by* MapLibre, but its behaviour ported from the TypeScript source and its shaders, one module at a time: vector tile decoding, the style expression language, line tessellation, fills, circles, and, the biggest piece, the symbol pipeline that shapes, places and collides labels.</span>
+<span id="cb8-182"><a href="#cb8-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-183"><a href="#cb8-183" aria-hidden="true" tabindex="-1"></a>The rule was to reproduce what MapLibre does on the GPU, including the parts that look like accidents:</span>
+<span id="cb8-184"><a href="#cb8-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-185"><a href="#cb8-185" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Colours are blended premultiplied, in float32, and stored to 8 bits with round-half-to-even, as the GPU does. (<span class="in">`0.3 × 255`</span> is exactly 76.5 in float32, and it stores as 76, not 77.)</span>
+<span id="cb8-186"><a href="#cb8-186" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Each tile's geometry is clipped to the tile square, as MapLibre's stencil test does, so features repeated in neighbouring tiles' buffers are never drawn twice.</span>
+<span id="cb8-187"><a href="#cb8-187" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Primitives are sampled at pixel centres with the GPU's top-left rule, and edges get their softness from MapLibre's own shader formulas rather than from a generic antialiasing pass.</span>
+<span id="cb8-188"><a href="#cb8-188" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Labels follow MapLibre's line breaking, glyph rounding, anchor choice and collision grid, in MapLibre's order. Right-to-left scripts are shaped as MapLibre's RTL plugin shapes them, and CJK text can run vertically.</span>
+<span id="cb8-189"><a href="#cb8-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-190"><a href="#cb8-190" aria-hidden="true" tabindex="-1"></a>My favourite bug from this stretch: point-of-interest icons that were sometimes one pixel off. Their edges sat 0.0175 px from a pixel centre. The reference images come from MapLibre running on SwiftShader, a software GPU that snaps vertex positions to a 1/16 px grid before deciding which pixels a triangle covers. On that grid the edge landed on the other side of the pixel centre. Snapping vertices the same way fixed the icons, and across the whole test suite it cut the number of mismatched pixels by a fifth and the mean colour difference by two thirds.</span>
+<span id="cb8-191"><a href="#cb8-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-192"><a href="#cb8-192" aria-hidden="true" tabindex="-1"></a>Dropping the GPU engine also shrank the project: the dependency tree went from 468 crates to 243, and building it now needs nothing but a Rust toolchain. No GPU, no <span class="in">`protoc`</span>, no system libraries, no fork.</span>
+<span id="cb8-193"><a href="#cb8-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-194"><a href="#cb8-194" aria-hidden="true" tabindex="-1"></a><span class="fu">### Measuring instead of eyeballing</span></span>
+<span id="cb8-195"><a href="#cb8-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-196"><a href="#cb8-196" aria-hidden="true" tabindex="-1"></a>None of that is possible without a way to tell "the same" from "close". basemapper's test suite has well over a hundred golden-image cases. Each one is a fixture with a style and exactly the tiles, fonts and icons one view needs, plus a reference image of that view rendered by MapLibre GL JS itself in headless Chromium. The test renders the same fixture with basemapper and counts pixels that differ by more than 24/255 in any channel.</span>
+<span id="cb8-197"><a href="#cb8-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-198"><a href="#cb8-198" aria-hidden="true" tabindex="-1"></a>The cases cover CARTO's Positron, Dark Matter and Voyager and the full UGRC Lite stack at every MapLibre zoom from 1 to 22 over Salt Lake City, plus fractional zooms, 2× pixel ratio, multi-source styles from OpenFreeMap and Versatiles, raster tiles, layer filtering and SVG output. Every case has a limit on how far it may differ, and the limits only ever go down. Most cases now differ from MapLibre in well under a tenth of a percent of pixels. When something regressed, a small viewer with side-by-side, swipe, blink and diff modes showed exactly where.</span>
+<span id="cb8-199"><a href="#cb8-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-200"><a href="#cb8-200" aria-hidden="true" tabindex="-1"></a>This changed how the work felt. Instead of "does this look right?" the question was always "why is this pixel different?", and that question has an answer you can find in MapLibre's source.</span>
+<span id="cb8-201"><a href="#cb8-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-202"><a href="#cb8-202" aria-hidden="true" tabindex="-1"></a><span class="fu">### SVG that is actually vector</span></span>
+<span id="cb8-203"><a href="#cb8-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-204"><a href="#cb8-204" aria-hidden="true" tabindex="-1"></a>For print and for editing in Illustrator or Inkscape, a PNG is not enough, so basemapper also writes the same view as SVG: real paths for fills and lines, and labels as editable <span class="in">`&lt;text&gt;`</span>, each glyph placed where MapLibre placed it, with the style's fonts embedded. Matching MapLibre here meant translating its conventions into SVG's: dash lengths in MapLibre's units, round caps that SVG would otherwise extend past the dash, and lines thinner than a pixel stroked at the width that gives the same visual weight. The golden tests rasterise each SVG and score it against the same MapLibre reference; the full UGRC stack at zoom 12.4 comes out 0.23% of pixels off.</span>
+<span id="cb8-205"><a href="#cb8-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-206"><a href="#cb8-206" aria-hidden="true" tabindex="-1"></a><span class="fu">### Windows, R and Rust</span></span>
+<span id="cb8-207"><a href="#cb8-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-208"><a href="#cb8-208" aria-hidden="true" tabindex="-1"></a>The least glamorous part was getting <span class="in">`install.packages`</span>-style installs to work on Windows. R on Windows is built with the GNU toolchain, so the Rust code has to be too (the MSVC toolchain cannot import R.dll's exported global variables). RTools45's GCC 14 dropped a library that Rust's GNU target still links against, so the package build now creates an empty stand-in for it. And for a while <span class="in">`library(basemapper)`</span> crashed outright with an access violation, until the import library marked R's handful of exported global variables as data rather than functions. None of this is visible to users now, which is the point.</span>
+<span id="cb8-209"><a href="#cb8-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-210"><a href="#cb8-210" aria-hidden="true" tabindex="-1"></a><span class="fu">## Building it with Claude</span></span>
+<span id="cb8-211"><a href="#cb8-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-212"><a href="#cb8-212" aria-hidden="true" tabindex="-1"></a>I built basemapper with Claude as a pair programmer, and it is fair to say the project would not exist otherwise: porting a large part of a mature graphics library is far more code than I could write on evenings and weekends. Claude was very good at the mechanical bulk of that work, reading MapLibre's TypeScript and shaders and porting them faithfully, and at writing the tests and tooling around them.</span>
+<span id="cb8-213"><a href="#cb8-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-214"><a href="#cb8-214" aria-hidden="true" tabindex="-1"></a>What made it work was the golden-image suite. An AI assistant will happily tell you a renderer looks right. A test that counts mismatched pixels against MapLibre does not care how confident anyone sounds, and a ratchet that never loosens means progress sticks. My job was mostly deciding what "correct" meant, choosing what to measure next, and reading diffs.</span>
+<span id="cb8-215"><a href="#cb8-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-216"><a href="#cb8-216" aria-hidden="true" tabindex="-1"></a><span class="fu">## Back to the Opportunity Zones maps</span></span>
+<span id="cb8-217"><a href="#cb8-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-218"><a href="#cb8-218" aria-hidden="true" tabindex="-1"></a>The info sheets were basemapper's first production use, and the reason it exists. Each tract map in the <span class="co">[</span><span class="ot">pipeline</span><span class="co">](https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets)</span> now draws UGRC Lite through <span class="in">`geom_basemap()`</span>, rendered at the report's 200 dpi when <span class="in">`ggsave()`</span> runs, at the same zoom as the old raster maps. Here is the same tract map before and after the switch, as committed to the repository; the overlay layers are identical, and only the basemap changed. Click either map to open it in the repository.</span>
+<span id="cb8-219"><a href="#cb8-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-220"><a href="#cb8-220" aria-hidden="true" tabindex="-1"></a>::: {layout-ncol="2"}</span>
+<span id="cb8-221"><a href="#cb8-221" aria-hidden="true" tabindex="-1"></a>:::: {}</span>
+<span id="cb8-222"><a href="#cb8-222" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="al">![](oz_tract_raster.png)</span><span class="ot">{.img-fluid alt="Census tract map on Salt Lake City's east bench, the tract outlined in dark blue with red point markers, a dashed buffer and land-use shading, over a raster basemap with soft, partly hidden labels and blurry contours."}</span><span class="co">](https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/blob/02ef3387d76be82796106dd97d4a01b8d6e1c444/data/map_cache/49035101402_xl.png)</span></span>
+<span id="cb8-223"><a href="#cb8-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-224"><a href="#cb8-224" aria-hidden="true" tabindex="-1"></a>**Before:** raster basemap tiles</span>
+<span id="cb8-225"><a href="#cb8-225" aria-hidden="true" tabindex="-1"></a>::::</span>
+<span id="cb8-226"><a href="#cb8-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-227"><a href="#cb8-227" aria-hidden="true" tabindex="-1"></a>:::: {}</span>
+<span id="cb8-228"><a href="#cb8-228" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="al">![](oz_tract_vector.png)</span><span class="ot">{.img-fluid alt="The same census tract map over a UGRC Lite vector basemap with crisp hillshade, contours and roads."}</span><span class="co">](https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/blob/f02bfd8008e297a7775d2ac9a59461d2f339eb7e/data/map_cache/49035101402_xl.png)</span></span>
+<span id="cb8-229"><a href="#cb8-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-230"><a href="#cb8-230" aria-hidden="true" tabindex="-1"></a>**After:** UGRC Lite vector, rendered by basemapper</span>
+<span id="cb8-231"><a href="#cb8-231" aria-hidden="true" tabindex="-1"></a>::::</span>
+<span id="cb8-232"><a href="#cb8-232" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-233"><a href="#cb8-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-234"><a href="#cb8-234" aria-hidden="true" tabindex="-1"></a>Peak names, contour lines and the Heritage State Park label are now readable, and the hillshade has the detail the raster tiles smeared away. More about that project is on its <span class="co">[</span><span class="ot">project page</span><span class="co">](../../work/opportunity-zones-info-sheets/index.qmd)</span>.</span>
+<span id="cb8-235"><a href="#cb8-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-236"><a href="#cb8-236" aria-hidden="true" tabindex="-1"></a><span class="fu">## What it doesn't do (yet)</span></span>
+<span id="cb8-237"><a href="#cb8-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-238"><a href="#cb8-238" aria-hidden="true" tabindex="-1"></a>basemapper renders *basemaps*. Style features meant for data visualisation or interactive 3D, such as heatmap layers, point clustering and 3D terrain, are skipped with a warning (and line gradients draw in a single colour); draw that kind of data with your plotting library on top instead. Output is always Web Mercator, which <span class="in">`geom_basemap()`</span> and friends reproject for you.</span>
+<span id="cb8-239"><a href="#cb8-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-240"><a href="#cb8-240" aria-hidden="true" tabindex="-1"></a>It is also new: for now it installs from GitHub and compiles the Rust core, so you need a <span class="co">[</span><span class="ot">Rust toolchain</span><span class="co">](https://rustup.rs)</span> (and, on Windows, RTools45 and the <span class="in">`x86_64-pc-windows-gnu`</span> target):</span>
+<span id="cb8-241"><a href="#cb8-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-242"><a href="#cb8-242" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb8-243"><a href="#cb8-243" aria-hidden="true" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="st">"ar-puuk/basemapper/r-basemapper"</span>)</span>
+<span id="cb8-244"><a href="#cb8-244" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-245"><a href="#cb8-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-246"><a href="#cb8-246" aria-hidden="true" tabindex="-1"></a><span class="in">```sh</span></span>
+<span id="cb8-247"><a href="#cb8-247" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="st">"basemapper @ git+https://github.com/ar-puuk/basemapper#subdirectory=py-basemapper"</span></span>
+<span id="cb8-248"><a href="#cb8-248" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-249"><a href="#cb8-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-250"><a href="#cb8-250" aria-hidden="true" tabindex="-1"></a>CRAN, R-universe, PyPI and conda packages will follow after a longer testing period. Until then, the <span class="co">[</span><span class="ot">documentation</span><span class="co">](https://ar-puuk.github.io/basemapper/)</span> has guides for <span class="co">[</span><span class="ot">R</span><span class="co">](https://ar-puuk.github.io/basemapper/r/)</span>, <span class="co">[</span><span class="ot">Python</span><span class="co">](https://ar-puuk.github.io/basemapper/python/)</span> and <span class="co">[</span><span class="ot">Rust</span><span class="co">](https://ar-puuk.github.io/basemapper/rust/)</span>, and every map in them is drawn by the code shown next to it. If you try it and a style renders differently from MapLibre, please <span class="co">[</span><span class="ot">open an issue</span><span class="co">](https://github.com/ar-puuk/basemapper/issues)</span>: with the golden-image setup, a mismatch is a test case waiting to be written.</span>
+<span id="cb8-251"><a href="#cb8-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-252"><a href="#cb8-252" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cite it</span></span>
+<span id="cb8-253"><a href="#cb8-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-254"><a href="#cb8-254" aria-hidden="true" tabindex="-1"></a>basemapper is archived on Zenodo with the DOI <span class="co">[</span><span class="ot">10.5281/zenodo.24457061</span><span class="co">](https://doi.org/10.5281/zenodo.24457061)</span>, which always points to the latest release. The code is on <span class="co">[</span><span class="ot">GitHub</span><span class="co">](https://github.com/ar-puuk/basemapper)</span> under the MIT license.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2025–<span id="footer-year">2026</span> Pukar Bhandari<span class="footer-sep"> ∙ </span>Made with <a href="https://www.r-project.org/about.html" target="_blank"><i class="fa-brands fa-r-project" title="R Project" aria-label="r-project"></i></a>, <a href="https://quarto.org/" target="_blank"><img src="https://quarto.org/favicon.png" width="14" alt="Quarto"></a>, <a href="https://git-scm.com/" target="_blank"><i class="fa-brands fa-git-alt" title="Git alt logo" aria-label="git-alt"></i></a> and <a href="https://github.com/" target="_blank"><i class="fa-brands fa-github" title="GitHub octocat logo" aria-label="github"></i></a></p>
+</div>   
+    <div class="nav-footer-center">
+<p><a href="https://www.linkedin.com/in/arpuuk" title="LinkedIn" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" aria-label="linkedin"></i></a> &nbsp; <a href="https://github.com/ar-puuk/" title="github" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i></a> &nbsp; <a href="https://bsky.app/profile/arpuuk.bsky.social" title="Bluesky" target="_blank" rel="noopener"><i class="fa-brands fa-bluesky" aria-label="bluesky"></i></a> &nbsp; <a href="https://urbanists.social/@arpuuk" title="Mastodon" target="_blank" rel="noopener"><i class="fa-brands fa-mastodon" aria-label="mastodon"></i></a> &nbsp; <a href="https://orcid.org/0000-0002-1043-2937" title="orcid" target="_blank" rel="noopener"><i class="ai  ai-orcid" aria-label="orcid"></i></a> &nbsp; <a href="https://scholar.google.com/citations?user=vnwRlAsAAAAJ&amp;hl=en" title="Google Scholar" target="_blank" rel="noopener"><i class="ai  ai-google-scholar" aria-label="google-scholar"></i></a> &nbsp; <a href="mailto:pukar.bhandari@outlook.com" title="E-mail" target="_blank" rel="noopener"><i class="fa-solid fa-envelope" aria-label="envelope"></i></a></p>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/edit/master/posts/basemapper/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../contact.html">
+<p>Contact</p>
+</a>
+  </li>  
+    <li class="nav-item">
+    <a class="nav-link" href="../../license.html">
+<p>License</p>
+</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

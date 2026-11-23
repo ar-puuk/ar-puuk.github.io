@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pukar Bhandari">
 <meta name="dcterms.date" content="2024-05-11">
-<meta name="description" content="Learn how to build an interactive Shiny dashboard for exploring U.S. Census data including ACS, Decennial Census, and LEHD datasets with integrated mapping capabilities.">
+<meta name="description" content="A Shiny app that puts the American Community Survey, the Decennial Census and LEHD employment data behind one point-and-click interface, with a map, a searchable variable picker and CSV or shapefile downloads. Why I built it, how it works, and what I would change.">
 
 <title>Building a U.S. Census Data Explorer – Pukar Bhandari</title>
 <style>
@@ -87,13 +87,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-43d431d6ae33725d0208b2e07b15352c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-0a1ee58fbaa3f5d8041b8bafbf34ceb4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-43d431d6ae33725d0208b2e07b15352c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dd52e5adb6025a2d72185450488676d8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b1919c9cd559971cd531f5718ff5c6da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-dd52e5adb6025a2d72185450488676d8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/size.css" rel="stylesheet">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": true,
@@ -133,14 +136,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../../assets/css/index.css">
 <link rel="stylesheet" href="../../assets/css/app-embed.css">
 <meta property="og:title" content="Building a U.S. Census Data Explorer – Pukar Bhandari">
-<meta property="og:description" content="Learn how to build an interactive Shiny dashboard for exploring U.S. Census data including ACS, Decennial Census, and LEHD datasets with integrated mapping capabilities.">
+<meta property="og:description" content="A Shiny app that puts the American Community Survey, the Decennial Census and LEHD employment data behind one point-and-click interface, with a map, a searchable variable picker and CSV or shapefile downloads. Why I built it, how it works, and what I would change.">
 <meta property="og:image" content="https://ar-puuk.github.io/posts/uscensus-dashboard/uscensus_dashboard.png">
 <meta property="og:site_name" content="Pukar Bhandari">
 <meta property="og:image:height" content="979">
 <meta property="og:image:width" content="1920">
 <meta property="og:image:alt" content="Census Data Explorer with year, state and county filters, a map of Utah counties and a table of block group data.">
 <meta name="twitter:title" content="Building a U.S. Census Data Explorer – Pukar Bhandari">
-<meta name="twitter:description" content="Learn how to build an interactive Shiny dashboard for exploring U.S. Census data including ACS, Decennial Census, and LEHD datasets with integrated mapping capabilities.">
+<meta name="twitter:description" content="A Shiny app that puts the American Community Survey, the Decennial Census and LEHD employment data behind one point-and-click interface, with a map, a searchable variable picker and CSV or shapefile downloads. Why I built it, how it works, and what I would change.">
 <meta name="twitter:image" content="https://ar-puuk.github.io/posts/uscensus-dashboard/uscensus_dashboard.png">
 <meta name="twitter:creator" content="@arpuuk">
 <meta name="twitter:site" content="@arpuuk">
@@ -418,8 +421,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <div id="quarto-announcement" data-announcement-id="d427bc2c621f9106df6eeacffb0a77cd" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p><strong>New:</strong> <a href="../../work/community-profiles/" class="no-external" target="_self">Demographic Profiles</a>, a zero-backend, map-first dashboard of Census and economic indicators for Utah.</p>
+  <div id="quarto-announcement" data-announcement-id="e50c892fd6bff347bf92501715c38d0d" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>New:</strong> <a href="../../posts/basemapper/" class="no-external" target="_self">basemapper</a>, sharp vector basemaps for ggplot2, tmap, matplotlib and plotnine figures, rendered in R and Python without a browser.</p>
 </div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
@@ -430,7 +433,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <p class="subtitle lead">A Shiny Dashboard for ACS, Decennial Census, and LEHD Data</p>
                   <div>
         <div class="description">
-          <p>Learn how to build an interactive Shiny dashboard for exploring U.S. Census data including ACS, Decennial Census, and LEHD datasets with integrated mapping capabilities.</p>
+          <p>A Shiny app that puts the American Community Survey, the Decennial Census and LEHD employment data behind one point-and-click interface, with a map, a searchable variable picker and CSV or shapefile downloads. Why I built it, how it works, and what I would change.</p>
         </div>
       </div>
                           <div class="quarto-categories">
@@ -463,7 +466,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">November 13, 2026</p>
+        <p class="date-modified">November 23, 2026</p>
       </div>
     </div>
       
@@ -477,47 +480,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
-  <li><a href="#project-overview" id="toc-project-overview" class="nav-link" data-scroll-target="#project-overview"><span class="header-section-number">2</span> Project Overview</a></li>
-  <li><a href="#technical-architecture" id="toc-technical-architecture" class="nav-link" data-scroll-target="#technical-architecture"><span class="header-section-number">3</span> Technical Architecture</a>
+  <li><a href="#the-problem-three-products-three-ways-in" id="toc-the-problem-three-products-three-ways-in" class="nav-link active" data-scroll-target="#the-problem-three-products-three-ways-in"><span class="header-section-number">1</span> The problem: three products, three ways in</a></li>
+  <li><a href="#a-quick-tour" id="toc-a-quick-tour" class="nav-link" data-scroll-target="#a-quick-tour"><span class="header-section-number">2</span> A quick tour</a></li>
+  <li><a href="#how-it-is-put-together" id="toc-how-it-is-put-together" class="nav-link" data-scroll-target="#how-it-is-put-together"><span class="header-section-number">3</span> How it is put together</a>
   <ul class="collapse">
-  <li><a href="#core-dependencies" id="toc-core-dependencies" class="nav-link" data-scroll-target="#core-dependencies">Core Dependencies</a></li>
-  <li><a href="#application-structure" id="toc-application-structure" class="nav-link" data-scroll-target="#application-structure">Application Structure</a></li>
+  <li><a href="#core-dependencies" id="toc-core-dependencies" class="nav-link" data-scroll-target="#core-dependencies">Core dependencies</a></li>
+  <li><a href="#application-structure" id="toc-application-structure" class="nav-link" data-scroll-target="#application-structure">Application structure</a></li>
   </ul></li>
-  <li><a href="#data-source-integration" id="toc-data-source-integration" class="nav-link" data-scroll-target="#data-source-integration"><span class="header-section-number">4</span> Data Source Integration</a>
+  <li><a href="#one-interface-three-data-products" id="toc-one-interface-three-data-products" class="nav-link" data-scroll-target="#one-interface-three-data-products"><span class="header-section-number">4</span> One interface, three data products</a>
   <ul class="collapse">
-  <li><a href="#american-community-survey-acs" id="toc-american-community-survey-acs" class="nav-link" data-scroll-target="#american-community-survey-acs">American Community Survey (ACS)</a></li>
+  <li><a href="#american-community-survey" id="toc-american-community-survey" class="nav-link" data-scroll-target="#american-community-survey">American Community Survey</a></li>
   <li><a href="#decennial-census" id="toc-decennial-census" class="nav-link" data-scroll-target="#decennial-census">Decennial Census</a></li>
-  <li><a href="#longitudinal-employer-household-dynamics-lehd" id="toc-longitudinal-employer-household-dynamics-lehd" class="nav-link" data-scroll-target="#longitudinal-employer-household-dynamics-lehd">Longitudinal Employer-Household Dynamics (LEHD)</a></li>
+  <li><a href="#longitudinal-employer-household-dynamics" id="toc-longitudinal-employer-household-dynamics" class="nav-link" data-scroll-target="#longitudinal-employer-household-dynamics">Longitudinal Employer-Household Dynamics</a></li>
   </ul></li>
-  <li><a href="#interactive-mapping" id="toc-interactive-mapping" class="nav-link" data-scroll-target="#interactive-mapping"><span class="header-section-number">5</span> Interactive Mapping</a>
+  <li><a href="#the-map" id="toc-the-map" class="nav-link" data-scroll-target="#the-map"><span class="header-section-number">5</span> The map</a>
   <ul class="collapse">
-  <li><a href="#base-map-configuration" id="toc-base-map-configuration" class="nav-link" data-scroll-target="#base-map-configuration">Base Map Configuration</a></li>
-  <li><a href="#dynamic-geographic-focus" id="toc-dynamic-geographic-focus" class="nav-link" data-scroll-target="#dynamic-geographic-focus">Dynamic Geographic Focus</a></li>
+  <li><a href="#base-map-configuration" id="toc-base-map-configuration" class="nav-link" data-scroll-target="#base-map-configuration">Base map configuration</a></li>
+  <li><a href="#following-the-selection" id="toc-following-the-selection" class="nav-link" data-scroll-target="#following-the-selection">Following the selection</a></li>
   </ul></li>
-  <li><a href="#data-export-functionality" id="toc-data-export-functionality" class="nav-link" data-scroll-target="#data-export-functionality"><span class="header-section-number">6</span> Data Export Functionality</a>
+  <li><a href="#picking-variables-from-thousands" id="toc-picking-variables-from-thousands" class="nav-link" data-scroll-target="#picking-variables-from-thousands"><span class="header-section-number">6</span> Picking variables from thousands</a></li>
+  <li><a href="#getting-data-out" id="toc-getting-data-out" class="nav-link" data-scroll-target="#getting-data-out"><span class="header-section-number">7</span> Getting data out</a>
   <ul class="collapse">
-  <li><a href="#flexible-format-support" id="toc-flexible-format-support" class="nav-link" data-scroll-target="#flexible-format-support">Flexible Format Support</a></li>
-  <li><a href="#custom-shapefile-export" id="toc-custom-shapefile-export" class="nav-link" data-scroll-target="#custom-shapefile-export">Custom Shapefile Export</a></li>
+  <li><a href="#csv-or-shapefile" id="toc-csv-or-shapefile" class="nav-link" data-scroll-target="#csv-or-shapefile">CSV or shapefile</a></li>
+  <li><a href="#zipping-a-shapefile" id="toc-zipping-a-shapefile" class="nav-link" data-scroll-target="#zipping-a-shapefile">Zipping a shapefile</a></li>
+  <li><a href="#dropping-the-margins-of-error" id="toc-dropping-the-margins-of-error" class="nav-link" data-scroll-target="#dropping-the-margins-of-error">Dropping the margins of error</a></li>
   </ul></li>
-  <li><a href="#user-experience-considerations" id="toc-user-experience-considerations" class="nav-link" data-scroll-target="#user-experience-considerations"><span class="header-section-number">7</span> User Experience Considerations</a>
+  <li><a href="#small-decisions-that-helped" id="toc-small-decisions-that-helped" class="nav-link" data-scroll-target="#small-decisions-that-helped"><span class="header-section-number">8</span> Small decisions that helped</a>
   <ul class="collapse">
-  <li><a href="#variable-selection-interface" id="toc-variable-selection-interface" class="nav-link" data-scroll-target="#variable-selection-interface">Variable Selection Interface</a></li>
-  <li><a href="#responsive-geographic-selection" id="toc-responsive-geographic-selection" class="nav-link" data-scroll-target="#responsive-geographic-selection">Responsive Geographic Selection</a></li>
-  <li><a href="#progress-feedback" id="toc-progress-feedback" class="nav-link" data-scroll-target="#progress-feedback">Progress Feedback</a></li>
+  <li><a href="#caching" id="toc-caching" class="nav-link" data-scroll-target="#caching">Caching</a></li>
+  <li><a href="#api-keys" id="toc-api-keys" class="nav-link" data-scroll-target="#api-keys">API keys</a></li>
+  <li><a href="#waiting-for-complete-input" id="toc-waiting-for-complete-input" class="nav-link" data-scroll-target="#waiting-for-complete-input">Waiting for complete input</a></li>
   </ul></li>
-  <li><a href="#performance-optimizations" id="toc-performance-optimizations" class="nav-link" data-scroll-target="#performance-optimizations"><span class="header-section-number">8</span> Performance Optimizations</a>
-  <ul class="collapse">
-  <li><a href="#caching-strategy" id="toc-caching-strategy" class="nav-link" data-scroll-target="#caching-strategy">Caching Strategy</a></li>
-  <li><a href="#data-processing-efficiency" id="toc-data-processing-efficiency" class="nav-link" data-scroll-target="#data-processing-efficiency">Data Processing Efficiency</a></li>
-  </ul></li>
-  <li><a href="#deployment-considerations" id="toc-deployment-considerations" class="nav-link" data-scroll-target="#deployment-considerations"><span class="header-section-number">9</span> Deployment Considerations</a>
-  <ul class="collapse">
-  <li><a href="#api-key-management" id="toc-api-key-management" class="nav-link" data-scroll-target="#api-key-management">API Key Management</a></li>
-  <li><a href="#error-handling" id="toc-error-handling" class="nav-link" data-scroll-target="#error-handling">Error Handling</a></li>
-  </ul></li>
-  <li><a href="#future-enhancements" id="toc-future-enhancements" class="nav-link" data-scroll-target="#future-enhancements"><span class="header-section-number">10</span> Future Enhancements</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">11</span> Conclusion</a></li>
+  <li><a href="#scope" id="toc-scope" class="nav-link" data-scroll-target="#scope"><span class="header-section-number">9</span> Scope</a></li>
+  <li><a href="#ideas-for-later" id="toc-ideas-for-later" class="nav-link" data-scroll-target="#ideas-for-later"><span class="header-section-number">10</span> Ideas for later</a></li>
+  <li><a href="#wrapping-up" id="toc-wrapping-up" class="nav-link" data-scroll-target="#wrapping-up"><span class="header-section-number">11</span> Wrapping up</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/edit/master/posts/uscensus-dashboard/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
 </nav>
@@ -533,40 +529,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="introduction" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
 <p>As a transportation planner, accessing and visualizing demographic and employment data is crucial for informed decision-making. The U.S. Census Bureau provides a wealth of information through various datasets, but navigating multiple APIs and data formats can be challenging. To streamline this process, I developed an interactive R Shiny dashboard that provides unified access to three major Census data sources:</p>
 <ul>
-<li><strong>American Community Survey (ACS)</strong> - Detailed demographic and socioeconomic estimates</li>
-<li><strong>Decennial Census</strong> - Complete population counts every 10 years<br>
-</li>
-<li><strong>Longitudinal Employer-Household Dynamics (LEHD)</strong> - Employment and commuting patterns</li>
+<li><strong>American Community Survey (ACS)</strong>: detailed demographic and socioeconomic estimates</li>
+<li><strong>Decennial Census</strong>: complete population counts every 10 years</li>
+<li><strong>Longitudinal Employer-Household Dynamics (LEHD)</strong>: employment and commuting patterns</li>
 </ul>
-<p>This post walks through the development process, key technical decisions, and lessons learned while building this data exploration tool.</p>
+<p>This post walks through why I built it, what it does, how the pieces fit together, and where it could go next. The source code is on <a href="https://github.com/ar-puuk/uscensus-dashboard/">GitHub</a>.</p>
+<div class="app-links">
+<p><a href="https://github.com/ar-puuk/uscensus-dashboard" class="btn btn-primary" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
+</div>
+<section id="the-problem-three-products-three-ways-in" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="the-problem-three-products-three-ways-in"><span class="header-section-number">1</span> The problem: three products, three ways in</h2>
+<p>R already has excellent packages for each of these sources. <a href="https://walker-data.com/tidycensus/">tidycensus</a> wraps the Census API for the ACS and the Decennial Census, <a href="https://github.com/jamgreen/lehdr">lehdr</a> downloads LEHD’s LODES files, and <a href="https://github.com/walkerke/tigris">tigris</a> fetches boundaries. But each one has its own arguments, its own variable codes and its own idea of geography, and every request starts with the same chores: look up the variable codes for the right year, remember which geographies a variable is published for, write the call, then convert the result to whatever format the next tool needs.</p>
+<p>I wanted a single window for those chores. Pick a product, a year, a state and its counties, pick variables from a list, and download a CSV or a shapefile. The app is that window: a thin interface over tidycensus, lehdr and tigris, not a replacement for them.</p>
 </section>
-<section id="project-overview" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="project-overview"><span class="header-section-number">2</span> Project Overview</h2>
-<p>The dashboard serves as a one-stop interface for Census data retrieval, featuring:</p>
-<ul>
-<li>Interactive geographic selection (state/county level)</li>
-<li>Variable selection through searchable tables</li>
-<li>Real-time data visualization on interactive maps</li>
-<li>Export capabilities for both tabular and geospatial data</li>
-<li>Responsive design optimized for different screen sizes</li>
-</ul>
-<p><strong>🔗 Repository</strong>: You can find the complete source code and documentation at: <a href="https://github.com/ar-puuk/uscensus-dashboard/" class="uri">https://github.com/ar-puuk/uscensus-dashboard/</a></p>
+<section id="a-quick-tour" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="a-quick-tour"><span class="header-section-number">2</span> A quick tour</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="uscensus_dashboard.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="The ACS tab: a 2021 block group request for five Wasatch Front counties in Utah, with the selected counties shaded on the map and the returned table below it."><img src="uscensus_dashboard.png" class="img-fluid figure-img" alt="Census Data Explorer with year, state and county filters, a map of Utah counties and a table of block group data."></a></p>
+<figcaption>The ACS tab: a 2021 block group request for five Wasatch Front counties in Utah, with the selected counties shaded on the map and the returned table below it.</figcaption>
+</figure>
+</div>
+<p>The app has one tab per product, and each tab follows the same pattern:</p>
+<ol type="1">
+<li>Paste a Census API key (the LEHD tab does not need one).</li>
+<li>Pick a year and a state; the county list fills in for that state.</li>
+<li>Choose a geographic level: counties, tracts or block groups for the ACS, plus blocks for the Decennial Census and LEHD.</li>
+<li>Open the variable picker and select variables from a searchable table.</li>
+<li>Choose whether to include geometry, press <strong>Submit</strong>, and download the result.</li>
+</ol>
+<p>The map highlights the chosen state and shades the selected counties, and the returned data appears in a table under it. Downloads are CSV files, or zipped shapefiles when geometry is switched on.</p>
 </section>
-<section id="technical-architecture" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="technical-architecture"><span class="header-section-number">3</span> Technical Architecture</h2>
+<section id="how-it-is-put-together" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="how-it-is-put-together"><span class="header-section-number">3</span> How it is put together</h2>
 <section id="core-dependencies" class="level3">
-<h3 class="anchored" data-anchor-id="core-dependencies">Core Dependencies</h3>
+<h3 class="anchored" data-anchor-id="core-dependencies">Core dependencies</h3>
 <p>The application leverages several specialized R packages for Census data access and geospatial processing:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Census data access</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycensus)   <span class="co"># ACS and Decennial Census API</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lehdr)        <span class="co"># LEHD Origin-Destination data</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tigris)       <span class="co"># Geographic boundaries</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Geospatial processing  </span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Geospatial processing</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)           <span class="co"># Simple features for spatial data</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)      <span class="co"># Interactive mapping</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
@@ -577,26 +583,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)          <span class="co"># Interactive data tables</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="application-structure" class="level3">
-<h3 class="anchored" data-anchor-id="application-structure">Application Structure</h3>
-<p>The app follows a modular design pattern with separate UI and server components for each data source. This approach enhances maintainability and allows for independent feature development.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Modular UI components</span></span>
+<h3 class="anchored" data-anchor-id="application-structure">Application structure</h3>
+<p>The whole app is a single <code>app.R</code>. Each product has its own UI object and its own block of server logic, and a <code>navbarPage()</code> ties the three together as tabs:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># One UI object per data source</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>acsUI <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(...)      <span class="co"># American Community Survey interface</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>censusUI <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(...)   <span class="co"># Decennial Census interface  </span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>censusUI <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(...)   <span class="co"># Decennial Census interface</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>lehdUI <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(...)     <span class="co"># LEHD interface</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Unified navigation</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">navbarPage</span>(...)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Keeping the tabs separate meant I could get the ACS tab working first and then adapt it for the other two. The cost of that shortcut shows up later in this post.</p>
 </section>
 </section>
-<section id="data-source-integration" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="data-source-integration"><span class="header-section-number">4</span> Data Source Integration</h2>
-<section id="american-community-survey-acs" class="level3">
-<h3 class="anchored" data-anchor-id="american-community-survey-acs">American Community Survey (ACS)</h3>
-<p>The ACS module provides access to detailed demographic estimates from 2009-2022. Key implementation features:</p>
-<p><strong>Dynamic Variable Loading</strong>: Variables are loaded based on the selected year and geographic level, ensuring users only see relevant options.</p>
+<section id="one-interface-three-data-products" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="one-interface-three-data-products"><span class="header-section-number">4</span> One interface, three data products</h2>
+<section id="american-community-survey" class="level3">
+<h3 class="anchored" data-anchor-id="american-community-survey">American Community Survey</h3>
+<p>The ACS tab covers the 5-year estimates from 2009 to 2022. The detail that made the biggest difference here was the variable list. tidycensus’s <code>load_variables()</code> returns every ACS variable for a year, along with the smallest geography it is published for. Many tables exist only down to the tract level, so showing them on a block group request just produces an error. The app filters the list by the chosen geographic level before showing it:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>variables_acs <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(input<span class="sc">$</span>year_acs)) {</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    variables <span class="ot">&lt;-</span> <span class="fu">load_variables</span>(<span class="at">year =</span> <span class="fu">as.numeric</span>(input<span class="sc">$</span>year_acs), </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    variables <span class="ot">&lt;-</span> <span class="fu">load_variables</span>(<span class="at">year =</span> <span class="fu">as.numeric</span>(input<span class="sc">$</span>year_acs),</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">dataset =</span> <span class="st">"acs5"</span>, <span class="at">cache =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filter variables based on geographic level</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (input<span class="sc">$</span>level_acs <span class="sc">==</span> <span class="st">"tract"</span>) {</span>
@@ -606,144 +612,134 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(variables)</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>Geographic Hierarchy</strong>: The interface maintains proper geographic relationships, with county options updating based on state selection.</p>
+<p><strong>Geographic hierarchy</strong>: the county options update whenever the state changes, using <code>tidycensus::list_counties()</code>, so the request can never name a county outside the chosen state.</p>
+<p>The data request itself is a single <code>get_acs()</code> call in wide format, with the state, counties, level and geometry taken from the inputs and the API key passed straight through.</p>
 </section>
 <section id="decennial-census" class="level3">
 <h3 class="anchored" data-anchor-id="decennial-census">Decennial Census</h3>
-<p>The Decennial Census module focuses on the 2000, 2010, and 2020 complete counts, using the PL 94-171 dataset optimized for redistricting data.</p>
-<p><strong>Streamlined Variable Selection</strong>: Since Decennial Census has fewer variables than ACS, the interface emphasizes ease of use while maintaining the same interaction patterns.</p>
+<p>The Decennial Census tab focuses on the 2000, 2010 and 2020 counts, with variables drawn from the PL 94-171 redistricting dataset. Since the Decennial Census has far fewer variables than the ACS, the interface stays simple while keeping the same interaction pattern. It also adds the census block, the smallest geography the Census Bureau publishes.</p>
 </section>
-<section id="longitudinal-employer-household-dynamics-lehd" class="level3">
-<h3 class="anchored" data-anchor-id="longitudinal-employer-household-dynamics-lehd">Longitudinal Employer-Household Dynamics (LEHD)</h3>
-<p>The LEHD module provides employment statistics and origin-destination flows, crucial for transportation planning applications.</p>
-<p><strong>Version Management</strong>: Different LODES versions cover different time periods, requiring dynamic year filtering:</p>
+<section id="longitudinal-employer-household-dynamics" class="level3">
+<h3 class="anchored" data-anchor-id="longitudinal-employer-household-dynamics">Longitudinal Employer-Household Dynamics</h3>
+<p>The LEHD tab provides employment statistics and origin-destination flows from LODES, which matter a great deal for transportation planning. It offers all three LODES file types: origin-destination (OD), residence area characteristics (RAC) and workplace area characteristics (WAC). Requests use all workers and all jobs (<code>segment = "S000"</code>, <code>job_type = "JT00"</code>), and the data can be aggregated from blocks up to block groups, tracts or counties.</p>
+<p><strong>Version management</strong>: different LODES versions cover different years, so the year list follows the chosen version:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">observe</span>({</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  version <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(input<span class="sc">$</span>version_lehd)) input<span class="sc">$</span>version_lehd <span class="cf">else</span> <span class="st">"default"</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  options <span class="ot">&lt;-</span> <span class="cf">if</span> (version <span class="sc">==</span> <span class="st">"LODES5"</span>) {</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2002</span><span class="sc">:</span><span class="dv">2009</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (version <span class="sc">==</span> <span class="st">"LODES7"</span>) {</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2002</span><span class="sc">:</span><span class="dv">2019</span>  </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2002</span><span class="sc">:</span><span class="dv">2019</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2002</span><span class="sc">:</span><span class="dv">2021</span></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">updateSelectInput</span>(session, <span class="st">"year_lehd"</span>, <span class="at">choices =</span> options, <span class="at">selected =</span> <span class="fu">max</span>(options))</span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>LODES files are downloaded from the Census Bureau rather than requested through the API, which is why this tab needs no key.</p>
 </section>
 </section>
-<section id="interactive-mapping" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="interactive-mapping"><span class="header-section-number">5</span> Interactive Mapping</h2>
+<section id="the-map" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="the-map"><span class="header-section-number">5</span> The map</h2>
 <section id="base-map-configuration" class="level3">
-<h3 class="anchored" data-anchor-id="base-map-configuration">Base Map Configuration</h3>
+<h3 class="anchored" data-anchor-id="base-map-configuration">Base map configuration</h3>
 <p>The application uses Leaflet for interactive mapping, with a carefully chosen base layer that balances aesthetics and functionality:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>default_map <span class="ot">&lt;-</span> <span class="fu">leaflet</span>(<span class="at">options =</span> <span class="fu">leafletOptions</span>(<span class="at">crs =</span> <span class="fu">leafletCRS</span>())) <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(<span class="st">"Esri.WorldGrayCanvas"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(<span class="st">"CartoDB.Voyager"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addPolygons</span>(<span class="at">data =</span> sf_states, <span class="at">color =</span> <span class="st">"#222222"</span>, <span class="at">weight =</span> <span class="dv">1</span>, <span class="at">fillOpacity =</span> <span class="fl">0.15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>Esri.WorldGrayCanvas</strong> (Esri’s Light Gray Canvas) was selected for its muted design and good contrast with overlay data, and it needs no API key, though the code structure allows for easy switching between provider tiles.</p>
+<p><strong>CartoDB.Voyager</strong> was chosen for its muted design and good contrast with overlay data, and it needs no API key; CARTO’s Positron and Dark Matter work as drop-in swaps. The default map is built once, outside any reactive code, and each tab adds its own layers on top.</p>
 </section>
-<section id="dynamic-geographic-focus" class="level3">
-<h3 class="anchored" data-anchor-id="dynamic-geographic-focus">Dynamic Geographic Focus</h3>
-<p>Maps automatically adjust to show selected geographic areas, providing contextual awareness:</p>
+<section id="following-the-selection" class="level3">
+<h3 class="anchored" data-anchor-id="following-the-selection">Following the selection</h3>
+<p>When a state is chosen, the map draws its outline and counties and zooms to its bounding box; the selected counties get a darker fill so the extent of the request is visible before anything is downloaded:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>output<span class="sc">$</span>map_acs <span class="ot">&lt;-</span> <span class="fu">renderLeaflet</span>({</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(input<span class="sc">$</span>state_acs) <span class="sc">&amp;&amp;</span> input<span class="sc">$</span>state_acs <span class="sc">!=</span> <span class="st">""</span>) {</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    selected_state_acs <span class="ot">&lt;-</span> sf_states[sf_states<span class="sc">$</span>NAME <span class="sc">==</span> input<span class="sc">$</span>state_acs, ]</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    selected_bbox_acs <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_bbox</span>(selected_state_acs)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    default_map <span class="sc">|&gt;</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">addPolygons</span>(<span class="at">data =</span> selected_state_acs, <span class="at">color =</span> <span class="st">"#222222"</span>, <span class="at">weight =</span> <span class="dv">4</span>) <span class="sc">|&gt;</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fitBounds</span>(selected_bbox_acs[[<span class="dv">1</span>]], selected_bbox_acs[[<span class="dv">2</span>]], </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fitBounds</span>(selected_bbox_acs[[<span class="dv">1</span>]], selected_bbox_acs[[<span class="dv">2</span>]],</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>               selected_bbox_acs[[<span class="dv">3</span>]], selected_bbox_acs[[<span class="dv">4</span>]])</span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>State and county boundaries come from tigris’s cartographic boundary files, loaded once when the app starts.</p>
 </section>
 </section>
-<section id="data-export-functionality" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="data-export-functionality"><span class="header-section-number">6</span> Data Export Functionality</h2>
-<section id="flexible-format-support" class="level3">
-<h3 class="anchored" data-anchor-id="flexible-format-support">Flexible Format Support</h3>
-<p>Users can export data in multiple formats depending on their needs:</p>
+<section id="picking-variables-from-thousands" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="picking-variables-from-thousands"><span class="header-section-number">6</span> Picking variables from thousands</h2>
+<p>The ACS publishes thousands of variables each year, which rules out a dropdown. The picker is a modal dialog holding a searchable, paged data table of the variable list. You can search by code, label or concept, select several rows, and confirm:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>var_modal_acs <span class="ot">&lt;-</span> <span class="fu">modalDialog</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="fu">h4</span>(<span class="st">"Select Variable(s) from the List"</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DTOutput</span>(<span class="st">"var_table_acs"</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="st">"l"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">easyClose =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">footer =</span> <span class="fu">actionButton</span>(<span class="st">"selectVarButton_acs"</span>, <span class="st">"Select Variable(s)"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The selected codes go into a <code>reactiveVal()</code>, which the data request reads when <strong>Submit</strong> is pressed. Keeping the list in a modal keeps the main screen to the controls, the map and the results.</p>
+</section>
+<section id="getting-data-out" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="getting-data-out"><span class="header-section-number">7</span> Getting data out</h2>
+<section id="csv-or-shapefile" class="level3">
+<h3 class="anchored" data-anchor-id="csv-or-shapefile">CSV or shapefile</h3>
+<p>Users can export data in two formats depending on their needs:</p>
 <ul>
 <li><strong>CSV files</strong> for tabular analysis</li>
 <li><strong>Shapefiles (zipped)</strong> for GIS applications</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>output<span class="sc">$</span>download_acs <span class="ot">&lt;-</span> <span class="fu">downloadHandler</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">filename =</span> <span class="cf">function</span>() {</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (input<span class="sc">$</span>geometry_acs) {</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(<span class="st">"acs_data_"</span>, input<span class="sc">$</span>state_acs, <span class="st">"_"</span>, input<span class="sc">$</span>year_acs, <span class="st">".zip"</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(<span class="st">"acs_data_"</span>, input<span class="sc">$</span>state_acs, <span class="st">"_"</span>, input<span class="sc">$</span>year_acs, <span class="st">".csv"</span>)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  },</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">content =</span> <span class="cf">function</span>(file) {</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (input<span class="sc">$</span>geometry_acs) {</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">write_sf_zip</span>(<span class="fu">data_acs</span>(), file, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>      readr<span class="sc">::</span><span class="fu">write_csv</span>(<span class="fu">data_acs</span>() <span class="sc">|&gt;</span> <span class="fu">st_drop_geometry</span>(), file)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>output<span class="sc">$</span>download_acs <span class="ot">&lt;-</span> <span class="fu">downloadHandler</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">filename =</span> <span class="cf">function</span>() {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (input<span class="sc">$</span>geometry_acs) {</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(<span class="st">"acs_data_"</span>, input<span class="sc">$</span>state_acs, <span class="st">"_"</span>, input<span class="sc">$</span>year_acs, <span class="st">".zip"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(<span class="st">"acs_data_"</span>, input<span class="sc">$</span>state_acs, <span class="st">"_"</span>, input<span class="sc">$</span>year_acs, <span class="st">".csv"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">content =</span> <span class="cf">function</span>(file) {</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (input<span class="sc">$</span>geometry_acs) {</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">write_sf_zip</span>(<span class="fu">data_acs</span>(), file, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>      readr<span class="sc">::</span><span class="fu">write_csv</span>(<span class="fu">data_acs</span>() <span class="sc">|&gt;</span> <span class="fu">st_drop_geometry</span>(), file)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="custom-shapefile-export" class="level3">
-<h3 class="anchored" data-anchor-id="custom-shapefile-export">Custom Shapefile Export</h3>
-<p>Since R’s <code>sf</code> package doesn’t directly export zipped shapefiles, I implemented a custom function to handle the complete shapefile format:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>write_sf_zip <span class="ot">&lt;-</span> <span class="cf">function</span>(obj, zipfile, <span class="at">overwrite =</span> <span class="cn">FALSE</span>) {</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create temporary directory for shapefile components</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> <span class="fu">tempfile</span>()</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(tmp)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">on.exit</span>(<span class="fu">unlink</span>(tmp, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">force =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Write shapefile and zip all components</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">write_sf</span>(obj, <span class="fu">file.path</span>(tmp, shp_name), <span class="at">delete_layer =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  withr<span class="sc">::</span><span class="fu">with_dir</span>(tmp, <span class="fu">zip</span>(tmp_zip, <span class="fu">list.files</span>()))</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.copy</span>(<span class="fu">file.path</span>(tmp, tmp_zip), zipfile, <span class="at">overwrite =</span> overwrite)</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="zipping-a-shapefile" class="level3">
+<h3 class="anchored" data-anchor-id="zipping-a-shapefile">Zipping a shapefile</h3>
+<p>A shapefile is really several files (<code>.shp</code>, <code>.shx</code>, <code>.dbf</code>, <code>.prj</code> and so on), and a browser download has to be one file. <code>sf</code> writes the parts but does not zip them, so a small helper writes them to a temporary directory and zips the lot:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>write_sf_zip <span class="ot">&lt;-</span> <span class="cf">function</span>(obj, zipfile, <span class="at">overwrite =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create temporary directory for shapefile components</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> <span class="fu">tempfile</span>()</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(tmp)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">on.exit</span>(<span class="fu">unlink</span>(tmp, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">force =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Write shapefile and zip all components</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">write_sf</span>(obj, <span class="fu">file.path</span>(tmp, shp_name), <span class="at">delete_layer =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  withr<span class="sc">::</span><span class="fu">with_dir</span>(tmp, <span class="fu">zip</span>(tmp_zip, <span class="fu">list.files</span>()))</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.copy</span>(<span class="fu">file.path</span>(tmp, tmp_zip), zipfile, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>on.exit()</code> removes the temporary directory even if writing fails partway through.</p>
 </section>
-</section>
-<section id="user-experience-considerations" class="level2" data-number="7">
-<h2 data-number="7" class="anchored" data-anchor-id="user-experience-considerations"><span class="header-section-number">7</span> User Experience Considerations</h2>
-<section id="variable-selection-interface" class="level3">
-<h3 class="anchored" data-anchor-id="variable-selection-interface">Variable Selection Interface</h3>
-<p>One of the biggest UX challenges was making Census variable selection intuitive. The solution uses modal dialogs with searchable data tables:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>var_modal_acs <span class="ot">&lt;-</span> <span class="fu">modalDialog</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="fu">h4</span>(<span class="st">"Select Variable(s) from the List"</span>),</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DTOutput</span>(<span class="st">"var_table_acs"</span>),</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="st">"l"</span>,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">easyClose =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">footer =</span> <span class="fu">actionButton</span>(<span class="st">"selectVarButton_acs"</span>, <span class="st">"Select Variable(s)"</span>)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This approach allows users to browse thousands of variables efficiently while maintaining a clean main interface.</p>
-</section>
-<section id="responsive-geographic-selection" class="level3">
-<h3 class="anchored" data-anchor-id="responsive-geographic-selection">Responsive Geographic Selection</h3>
-<p>The cascading geographic selection (State → County → Geographic Level) follows familiar patterns while enforcing data availability constraints.</p>
-</section>
-<section id="progress-feedback" class="level3">
-<h3 class="anchored" data-anchor-id="progress-feedback">Progress Feedback</h3>
-<p>API calls can take several seconds, so the interface provides clear feedback through action buttons and conditional panels that appear after data is loaded.</p>
+<section id="dropping-the-margins-of-error" class="level3">
+<h3 class="anchored" data-anchor-id="dropping-the-margins-of-error">Dropping the margins of error</h3>
+<p>ACS estimates come with margins of error, and in wide format every variable becomes two columns, <code>...E</code> and <code>...M</code>. For a quick export that doubles the width of the table, so in a follow-up commit I removed the margin columns and stripped the <code>E</code> suffix from the estimates:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>result_acs <span class="ot">&lt;-</span> result_acs <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">matches</span>(<span class="st">"M$"</span>)) <span class="sc">|&gt;</span>    <span class="co"># Remove margin columns</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename_all</span>(<span class="sc">~</span> <span class="fu">sub</span>(<span class="st">"E$"</span>, <span class="st">""</span>, .)) <span class="co"># Clean estimate column names</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This is also a trade-off, not a free win: margins of error matter for small geographies like block groups, and anyone using the estimates for analysis should go back to tidycensus for them.</p>
 </section>
 </section>
-<section id="performance-optimizations" class="level2" data-number="8">
-<h2 data-number="8" class="anchored" data-anchor-id="performance-optimizations"><span class="header-section-number">8</span> Performance Optimizations</h2>
-<section id="caching-strategy" class="level3">
-<h3 class="anchored" data-anchor-id="caching-strategy">Caching Strategy</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tigris_use_cache =</span> <span class="cn">TRUE</span>)  <span class="co"># Geographic boundaries</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load_variables</span>(..., <span class="at">cache =</span> <span class="cn">TRUE</span>) <span class="co"># Variable metadata</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Caching is enabled for static data like geographic boundaries and variable definitions, significantly reducing load times for repeat users.</p>
+<section id="small-decisions-that-helped" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="small-decisions-that-helped"><span class="header-section-number">8</span> Small decisions that helped</h2>
+<section id="caching" class="level3">
+<h3 class="anchored" data-anchor-id="caching">Caching</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tigris_use_cache =</span> <span class="cn">TRUE</span>)  <span class="co"># Geographic boundaries</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load_variables</span>(..., <span class="at">cache =</span> <span class="cn">TRUE</span>) <span class="co"># Variable metadata</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Boundaries and variable lists rarely change, so both are cached on disk. lehdr’s downloads are cached as well (<code>use_cache = TRUE</code>). Repeat requests skip most of the waiting.</p>
 </section>
-<section id="data-processing-efficiency" class="level3">
-<h3 class="anchored" data-anchor-id="data-processing-efficiency">Data Processing Efficiency</h3>
-<p>For ACS data, margin of error columns are automatically removed to focus on estimates:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>result_acs <span class="ot">&lt;-</span> result_acs <span class="sc">|&gt;</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">matches</span>(<span class="st">"M$"</span>)) <span class="sc">|&gt;</span>    <span class="co"># Remove margin columns</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename_all</span>(<span class="sc">~</span> <span class="fu">sub</span>(<span class="st">"E$"</span>, <span class="st">""</span>, .)) <span class="co"># Clean estimate column names</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-</section>
-<section id="deployment-considerations" class="level2" data-number="9">
-<h2 data-number="9" class="anchored" data-anchor-id="deployment-considerations"><span class="header-section-number">9</span> Deployment Considerations</h2>
-<section id="api-key-management" class="level3">
-<h3 class="anchored" data-anchor-id="api-key-management">API Key Management</h3>
+<section id="api-keys" class="level3">
+<h3 class="anchored" data-anchor-id="api-keys">API keys</h3>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -757,39 +753,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Request a free key from the <a href="https://www.census.gov/developers/">Census Bureau</a> and enter it in the app. It is never stored in the source code.</p>
 </div>
 </div>
-<p>The application requires Census API keys but handles them securely through user input rather than hardcoding. This approach ensures:</p>
-<ul>
-<li>No sensitive credentials in source code</li>
-<li>Users maintain control over their API usage</li>
-<li>Easy deployment across different environments</li>
-</ul>
+<p>The key is typed into the app and passed straight to tidycensus, rather than hardcoded or installed in a user’s <code>.Renviron</code>. That keeps credentials out of the source code, leaves each user in control of their own API usage, and lets the same file run anywhere.</p>
 </section>
-<section id="error-handling" class="level3">
-<h3 class="anchored" data-anchor-id="error-handling">Error Handling</h3>
-<p>Robust error handling prevents crashes when API calls fail or users make invalid selections:</p>
+<section id="waiting-for-complete-input" class="level3">
+<h3 class="anchored" data-anchor-id="waiting-for-complete-input">Waiting for complete input</h3>
+<p>API calls can take several seconds, so requests run only when <strong>Submit</strong> is pressed (<code>eventReactive()</code>), and only once every required input is present:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">req</span>(input<span class="sc">$</span>api_key_acs, input<span class="sc">$</span>year_acs, input<span class="sc">$</span>state_acs, input<span class="sc">$</span>county_acs, input<span class="sc">$</span>level_acs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The <code>req()</code> function ensures all required inputs are available before processing.</p>
+<p>The download button appears only after the first request.</p>
 </section>
 </section>
-<section id="future-enhancements" class="level2" data-number="10">
-<h2 data-number="10" class="anchored" data-anchor-id="future-enhancements"><span class="header-section-number">10</span> Future Enhancements</h2>
-<p>Several features are planned for future releases:</p>
+<section id="scope" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="scope"><span class="header-section-number">9</span> Scope</h2>
+<p>LEHD requests cover a whole state and download as CSV, while ACS and Decennial requests can also download as shapefiles. The app runs locally: clone the repository, open <code>app.R</code> and run it.</p>
+</section>
+<section id="ideas-for-later" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="ideas-for-later"><span class="header-section-number">10</span> Ideas for later</h2>
+<p>Several features would make the app more useful:</p>
 <ul>
-<li><strong>Data Visualization</strong>: Built-in charts and maps with Census data overlays</li>
-<li><strong>Comparison Tools</strong>: Side-by-side analysis across years or geographies<br>
-</li>
-<li><strong>Custom Geography</strong>: Support for user-uploaded boundary files</li>
-<li><strong>Batch Processing</strong>: Multiple state/year combinations in single requests</li>
-<li><strong>API Integration</strong>: Direct connection to external GIS platforms</li>
+<li><strong>Data visualization</strong>: built-in charts and maps of the returned data, not just the extent of the request</li>
+<li><strong>Comparison tools</strong>: side-by-side analysis across years or geographies</li>
+<li><strong>Custom geography</strong>: support for user-uploaded boundary files</li>
+<li><strong>Batch processing</strong>: several state and year combinations in a single request</li>
+<li><strong>API integration</strong>: direct connection to external GIS platforms</li>
+<li><strong>Shiny modules</strong>: one module shared by the three tabs, so a change lands in all of them at once</li>
 </ul>
 </section>
-<section id="conclusion" class="level2" data-number="11">
-<h2 data-number="11" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">11</span> Conclusion</h2>
-<p>This Census data explorer demonstrates the power of R Shiny for creating specialized data access tools. By combining multiple Census APIs into a single interface, it significantly reduces the technical barrier for accessing demographic and employment data.</p>
-<p>The modular architecture and attention to user experience make it a valuable tool for researchers, planners, and analysts who regularly work with Census data. The open-source approach ensures continued development and community contributions.</p>
-<p>For transportation planners specifically, having easy access to demographic characteristics, employment patterns, and commuting flows in a single application streamlines the data gathering phase of project development, allowing more time for analysis and decision-making.</p>
-<hr>
-<p><em>Want to contribute or suggest improvements? Visit the project repository at:</em> <a href="https://github.com/ar-puuk/uscensus-dashboard" class="uri">https://github.com/ar-puuk/uscensus-dashboard</a></p>
+<section id="wrapping-up" class="level2" data-number="11">
+<h2 data-number="11" class="anchored" data-anchor-id="wrapping-up"><span class="header-section-number">11</span> Wrapping up</h2>
+<p>The app does one job: it turns the first hour of a Census data task (finding variable codes, writing the request, converting the output) into a few clicks. For transportation planning work in particular, having demographic characteristics, employment and commuting flows behind the same interface shortens the data-gathering step and leaves more time for analysis.</p>
+<p>The code is on <a href="https://github.com/ar-puuk/uscensus-dashboard">GitHub</a> under the MIT license. Suggestions and contributions are welcome.</p>
 
 
 <!-- -->
@@ -1464,300 +1456,302 @@ Explorer.”</span> May 11. <a href="https://ar-puuk.github.io/posts/uscensus-da
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="an">image-alt:</span><span class="co"> "Census Data Explorer with year, state and county filters, a map of Utah counties and a table of block group data."</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "A Shiny Dashboard for ACS, Decennial Census, and LEHD Data"</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> |</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">  Learn how to build an interactive Shiny dashboard for exploring U.S. Census data including ACS, Decennial Census, and LEHD datasets with integrated mapping capabilities.</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">  A Shiny app that puts the American Community Survey, the Decennial Census and LEHD employment data behind one point-and-click interface, with a map, a searchable variable picker and CSV or shapefile downloads. Why I built it, how it works, and what I would change.</span></span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "uscensus_dashboard.png"</span></span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Pukar Bhandari</span></span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">    email: pukar.bhandari@outlook.com</span></span>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2024-05-11"</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [R, Data Science, Web Apps, GIS, Transportation]</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introduction</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>As a transportation planner, accessing and visualizing demographic and employment data is crucial for informed decision-making. The U.S. Census Bureau provides a wealth of information through various datasets, but navigating multiple APIs and data formats can be challenging. To streamline this process, I developed an interactive R Shiny dashboard that provides unified access to three major Census data sources:</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**American Community Survey (ACS)** - Detailed demographic and socioeconomic estimates</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Decennial Census** - Complete population counts every 10 years\</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Longitudinal Employer-Household Dynamics (LEHD)** - Employment and commuting patterns</span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>This post walks through the development process, key technical decisions, and lessons learned while building this data exploration tool.</span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## Project Overview</span></span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>The dashboard serves as a one-stop interface for Census data retrieval, featuring:</span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Interactive geographic selection (state/county level)</span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Variable selection through searchable tables</span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Real-time data visualization on interactive maps</span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Export capabilities for both tabular and geospatial data</span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Responsive design optimized for different screen sizes</span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>**🔗 Repository**: You can find the complete source code and documentation at: <span class="ot">&lt;https://github.com/ar-puuk/uscensus-dashboard/&gt;</span></span>
-<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Technical Architecture</span></span>
-<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a><span class="fu">### Core Dependencies</span></span>
-<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>The application leverages several specialized R packages for Census data access and geospatial processing:</span>
-<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
-<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Census data access</span></span>
-<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycensus)   <span class="co"># ACS and Decennial Census API</span></span>
-<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lehdr)        <span class="co"># LEHD Origin-Destination data</span></span>
-<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tigris)       <span class="co"># Geographic boundaries</span></span>
-<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Geospatial processing  </span></span>
-<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)           <span class="co"># Simple features for spatial data</span></span>
-<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)      <span class="co"># Interactive mapping</span></span>
-<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Shiny ecosystem</span></span>
-<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
-<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span>
-<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinyWidgets)</span>
-<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)          <span class="co"># Interactive data tables</span></span>
-<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="an">date-modified:</span><span class="co"> "2026-11-23"</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [R, Data Science, Web Apps, GIS, Transportation]</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>As a transportation planner, accessing and visualizing demographic and employment data is crucial for informed decision-making. The U.S. Census Bureau provides a wealth of information through various datasets, but navigating multiple APIs and data formats can be challenging. To streamline this process, I developed an interactive R Shiny dashboard that provides unified access to three major Census data sources:</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**American Community Survey (ACS)**: detailed demographic and socioeconomic estimates</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Decennial Census**: complete population counts every 10 years</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Longitudinal Employer-Household Dynamics (LEHD)**: employment and commuting patterns</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>This post walks through why I built it, what it does, how the pieces fit together, and where it could go next. The source code is on <span class="co">[</span><span class="ot">GitHub</span><span class="co">](https://github.com/ar-puuk/uscensus-dashboard/)</span>.</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/uscensus-dashboard)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## The problem: three products, three ways in</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>R already has excellent packages for each of these sources. <span class="co">[</span><span class="ot">tidycensus</span><span class="co">](https://walker-data.com/tidycensus/)</span> wraps the Census API for the ACS and the Decennial Census, <span class="co">[</span><span class="ot">lehdr</span><span class="co">](https://github.com/jamgreen/lehdr)</span> downloads LEHD's LODES files, and <span class="co">[</span><span class="ot">tigris</span><span class="co">](https://github.com/walkerke/tigris)</span> fetches boundaries. But each one has its own arguments, its own variable codes and its own idea of geography, and every request starts with the same chores: look up the variable codes for the right year, remember which geographies a variable is published for, write the call, then convert the result to whatever format the next tool needs.</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>I wanted a single window for those chores. Pick a product, a year, a state and its counties, pick variables from a list, and download a CSV or a shapefile. The app is that window: a thin interface over tidycensus, lehdr and tigris, not a replacement for them.</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## A quick tour</span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a><span class="al">![The ACS tab: a 2021 block group request for five Wasatch Front counties in Utah, with the selected counties shaded on the map and the returned table below it.](uscensus_dashboard.png)</span>{fig-alt="Census Data Explorer with year, state and county filters, a map of Utah counties and a table of block group data."}</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>The app has one tab per product, and each tab follows the same pattern:</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Paste a Census API key (the LEHD tab does not need one).</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Pick a year and a state; the county list fills in for that state.</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Choose a geographic level: counties, tracts or block groups for the ACS, plus blocks for the Decennial Census and LEHD.</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Open the variable picker and select variables from a searchable table.</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>Choose whether to include geometry, press **Submit**, and download the result.</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>The map highlights the chosen state and shades the selected counties, and the returned data appears in a table under it. Downloads are CSV files, or zipped shapefiles when geometry is switched on.</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a><span class="fu">## How it is put together</span></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a><span class="fu">### Core dependencies</span></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>The application leverages several specialized R packages for Census data access and geospatial processing:</span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Census data access</span></span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidycensus)   <span class="co"># ACS and Decennial Census API</span></span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lehdr)        <span class="co"># LEHD Origin-Destination data</span></span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tigris)       <span class="co"># Geographic boundaries</span></span>
 <span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a><span class="fu">### Application Structure</span></span>
-<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a>The app follows a modular design pattern with separate UI and server components for each data source. This approach enhances maintainability and allows for independent feature development.</span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Geospatial processing</span></span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)           <span class="co"># Simple features for spatial data</span></span>
+<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)      <span class="co"># Interactive mapping</span></span>
 <span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
-<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Modular UI components</span></span>
-<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a>acsUI <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(...)      <span class="co"># American Community Survey interface</span></span>
-<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a>censusUI <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(...)   <span class="co"># Decennial Census interface  </span></span>
-<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a>lehdUI <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(...)     <span class="co"># LEHD interface</span></span>
-<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a><span class="co"># Unified navigation</span></span>
-<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">navbarPage</span>(...)</span>
-<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-75"><a href="#cb13-75" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Source Integration</span></span>
-<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a><span class="fu">### American Community Survey (ACS)</span></span>
-<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-79"><a href="#cb13-79" aria-hidden="true" tabindex="-1"></a>The ACS module provides access to detailed demographic estimates from 2009-2022. Key implementation features:</span>
-<span id="cb13-80"><a href="#cb13-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-81"><a href="#cb13-81" aria-hidden="true" tabindex="-1"></a>**Dynamic Variable Loading**: Variables are loaded based on the selected year and geographic level, ensuring users only see relevant options.</span>
-<span id="cb13-82"><a href="#cb13-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-83"><a href="#cb13-83" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
-<span id="cb13-84"><a href="#cb13-84" aria-hidden="true" tabindex="-1"></a>variables_acs <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
-<span id="cb13-85"><a href="#cb13-85" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(input<span class="sc">$</span>year_acs)) {</span>
-<span id="cb13-86"><a href="#cb13-86" aria-hidden="true" tabindex="-1"></a>    variables <span class="ot">&lt;-</span> <span class="fu">load_variables</span>(<span class="at">year =</span> <span class="fu">as.numeric</span>(input<span class="sc">$</span>year_acs), </span>
-<span id="cb13-87"><a href="#cb13-87" aria-hidden="true" tabindex="-1"></a>                               <span class="at">dataset =</span> <span class="st">"acs5"</span>, <span class="at">cache =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb13-88"><a href="#cb13-88" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filter variables based on geographic level</span></span>
-<span id="cb13-89"><a href="#cb13-89" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (input<span class="sc">$</span>level_acs <span class="sc">==</span> <span class="st">"tract"</span>) {</span>
-<span id="cb13-90"><a href="#cb13-90" aria-hidden="true" tabindex="-1"></a>      variables <span class="ot">&lt;-</span> variables <span class="sc">|&gt;</span></span>
-<span id="cb13-91"><a href="#cb13-91" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(geography <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"tract"</span>, <span class="st">"block group"</span>))</span>
-<span id="cb13-92"><a href="#cb13-92" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb13-93"><a href="#cb13-93" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(variables)</span>
-<span id="cb13-94"><a href="#cb13-94" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb13-95"><a href="#cb13-95" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb13-96"><a href="#cb13-96" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-97"><a href="#cb13-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-98"><a href="#cb13-98" aria-hidden="true" tabindex="-1"></a>**Geographic Hierarchy**: The interface maintains proper geographic relationships, with county options updating based on state selection.</span>
-<span id="cb13-99"><a href="#cb13-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-100"><a href="#cb13-100" aria-hidden="true" tabindex="-1"></a><span class="fu">### Decennial Census</span></span>
-<span id="cb13-101"><a href="#cb13-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-102"><a href="#cb13-102" aria-hidden="true" tabindex="-1"></a>The Decennial Census module focuses on the 2000, 2010, and 2020 complete counts, using the PL 94-171 dataset optimized for redistricting data.</span>
-<span id="cb13-103"><a href="#cb13-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-104"><a href="#cb13-104" aria-hidden="true" tabindex="-1"></a>**Streamlined Variable Selection**: Since Decennial Census has fewer variables than ACS, the interface emphasizes ease of use while maintaining the same interaction patterns.</span>
-<span id="cb13-105"><a href="#cb13-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-106"><a href="#cb13-106" aria-hidden="true" tabindex="-1"></a><span class="fu">### Longitudinal Employer-Household Dynamics (LEHD)</span></span>
-<span id="cb13-107"><a href="#cb13-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-108"><a href="#cb13-108" aria-hidden="true" tabindex="-1"></a>The LEHD module provides employment statistics and origin-destination flows, crucial for transportation planning applications.</span>
-<span id="cb13-109"><a href="#cb13-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-110"><a href="#cb13-110" aria-hidden="true" tabindex="-1"></a>**Version Management**: Different LODES versions cover different time periods, requiring dynamic year filtering:</span>
-<span id="cb13-111"><a href="#cb13-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-112"><a href="#cb13-112" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
-<span id="cb13-113"><a href="#cb13-113" aria-hidden="true" tabindex="-1"></a><span class="fu">observe</span>({</span>
-<span id="cb13-114"><a href="#cb13-114" aria-hidden="true" tabindex="-1"></a>  version <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(input<span class="sc">$</span>version_lehd)) input<span class="sc">$</span>version_lehd <span class="cf">else</span> <span class="st">"default"</span></span>
-<span id="cb13-115"><a href="#cb13-115" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-116"><a href="#cb13-116" aria-hidden="true" tabindex="-1"></a>  options <span class="ot">&lt;-</span> <span class="cf">if</span> (version <span class="sc">==</span> <span class="st">"LODES5"</span>) {</span>
-<span id="cb13-117"><a href="#cb13-117" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2002</span><span class="sc">:</span><span class="dv">2009</span></span>
-<span id="cb13-118"><a href="#cb13-118" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (version <span class="sc">==</span> <span class="st">"LODES7"</span>) {</span>
-<span id="cb13-119"><a href="#cb13-119" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2002</span><span class="sc">:</span><span class="dv">2019</span>  </span>
-<span id="cb13-120"><a href="#cb13-120" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb13-121"><a href="#cb13-121" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2002</span><span class="sc">:</span><span class="dv">2021</span></span>
-<span id="cb13-122"><a href="#cb13-122" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb13-123"><a href="#cb13-123" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-124"><a href="#cb13-124" aria-hidden="true" tabindex="-1"></a>  <span class="fu">updateSelectInput</span>(session, <span class="st">"year_lehd"</span>, <span class="at">choices =</span> options, <span class="at">selected =</span> <span class="fu">max</span>(options))</span>
-<span id="cb13-125"><a href="#cb13-125" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb13-126"><a href="#cb13-126" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-127"><a href="#cb13-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-128"><a href="#cb13-128" aria-hidden="true" tabindex="-1"></a><span class="fu">## Interactive Mapping</span></span>
-<span id="cb13-129"><a href="#cb13-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-130"><a href="#cb13-130" aria-hidden="true" tabindex="-1"></a><span class="fu">### Base Map Configuration</span></span>
-<span id="cb13-131"><a href="#cb13-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-132"><a href="#cb13-132" aria-hidden="true" tabindex="-1"></a>The application uses Leaflet for interactive mapping, with a carefully chosen base layer that balances aesthetics and functionality:</span>
-<span id="cb13-133"><a href="#cb13-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-134"><a href="#cb13-134" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
-<span id="cb13-135"><a href="#cb13-135" aria-hidden="true" tabindex="-1"></a>default_map <span class="ot">&lt;-</span> <span class="fu">leaflet</span>(<span class="at">options =</span> <span class="fu">leafletOptions</span>(<span class="at">crs =</span> <span class="fu">leafletCRS</span>())) <span class="sc">|&gt;</span></span>
-<span id="cb13-136"><a href="#cb13-136" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(<span class="st">"Esri.WorldGrayCanvas"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-137"><a href="#cb13-137" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addPolygons</span>(<span class="at">data =</span> sf_states, <span class="at">color =</span> <span class="st">"#222222"</span>, <span class="at">weight =</span> <span class="dv">1</span>, <span class="at">fillOpacity =</span> <span class="fl">0.15</span>)</span>
-<span id="cb13-138"><a href="#cb13-138" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-139"><a href="#cb13-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-140"><a href="#cb13-140" aria-hidden="true" tabindex="-1"></a>**Esri.WorldGrayCanvas** (Esri's Light Gray Canvas) was selected for its muted design and good contrast with overlay data, and it needs no API key, though the code structure allows for easy switching between provider tiles.</span>
-<span id="cb13-141"><a href="#cb13-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-142"><a href="#cb13-142" aria-hidden="true" tabindex="-1"></a><span class="fu">### Dynamic Geographic Focus</span></span>
-<span id="cb13-143"><a href="#cb13-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-144"><a href="#cb13-144" aria-hidden="true" tabindex="-1"></a>Maps automatically adjust to show selected geographic areas, providing contextual awareness:</span>
-<span id="cb13-145"><a href="#cb13-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-146"><a href="#cb13-146" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
-<span id="cb13-147"><a href="#cb13-147" aria-hidden="true" tabindex="-1"></a>output<span class="sc">$</span>map_acs <span class="ot">&lt;-</span> <span class="fu">renderLeaflet</span>({</span>
-<span id="cb13-148"><a href="#cb13-148" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(input<span class="sc">$</span>state_acs) <span class="sc">&amp;&amp;</span> input<span class="sc">$</span>state_acs <span class="sc">!=</span> <span class="st">""</span>) {</span>
-<span id="cb13-149"><a href="#cb13-149" aria-hidden="true" tabindex="-1"></a>    selected_state_acs <span class="ot">&lt;-</span> sf_states[sf_states<span class="sc">$</span>NAME <span class="sc">==</span> input<span class="sc">$</span>state_acs, ]</span>
-<span id="cb13-150"><a href="#cb13-150" aria-hidden="true" tabindex="-1"></a>    selected_bbox_acs <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_bbox</span>(selected_state_acs)</span>
-<span id="cb13-151"><a href="#cb13-151" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-152"><a href="#cb13-152" aria-hidden="true" tabindex="-1"></a>    default_map <span class="sc">|&gt;</span></span>
-<span id="cb13-153"><a href="#cb13-153" aria-hidden="true" tabindex="-1"></a>      <span class="fu">addPolygons</span>(<span class="at">data =</span> selected_state_acs, <span class="at">color =</span> <span class="st">"#222222"</span>, <span class="at">weight =</span> <span class="dv">4</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-154"><a href="#cb13-154" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fitBounds</span>(selected_bbox_acs[[<span class="dv">1</span>]], selected_bbox_acs[[<span class="dv">2</span>]], </span>
-<span id="cb13-155"><a href="#cb13-155" aria-hidden="true" tabindex="-1"></a>               selected_bbox_acs[[<span class="dv">3</span>]], selected_bbox_acs[[<span class="dv">4</span>]])</span>
-<span id="cb13-156"><a href="#cb13-156" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb13-157"><a href="#cb13-157" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb13-158"><a href="#cb13-158" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-159"><a href="#cb13-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-160"><a href="#cb13-160" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Export Functionality</span></span>
-<span id="cb13-161"><a href="#cb13-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-162"><a href="#cb13-162" aria-hidden="true" tabindex="-1"></a><span class="fu">### Flexible Format Support</span></span>
-<span id="cb13-163"><a href="#cb13-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-164"><a href="#cb13-164" aria-hidden="true" tabindex="-1"></a>Users can export data in multiple formats depending on their needs:</span>
-<span id="cb13-165"><a href="#cb13-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-166"><a href="#cb13-166" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**CSV files** for tabular analysis</span>
-<span id="cb13-167"><a href="#cb13-167" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Shapefiles (zipped)** for GIS applications</span>
-<span id="cb13-168"><a href="#cb13-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-169"><a href="#cb13-169" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
-<span id="cb13-170"><a href="#cb13-170" aria-hidden="true" tabindex="-1"></a>output<span class="sc">$</span>download_acs <span class="ot">&lt;-</span> <span class="fu">downloadHandler</span>(</span>
-<span id="cb13-171"><a href="#cb13-171" aria-hidden="true" tabindex="-1"></a>  <span class="at">filename =</span> <span class="cf">function</span>() {</span>
-<span id="cb13-172"><a href="#cb13-172" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (input<span class="sc">$</span>geometry_acs) {</span>
-<span id="cb13-173"><a href="#cb13-173" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(<span class="st">"acs_data_"</span>, input<span class="sc">$</span>state_acs, <span class="st">"_"</span>, input<span class="sc">$</span>year_acs, <span class="st">".zip"</span>)</span>
-<span id="cb13-174"><a href="#cb13-174" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb13-175"><a href="#cb13-175" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(<span class="st">"acs_data_"</span>, input<span class="sc">$</span>state_acs, <span class="st">"_"</span>, input<span class="sc">$</span>year_acs, <span class="st">".csv"</span>)</span>
-<span id="cb13-176"><a href="#cb13-176" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb13-177"><a href="#cb13-177" aria-hidden="true" tabindex="-1"></a>  },</span>
-<span id="cb13-178"><a href="#cb13-178" aria-hidden="true" tabindex="-1"></a>  <span class="at">content =</span> <span class="cf">function</span>(file) {</span>
-<span id="cb13-179"><a href="#cb13-179" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (input<span class="sc">$</span>geometry_acs) {</span>
-<span id="cb13-180"><a href="#cb13-180" aria-hidden="true" tabindex="-1"></a>      <span class="fu">write_sf_zip</span>(<span class="fu">data_acs</span>(), file, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb13-181"><a href="#cb13-181" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb13-182"><a href="#cb13-182" aria-hidden="true" tabindex="-1"></a>      readr<span class="sc">::</span><span class="fu">write_csv</span>(<span class="fu">data_acs</span>() <span class="sc">|&gt;</span> <span class="fu">st_drop_geometry</span>(), file)</span>
-<span id="cb13-183"><a href="#cb13-183" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb13-184"><a href="#cb13-184" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb13-185"><a href="#cb13-185" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb13-186"><a href="#cb13-186" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-187"><a href="#cb13-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-188"><a href="#cb13-188" aria-hidden="true" tabindex="-1"></a><span class="fu">### Custom Shapefile Export</span></span>
-<span id="cb13-189"><a href="#cb13-189" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-190"><a href="#cb13-190" aria-hidden="true" tabindex="-1"></a>Since R's <span class="in">`sf`</span> package doesn't directly export zipped shapefiles, I implemented a custom function to handle the complete shapefile format:</span>
-<span id="cb13-191"><a href="#cb13-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-192"><a href="#cb13-192" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
-<span id="cb13-193"><a href="#cb13-193" aria-hidden="true" tabindex="-1"></a>write_sf_zip <span class="ot">&lt;-</span> <span class="cf">function</span>(obj, zipfile, <span class="at">overwrite =</span> <span class="cn">FALSE</span>) {</span>
-<span id="cb13-194"><a href="#cb13-194" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create temporary directory for shapefile components</span></span>
-<span id="cb13-195"><a href="#cb13-195" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> <span class="fu">tempfile</span>()</span>
-<span id="cb13-196"><a href="#cb13-196" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(tmp)</span>
-<span id="cb13-197"><a href="#cb13-197" aria-hidden="true" tabindex="-1"></a>  <span class="fu">on.exit</span>(<span class="fu">unlink</span>(tmp, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">force =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb13-198"><a href="#cb13-198" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-199"><a href="#cb13-199" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Write shapefile and zip all components</span></span>
-<span id="cb13-200"><a href="#cb13-200" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">write_sf</span>(obj, <span class="fu">file.path</span>(tmp, shp_name), <span class="at">delete_layer =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb13-201"><a href="#cb13-201" aria-hidden="true" tabindex="-1"></a>  withr<span class="sc">::</span><span class="fu">with_dir</span>(tmp, <span class="fu">zip</span>(tmp_zip, <span class="fu">list.files</span>()))</span>
-<span id="cb13-202"><a href="#cb13-202" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-203"><a href="#cb13-203" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.copy</span>(<span class="fu">file.path</span>(tmp, tmp_zip), zipfile, <span class="at">overwrite =</span> overwrite)</span>
-<span id="cb13-204"><a href="#cb13-204" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb13-205"><a href="#cb13-205" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-206"><a href="#cb13-206" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-207"><a href="#cb13-207" aria-hidden="true" tabindex="-1"></a><span class="fu">## User Experience Considerations</span></span>
-<span id="cb13-208"><a href="#cb13-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-209"><a href="#cb13-209" aria-hidden="true" tabindex="-1"></a><span class="fu">### Variable Selection Interface</span></span>
-<span id="cb13-210"><a href="#cb13-210" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-211"><a href="#cb13-211" aria-hidden="true" tabindex="-1"></a>One of the biggest UX challenges was making Census variable selection intuitive. The solution uses modal dialogs with searchable data tables:</span>
-<span id="cb13-212"><a href="#cb13-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-213"><a href="#cb13-213" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
-<span id="cb13-214"><a href="#cb13-214" aria-hidden="true" tabindex="-1"></a>var_modal_acs <span class="ot">&lt;-</span> <span class="fu">modalDialog</span>(</span>
-<span id="cb13-215"><a href="#cb13-215" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="fu">h4</span>(<span class="st">"Select Variable(s) from the List"</span>),</span>
-<span id="cb13-216"><a href="#cb13-216" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DTOutput</span>(<span class="st">"var_table_acs"</span>),</span>
-<span id="cb13-217"><a href="#cb13-217" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="st">"l"</span>,</span>
-<span id="cb13-218"><a href="#cb13-218" aria-hidden="true" tabindex="-1"></a>  <span class="at">easyClose =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb13-219"><a href="#cb13-219" aria-hidden="true" tabindex="-1"></a>  <span class="at">footer =</span> <span class="fu">actionButton</span>(<span class="st">"selectVarButton_acs"</span>, <span class="st">"Select Variable(s)"</span>)</span>
-<span id="cb13-220"><a href="#cb13-220" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb13-221"><a href="#cb13-221" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Shiny ecosystem</span></span>
+<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span>
+<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinyWidgets)</span>
+<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)          <span class="co"># Interactive data tables</span></span>
+<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a><span class="fu">### Application structure</span></span>
+<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a>The whole app is a single <span class="in">`app.R`</span>. Each product has its own UI object and its own block of server logic, and a <span class="in">`navbarPage()`</span> ties the three together as tabs:</span>
+<span id="cb13-75"><a href="#cb13-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
+<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a><span class="co"># One UI object per data source</span></span>
+<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a>acsUI <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(...)      <span class="co"># American Community Survey interface</span></span>
+<span id="cb13-79"><a href="#cb13-79" aria-hidden="true" tabindex="-1"></a>censusUI <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(...)   <span class="co"># Decennial Census interface</span></span>
+<span id="cb13-80"><a href="#cb13-80" aria-hidden="true" tabindex="-1"></a>lehdUI <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(...)     <span class="co"># LEHD interface</span></span>
+<span id="cb13-81"><a href="#cb13-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-82"><a href="#cb13-82" aria-hidden="true" tabindex="-1"></a><span class="co"># Unified navigation</span></span>
+<span id="cb13-83"><a href="#cb13-83" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">navbarPage</span>(...)</span>
+<span id="cb13-84"><a href="#cb13-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-85"><a href="#cb13-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-86"><a href="#cb13-86" aria-hidden="true" tabindex="-1"></a>Keeping the tabs separate meant I could get the ACS tab working first and then adapt it for the other two. The cost of that shortcut shows up later in this post.</span>
+<span id="cb13-87"><a href="#cb13-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-88"><a href="#cb13-88" aria-hidden="true" tabindex="-1"></a><span class="fu">## One interface, three data products</span></span>
+<span id="cb13-89"><a href="#cb13-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-90"><a href="#cb13-90" aria-hidden="true" tabindex="-1"></a><span class="fu">### American Community Survey</span></span>
+<span id="cb13-91"><a href="#cb13-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-92"><a href="#cb13-92" aria-hidden="true" tabindex="-1"></a>The ACS tab covers the 5-year estimates from 2009 to 2022. The detail that made the biggest difference here was the variable list. tidycensus's <span class="in">`load_variables()`</span> returns every ACS variable for a year, along with the smallest geography it is published for. Many tables exist only down to the tract level, so showing them on a block group request just produces an error. The app filters the list by the chosen geographic level before showing it:</span>
+<span id="cb13-93"><a href="#cb13-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-94"><a href="#cb13-94" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
+<span id="cb13-95"><a href="#cb13-95" aria-hidden="true" tabindex="-1"></a>variables_acs <span class="ot">&lt;-</span> <span class="fu">reactive</span>({</span>
+<span id="cb13-96"><a href="#cb13-96" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(input<span class="sc">$</span>year_acs)) {</span>
+<span id="cb13-97"><a href="#cb13-97" aria-hidden="true" tabindex="-1"></a>    variables <span class="ot">&lt;-</span> <span class="fu">load_variables</span>(<span class="at">year =</span> <span class="fu">as.numeric</span>(input<span class="sc">$</span>year_acs),</span>
+<span id="cb13-98"><a href="#cb13-98" aria-hidden="true" tabindex="-1"></a>                               <span class="at">dataset =</span> <span class="st">"acs5"</span>, <span class="at">cache =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-99"><a href="#cb13-99" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filter variables based on geographic level</span></span>
+<span id="cb13-100"><a href="#cb13-100" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (input<span class="sc">$</span>level_acs <span class="sc">==</span> <span class="st">"tract"</span>) {</span>
+<span id="cb13-101"><a href="#cb13-101" aria-hidden="true" tabindex="-1"></a>      variables <span class="ot">&lt;-</span> variables <span class="sc">|&gt;</span></span>
+<span id="cb13-102"><a href="#cb13-102" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(geography <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"tract"</span>, <span class="st">"block group"</span>))</span>
+<span id="cb13-103"><a href="#cb13-103" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb13-104"><a href="#cb13-104" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(variables)</span>
+<span id="cb13-105"><a href="#cb13-105" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-106"><a href="#cb13-106" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb13-107"><a href="#cb13-107" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-108"><a href="#cb13-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-109"><a href="#cb13-109" aria-hidden="true" tabindex="-1"></a>**Geographic hierarchy**: the county options update whenever the state changes, using <span class="in">`tidycensus::list_counties()`</span>, so the request can never name a county outside the chosen state.</span>
+<span id="cb13-110"><a href="#cb13-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-111"><a href="#cb13-111" aria-hidden="true" tabindex="-1"></a>The data request itself is a single <span class="in">`get_acs()`</span> call in wide format, with the state, counties, level and geometry taken from the inputs and the API key passed straight through.</span>
+<span id="cb13-112"><a href="#cb13-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-113"><a href="#cb13-113" aria-hidden="true" tabindex="-1"></a><span class="fu">### Decennial Census</span></span>
+<span id="cb13-114"><a href="#cb13-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-115"><a href="#cb13-115" aria-hidden="true" tabindex="-1"></a>The Decennial Census tab focuses on the 2000, 2010 and 2020 counts, with variables drawn from the PL 94-171 redistricting dataset. Since the Decennial Census has far fewer variables than the ACS, the interface stays simple while keeping the same interaction pattern. It also adds the census block, the smallest geography the Census Bureau publishes.</span>
+<span id="cb13-116"><a href="#cb13-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-117"><a href="#cb13-117" aria-hidden="true" tabindex="-1"></a><span class="fu">### Longitudinal Employer-Household Dynamics</span></span>
+<span id="cb13-118"><a href="#cb13-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-119"><a href="#cb13-119" aria-hidden="true" tabindex="-1"></a>The LEHD tab provides employment statistics and origin-destination flows from LODES, which matter a great deal for transportation planning. It offers all three LODES file types: origin-destination (OD), residence area characteristics (RAC) and workplace area characteristics (WAC). Requests use all workers and all jobs (<span class="in">`segment = "S000"`</span>, <span class="in">`job_type = "JT00"`</span>), and the data can be aggregated from blocks up to block groups, tracts or counties.</span>
+<span id="cb13-120"><a href="#cb13-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-121"><a href="#cb13-121" aria-hidden="true" tabindex="-1"></a>**Version management**: different LODES versions cover different years, so the year list follows the chosen version:</span>
+<span id="cb13-122"><a href="#cb13-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-123"><a href="#cb13-123" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
+<span id="cb13-124"><a href="#cb13-124" aria-hidden="true" tabindex="-1"></a><span class="fu">observe</span>({</span>
+<span id="cb13-125"><a href="#cb13-125" aria-hidden="true" tabindex="-1"></a>  version <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(input<span class="sc">$</span>version_lehd)) input<span class="sc">$</span>version_lehd <span class="cf">else</span> <span class="st">"default"</span></span>
+<span id="cb13-126"><a href="#cb13-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-127"><a href="#cb13-127" aria-hidden="true" tabindex="-1"></a>  options <span class="ot">&lt;-</span> <span class="cf">if</span> (version <span class="sc">==</span> <span class="st">"LODES5"</span>) {</span>
+<span id="cb13-128"><a href="#cb13-128" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2002</span><span class="sc">:</span><span class="dv">2009</span></span>
+<span id="cb13-129"><a href="#cb13-129" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (version <span class="sc">==</span> <span class="st">"LODES7"</span>) {</span>
+<span id="cb13-130"><a href="#cb13-130" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2002</span><span class="sc">:</span><span class="dv">2019</span></span>
+<span id="cb13-131"><a href="#cb13-131" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb13-132"><a href="#cb13-132" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2002</span><span class="sc">:</span><span class="dv">2021</span></span>
+<span id="cb13-133"><a href="#cb13-133" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-134"><a href="#cb13-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-135"><a href="#cb13-135" aria-hidden="true" tabindex="-1"></a>  <span class="fu">updateSelectInput</span>(session, <span class="st">"year_lehd"</span>, <span class="at">choices =</span> options, <span class="at">selected =</span> <span class="fu">max</span>(options))</span>
+<span id="cb13-136"><a href="#cb13-136" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb13-137"><a href="#cb13-137" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-138"><a href="#cb13-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-139"><a href="#cb13-139" aria-hidden="true" tabindex="-1"></a>LODES files are downloaded from the Census Bureau rather than requested through the API, which is why this tab needs no key.</span>
+<span id="cb13-140"><a href="#cb13-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-141"><a href="#cb13-141" aria-hidden="true" tabindex="-1"></a><span class="fu">## The map</span></span>
+<span id="cb13-142"><a href="#cb13-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-143"><a href="#cb13-143" aria-hidden="true" tabindex="-1"></a><span class="fu">### Base map configuration</span></span>
+<span id="cb13-144"><a href="#cb13-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-145"><a href="#cb13-145" aria-hidden="true" tabindex="-1"></a>The application uses Leaflet for interactive mapping, with a carefully chosen base layer that balances aesthetics and functionality:</span>
+<span id="cb13-146"><a href="#cb13-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-147"><a href="#cb13-147" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
+<span id="cb13-148"><a href="#cb13-148" aria-hidden="true" tabindex="-1"></a>default_map <span class="ot">&lt;-</span> <span class="fu">leaflet</span>(<span class="at">options =</span> <span class="fu">leafletOptions</span>(<span class="at">crs =</span> <span class="fu">leafletCRS</span>())) <span class="sc">|&gt;</span></span>
+<span id="cb13-149"><a href="#cb13-149" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(<span class="st">"CartoDB.Voyager"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-150"><a href="#cb13-150" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addPolygons</span>(<span class="at">data =</span> sf_states, <span class="at">color =</span> <span class="st">"#222222"</span>, <span class="at">weight =</span> <span class="dv">1</span>, <span class="at">fillOpacity =</span> <span class="fl">0.15</span>)</span>
+<span id="cb13-151"><a href="#cb13-151" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-152"><a href="#cb13-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-153"><a href="#cb13-153" aria-hidden="true" tabindex="-1"></a>**CartoDB.Voyager** was chosen for its muted design and good contrast with overlay data, and it needs no API key; CARTO's Positron and Dark Matter work as drop-in swaps. The default map is built once, outside any reactive code, and each tab adds its own layers on top.</span>
+<span id="cb13-154"><a href="#cb13-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-155"><a href="#cb13-155" aria-hidden="true" tabindex="-1"></a><span class="fu">### Following the selection</span></span>
+<span id="cb13-156"><a href="#cb13-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-157"><a href="#cb13-157" aria-hidden="true" tabindex="-1"></a>When a state is chosen, the map draws its outline and counties and zooms to its bounding box; the selected counties get a darker fill so the extent of the request is visible before anything is downloaded:</span>
+<span id="cb13-158"><a href="#cb13-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-159"><a href="#cb13-159" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
+<span id="cb13-160"><a href="#cb13-160" aria-hidden="true" tabindex="-1"></a>output<span class="sc">$</span>map_acs <span class="ot">&lt;-</span> <span class="fu">renderLeaflet</span>({</span>
+<span id="cb13-161"><a href="#cb13-161" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(input<span class="sc">$</span>state_acs) <span class="sc">&amp;&amp;</span> input<span class="sc">$</span>state_acs <span class="sc">!=</span> <span class="st">""</span>) {</span>
+<span id="cb13-162"><a href="#cb13-162" aria-hidden="true" tabindex="-1"></a>    selected_state_acs <span class="ot">&lt;-</span> sf_states[sf_states<span class="sc">$</span>NAME <span class="sc">==</span> input<span class="sc">$</span>state_acs, ]</span>
+<span id="cb13-163"><a href="#cb13-163" aria-hidden="true" tabindex="-1"></a>    selected_bbox_acs <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_bbox</span>(selected_state_acs)</span>
+<span id="cb13-164"><a href="#cb13-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-165"><a href="#cb13-165" aria-hidden="true" tabindex="-1"></a>    default_map <span class="sc">|&gt;</span></span>
+<span id="cb13-166"><a href="#cb13-166" aria-hidden="true" tabindex="-1"></a>      <span class="fu">addPolygons</span>(<span class="at">data =</span> selected_state_acs, <span class="at">color =</span> <span class="st">"#222222"</span>, <span class="at">weight =</span> <span class="dv">4</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-167"><a href="#cb13-167" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fitBounds</span>(selected_bbox_acs[[<span class="dv">1</span>]], selected_bbox_acs[[<span class="dv">2</span>]],</span>
+<span id="cb13-168"><a href="#cb13-168" aria-hidden="true" tabindex="-1"></a>               selected_bbox_acs[[<span class="dv">3</span>]], selected_bbox_acs[[<span class="dv">4</span>]])</span>
+<span id="cb13-169"><a href="#cb13-169" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-170"><a href="#cb13-170" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb13-171"><a href="#cb13-171" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-172"><a href="#cb13-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-173"><a href="#cb13-173" aria-hidden="true" tabindex="-1"></a>State and county boundaries come from tigris's cartographic boundary files, loaded once when the app starts.</span>
+<span id="cb13-174"><a href="#cb13-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-175"><a href="#cb13-175" aria-hidden="true" tabindex="-1"></a><span class="fu">## Picking variables from thousands</span></span>
+<span id="cb13-176"><a href="#cb13-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-177"><a href="#cb13-177" aria-hidden="true" tabindex="-1"></a>The ACS publishes thousands of variables each year, which rules out a dropdown. The picker is a modal dialog holding a searchable, paged data table of the variable list. You can search by code, label or concept, select several rows, and confirm:</span>
+<span id="cb13-178"><a href="#cb13-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-179"><a href="#cb13-179" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
+<span id="cb13-180"><a href="#cb13-180" aria-hidden="true" tabindex="-1"></a>var_modal_acs <span class="ot">&lt;-</span> <span class="fu">modalDialog</span>(</span>
+<span id="cb13-181"><a href="#cb13-181" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="fu">h4</span>(<span class="st">"Select Variable(s) from the List"</span>),</span>
+<span id="cb13-182"><a href="#cb13-182" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DTOutput</span>(<span class="st">"var_table_acs"</span>),</span>
+<span id="cb13-183"><a href="#cb13-183" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="st">"l"</span>,</span>
+<span id="cb13-184"><a href="#cb13-184" aria-hidden="true" tabindex="-1"></a>  <span class="at">easyClose =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb13-185"><a href="#cb13-185" aria-hidden="true" tabindex="-1"></a>  <span class="at">footer =</span> <span class="fu">actionButton</span>(<span class="st">"selectVarButton_acs"</span>, <span class="st">"Select Variable(s)"</span>)</span>
+<span id="cb13-186"><a href="#cb13-186" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-187"><a href="#cb13-187" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-188"><a href="#cb13-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-189"><a href="#cb13-189" aria-hidden="true" tabindex="-1"></a>The selected codes go into a <span class="in">`reactiveVal()`</span>, which the data request reads when **Submit** is pressed. Keeping the list in a modal keeps the main screen to the controls, the map and the results.</span>
+<span id="cb13-190"><a href="#cb13-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-191"><a href="#cb13-191" aria-hidden="true" tabindex="-1"></a><span class="fu">## Getting data out</span></span>
+<span id="cb13-192"><a href="#cb13-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-193"><a href="#cb13-193" aria-hidden="true" tabindex="-1"></a><span class="fu">### CSV or shapefile</span></span>
+<span id="cb13-194"><a href="#cb13-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-195"><a href="#cb13-195" aria-hidden="true" tabindex="-1"></a>Users can export data in two formats depending on their needs:</span>
+<span id="cb13-196"><a href="#cb13-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-197"><a href="#cb13-197" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**CSV files** for tabular analysis</span>
+<span id="cb13-198"><a href="#cb13-198" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Shapefiles (zipped)** for GIS applications</span>
+<span id="cb13-199"><a href="#cb13-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-200"><a href="#cb13-200" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
+<span id="cb13-201"><a href="#cb13-201" aria-hidden="true" tabindex="-1"></a>output<span class="sc">$</span>download_acs <span class="ot">&lt;-</span> <span class="fu">downloadHandler</span>(</span>
+<span id="cb13-202"><a href="#cb13-202" aria-hidden="true" tabindex="-1"></a>  <span class="at">filename =</span> <span class="cf">function</span>() {</span>
+<span id="cb13-203"><a href="#cb13-203" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (input<span class="sc">$</span>geometry_acs) {</span>
+<span id="cb13-204"><a href="#cb13-204" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(<span class="st">"acs_data_"</span>, input<span class="sc">$</span>state_acs, <span class="st">"_"</span>, input<span class="sc">$</span>year_acs, <span class="st">".zip"</span>)</span>
+<span id="cb13-205"><a href="#cb13-205" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb13-206"><a href="#cb13-206" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(<span class="st">"acs_data_"</span>, input<span class="sc">$</span>state_acs, <span class="st">"_"</span>, input<span class="sc">$</span>year_acs, <span class="st">".csv"</span>)</span>
+<span id="cb13-207"><a href="#cb13-207" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb13-208"><a href="#cb13-208" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb13-209"><a href="#cb13-209" aria-hidden="true" tabindex="-1"></a>  <span class="at">content =</span> <span class="cf">function</span>(file) {</span>
+<span id="cb13-210"><a href="#cb13-210" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (input<span class="sc">$</span>geometry_acs) {</span>
+<span id="cb13-211"><a href="#cb13-211" aria-hidden="true" tabindex="-1"></a>      <span class="fu">write_sf_zip</span>(<span class="fu">data_acs</span>(), file, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-212"><a href="#cb13-212" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb13-213"><a href="#cb13-213" aria-hidden="true" tabindex="-1"></a>      readr<span class="sc">::</span><span class="fu">write_csv</span>(<span class="fu">data_acs</span>() <span class="sc">|&gt;</span> <span class="fu">st_drop_geometry</span>(), file)</span>
+<span id="cb13-214"><a href="#cb13-214" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb13-215"><a href="#cb13-215" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-216"><a href="#cb13-216" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-217"><a href="#cb13-217" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-218"><a href="#cb13-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-219"><a href="#cb13-219" aria-hidden="true" tabindex="-1"></a><span class="fu">### Zipping a shapefile</span></span>
+<span id="cb13-220"><a href="#cb13-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-221"><a href="#cb13-221" aria-hidden="true" tabindex="-1"></a>A shapefile is really several files (<span class="in">`.shp`</span>, <span class="in">`.shx`</span>, <span class="in">`.dbf`</span>, <span class="in">`.prj`</span> and so on), and a browser download has to be one file. <span class="in">`sf`</span> writes the parts but does not zip them, so a small helper writes them to a temporary directory and zips the lot:</span>
 <span id="cb13-222"><a href="#cb13-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-223"><a href="#cb13-223" aria-hidden="true" tabindex="-1"></a>This approach allows users to browse thousands of variables efficiently while maintaining a clean main interface.</span>
-<span id="cb13-224"><a href="#cb13-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-225"><a href="#cb13-225" aria-hidden="true" tabindex="-1"></a><span class="fu">### Responsive Geographic Selection</span></span>
-<span id="cb13-226"><a href="#cb13-226" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-227"><a href="#cb13-227" aria-hidden="true" tabindex="-1"></a>The cascading geographic selection (State → County → Geographic Level) follows familiar patterns while enforcing data availability constraints.</span>
-<span id="cb13-228"><a href="#cb13-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-229"><a href="#cb13-229" aria-hidden="true" tabindex="-1"></a><span class="fu">### Progress Feedback</span></span>
-<span id="cb13-230"><a href="#cb13-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-231"><a href="#cb13-231" aria-hidden="true" tabindex="-1"></a>API calls can take several seconds, so the interface provides clear feedback through action buttons and conditional panels that appear after data is loaded.</span>
-<span id="cb13-232"><a href="#cb13-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-233"><a href="#cb13-233" aria-hidden="true" tabindex="-1"></a><span class="fu">## Performance Optimizations</span></span>
-<span id="cb13-234"><a href="#cb13-234" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-235"><a href="#cb13-235" aria-hidden="true" tabindex="-1"></a><span class="fu">### Caching Strategy</span></span>
-<span id="cb13-236"><a href="#cb13-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-237"><a href="#cb13-237" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
-<span id="cb13-238"><a href="#cb13-238" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tigris_use_cache =</span> <span class="cn">TRUE</span>)  <span class="co"># Geographic boundaries</span></span>
-<span id="cb13-239"><a href="#cb13-239" aria-hidden="true" tabindex="-1"></a><span class="fu">load_variables</span>(..., <span class="at">cache =</span> <span class="cn">TRUE</span>) <span class="co"># Variable metadata</span></span>
-<span id="cb13-240"><a href="#cb13-240" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-223"><a href="#cb13-223" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
+<span id="cb13-224"><a href="#cb13-224" aria-hidden="true" tabindex="-1"></a>write_sf_zip <span class="ot">&lt;-</span> <span class="cf">function</span>(obj, zipfile, <span class="at">overwrite =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb13-225"><a href="#cb13-225" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create temporary directory for shapefile components</span></span>
+<span id="cb13-226"><a href="#cb13-226" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> <span class="fu">tempfile</span>()</span>
+<span id="cb13-227"><a href="#cb13-227" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(tmp)</span>
+<span id="cb13-228"><a href="#cb13-228" aria-hidden="true" tabindex="-1"></a>  <span class="fu">on.exit</span>(<span class="fu">unlink</span>(tmp, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">force =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb13-229"><a href="#cb13-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-230"><a href="#cb13-230" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Write shapefile and zip all components</span></span>
+<span id="cb13-231"><a href="#cb13-231" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">write_sf</span>(obj, <span class="fu">file.path</span>(tmp, shp_name), <span class="at">delete_layer =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-232"><a href="#cb13-232" aria-hidden="true" tabindex="-1"></a>  withr<span class="sc">::</span><span class="fu">with_dir</span>(tmp, <span class="fu">zip</span>(tmp_zip, <span class="fu">list.files</span>()))</span>
+<span id="cb13-233"><a href="#cb13-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-234"><a href="#cb13-234" aria-hidden="true" tabindex="-1"></a>  <span class="fu">file.copy</span>(<span class="fu">file.path</span>(tmp, tmp_zip), zipfile, <span class="at">overwrite =</span> overwrite)</span>
+<span id="cb13-235"><a href="#cb13-235" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-236"><a href="#cb13-236" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-237"><a href="#cb13-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-238"><a href="#cb13-238" aria-hidden="true" tabindex="-1"></a><span class="in">`on.exit()`</span> removes the temporary directory even if writing fails partway through.</span>
+<span id="cb13-239"><a href="#cb13-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-240"><a href="#cb13-240" aria-hidden="true" tabindex="-1"></a><span class="fu">### Dropping the margins of error</span></span>
 <span id="cb13-241"><a href="#cb13-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-242"><a href="#cb13-242" aria-hidden="true" tabindex="-1"></a>Caching is enabled for static data like geographic boundaries and variable definitions, significantly reducing load times for repeat users.</span>
+<span id="cb13-242"><a href="#cb13-242" aria-hidden="true" tabindex="-1"></a>ACS estimates come with margins of error, and in wide format every variable becomes two columns, <span class="in">`...E`</span> and <span class="in">`...M`</span>. For a quick export that doubles the width of the table, so in a follow-up commit I removed the margin columns and stripped the <span class="in">`E`</span> suffix from the estimates:</span>
 <span id="cb13-243"><a href="#cb13-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-244"><a href="#cb13-244" aria-hidden="true" tabindex="-1"></a><span class="fu">### Data Processing Efficiency</span></span>
-<span id="cb13-245"><a href="#cb13-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-246"><a href="#cb13-246" aria-hidden="true" tabindex="-1"></a>For ACS data, margin of error columns are automatically removed to focus on estimates:</span>
-<span id="cb13-247"><a href="#cb13-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-248"><a href="#cb13-248" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
-<span id="cb13-249"><a href="#cb13-249" aria-hidden="true" tabindex="-1"></a>result_acs <span class="ot">&lt;-</span> result_acs <span class="sc">|&gt;</span></span>
-<span id="cb13-250"><a href="#cb13-250" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">matches</span>(<span class="st">"M$"</span>)) <span class="sc">|&gt;</span>    <span class="co"># Remove margin columns</span></span>
-<span id="cb13-251"><a href="#cb13-251" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename_all</span>(<span class="sc">~</span> <span class="fu">sub</span>(<span class="st">"E$"</span>, <span class="st">""</span>, .)) <span class="co"># Clean estimate column names</span></span>
-<span id="cb13-252"><a href="#cb13-252" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-244"><a href="#cb13-244" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
+<span id="cb13-245"><a href="#cb13-245" aria-hidden="true" tabindex="-1"></a>result_acs <span class="ot">&lt;-</span> result_acs <span class="sc">|&gt;</span></span>
+<span id="cb13-246"><a href="#cb13-246" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">matches</span>(<span class="st">"M$"</span>)) <span class="sc">|&gt;</span>    <span class="co"># Remove margin columns</span></span>
+<span id="cb13-247"><a href="#cb13-247" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename_all</span>(<span class="sc">~</span> <span class="fu">sub</span>(<span class="st">"E$"</span>, <span class="st">""</span>, .)) <span class="co"># Clean estimate column names</span></span>
+<span id="cb13-248"><a href="#cb13-248" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-249"><a href="#cb13-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-250"><a href="#cb13-250" aria-hidden="true" tabindex="-1"></a>This is also a trade-off, not a free win: margins of error matter for small geographies like block groups, and anyone using the estimates for analysis should go back to tidycensus for them.</span>
+<span id="cb13-251"><a href="#cb13-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-252"><a href="#cb13-252" aria-hidden="true" tabindex="-1"></a><span class="fu">## Small decisions that helped</span></span>
 <span id="cb13-253"><a href="#cb13-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-254"><a href="#cb13-254" aria-hidden="true" tabindex="-1"></a><span class="fu">## Deployment Considerations</span></span>
+<span id="cb13-254"><a href="#cb13-254" aria-hidden="true" tabindex="-1"></a><span class="fu">### Caching</span></span>
 <span id="cb13-255"><a href="#cb13-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-256"><a href="#cb13-256" aria-hidden="true" tabindex="-1"></a><span class="fu">### API Key Management</span></span>
-<span id="cb13-257"><a href="#cb13-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-258"><a href="#cb13-258" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
-<span id="cb13-259"><a href="#cb13-259" aria-hidden="true" tabindex="-1"></a><span class="fu">## A Census API key is required</span></span>
-<span id="cb13-260"><a href="#cb13-260" aria-hidden="true" tabindex="-1"></a>Request a free key from the <span class="co">[</span><span class="ot">Census Bureau</span><span class="co">](https://www.census.gov/developers/)</span> and enter it in the app. It is never stored in the source code.</span>
-<span id="cb13-261"><a href="#cb13-261" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-256"><a href="#cb13-256" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
+<span id="cb13-257"><a href="#cb13-257" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">tigris_use_cache =</span> <span class="cn">TRUE</span>)  <span class="co"># Geographic boundaries</span></span>
+<span id="cb13-258"><a href="#cb13-258" aria-hidden="true" tabindex="-1"></a><span class="fu">load_variables</span>(..., <span class="at">cache =</span> <span class="cn">TRUE</span>) <span class="co"># Variable metadata</span></span>
+<span id="cb13-259"><a href="#cb13-259" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-260"><a href="#cb13-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-261"><a href="#cb13-261" aria-hidden="true" tabindex="-1"></a>Boundaries and variable lists rarely change, so both are cached on disk. lehdr's downloads are cached as well (<span class="in">`use_cache = TRUE`</span>). Repeat requests skip most of the waiting.</span>
 <span id="cb13-262"><a href="#cb13-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-263"><a href="#cb13-263" aria-hidden="true" tabindex="-1"></a>The application requires Census API keys but handles them securely through user input rather than hardcoding. This approach ensures:</span>
+<span id="cb13-263"><a href="#cb13-263" aria-hidden="true" tabindex="-1"></a><span class="fu">### API keys</span></span>
 <span id="cb13-264"><a href="#cb13-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-265"><a href="#cb13-265" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>No sensitive credentials in source code</span>
-<span id="cb13-266"><a href="#cb13-266" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Users maintain control over their API usage</span>
-<span id="cb13-267"><a href="#cb13-267" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Easy deployment across different environments</span>
-<span id="cb13-268"><a href="#cb13-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-269"><a href="#cb13-269" aria-hidden="true" tabindex="-1"></a><span class="fu">### Error Handling</span></span>
-<span id="cb13-270"><a href="#cb13-270" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-271"><a href="#cb13-271" aria-hidden="true" tabindex="-1"></a>Robust error handling prevents crashes when API calls fail or users make invalid selections:</span>
-<span id="cb13-272"><a href="#cb13-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-273"><a href="#cb13-273" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
-<span id="cb13-274"><a href="#cb13-274" aria-hidden="true" tabindex="-1"></a><span class="fu">req</span>(input<span class="sc">$</span>api_key_acs, input<span class="sc">$</span>year_acs, input<span class="sc">$</span>state_acs, input<span class="sc">$</span>county_acs, input<span class="sc">$</span>level_acs)</span>
-<span id="cb13-275"><a href="#cb13-275" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-276"><a href="#cb13-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-277"><a href="#cb13-277" aria-hidden="true" tabindex="-1"></a>The <span class="in">`req()`</span> function ensures all required inputs are available before processing.</span>
-<span id="cb13-278"><a href="#cb13-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-279"><a href="#cb13-279" aria-hidden="true" tabindex="-1"></a><span class="fu">## Future Enhancements</span></span>
-<span id="cb13-280"><a href="#cb13-280" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-281"><a href="#cb13-281" aria-hidden="true" tabindex="-1"></a>Several features are planned for future releases:</span>
-<span id="cb13-282"><a href="#cb13-282" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-283"><a href="#cb13-283" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Data Visualization**: Built-in charts and maps with Census data overlays</span>
-<span id="cb13-284"><a href="#cb13-284" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Comparison Tools**: Side-by-side analysis across years or geographies\</span>
-<span id="cb13-285"><a href="#cb13-285" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Custom Geography**: Support for user-uploaded boundary files</span>
-<span id="cb13-286"><a href="#cb13-286" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Batch Processing**: Multiple state/year combinations in single requests</span>
-<span id="cb13-287"><a href="#cb13-287" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**API Integration**: Direct connection to external GIS platforms</span>
-<span id="cb13-288"><a href="#cb13-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-289"><a href="#cb13-289" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conclusion</span></span>
-<span id="cb13-290"><a href="#cb13-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-291"><a href="#cb13-291" aria-hidden="true" tabindex="-1"></a>This Census data explorer demonstrates the power of R Shiny for creating specialized data access tools. By combining multiple Census APIs into a single interface, it significantly reduces the technical barrier for accessing demographic and employment data.</span>
-<span id="cb13-292"><a href="#cb13-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-293"><a href="#cb13-293" aria-hidden="true" tabindex="-1"></a>The modular architecture and attention to user experience make it a valuable tool for researchers, planners, and analysts who regularly work with Census data. The open-source approach ensures continued development and community contributions.</span>
-<span id="cb13-294"><a href="#cb13-294" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-295"><a href="#cb13-295" aria-hidden="true" tabindex="-1"></a>For transportation planners specifically, having easy access to demographic characteristics, employment patterns, and commuting flows in a single application streamlines the data gathering phase of project development, allowing more time for analysis and decision-making.</span>
+<span id="cb13-265"><a href="#cb13-265" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb13-266"><a href="#cb13-266" aria-hidden="true" tabindex="-1"></a><span class="fu">## A Census API key is required</span></span>
+<span id="cb13-267"><a href="#cb13-267" aria-hidden="true" tabindex="-1"></a>Request a free key from the <span class="co">[</span><span class="ot">Census Bureau</span><span class="co">](https://www.census.gov/developers/)</span> and enter it in the app. It is never stored in the source code.</span>
+<span id="cb13-268"><a href="#cb13-268" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-269"><a href="#cb13-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-270"><a href="#cb13-270" aria-hidden="true" tabindex="-1"></a>The key is typed into the app and passed straight to tidycensus, rather than hardcoded or installed in a user's <span class="in">`.Renviron`</span>. That keeps credentials out of the source code, leaves each user in control of their own API usage, and lets the same file run anywhere.</span>
+<span id="cb13-271"><a href="#cb13-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-272"><a href="#cb13-272" aria-hidden="true" tabindex="-1"></a><span class="fu">### Waiting for complete input</span></span>
+<span id="cb13-273"><a href="#cb13-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-274"><a href="#cb13-274" aria-hidden="true" tabindex="-1"></a>API calls can take several seconds, so requests run only when **Submit** is pressed (<span class="in">`eventReactive()`</span>), and only once every required input is present:</span>
+<span id="cb13-275"><a href="#cb13-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-276"><a href="#cb13-276" aria-hidden="true" tabindex="-1"></a><span class="in">``` r</span></span>
+<span id="cb13-277"><a href="#cb13-277" aria-hidden="true" tabindex="-1"></a><span class="fu">req</span>(input<span class="sc">$</span>api_key_acs, input<span class="sc">$</span>year_acs, input<span class="sc">$</span>state_acs, input<span class="sc">$</span>county_acs, input<span class="sc">$</span>level_acs)</span>
+<span id="cb13-278"><a href="#cb13-278" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-279"><a href="#cb13-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-280"><a href="#cb13-280" aria-hidden="true" tabindex="-1"></a>The download button appears only after the first request.</span>
+<span id="cb13-281"><a href="#cb13-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-282"><a href="#cb13-282" aria-hidden="true" tabindex="-1"></a><span class="fu">## Scope</span></span>
+<span id="cb13-283"><a href="#cb13-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-284"><a href="#cb13-284" aria-hidden="true" tabindex="-1"></a>LEHD requests cover a whole state and download as CSV, while ACS and Decennial requests can also download as shapefiles. The app runs locally: clone the repository, open <span class="in">`app.R`</span> and run it.</span>
+<span id="cb13-285"><a href="#cb13-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-286"><a href="#cb13-286" aria-hidden="true" tabindex="-1"></a><span class="fu">## Ideas for later</span></span>
+<span id="cb13-287"><a href="#cb13-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-288"><a href="#cb13-288" aria-hidden="true" tabindex="-1"></a>Several features would make the app more useful:</span>
+<span id="cb13-289"><a href="#cb13-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-290"><a href="#cb13-290" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Data visualization**: built-in charts and maps of the returned data, not just the extent of the request</span>
+<span id="cb13-291"><a href="#cb13-291" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Comparison tools**: side-by-side analysis across years or geographies</span>
+<span id="cb13-292"><a href="#cb13-292" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Custom geography**: support for user-uploaded boundary files</span>
+<span id="cb13-293"><a href="#cb13-293" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Batch processing**: several state and year combinations in a single request</span>
+<span id="cb13-294"><a href="#cb13-294" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**API integration**: direct connection to external GIS platforms</span>
+<span id="cb13-295"><a href="#cb13-295" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Shiny modules**: one module shared by the three tabs, so a change lands in all of them at once</span>
 <span id="cb13-296"><a href="#cb13-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-297"><a href="#cb13-297" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb13-297"><a href="#cb13-297" aria-hidden="true" tabindex="-1"></a><span class="fu">## Wrapping up</span></span>
 <span id="cb13-298"><a href="#cb13-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-299"><a href="#cb13-299" aria-hidden="true" tabindex="-1"></a>*Want to contribute or suggest improvements? Visit the project repository at:* <span class="ot">&lt;https://github.com/ar-puuk/uscensus-dashboard&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb13-299"><a href="#cb13-299" aria-hidden="true" tabindex="-1"></a>The app does one job: it turns the first hour of a Census data task (finding variable codes, writing the request, converting the output) into a few clicks. For transportation planning work in particular, having demographic characteristics, employment and commuting flows behind the same interface shortens the data-gathering step and leaves more time for analysis.</span>
+<span id="cb13-300"><a href="#cb13-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-301"><a href="#cb13-301" aria-hidden="true" tabindex="-1"></a>The code is on <span class="co">[</span><span class="ot">GitHub</span><span class="co">](https://github.com/ar-puuk/uscensus-dashboard)</span> under the MIT license. Suggestions and contributions are welcome.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
@@ -1784,6 +1778,38 @@ Explorer.”</span> May 11. <a href="https://ar-puuk.github.io/posts/uscensus-da
     </div>
   </div>
 </footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

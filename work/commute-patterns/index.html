@@ -52,9 +52,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8a5672f0138fe174ac385a1e2bdc95c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-4f550554e58d59d67a9ae604d350339e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-8a5672f0138fe174ac385a1e2bdc95c4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-490bc4386d2044dbe0390ac645d7e280.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-f69e9b9804d5144d90bbc1b539982d35.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-490bc4386d2044dbe0390ac645d7e280.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
@@ -378,8 +378,8 @@ ul.task-list li input[type="checkbox"] {
             <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <div id="quarto-announcement" data-announcement-id="d427bc2c621f9106df6eeacffb0a77cd" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p><strong>New:</strong> <a href="../../work/community-profiles/" class="no-external" target="_self">Demographic Profiles</a>, a zero-backend, map-first dashboard of Census and economic indicators for Utah.</p>
+  <div id="quarto-announcement" data-announcement-id="e50c892fd6bff347bf92501715c38d0d" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>New:</strong> <a href="../../posts/basemapper/" class="no-external" target="_self">basemapper</a>, sharp vector basemaps for ggplot2, tmap, matplotlib and plotnine figures, rendered in R and Python without a browser.</p>
 </div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
@@ -433,7 +433,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">November 13, 2026</p>
+        <p class="date-modified">November 23, 2026</p>
       </div>
     </div>
       
@@ -471,20 +471,44 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>The Utah Commuter Flow Patterns map, showing inflow and outflow for Salt Lake City in 2023.</figcaption>
 </figure>
 </div>
+<section id="why-it-exists" class="level2">
+<h2 class="anchored" data-anchor-id="why-it-exists">Why it exists</h2>
+<p>Where people live and where they work shapes almost every transportation question a regional council deals with: which corridors carry the most commuters, which cities export workers and which import them, and how far people travel to get to a job. As the map’s own introduction puts it, when roads and transit get more expensive to build, a better balance between housing and jobs is one way to reduce the need for long commutes, and that starts with seeing where commutes go today.</p>
+<p>WFRC’s earlier Regional Commuter Flows map showed this, and I didn’t create it. My job was to rebuild it on open-source tools, as a map that runs entirely in the browser, with no server, no API key and no ArcGIS dependency, and that anyone can host as a set of static files.</p>
+<p>The data is the Census Bureau’s LEHD Origin-Destination Employment Statistics (LODES). It records, for every pair of Census blocks, how many people live in one and work in the other, built from employer wage records. A flow from Provo to Salt Lake City means workers live in Provo and their employer reports their workplace in Salt Lake City; it describes home and work locations, not daily routes, and the app says so.</p>
+</section>
 <section id="what-it-does" class="level2">
 <h2 class="anchored" data-anchor-id="what-it-does">What it does</h2>
-<p>Pick a city, county, Utah House district or Utah Senate district and see where its residents work, or where its workers live, as arcs scaled by commuter volume.</p>
+<p>Pick a city, county, Utah House district or Utah Senate district and see where its residents work, or where its workers live, as flow lines scaled by commuter volume. Zones on the map can be shown as cities or counties, and clicking a zone selects it.</p>
 <ul>
-<li>22 years of LEHD LODES data (2002 to 2023), switchable from the header.</li>
-<li>Six linked chart panels: commute balance, a flow diagram, means of transportation and travel time to work (ACS 5-year), commute distance, and industry mix. Every chart exports to PNG or CSV.</li>
+<li><strong>LODES data from 2002 to the latest release</strong>, switchable from the header.</li>
+<li><strong>Six linked chart panels:</strong> commute balance (top destinations and origins side by side, with a trend over time), a flow diagram, means of transportation and travel time to work (ACS 5-year), commute distance, and industry mix. Every chart exports to PNG or CSV.</li>
+<li><strong>Statewide coverage:</strong> every county, city and legislative district in Utah, plus cities and counties within about 50 miles of the border in the six neighbouring states, which appear as points so cross-border commutes show up in the totals and charts.</li>
+<li><strong>Planning geographies:</strong> a Planning Boundaries mode, built from traffic analysis zones, alongside the civic boundaries.</li>
+<li><strong>Shareable views:</strong> the area, direction and zone level are kept in the URL.</li>
 <li>Light and dark themes that carry through the map, charts and controls.</li>
 </ul>
+</section>
+<section id="how-its-built" class="level2">
+<h2 class="anchored" data-anchor-id="how-its-built">How it’s built</h2>
+<p>A Python pipeline does the heavy work once. It downloads the block-level LODES files for Utah and the Census geography crosswalk, labels blocks outside any city as “<em>County</em> Unincorporated”, assigns blocks to legislative districts by overlaying block centroids on the Census boundaries, and sums block pairs into city-to-city, county-to-county and district flows. Each year becomes a small set of Parquet files with commuter counts and their age, earnings and industry breakdowns. The processed files are committed to the repository.</p>
+<p>The front end is plain JavaScript built with Vite. MapLibre draws the map on Carto vector tiles, Flowmap.gl draws the flows, and DuckDB-WASM queries the Parquet files in the browser whenever the area, year or direction changes. The charts are custom SVG and HTML rather than a charting library, which made it straightforward to match the map’s colours exactly. Every push builds the app twice, once for WFRC’s own web server and once for a GitHub Pages mirror.</p>
+</section>
+<section id="interesting-problems" class="level2">
+<h2 class="anchored" data-anchor-id="interesting-problems">Interesting problems</h2>
+<p><strong>Matching the published totals.</strong> Early inflow and outflow totals didn’t agree with the Census Bureau’s own OnTheMap tool. Two things were missing: workers who live outside Utah but work in the state, which LODES publishes in a separate file, and flows between Wasatch Front counties and the rest of Utah, which a too-strict filter dropped. With both added, and with people who live and work in the same place counted separately from the cross-boundary flows, the totals reconcile.</p>
+<p><strong>Commute distance that holds at every level.</strong> Measuring distance between city centroids gives one number for every commute between two cities, however large they are. Instead, the pipeline computes the straight-line distance for every block pair before aggregating, and stores the sum of workers times miles alongside the worker count. Summing those two columns gives an exact weighted mean distance for any area, and the same pass fills the distance bands for the commute length chart.</p>
+<p><strong>Putting the point in the right place.</strong> Flow lines start and end at a point inside each area. Geometric centroids can fall outside an oddly shaped city, so the pipeline uses the Census Bureau’s internal points, which are guaranteed to be inside. One city still needed a hand override: Hooper’s Census boundary includes a large arm of the Great Salt Lake, which pulled its point about 15 miles west.</p>
+<p><strong>Places the Census doesn’t have yet.</strong> Ogden Valley City incorporated after the Census place geography that LODES uses, while the three census-designated places it replaced (Eden, Liberty and Wolf Creek) are still in the data. A small config file now adds and removes places on top of the Census geography. The change is applied to the crosswalk without dropping a single block, and the pipeline stops if an added boundary would take blocks from another real place, or if the names in the flows, metadata and boundaries disagree. Hill Air Force Base is drawn the same way as an information-only area, with a note that federal and military jobs are largely missing from LODES.</p>
+<p><strong>Travel mode and time for areas the Census doesn’t publish.</strong> The ACS publishes commute mode and travel time for places and counties only. For everything else (unincorporated areas, districts, planning areas, new places) the pipeline builds an estimate from block groups or tracts, weighted by how many of each unit’s resident workers live inside the area, and carries a margin of error with it. Estimates are shown, flagged as low reliability, or suppressed depending on how large the margin is relative to the estimate. The cutoffs come from a back-test that re-derives every place the Census does publish and compares the two. The same work fixed an older undercount in the district figures before 2020, where 2020 tract IDs had been matched against 2010 tracts.</p>
+<p><strong>Clicks that landed twice.</strong> A flow line drawn by deck.gl sits on top of city polygons drawn by MapLibre, and a click could reach both. Which handler won depended on timing, so the sidebar could show one city’s numbers under another city’s name. The fix replaced the timing check with a direct deck.gl pick at the click point, so the flow line always wins.</p>
+<p><strong>A year switch that silently did nothing.</strong> Switching years re-registered a file under the same name in DuckDB-WASM, which failed without an error, and the map stayed on the previous year. Each year’s files are now registered under their own names.</p>
 </section>
 <section id="what-i-worked-on" class="level2">
 <h2 class="anchored" data-anchor-id="what-i-worked-on">What I worked on</h2>
 <ul>
 <li>Rebuilding the application as a <strong>fully client-side</strong> web app: DuckDB-WASM queries pre-processed Parquet files directly in the browser, so there is no server, no API key and no ArcGIS dependency.</li>
-<li>The data processing that prepares the LODES and ACS tables for the app.</li>
+<li>The data processing that prepares the LODES and ACS tables for the app, including the statewide and cross-border expansion, the planning boundaries, the custom places and the derived ACS estimates.</li>
 <li>The map, chart panels, theming and export features.</li>
 </ul>
 <p>My role: developer. I authored all the commits in the repository.</p>
@@ -494,6 +518,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="app-links">
 <p><a href="https://wfrc.utah.gov/maps/regional-commuter-flows/" class="btn btn-primary" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square" aria-label="arrow-up-right-from-square"></i> Open app</a> <a href="https://github.com/WFRCAnalytics/APP-WFRC-Commute-Patterns" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
 </div>
+<p>The map’s About panel links to WFRC’s companion article, <a href="https://wfrc.utah.gov/what-commuting-patterns-reveal-about-wasatch-front-communities/">what commuting patterns reveal about Wasatch Front communities</a>.</p>
 <p>A companion tool, <a href="../../work/commute-explorer/index.html">Commute Flow Explorer</a>, covers free-placement analysis instead of fixed jurisdictions.</p>
 
 

@@ -2,6 +2,7 @@
   {
     "listing": "/projects.html",
     "items": [
+      "/posts/basemapper/index.html",
       "/work/community-profiles/index.html",
       "/work/proposal-scoresheet/index.html",
       "/work/synthetic-data-generator/index.html",

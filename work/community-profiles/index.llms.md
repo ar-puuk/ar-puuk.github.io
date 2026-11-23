@@ -23,14 +23,48 @@ Facts and figures for Utah, its counties and its cities and towns, all in one da
 - **Honest numbers:** every value carries a method label (published for exactly that area, or aggregated from whole Census blocks), so it is clear how a figure was produced.
 - A **PDF report** (a designed profile or a poster) generated in the browser for any area.
 
+### A profile is always “as of” one year
+
+The screens are built around a single idea: pick an area, pick a year, and everything on screen describes that area in that year. The search box in the navbar is the area picker. The compare button adds a second area, suggesting areas of the same kind first (another county for a county, another city for a city) and then the state, so Salt Lake City against Salt Lake County, or a county against Utah, are one click away. The year slider has a Play button; moving it redraws the population pyramid and the distributions, and rings that year on every trend chart.
+
+Each screen is laid out to fit on one desktop screen without scrolling, and the end-to-end tests check that it does. Every chart has a table view and a CSV download, which is also the accessible form of the data, and the tests run axe accessibility checks in light and dark mode.
+
+### A report you can print
+
+The PDF report button builds a document from the view on screen: a cover with the methods, curated charts from every tab, tract maps of the area, the commute flow map, the indicator table, and a link and QR code back to the same dashboard view. The other format is a 24 by 36 inch poster of the key figures. Both are drawn as vector graphics with react-pdf, in the browser, from the same Parquet files and queries as the dashboard. The PDF code loads only on the first click.
+
+## How it’s built
+
+There are two halves, and they meet at a folder of committed Parquet files.
+
+**The pipeline** is a Python package run with `uv`, in stages: validate every configured ACS table against every vintage, download whole ACS tables for the state, counties, places and tracts, then population estimates, LODES jobs, workers and origin-destination flows, and QCEW employment and wages. A QA stage checks that county jobs add up to the state’s and compares LODES with QCEW, and an export stage writes simplified GeoJSON for the maps. Spatial work runs in DuckDB with its spatial extension. Output is deterministic, and a stage rewrites a tracked file only when its bytes change, so with the downloads cached the whole data folder rebuilds byte for byte and a rerun leaves no git diff.
+
+**The front end** is Svelte 5 and TypeScript, built with Vite. DuckDB-WASM opens the Parquet files over HTTP and runs every query in the browser; it is set to work even on static servers that don’t support byte-range requests. Charts are Observable Plot, maps are MapLibre on an OpenFreeMap basemap, and the commute flow map is a Flowmap.gl layer that loads only when that screen opens.
+
+### Getting the numbers right
+
+The part I spent the most care on is not the interface but whether each number means what its label says. Before the release I ran a full audit (recorded in the repository) and fixed what it found. A few examples:
+
+- The language card counted group totals together with their own sub-rows, which roughly doubled the Spanish share.
+- LODES reports educational attainment only for workers aged 30 and older, but the shares were divided by all jobs. Breakdowns LODES doesn’t publish for Utah, such as firm age and size, read as 0% bars; they now show as not published.
+- A filter on the QCEW state file matched no rows, leaving the Utah benchmark blank.
+
+To keep these from coming back, a data-driven test checks every chart and indicator definition against Utah’s real values in every vintage. The source quirks that are in the data as published, such as one Millcreek block that holds thousands of jobs for some years and then doesn’t, are left as they are and documented on the in-app Methods page.
+
+### Where to draw a flow
+
+A flow map needs a point for each area, and the middle of a polygon is often the wrong one. Each area is anchored at the job-weighted centre of its own Census blocks when that lies inside the area, otherwise at a point on its surface. Before this change, the original app’s flows for the whole WFRC region started out in the Tooele desert. Flows to the rest of the state go to a “Rest of Utah” point, placed at the weighted centre of the remaining blocks’ jobs and workers, with its outline drawn dashed so it’s clear what it stands for.
+
 ## What I worked on
 
 Everything in it. I developed the original at WFRC, both halves of it: the Python pipeline that downloads, validates and crosswalks the Census, LODES and QCEW data into committed Parquet files, and the Svelte and TypeScript front end that reads them in the browser with DuckDB-WASM, with MapLibre maps, Observable Plot charts and a Flowmap.gl commute layer. I authored all the commits in that repository.
 
-This fork is mine to maintain. I reworked the geography from the WFRC region and its planning areas to the state, counties and cities and towns of Utah, and gave the app its own name and mark.
+This fork is mine to maintain. I reworked the geography from the WFRC region and its planning areas to the state, counties and cities and towns of Utah, and gave the app its own name and mark. Narrowing the scope removed a whole layer of the pipeline (the block crosswalk and the area aggregation described below); the remaining county, city and tract files were rebuilt from the cached downloads and came out unchanged.
 
 ## The original: WFRC’s Community Profiles
 
 Community Profiles is the WFRC app this one was derived from. It covers the WFRC region, its counties, cities and planning areas (AOG, MPO, RPO and workshop areas). It belongs to WFRC and is unchanged for now. WFRC allowed me to fork it and host this version in my own repository, with some adjustments, as a demographic profile. It will evolve to accommodate more diverse, strategic metrics for planning and regional development, such as population projections, land use characteristics, transit ridership and travel characteristics. Credit for the original, and for the Wasatch Front data work behind it, goes to the agency.
+
+The planning areas are what made the original harder. They don’t follow Census geography, so the Census publishes no figures for them. The pipeline builds them from block groups: a block group that lies partly inside an area is split using Decennial Census counts for each block, by people for tables about people, by occupied homes for tables about households, and by housing units for tables about housing. Medians can’t be added across pieces, so they are interpolated from the allocated income, rent, home value and age brackets, with a margin of error built from the bracket margins and checked against published county figures. Every such value is labelled as a WFRC estimate rather than a Census figure.
 
 [ Community Profiles](https://wfrcanalytics.github.io/APP-Community-Profiles/) [ Its repository](https://github.com/WFRCAnalytics/APP-Community-Profiles) [ WFRC on GitHub](https://github.com/WFRCAnalytics) [ WFRC website](https://wfrc.utah.gov/)

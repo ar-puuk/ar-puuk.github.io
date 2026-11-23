@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pukar Bhandari">
 <meta name="dcterms.date" content="2026-04-12">
-<meta name="description" content="A browser-based viewer for GeoParquet and Parquet files with SQL and map views. It runs on WebAssembly, so the data stays on your computer.">
+<meta name="description" content="A browser-based viewer for GeoParquet and Parquet files with SQL and map views. It runs on DuckDB-WASM, so the data stays on your computer. Here is what it does, and what it took to get geometry from a Parquet file onto a map in the browser.">
 
 <title>Building a Client-Side Geo/Parquet File Viewer – Pukar Bhandari</title>
 <style>
@@ -87,9 +87,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-43d431d6ae33725d0208b2e07b15352c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-0a1ee58fbaa3f5d8041b8bafbf34ceb4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-43d431d6ae33725d0208b2e07b15352c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dd52e5adb6025a2d72185450488676d8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b1919c9cd559971cd531f5718ff5c6da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-dd52e5adb6025a2d72185450488676d8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
@@ -133,14 +133,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../../assets/css/index.css">
 <link rel="stylesheet" href="../../assets/css/app-embed.css">
 <meta property="og:title" content="Building a Client-Side Geo/Parquet File Viewer – Pukar Bhandari">
-<meta property="og:description" content="A browser-based viewer for GeoParquet and Parquet files with SQL and map views. It runs on WebAssembly, so the data stays on your computer.">
+<meta property="og:description" content="A browser-based viewer for GeoParquet and Parquet files with SQL and map views. It runs on DuckDB-WASM, so the data stays on your computer. Here is what it does, and what it took to get geometry from a Parquet file onto a map in the browser.">
 <meta property="og:image" content="https://ar-puuk.github.io/posts/parquet-explorer/parquet_explorer.png">
 <meta property="og:site_name" content="Pukar Bhandari">
 <meta property="og:image:height" content="867">
 <meta property="og:image:width" content="1935">
 <meta property="og:image:alt" content="Parquet Explorer with a column list, a map of points, a data table and a schema panel for a Nodes.parquet file.">
 <meta name="twitter:title" content="Building a Client-Side Geo/Parquet File Viewer – Pukar Bhandari">
-<meta name="twitter:description" content="A browser-based viewer for GeoParquet and Parquet files with SQL and map views. It runs on WebAssembly, so the data stays on your computer.">
+<meta name="twitter:description" content="A browser-based viewer for GeoParquet and Parquet files with SQL and map views. It runs on DuckDB-WASM, so the data stays on your computer. Here is what it does, and what it took to get geometry from a Parquet file onto a map in the browser.">
 <meta name="twitter:image" content="https://ar-puuk.github.io/posts/parquet-explorer/parquet_explorer.png">
 <meta name="twitter:creator" content="@arpuuk">
 <meta name="twitter:site" content="@arpuuk">
@@ -418,8 +418,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <div id="quarto-announcement" data-announcement-id="d427bc2c621f9106df6eeacffb0a77cd" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p><strong>New:</strong> <a href="../../work/community-profiles/" class="no-external" target="_self">Demographic Profiles</a>, a zero-backend, map-first dashboard of Census and economic indicators for Utah.</p>
+  <div id="quarto-announcement" data-announcement-id="e50c892fd6bff347bf92501715c38d0d" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>New:</strong> <a href="../../posts/basemapper/" class="no-external" target="_self">basemapper</a>, sharp vector basemaps for ggplot2, tmap, matplotlib and plotnine figures, rendered in R and Python without a browser.</p>
 </div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
@@ -427,10 +427,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <div class="quarto-title-block"><div><h1 class="title">Building a Client-Side Geo/Parquet File Viewer</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
-            <p class="subtitle lead">Built on webassembly, works in browser, and data never leaves your computer</p>
+            <p class="subtitle lead">Built on WebAssembly, it runs in the browser, and the data never leaves your computer</p>
                   <div>
         <div class="description">
-          A browser-based viewer for GeoParquet and Parquet files with SQL and map views. It runs on WebAssembly, so the data stays on your computer.
+          A browser-based viewer for GeoParquet and Parquet files with SQL and map views. It runs on DuckDB-WASM, so the data stays on your computer. Here is what it does, and what it took to get geometry from a Parquet file onto a map in the browser.
         </div>
       </div>
                           <div class="quarto-categories">
@@ -463,7 +463,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">November 13, 2026</p>
+        <p class="date-modified">November 23, 2026</p>
       </div>
     </div>
       
@@ -473,12 +473,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Section">
-    
+    <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#a-quick-tour" id="toc-a-quick-tour" class="nav-link active" data-scroll-target="#a-quick-tour"><span class="header-section-number">1</span> A quick tour</a></li>
+  <li><a href="#how-it-works" id="toc-how-it-works" class="nav-link" data-scroll-target="#how-it-works"><span class="header-section-number">2</span> How it works</a>
+  <ul class="collapse">
+  <li><a href="#query-first" id="toc-query-first" class="nav-link" data-scroll-target="#query-first">Query first</a></li>
+  <li><a href="#finding-the-geometry" id="toc-finding-the-geometry" class="nav-link" data-scroll-target="#finding-the-geometry">Finding the geometry</a></li>
+  </ul></li>
+  <li><a href="#the-interesting-problems" id="toc-the-interesting-problems" class="nav-link" data-scroll-target="#the-interesting-problems"><span class="header-section-number">3</span> The interesting problems</a>
+  <ul class="collapse">
+  <li><a href="#geometry-comes-in-more-shapes-than-i-expected" id="toc-geometry-comes-in-more-shapes-than-i-expected" class="nav-link" data-scroll-target="#geometry-comes-in-more-shapes-than-i-expected">Geometry comes in more shapes than I expected</a></li>
+  <li><a href="#projected-coordinates" id="toc-projected-coordinates" class="nav-link" data-scroll-target="#projected-coordinates">Projected coordinates</a></li>
+  <li><a href="#stale-bytes-from-the-previous-file" id="toc-stale-bytes-from-the-previous-file" class="nav-link" data-scroll-target="#stale-bytes-from-the-previous-file">Stale bytes from the previous file</a></li>
+  <li><a href="#column-names-that-duckdb-doesnt-accept" id="toc-column-names-that-duckdb-doesnt-accept" class="nav-link" data-scroll-target="#column-names-that-duckdb-doesnt-accept">Column names that DuckDB doesn’t accept</a></li>
+  <li><a href="#explaining-failures" id="toc-explaining-failures" class="nav-link" data-scroll-target="#explaining-failures">Explaining failures</a></li>
+  </ul></li>
+  <li><a href="#limits-and-whats-next" id="toc-limits-and-whats-next" class="nav-link" data-scroll-target="#limits-and-whats-next"><span class="header-section-number">4</span> Limits and what’s next</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/edit/master/posts/parquet-explorer/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></div>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
 <!-- main -->
 <main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content" tabindex="-1">
 
@@ -487,13 +507,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>Want a quick way to preview what is inside your parquet file? This is a browser-based, zero-backend viewer for Parquet and GeoParquet, built on DuckDB-WASM. Nothing is uploaded; everything runs locally in your tab.</p>
-<ul>
-<li><strong>Open it three ways</strong>: drop in a local file, paste an HTTP(S) URL, or paste an <code>s3://</code> URL for a public bucket. DuckDB fetches only the row groups it needs via range requests.</li>
-<li><strong>See the schema first</strong>: column names, types and nullability, plus row count, file size, row groups and (for spatial files) the geometry column, CRS and bounding box, all before any row data loads.</li>
-<li><strong>Query it</strong>: a CodeMirror SQL editor with column autocomplete, or a point-and-click query builder whose generated SQL stays visible and editable.</li>
-<li><strong>Map it</strong>: GeoParquet and spatial files appear on a MapLibre map, synced with the table in both directions.</li>
-</ul>
+<p>Want a quick way to preview what is inside your Parquet file? Parquet Explorer is a browser-based, zero-backend viewer for Parquet and GeoParquet, built on DuckDB-WASM. Nothing is uploaded; everything runs locally in your tab.</p>
+<p>Parquet and GeoParquet are compact, columnar binary formats, which is great for storage and analysis and less great when you just want to know what is in a file: you can’t double-click it and read it. Checking one usually means starting Python or R to print the schema and the first few rows, and plotting the geometry is a few more lines on top. I wanted to drop the file on a page and see its schema, its rows and, if it has geometry, a map. This post covers what the viewer does and the problems I ran into getting there, most of which were about geometry.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -535,11 +550,64 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="app-links">
 <p><a href="https://ar-puuk.github.io/parquet-viewer/" class="btn btn-primary" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square" aria-label="arrow-up-right-from-square"></i> Open app</a> <a href="https://github.com/ar-puuk/parquet-viewer" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
 </div>
-<p>If you work with data and want a quick way to preview the contents of a <code>.parquet</code> file, give it a try. The code is on <a href="https://github.com/ar-puuk/parquet-viewer">GitHub</a> — issues and PRs welcome.</p>
+<section id="a-quick-tour" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="a-quick-tour"><span class="header-section-number">1</span> A quick tour</h2>
+<ul>
+<li><strong>Open it three ways</strong>: drop in a local file, paste an HTTP(S) URL, or paste an <code>s3://</code> URL for a public bucket. DuckDB fetches only the row groups it needs via range requests, so a large remote file doesn’t have to be downloaded in full.</li>
+<li><strong>See the schema first</strong>: column names, types and nullability, plus row count, file size, row groups and (for spatial files) the geometry column, CRS and bounding box, all before any row data loads. Click a column for its min, max, null count and distinct count, sampled from up to 10,000 rows.</li>
+<li><strong>Query it</strong>: a CodeMirror SQL editor with column autocomplete and a short query history, or a point-and-click query builder for select, filter, sort, limit and group-by aggregates, whose generated SQL stays visible and editable. The table of results is virtualized and sortable.</li>
+<li><strong>Map it</strong>: GeoParquet and spatial files appear on a MapLibre map, synced with the table in both directions. Hover or click a row and the feature lights up on the map; click a feature and its row is selected and scrolled into view.</li>
+</ul>
+<p>When a file opens, the viewer runs a default query, <code>SELECT * EXCLUDE (blob_cols) FROM data LIMIT 1000</code>, so there is something to look at right away. The <code>LIMIT</code> in your own SQL decides how many rows are loaded.</p>
+</section>
+<section id="how-it-works" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="how-it-works"><span class="header-section-number">2</span> How it works</h2>
+<p>The app is React, TypeScript and Vite, deployed to GitHub Pages. <a href="https://duckdb.org/docs/api/wasm/overview">DuckDB-WASM</a> does the heavy lifting: the file is registered with DuckDB’s virtual file system, a view called <code>data</code> points at it, and everything you see comes from SQL against that view. Schema, row count and file details come from <code>DESCRIBE</code>, <code>COUNT(*)</code> and DuckDB’s Parquet metadata functions, which only need the file’s footer, so they appear before any rows do. The map is <a href="https://maplibre.org/">MapLibre GL</a> with an OpenFreeMap basemap, the table uses TanStack Virtual, and app state lives in a small Zustand store.</p>
+<section id="query-first" class="level3">
+<h3 class="anchored" data-anchor-id="query-first">Query first</h3>
+<p>The first design was a classic data viewer: a table that paged through the whole file on its own, with the map loading geometry in its own batches. It didn’t hold up. Accumulating rows into one growing array hung the browser on big files, and fetching the geometry column with every page of table rows meant tens of megabytes per request for complex polygons.</p>
+<p>I rewrote it so the SQL panel drives everything. One query runs, its result goes into the store, and both the table and the map read from that same result. The query runner wraps your SQL to add a zero-based <code>__row_id</code>, and the map’s features carry the same id, which is what makes the table-to-map sync a simple lookup rather than a join. Binary columns (WKB geometry and other blobs) are excluded from the table query and shown as <code>[geometry]</code> or <code>[blob]</code>.</p>
+</section>
+<section id="finding-the-geometry" class="level3">
+<h3 class="anchored" data-anchor-id="finding-the-geometry">Finding the geometry</h3>
+<p>Spatial detection has two tiers. A proper GeoParquet file has a <code>geo</code> entry in its key-value metadata, which names the geometry column, its encoding, its CRS and its bounding box; the map can zoom to that box before a single row is read. Plenty of spatial Parquet files don’t have that metadata, so the fallback looks for columns with the usual names (<code>geometry</code>, <code>geom</code>, <code>wkb_geometry</code>, <code>wkt</code>, <code>shape</code>) and works out the encoding from the type: binary is WKB, text is WKT. DuckDB’s spatial extension is loaded only when a spatial file is detected, so plain tables don’t pay for it.</p>
+</section>
+</section>
+<section id="the-interesting-problems" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="the-interesting-problems"><span class="header-section-number">3</span> The interesting problems</h2>
+<section id="geometry-comes-in-more-shapes-than-i-expected" class="level3">
+<h3 class="anchored" data-anchor-id="geometry-comes-in-more-shapes-than-i-expected">Geometry comes in more shapes than I expected</h3>
+<p>WKB and WKT were straightforward: DuckDB’s <code>ST_GeomFromWKB</code> or <code>ST_GeomFromText</code>, then <code>ST_AsGeoJSON</code>, then onto the map. Two other encodings were not.</p>
+<p><strong>GeoArrow structs.</strong> Some files store geometry as native coordinate structs (DuckDB types like <code>POINT_2D</code> and <code>POLYGON_2D</code>) rather than as WKB. DuckDB-WASM’s spatial extension had no cast from those types to <code>GEOMETRY</code>, so the usual functions didn’t apply. One attempt built WKT strings out of the coordinate lists with plain SQL list and string functions, choosing <code>POINT</code>, <code>LINESTRING</code>, <code>POLYGON</code> or <code>MULTIPOLYGON</code> from the nesting depth in the column’s type name. Another converted features through <code>to_json()</code>, which turned out to return null for these types and silently drop every feature. The latest approach selects the raw column and converts the nested <code>{x, y}</code> objects to GeoJSON in JavaScript. The README still lists this encoding as a known limitation: such files are detected, but their features may not render.</p>
+<p><strong>Esri JSON.</strong> Files exported from ArcGIS tools often store the shape column as Esri JSON (<code>{"rings": [...], "spatialReference": {"wkid": 26912}}</code>). Since that is a text column, the viewer took it for WKT and DuckDB rejected it with “Expected geometry type near ‘{’”. The viewer now samples a value to tell Esri JSON from WKT, converts rings, paths, points and x/y pairs to GeoJSON itself, and reads the CRS straight from <code>spatialReference.wkid</code>. One more wrinkle followed a few days later: some tools write these as a Python dictionary’s string form, with single quotes, which <code>JSON.parse</code> refuses. Detection now looks for the keys as text, and parsing normalizes the quotes first.</p>
+</section>
+<section id="projected-coordinates" class="level3">
+<h3 class="anchored" data-anchor-id="projected-coordinates">Projected coordinates</h3>
+<p>MapLibre wants longitude and latitude. A lot of planning data is in a projected system, such as UTM, and without GeoParquet metadata the file may not say which. The viewer samples a few coordinates, and if any have an absolute x over 180 or y over 90 it knows they can’t be degrees. A CRS panel then opens above the map: you can type an EPSG code, or click your study area on a small map to get a list of projections suggested for that location.</p>
+<p>The obvious way to reproject, DuckDB’s <code>ST_Transform</code>, was unreliable in the browser build, so reprojection happens in JavaScript with <a href="https://github.com/proj4js/proj4js">proj4js</a> after DuckDB returns GeoJSON. Until a CRS is set, the viewer deliberately pushes nothing to the map: feeding raw UTM eastings and northings to MapLibre could corrupt the map source so that later, correct data didn’t render either. Getting reprojected features to show up reliably also took fixing two race conditions in the map component, one where a “style loaded” event was awaited after it had already fired, and one where switching between light and dark styles wiped the layers and never refilled them.</p>
+</section>
+<section id="stale-bytes-from-the-previous-file" class="level3">
+<h3 class="anchored" data-anchor-id="stale-bytes-from-the-previous-file">Stale bytes from the previous file</h3>
+<p>One bug looked like a compression problem and wasn’t. After opening one file and then another, the second sometimes failed with a ZSTD error even though it wasn’t ZSTD-compressed. DuckDB-WASM caches data keyed by file name, and every file was being registered as <code>data.parquet</code>, so reads of the new file could be served pages from the old one. Dropping the old file first helped; the complete fix gives each load a unique name (<code>data_1.parquet</code>, <code>data_2.parquet</code> and so on) while the <code>data</code> view always points at the current one.</p>
+</section>
+<section id="column-names-that-duckdb-doesnt-accept" class="level3">
+<h3 class="anchored" data-anchor-id="column-names-that-duckdb-doesnt-accept">Column names that DuckDB doesn’t accept</h3>
+<p>The query builder at first generated explicit column lists from <code>DESCRIBE</code>, which reports names from the Parquet metadata. When a file has duplicate column names, DuckDB renames them (<code>_1</code>, <code>_2</code>) in queries but not in <code>DESCRIBE</code>, so the builder produced “column not found” errors. The schema now takes names from an empty <code>SELECT * ... LIMIT 0</code>, which returns exactly what DuckDB accepts, and the builder’s column picker hides columns in the table instead of rewriting the SQL.</p>
+</section>
+<section id="explaining-failures" class="level3">
+<h3 class="anchored" data-anchor-id="explaining-failures">Explaining failures</h3>
+<p>Many failures come from outside the app: a server that doesn’t allow cross-origin requests, a private file, a wrong URL, or a ZSTD-compressed file that the WebAssembly build can’t decompress. The raw DuckDB messages for these aren’t helpful, so one function classifies errors and explains them in plain words, including the commands to re-save a file with Snappy compression. It is applied both when loading a file and when running a query, because a ZSTD file can pass the schema step (the footer isn’t compressed) and fail only on the first <code>SELECT</code>.</p>
+</section>
+</section>
+<section id="limits-and-whats-next" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="limits-and-whats-next"><span class="header-section-number">4</span> Limits and what’s next</h2>
+<p>The viewer reads public files only: no credentials, no private buckets. ZSTD-compressed files need to be re-saved with Snappy or Gzip, and GeoArrow struct geometry is the main encoding still listed as not rendering on the map. Those are the obvious places to improve.</p>
+<p>The app was built in phases with Claude, which shows in the commit history: each phase and fix has a commit message explaining the cause. If you work with data and want a quick way to preview the contents of a <code>.parquet</code> file, give it a try. The code is on <a href="https://github.com/ar-puuk/parquet-viewer">GitHub</a>, and issues and PRs are welcome.</p>
 
 
 <!-- -->
 
+</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{bhandari2026,
   author = {Bhandari, Pukar},
@@ -1206,58 +1274,110 @@ Viewer.”</span> April 12. <a href="https://ar-puuk.github.io/posts/parquet-exp
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Building a Client-Side Geo/Parquet File Viewer"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "A browser-based viewer for GeoParquet and Parquet files with SQL and map views. It runs on WebAssembly, so the data stays on your computer."</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "A browser-based viewer for GeoParquet and Parquet files with SQL and map views. It runs on DuckDB-WASM, so the data stays on your computer. Here is what it does, and what it took to get geometry from a Parquet file onto a map in the browser."</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">image-alt:</span><span class="co"> "Parquet Explorer with a column list, a map of points, a data table and a schema panel for a Nodes.parquet file."</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> Built on webassembly, works in browser, and data never leaves your computer</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> Built on WebAssembly, it runs in the browser, and the data never leaves your computer</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "parquet_explorer.png"</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Pukar Bhandari</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">    email: pukar.bhandari@outlook.com</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2026-04-12"</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [JavaScript, Data Science, Web Apps, Open Source, GIS]</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>Want a quick way to preview what is inside your parquet file? This is a browser-based, zero-backend viewer for Parquet and GeoParquet, built on DuckDB-WASM. Nothing is uploaded; everything runs locally in your tab.</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Open it three ways**: drop in a local file, paste an HTTP(S) URL, or paste an <span class="in">`s3://`</span> URL for a public bucket. DuckDB fetches only the row groups it needs via range requests.</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**See the schema first**: column names, types and nullability, plus row count, file size, row groups and (for spatial files) the geometry column, CRS and bounding box, all before any row data loads.</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Query it**: a CodeMirror SQL editor with column autocomplete, or a point-and-click query builder whose generated SQL stays visible and editable.</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Map it**: GeoParquet and spatial files appear on a MapLibre map, synced with the table in both directions.</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Update</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>Since the first version it has gained support for Esri JSON geometries (rings, paths and x/y columns), clearer error messages for common failures like CORS, 403/404 and unsupported ZSTD compression (re-save with Snappy or Gzip), and a refreshed theme.</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## File will not open with a ZSTD error?</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>The viewer cannot read ZSTD-compressed files. Re-save the file with Snappy or Gzip compression and open it again.</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="an">date-modified:</span><span class="co"> "2026-11-23"</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [JavaScript, Data Science, Web Apps, Open Source, GIS]</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>Want a quick way to preview what is inside your Parquet file? Parquet Explorer is a browser-based, zero-backend viewer for Parquet and GeoParquet, built on DuckDB-WASM. Nothing is uploaded; everything runs locally in your tab.</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>Parquet and GeoParquet are compact, columnar binary formats, which is great for storage and analysis and less great when you just want to know what is in a file: you can't double-click it and read it. Checking one usually means starting Python or R to print the schema and the first few rows, and plotting the geometry is a few more lines on top. I wanted to drop the file on a page and see its schema, its rows and, if it has geometry, a map. This post covers what the viewer does and the problems I ran into getting there, most of which were about geometry.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Update</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>Since the first version it has gained support for Esri JSON geometries (rings, paths and x/y columns), clearer error messages for common failures like CORS, 403/404 and unsupported ZSTD compression (re-save with Snappy or Gzip), and a refreshed theme.</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## File will not open with a ZSTD error?</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>The viewer cannot read ZSTD-compressed files. Re-save the file with Snappy or Gzip compression and open it again.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>The live app is embedded below.</span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>The live app is embedded below.</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>::: {.column-screen-inset}</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper"&gt;</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;Parquet File Viewer&lt;/span&gt;</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/parquet-viewer/" title="Parquet Viewer" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open app</span><span class="co">](https://ar-puuk.github.io/parquet-viewer/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/parquet-viewer)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>::: {.column-screen-inset}</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper"&gt;</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;Parquet File Viewer&lt;/span&gt;</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/parquet-viewer/" title="Parquet Viewer" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open app</span><span class="co">](https://ar-puuk.github.io/parquet-viewer/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/parquet-viewer)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## A quick tour</span></span>
 <span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>If you work with data and want a quick way to preview the contents of a <span class="in">`.parquet`</span> file, give it a try. The code is on <span class="co">[</span><span class="ot">GitHub</span><span class="co">](https://github.com/ar-puuk/parquet-viewer)</span> — issues and PRs welcome.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Open it three ways**: drop in a local file, paste an HTTP(S) URL, or paste an <span class="in">`s3://`</span> URL for a public bucket. DuckDB fetches only the row groups it needs via range requests, so a large remote file doesn't have to be downloaded in full.</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**See the schema first**: column names, types and nullability, plus row count, file size, row groups and (for spatial files) the geometry column, CRS and bounding box, all before any row data loads. Click a column for its min, max, null count and distinct count, sampled from up to 10,000 rows.</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Query it**: a CodeMirror SQL editor with column autocomplete and a short query history, or a point-and-click query builder for select, filter, sort, limit and group-by aggregates, whose generated SQL stays visible and editable. The table of results is virtualized and sortable.</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Map it**: GeoParquet and spatial files appear on a MapLibre map, synced with the table in both directions. Hover or click a row and the feature lights up on the map; click a feature and its row is selected and scrolled into view.</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>When a file opens, the viewer runs a default query, <span class="in">`SELECT * EXCLUDE (blob_cols) FROM data LIMIT 1000`</span>, so there is something to look at right away. The <span class="in">`LIMIT`</span> in your own SQL decides how many rows are loaded.</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="fu">## How it works</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>The app is React, TypeScript and Vite, deployed to GitHub Pages. <span class="co">[</span><span class="ot">DuckDB-WASM</span><span class="co">](https://duckdb.org/docs/api/wasm/overview)</span> does the heavy lifting: the file is registered with DuckDB's virtual file system, a view called <span class="in">`data`</span> points at it, and everything you see comes from SQL against that view. Schema, row count and file details come from <span class="in">`DESCRIBE`</span>, <span class="in">`COUNT(*)`</span> and DuckDB's Parquet metadata functions, which only need the file's footer, so they appear before any rows do. The map is <span class="co">[</span><span class="ot">MapLibre GL</span><span class="co">](https://maplibre.org/)</span> with an OpenFreeMap basemap, the table uses TanStack Virtual, and app state lives in a small Zustand store.</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="fu">### Query first</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>The first design was a classic data viewer: a table that paged through the whole file on its own, with the map loading geometry in its own batches. It didn't hold up. Accumulating rows into one growing array hung the browser on big files, and fetching the geometry column with every page of table rows meant tens of megabytes per request for complex polygons.</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>I rewrote it so the SQL panel drives everything. One query runs, its result goes into the store, and both the table and the map read from that same result. The query runner wraps your SQL to add a zero-based <span class="in">`__row_id`</span>, and the map's features carry the same id, which is what makes the table-to-map sync a simple lookup rather than a join. Binary columns (WKB geometry and other blobs) are excluded from the table query and shown as <span class="in">`[geometry]`</span> or <span class="in">`[blob]`</span>.</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="fu">### Finding the geometry</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>Spatial detection has two tiers. A proper GeoParquet file has a <span class="in">`geo`</span> entry in its key-value metadata, which names the geometry column, its encoding, its CRS and its bounding box; the map can zoom to that box before a single row is read. Plenty of spatial Parquet files don't have that metadata, so the fallback looks for columns with the usual names (<span class="in">`geometry`</span>, <span class="in">`geom`</span>, <span class="in">`wkb_geometry`</span>, <span class="in">`wkt`</span>, <span class="in">`shape`</span>) and works out the encoding from the type: binary is WKB, text is WKT. DuckDB's spatial extension is loaded only when a spatial file is detected, so plain tables don't pay for it.</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="fu">## The interesting problems</span></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="fu">### Geometry comes in more shapes than I expected</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>WKB and WKT were straightforward: DuckDB's <span class="in">`ST_GeomFromWKB`</span> or <span class="in">`ST_GeomFromText`</span>, then <span class="in">`ST_AsGeoJSON`</span>, then onto the map. Two other encodings were not.</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>**GeoArrow structs.** Some files store geometry as native coordinate structs (DuckDB types like <span class="in">`POINT_2D`</span> and <span class="in">`POLYGON_2D`</span>) rather than as WKB. DuckDB-WASM's spatial extension had no cast from those types to <span class="in">`GEOMETRY`</span>, so the usual functions didn't apply. One attempt built WKT strings out of the coordinate lists with plain SQL list and string functions, choosing <span class="in">`POINT`</span>, <span class="in">`LINESTRING`</span>, <span class="in">`POLYGON`</span> or <span class="in">`MULTIPOLYGON`</span> from the nesting depth in the column's type name. Another converted features through <span class="in">`to_json()`</span>, which turned out to return null for these types and silently drop every feature. The latest approach selects the raw column and converts the nested <span class="in">`{x, y}`</span> objects to GeoJSON in JavaScript. The README still lists this encoding as a known limitation: such files are detected, but their features may not render.</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>**Esri JSON.** Files exported from ArcGIS tools often store the shape column as Esri JSON (<span class="in">`{"rings": [...], "spatialReference": {"wkid": 26912}}`</span>). Since that is a text column, the viewer took it for WKT and DuckDB rejected it with "Expected geometry type near '{'". The viewer now samples a value to tell Esri JSON from WKT, converts rings, paths, points and x/y pairs to GeoJSON itself, and reads the CRS straight from <span class="in">`spatialReference.wkid`</span>. One more wrinkle followed a few days later: some tools write these as a Python dictionary's string form, with single quotes, which <span class="in">`JSON.parse`</span> refuses. Detection now looks for the keys as text, and parsing normalizes the quotes first.</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="fu">### Projected coordinates</span></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>MapLibre wants longitude and latitude. A lot of planning data is in a projected system, such as UTM, and without GeoParquet metadata the file may not say which. The viewer samples a few coordinates, and if any have an absolute x over 180 or y over 90 it knows they can't be degrees. A CRS panel then opens above the map: you can type an EPSG code, or click your study area on a small map to get a list of projections suggested for that location.</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>The obvious way to reproject, DuckDB's <span class="in">`ST_Transform`</span>, was unreliable in the browser build, so reprojection happens in JavaScript with <span class="co">[</span><span class="ot">proj4js</span><span class="co">](https://github.com/proj4js/proj4js)</span> after DuckDB returns GeoJSON. Until a CRS is set, the viewer deliberately pushes nothing to the map: feeding raw UTM eastings and northings to MapLibre could corrupt the map source so that later, correct data didn't render either. Getting reprojected features to show up reliably also took fixing two race conditions in the map component, one where a "style loaded" event was awaited after it had already fired, and one where switching between light and dark styles wiped the layers and never refilled them.</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="fu">### Stale bytes from the previous file</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>One bug looked like a compression problem and wasn't. After opening one file and then another, the second sometimes failed with a ZSTD error even though it wasn't ZSTD-compressed. DuckDB-WASM caches data keyed by file name, and every file was being registered as <span class="in">`data.parquet`</span>, so reads of the new file could be served pages from the old one. Dropping the old file first helped; the complete fix gives each load a unique name (<span class="in">`data_1.parquet`</span>, <span class="in">`data_2.parquet`</span> and so on) while the <span class="in">`data`</span> view always points at the current one.</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="fu">### Column names that DuckDB doesn't accept</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>The query builder at first generated explicit column lists from <span class="in">`DESCRIBE`</span>, which reports names from the Parquet metadata. When a file has duplicate column names, DuckDB renames them (<span class="in">`_1`</span>, <span class="in">`_2`</span>) in queries but not in <span class="in">`DESCRIBE`</span>, so the builder produced "column not found" errors. The schema now takes names from an empty <span class="in">`SELECT * ... LIMIT 0`</span>, which returns exactly what DuckDB accepts, and the builder's column picker hides columns in the table instead of rewriting the SQL.</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="fu">### Explaining failures</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>Many failures come from outside the app: a server that doesn't allow cross-origin requests, a private file, a wrong URL, or a ZSTD-compressed file that the WebAssembly build can't decompress. The raw DuckDB messages for these aren't helpful, so one function classifies errors and explains them in plain words, including the commands to re-save a file with Snappy compression. It is applied both when loading a file and when running a query, because a ZSTD file can pass the schema step (the footer isn't compressed) and fail only on the first <span class="in">`SELECT`</span>.</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="fu">## Limits and what's next</span></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>The viewer reads public files only: no credentials, no private buckets. ZSTD-compressed files need to be re-saved with Snappy or Gzip, and GeoArrow struct geometry is the main encoding still listed as not rendering on the map. Those are the obvious places to improve.</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>The app was built in phases with Claude, which shows in the commit history: each phase and fix has a commit message explaining the cause. If you work with data and want a quick way to preview the contents of a <span class="in">`.parquet`</span> file, give it a try. The code is on <span class="co">[</span><span class="ot">GitHub</span><span class="co">](https://github.com/ar-puuk/parquet-viewer)</span>, and issues and PRs are welcome.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
@@ -1267,7 +1387,7 @@ Viewer.”</span> April 12. <a href="https://ar-puuk.github.io/posts/parquet-exp
 </div>   
     <div class="nav-footer-center">
 <p><a href="https://www.linkedin.com/in/arpuuk" title="LinkedIn" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" aria-label="linkedin"></i></a> &nbsp; <a href="https://github.com/ar-puuk/" title="github" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i></a> &nbsp; <a href="https://bsky.app/profile/arpuuk.bsky.social" title="Bluesky" target="_blank" rel="noopener"><i class="fa-brands fa-bluesky" aria-label="bluesky"></i></a> &nbsp; <a href="https://urbanists.social/@arpuuk" title="Mastodon" target="_blank" rel="noopener"><i class="fa-brands fa-mastodon" aria-label="mastodon"></i></a> &nbsp; <a href="https://orcid.org/0000-0002-1043-2937" title="orcid" target="_blank" rel="noopener"><i class="ai  ai-orcid" aria-label="orcid"></i></a> &nbsp; <a href="https://scholar.google.com/citations?user=vnwRlAsAAAAJ&amp;hl=en" title="Google Scholar" target="_blank" rel="noopener"><i class="ai  ai-google-scholar" aria-label="google-scholar"></i></a> &nbsp; <a href="mailto:pukar.bhandari@outlook.com" title="E-mail" target="_blank" rel="noopener"><i class="fa-solid fa-envelope" aria-label="envelope"></i></a></p>
-<div class="toc-actions"><ul><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/edit/master/posts/parquet-explorer/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+<div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/edit/master/posts/parquet-explorer/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">

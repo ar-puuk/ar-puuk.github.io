@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pukar Bhandari">
 <meta name="dcterms.date" content="2026-08-20">
-<meta name="description" content="Drut is a linter, formatter and editor tooling suite for Cube Voyager scripts (.s / .block), with a CLI, a language server for VS Code, and an MCP server.">
+<meta name="description" content="Drut is a linter, formatter and editor tooling suite for Cube Voyager scripts (.s / .block), with a CLI, a VS Code extension built on a language server, and an MCP server. Here is why it exists, what it does, and what it took to parse a language with no public grammar.">
 
 <title>Drut: Linting and Formatting for Cube Voyager Scripts – Pukar Bhandari</title>
 <style>
@@ -87,9 +87,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-840c502821f5b99d6c7c78d0ba83cfca.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-43d431d6ae33725d0208b2e07b15352c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-0a1ee58fbaa3f5d8041b8bafbf34ceb4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-43d431d6ae33725d0208b2e07b15352c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dd52e5adb6025a2d72185450488676d8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-b1919c9cd559971cd531f5718ff5c6da.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-dd52e5adb6025a2d72185450488676d8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/academicons-1.9.4/all.css" rel="stylesheet">
@@ -133,14 +133,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../../assets/css/index.css">
 <link rel="stylesheet" href="../../assets/css/app-embed.css">
 <meta property="og:title" content="Drut: Linting and Formatting for Cube Voyager Scripts – Pukar Bhandari">
-<meta property="og:description" content="Drut is a linter, formatter and editor tooling suite for Cube Voyager scripts (.s / .block), with a CLI, a language server for VS Code, and an MCP server.">
+<meta property="og:description" content="Drut is a linter, formatter and editor tooling suite for Cube Voyager scripts (.s / .block), with a CLI, a VS Code extension built on a language server, and an MCP server. Here is why it exists, what it does, and what it took to parse a language with no public grammar.">
 <meta property="og:image" content="https://ar-puuk.github.io/posts/drut/drut.png">
 <meta property="og:site_name" content="Pukar Bhandari">
 <meta property="og:image:height" content="880">
 <meta property="og:image:width" content="1400">
 <meta property="og:image:alt" content="Drut documentation page introducing the Cube Voyager script linter, formatter and editor tooling suite.">
 <meta name="twitter:title" content="Drut: Linting and Formatting for Cube Voyager Scripts – Pukar Bhandari">
-<meta name="twitter:description" content="Drut is a linter, formatter and editor tooling suite for Cube Voyager scripts (.s / .block), with a CLI, a language server for VS Code, and an MCP server.">
+<meta name="twitter:description" content="Drut is a linter, formatter and editor tooling suite for Cube Voyager scripts (.s / .block), with a CLI, a VS Code extension built on a language server, and an MCP server. Here is why it exists, what it does, and what it took to parse a language with no public grammar.">
 <meta name="twitter:image" content="https://ar-puuk.github.io/posts/drut/drut.png">
 <meta name="twitter:creator" content="@arpuuk">
 <meta name="twitter:site" content="@arpuuk">
@@ -418,8 +418,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <div id="quarto-announcement" data-announcement-id="d427bc2c621f9106df6eeacffb0a77cd" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p><strong>New:</strong> <a href="../../work/community-profiles/" class="no-external" target="_self">Demographic Profiles</a>, a zero-backend, map-first dashboard of Census and economic indicators for Utah.</p>
+  <div id="quarto-announcement" data-announcement-id="e50c892fd6bff347bf92501715c38d0d" class="alert alert-primary hidden"><i class="bi bi-megaphone quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>New:</strong> <a href="../../posts/basemapper/" class="no-external" target="_self">basemapper</a>, sharp vector basemaps for ggplot2, tmap, matplotlib and plotnine figures, rendered in R and Python without a browser.</p>
 </div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
@@ -427,10 +427,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <div class="quarto-title-block"><div><h1 class="title">Drut: Linting and Formatting for Cube Voyager Scripts</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
-            <p class="subtitle lead">A Rust-based toolchain and VS Code extension for travel-demand model control-statement files</p>
+            <p class="subtitle lead">A Rust parser, formatter and language server for travel demand model scripts, tested against a real model’s code</p>
                   <div>
         <div class="description">
-          Drut is a linter, formatter and editor tooling suite for Cube Voyager scripts (.s / .block), with a CLI, a language server for VS Code, and an MCP server.
+          Drut is a linter, formatter and editor tooling suite for Cube Voyager scripts (.s / .block), with a CLI, a VS Code extension built on a language server, and an MCP server. Here is why it exists, what it does, and what it took to parse a language with no public grammar.
         </div>
       </div>
                           <div class="quarto-categories">
@@ -462,7 +462,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">November 13, 2026</p>
+        <p class="date-modified">November 23, 2026</p>
       </div>
     </div>
       
@@ -476,10 +476,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#what-it-does" id="toc-what-it-does" class="nav-link active" data-scroll-target="#what-it-does"><span class="header-section-number">1</span> What it does</a></li>
-  <li><a href="#three-ways-in-one-engine" id="toc-three-ways-in-one-engine" class="nav-link" data-scroll-target="#three-ways-in-one-engine"><span class="header-section-number">2</span> Three ways in, one engine</a></li>
-  <li><a href="#install" id="toc-install" class="nav-link" data-scroll-target="#install"><span class="header-section-number">3</span> Install</a></li>
-  <li><a href="#documentation" id="toc-documentation" class="nav-link" data-scroll-target="#documentation"><span class="header-section-number">4</span> Documentation</a></li>
+  <li><a href="#why-voyager-scripts-need-tooling" id="toc-why-voyager-scripts-need-tooling" class="nav-link active" data-scroll-target="#why-voyager-scripts-need-tooling"><span class="header-section-number">1</span> Why Voyager scripts need tooling</a></li>
+  <li><a href="#a-quick-tour" id="toc-a-quick-tour" class="nav-link" data-scroll-target="#a-quick-tour"><span class="header-section-number">2</span> A quick tour</a>
+  <ul class="collapse">
+  <li><a href="#in-the-editor" id="toc-in-the-editor" class="nav-link" data-scroll-target="#in-the-editor">In the editor</a></li>
+  <li><a href="#on-the-command-line" id="toc-on-the-command-line" class="nav-link" data-scroll-target="#on-the-command-line">On the command line</a></li>
+  <li><a href="#shared-configuration" id="toc-shared-configuration" class="nav-link" data-scroll-target="#shared-configuration">Shared configuration</a></li>
+  </ul></li>
+  <li><a href="#three-ways-in-one-engine" id="toc-three-ways-in-one-engine" class="nav-link" data-scroll-target="#three-ways-in-one-engine"><span class="header-section-number">3</span> Three ways in, one engine</a></li>
+  <li><a href="#the-hard-parts" id="toc-the-hard-parts" class="nav-link" data-scroll-target="#the-hard-parts"><span class="header-section-number">4</span> The hard parts</a>
+  <ul class="collapse">
+  <li><a href="#a-language-without-a-public-grammar" id="toc-a-language-without-a-public-grammar" class="nav-link" data-scroll-target="#a-language-without-a-public-grammar">A language without a public grammar</a></li>
+  <li><a href="#the-real-corpus-as-the-test-oracle" id="toc-the-real-corpus-as-the-test-oracle" class="nav-link" data-scroll-target="#the-real-corpus-as-the-test-oracle">The real corpus as the test oracle</a></li>
+  <li><a href="#a-formatter-you-can-trust-with-model-code" id="toc-a-formatter-you-can-trust-with-model-code" class="nav-link" data-scroll-target="#a-formatter-you-can-trust-with-model-code">A formatter you can trust with model code</a></li>
+  </ul></li>
+  <li><a href="#how-it-was-built" id="toc-how-it-was-built" class="nav-link" data-scroll-target="#how-it-was-built"><span class="header-section-number">5</span> How it was built</a></li>
+  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next"><span class="header-section-number">6</span> What’s next</a></li>
+  <li><a href="#documentation" id="toc-documentation" class="nav-link" data-scroll-target="#documentation"><span class="header-section-number">7</span> Documentation</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/edit/master/posts/drut/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ar-puuk/ar-puuk.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li><li><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></li></ul></div></nav>
 </nav>
@@ -508,24 +521,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Drut is a work in progress. If you hit a bug, please <a href="https://github.com/ar-puuk/drut-dev/issues">open an issue</a>.</p>
 </div>
 </div>
-<p>Travel-demand models are programs. In much of the U.S., the language they are written in is Cube Voyager’s control-statement script (<code>.s</code> and <code>.block</code> files), and the tooling for it is thin: usually no syntax highlighting, no error checking until the model actually runs, and no consistent formatting across a team. A missing <code>ENDIF</code> can cost you a full model run to find.</p>
-<p>Drut is my attempt to give those scripts the tooling that every mainstream language takes for granted.</p>
-<section id="what-it-does" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="what-it-does"><span class="header-section-number">1</span> What it does</h2>
+<p>Travel demand models are programs. In much of the U.S., the language they are written in is Cube Voyager’s control-statement script (<code>.s</code> and <code>.block</code> files), and the tooling for it is thin: usually no syntax highlighting, no error checking until the model actually runs, and no consistent formatting across a team. A missing <code>ENDIF</code> can cost you a full model run to find.</p>
+<p>Drut is my attempt to give those scripts the tooling that every mainstream language takes for granted: a parser that understands the block structure, diagnostics as you type, a formatter you can trust with model code, and editor support in VS Code and anything else that speaks the Language Server Protocol. This post covers what it does and the parts that were harder than they looked.</p>
+<div class="app-links">
+<p><a href="https://ar-puuk.github.io/drut-dev/" class="btn btn-primary" target="_blank" rel="noopener"><i class="fa-solid fa-book" aria-label="book"></i> Docs</a> <a href="https://github.com/ar-puuk/drut-dev" class="btn btn-outline-secondary" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></p>
+</div>
+<section id="why-voyager-scripts-need-tooling" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="why-voyager-scripts-need-tooling"><span class="header-section-number">1</span> Why Voyager scripts need tooling</h2>
+<p>A Voyager script is a sequence of <code>RUN PGM=...</code> steps, each with its own block of statements: <code>IF</code>/<code>ENDIF</code>, <code>LOOP</code>/<code>ENDLOOP</code>, <code>PROCESS PHASE=...</code> sections, matrix loops (<code>JLOOP</code>) and link loops. A regional model can have well over a hundred of these files. Without an editor that understands them, the structure lives only in the author’s indentation.</p>
+<p>When a block is left open, you find out when the model run reaches it. What I wanted was the experience I have in R or Python: the editor underlines the mistake while I type it, and a formatter keeps the shape of the code honest.</p>
+</section>
+<section id="a-quick-tour" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="a-quick-tour"><span class="header-section-number">2</span> A quick tour</h2>
+<section id="in-the-editor" class="level3">
+<h3 class="anchored" data-anchor-id="in-the-editor">In the editor</h3>
+<p>Install <a href="https://marketplace.visualstudio.com/items?itemName=arpuuk.drut">Drut for Cube Voyager</a> from the VS Code Marketplace (or from <a href="https://open-vsx.org/extension/arpuuk/drut">Open VSX</a> in Cursor, VSCodium and others), open a <code>.s</code> file, and you get:</p>
 <ul>
 <li><strong>Syntax highlighting</strong> from a static TextMate grammar, so it works even before the language server starts. Control words, function calls, <code>keyword=value</code> pairs, data references (<code>MI</code>, <code>MW</code>, <code>DBA</code>, <code>ZONES</code>) and user variables are each independently recolorable.</li>
-<li><strong>Structural diagnostics</strong>: unmatched <code>IF</code>/<code>LOOP</code>/<code>RUN</code>/<code>PROCESS</code> blocks, unclosed comments and similar real mistakes, flagged as you type, before you run the model.</li>
-<li><strong>Formatting</strong>: consistent indentation and, optionally, casing for control words, pair keywords, data references and function names, on save, on paste or from the CLI.</li>
+<li><strong>Structural diagnostics</strong>: unmatched <code>IF</code>/<code>LOOP</code>/<code>RUN</code>/<code>PROCESS</code> blocks, unclosed comments, a <code>BREAK</code> with no enclosing block, and similar real mistakes, flagged as you type.</li>
+<li><strong>Hints about <code>@token@</code> substitutions</strong>: a token that is used but never defined, or assigned but never used.</li>
+<li><strong>Formatting</strong> on save, on paste or on demand.</li>
 <li><strong>Hover, autocomplete and “did you mean” spell-check</strong> for control words and keyword names, plus <strong>code folding</strong> for every block kind.</li>
-<li><strong>Shared project configuration</strong> through a <code>drut.toml</code>, so a team does not have to agree on CLI flags or editor settings one by one.</li>
 </ul>
-<p>A formatter that rewrites model code has to be easy to hold back, so a range can be excluded with markers. Everything between them is left exactly as written:</p>
+<p>You don’t have to install the language server separately. On first activation the extension looks for <code>drut</code> on your <code>PATH</code>, then in its own storage, and otherwise downloads the right binary for your platform from the latest GitHub release and checks its SHA-256. If no prebuilt binary exists for your platform, it falls back to highlighting only.</p>
+</section>
+<section id="on-the-command-line" class="level3">
+<h3 class="anchored" data-anchor-id="on-the-command-line">On the command line</h3>
+<p>The same engine is a CLI for scripts and CI:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> install drut-cli</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">drut</span> check model/scripts            <span class="co"># structural diagnostics; --format sarif for CI tools</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">drut</span> format model/scripts <span class="at">--diff</span>    <span class="co"># show what the formatter would change</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">drut</span> format model/scripts <span class="at">--write</span>   <span class="co"># apply it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="shared-configuration" class="level3">
+<h3 class="anchored" data-anchor-id="shared-configuration">Shared configuration</h3>
+<p>Formatting is opt-in, one setting at a time. Every option defaults to <code>preserve</code>, and a team writes down its own preferences in a <code>drut.toml</code> at the project root, which the CLI, the editor and the MCP server all read:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[format]</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">casing_control_words</span> <span class="op">=</span> <span class="st">"upper"</span>   <span class="co"># RUN, ENDRUN, IF, ENDIF ...</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">indent_width</span> <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="dt">operator_spacing</span> <span class="op">=</span> <span class="st">"fixed"</span>       <span class="co"># one space each side of =</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="dt">line_wrap</span> <span class="op">=</span> <span class="st">"auto"</span>               <span class="co"># wrap long keyword=value lists</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A formatter that rewrites model code also has to be easy to hold back, so a range can be excluded with markers. Everything between them is left exactly as written:</p>
 <pre class="text"><code>; FMT: OFF
   ... a hand-aligned section you want to keep as is ...
 ; FMT: ON</code></pre>
 </section>
-<section id="three-ways-in-one-engine" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="three-ways-in-one-engine"><span class="header-section-number">2</span> Three ways in, one engine</h2>
+</section>
+<section id="three-ways-in-one-engine" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="three-ways-in-one-engine"><span class="header-section-number">3</span> Three ways in, one engine</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -552,19 +596,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>All three are built on one shared Rust engine, so the editor, the CI check and the assistant always agree on what is valid.</p>
+<p>All three are built on one shared Rust engine, so the editor, the CI check and the assistant always agree on what is valid. The core crate, <code>voyager-core</code>, holds every grammar and parsing rule and has no runtime dependencies beyond Rust’s standard library. Its public contract is a tokenizer and a parser that work on text in memory and never panic: malformed input comes back as diagnostics, not crashes. The CLI, the language server (<code>drut-lsp</code>), the MCP server (<code>drut-mcp</code>) and the configuration loader (<code>drut-config</code>) are thin adapters around it. This rule is written into the project’s design principles, because the alternative, a second copy of the grammar inside the editor extension, would sooner or later disagree with the first.</p>
+<p>The MCP server exposes four read-only tools: <code>diagnose</code>, <code>format</code>, <code>query_structure</code> (which block encloses a given line, and where it ends) and <code>lookup_keyword</code>. The point is that an assistant asked to edit a model script can check its work against the real parser instead of guessing from text.</p>
 </section>
-<section id="install" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="install"><span class="header-section-number">3</span> Install</h2>
+<section id="the-hard-parts" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="the-hard-parts"><span class="header-section-number">4</span> The hard parts</h2>
+<section id="a-language-without-a-public-grammar" class="level3">
+<h3 class="anchored" data-anchor-id="a-language-without-a-public-grammar">A language without a public grammar</h3>
+<p>There is no published formal grammar for Voyager scripts. Drut’s grammar was written up rule by rule as functional requirements, and checked against two things: the vendor’s documentation and a corpus of real scripts. The project’s rules forbid copying the vendor’s wording anywhere: keyword lists, diagnostic messages and hover text are all in Drut’s own words.</p>
+<p>Some of what the documentation describes is odd. <code>RUN</code> and <code>PROCESS</code> blocks can close <em>implicitly</em>, when the next block of the same family opens (and a <code>RUN</code> can be closed by a shell-escape line), as well as with an explicit <code>ENDRUN</code> or <code>ENDPROCESS</code>. The parser is a recursive-descent block matcher that handles these cases, along with a single-line short <code>IF</code> form and a disabled <code>!RUN</code> variant. Interestingly, a full scan of the real corpus found no implicit closes at all; the parser supports them because the documentation says they are valid.</p>
+</section>
+<section id="the-real-corpus-as-the-test-oracle" class="level3">
+<h3 class="anchored" data-anchor-id="the-real-corpus-as-the-test-oracle">The real corpus as the test oracle</h3>
+<p>Correctness is measured against real code. Nine representative files (about 5,200 lines) from a production regional travel demand model, checked first for paths, credentials and other sensitive content, are committed as fixtures, and the model’s full set of 161 scripts was used for validation passes: 161 of 161 parsed with zero diagnostics and zero panics.</p>
+<p>The guiding rule is that a false alarm on working code is worse than a missed bug. An unflagged mistake is forgivable; a red squiggle on a script that runs fine teaches people to ignore the tool. That is why only a handful of block kinds produce diagnostics when left open, and why several of the newer checks are Hint-level, editor-only messages.</p>
+<p>Running against real files found real bugs early:</p>
+<ul>
+<li><strong>An encoding surprise.</strong> One real script contained a single Windows-1252 byte that isn’t valid UTF-8, so the parser couldn’t even load it. The fix decodes UTF-8 first and falls back to Windows-1252 only for the bytes that fail, leaving valid UTF-8 elsewhere in the file untouched. Only a byte with no Windows-1252 meaning at all becomes a diagnostic.</li>
+<li><strong>Subscripted assignments.</strong> <code>MW[1] = ...</code> (over 6,000 occurrences in one file alone) was being classified as a control statement instead of an assignment. No diagnostic fired either way, so the “zero diagnostics” test couldn’t see it, but a formatter consuming that classification could have mangled real scripts. A dedicated test now checks statement kinds directly.</li>
+<li><strong>Quotes.</strong> A <code>word = value</code> shape inside a quoted string (scripts that <code>PRINT</code> other scripts do this) was read as a second keyword pair.</li>
+</ul>
+<p>The corpus also supplies data. The autocomplete list of <code>keyword=value</code> names was built from a census of the real scripts (keywords appearing in at least three files), not copied from documentation, and the default indentation width of 4 matches what the corpus uses: 82.4% of 30,652 nested-line indents.</p>
+<p>Sometimes the data settled a question by showing there was no right answer. I expected the formatter to offer a “canonical” keyword casing. But for <code>IF</code>, <code>ELSE</code>, <code>LOOP</code> and their closers, the real scripts are 81 to 95% lowercase while the vendor’s documentation is 71 to 94% uppercase. Any built-in house style would either rewrite most real code or contradict the manual. So Drut ships no preset: every casing option defaults to <code>preserve</code>, and casing is split into four independent categories (control words, keyword names, data references, function names) that each project sets for itself in <code>drut.toml</code>.</p>
+</section>
+<section id="a-formatter-you-can-trust-with-model-code" class="level3">
+<h3 class="anchored" data-anchor-id="a-formatter-you-can-trust-with-model-code">A formatter you can trust with model code</h3>
+<p>The formatter has hard rules: it is idempotent (<code>format(format(x)) == format(x)</code>), it never reorders statements, never changes which lines are continuations, and never alters program meaning. It changes whitespace and, if you ask, keyword casing. Every formatter change is checked against golden files from the fixture corpus.</p>
+<p>The subtlest bug was about broken code. If a <code>PROCESS</code> block was left unclosed, the parser’s best guess made the following <code>RUN</code> block a child of it, and the formatter indented it accordingly. When the author then added the missing <code>ENDPROCESS</code>, the <code>RUN</code> block became top-level again, but its formatter-written indentation stayed, because Drut deliberately never rewrites top-level indentation by default. (Only 20.4% of real top-level statements sit at column 0, so forcing them there would touch nearly every file.) The existing idempotency tests all passed, because formatting the broken output again was a no-op. The fix was to stop guessing: the children of a block that has a diagnostic keep their original indentation, and a new set of tests formats, edits, and formats again.</p>
+<p>Automatic line wrapping went in later and needed a carve-out in the formatter’s own rules, since inserting a line break into a long <code>keyword=value</code> list does change which lines are continuations. It is allowed only using the language’s own continuation syntax, and it is off by default.</p>
+</section>
+</section>
+<section id="how-it-was-built" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="how-it-was-built"><span class="header-section-number">5</span> How it was built</h2>
+<p>Drut was developed with GitHub’s spec-kit workflow: each feature got a written specification, a plan, a task list and a pre-implementation review before any code, and the commit history reads that way, from the first parser crate in August to the CLI, the language server and extension, the MCP server and the configuration file. The editor extension’s structure (language IDs, bracket and comment configuration, scope naming) follows Bill Hereth’s earlier <a href="https://github.com/WFRCAnalytics/Resources/tree/master/7-Other/VSCode-Extensions/bhereth.language-citilabscubevoyager">Cube Voyager VS Code extension</a>, with his permission and credit, rewritten in Drut’s own code.</p>
+</section>
+<section id="whats-next" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="whats-next"><span class="header-section-number">6</span> What’s next</h2>
+<p>Drut checks structure today, not meaning. Two larger phases are on the roadmap as stretch goals: validating keywords against the specific program a <code>RUN</code> block calls, and semantic checks that look across all the files in a model rather than one script at a time. Closer in, the roadmap logs a possible fifth casing category for matrix assignment targets (<code>MW[1] = ...</code>), which real authors write differently from other data references, and the Marketplace listing still needs real screenshots of the extension at work.</p>
 <p>The extension resolves a working <code>drut</code> language server automatically on first activation:</p>
 <ul>
 <li><strong>VS Code</strong>: <a href="https://marketplace.visualstudio.com/items?itemName=arpuuk.drut">Drut for Cube Voyager</a> on the Marketplace.</li>
 <li><strong>Cursor, VSCodium and others</strong>: the same extension on <a href="https://open-vsx.org/extension/arpuuk/drut">Open VSX</a>.</li>
-<li><strong>CLI only</strong>: build from source with <code>cargo build --release -p drut-cli</code> and put the binary on your <code>PATH</code>.</li>
+<li><strong>CLI only</strong>: <code>cargo install drut-cli</code>, or build from source with <code>cargo build --release -p drut-cli</code> and put the binary on your <code>PATH</code>.</li>
 </ul>
 </section>
-<section id="documentation" class="level2 page-columns page-full" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="documentation"><span class="header-section-number">4</span> Documentation</h2>
+<section id="documentation" class="level2 page-columns page-full" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="documentation"><span class="header-section-number">7</span> Documentation</h2>
 <p>The full user guide covers install, getting started, the CLI, editor and MCP references, formatter behavior and a field-by-field <code>drut.toml</code> reference.</p>
 <div class="column-screen-inset">
 <div class="app-embed-wrapper">
@@ -1251,87 +1328,169 @@ Voyager Scripts.”</span> August 20. <a href="https://ar-puuk.github.io/posts/d
   <script type="application/javascript">
   window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Drut: Linting and Formatting for Cube Voyager Scripts"</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">image-alt:</span><span class="co"> "Drut documentation page introducing the Cube Voyager script linter, formatter and editor tooling suite."</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> A Rust-based toolchain and VS Code extension for travel-demand model control-statement files</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> Drut is a linter, formatter and editor tooling suite for Cube Voyager scripts (.s / .block), with a CLI, a language server for VS Code, and an MCP server.</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "drut.png"</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Pukar Bhandari</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">    email: pukar.bhandari@outlook.com</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2026-08-20"</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [Developer Tools, Travel Demand Modeling, Open Source, Transportation]</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Under active development</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>Drut is a work in progress. If you hit a bug, please <span class="co">[</span><span class="ot">open an issue</span><span class="co">](https://github.com/ar-puuk/drut-dev/issues)</span>.</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>Travel-demand models are programs. In much of the U.S., the language they are written in is Cube Voyager's control-statement script (<span class="in">`.s`</span> and <span class="in">`.block`</span> files), and the tooling for it is thin: usually no syntax highlighting, no error checking until the model actually runs, and no consistent formatting across a team. A missing <span class="in">`ENDIF`</span> can cost you a full model run to find.</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>Drut is my attempt to give those scripts the tooling that every mainstream language takes for granted.</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="fu">## What it does</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Syntax highlighting** from a static TextMate grammar, so it works even before the language server starts. Control words, function calls, <span class="in">`keyword=value`</span> pairs, data references (<span class="in">`MI`</span>, <span class="in">`MW`</span>, <span class="in">`DBA`</span>, <span class="in">`ZONES`</span>) and user variables are each independently recolorable.</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Structural diagnostics**: unmatched <span class="in">`IF`</span>/<span class="in">`LOOP`</span>/<span class="in">`RUN`</span>/<span class="in">`PROCESS`</span> blocks, unclosed comments and similar real mistakes, flagged as you type, before you run the model.</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Formatting**: consistent indentation and, optionally, casing for control words, pair keywords, data references and function names, on save, on paste or from the CLI.</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Hover, autocomplete and "did you mean" spell-check** for control words and keyword names, plus **code folding** for every block kind.</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Shared project configuration** through a <span class="in">`drut.toml`</span>, so a team does not have to agree on CLI flags or editor settings one by one.</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>A formatter that rewrites model code has to be easy to hold back, so a range can be excluded with markers. Everything between them is left exactly as written:</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="in">```text</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="in">; FMT: OFF</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="in">  ... a hand-aligned section you want to keep as is ...</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="in">; FMT: ON</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="fu">## Three ways in, one engine</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Surface <span class="pp">|</span> For <span class="pp">|</span></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`drut`</span> CLI <span class="pp">|</span> scripting and CI checks <span class="pp">|</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> VS Code / Open VSX extension <span class="pp">|</span> day-to-day editing (it is a Language Server Protocol server, so any LSP-capable editor can use it) <span class="pp">|</span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Model Context Protocol server <span class="pp">|</span> AI coding assistants <span class="pp">|</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>All three are built on one shared Rust engine, so the editor, the CI check and the assistant always agree on what is valid.</span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="fu">## Install</span></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>The extension resolves a working <span class="in">`drut`</span> language server automatically on first activation:</span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**VS Code**: <span class="co">[</span><span class="ot">Drut for Cube Voyager</span><span class="co">](https://marketplace.visualstudio.com/items?itemName=arpuuk.drut)</span> on the Marketplace.</span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Cursor, VSCodium and others**: the same extension on <span class="co">[</span><span class="ot">Open VSX</span><span class="co">](https://open-vsx.org/extension/arpuuk/drut)</span>.</span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**CLI only**: build from source with <span class="in">`cargo build --release -p drut-cli`</span> and put the binary on your <span class="in">`PATH`</span>.</span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## Documentation</span></span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>The full user guide covers install, getting started, the CLI, editor and MCP references, formatter behavior and a field-by-field <span class="in">`drut.toml`</span> reference.</span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>::: {.column-screen-inset}</span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper"&gt;</span></span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;Drut User Guide&lt;/span&gt;</span></span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/drut-dev/" title="Drut user guide" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open docs</span><span class="co">](https://ar-puuk.github.io/drut-dev/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
-<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/drut-dev)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
-<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>Drut is dual-licensed under MIT or Apache 2.0, and the code is on <span class="co">[</span><span class="ot">GitHub</span><span class="co">](https://github.com/ar-puuk/drut-dev)</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Drut: Linting and Formatting for Cube Voyager Scripts"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="an">image-alt:</span><span class="co"> "Drut documentation page introducing the Cube Voyager script linter, formatter and editor tooling suite."</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> A Rust parser, formatter and language server for travel demand model scripts, tested against a real model's code</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> Drut is a linter, formatter and editor tooling suite for Cube Voyager scripts (.s / .block), with a CLI, a VS Code extension built on a language server, and an MCP server. Here is why it exists, what it does, and what it took to parse a language with no public grammar.</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "drut.png"</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">  - name: Pukar Bhandari</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">    email: pukar.bhandari@outlook.com</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2026-08-20"</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="an">date-modified:</span><span class="co"> "2026-11-23"</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [Developer Tools, Travel Demand Modeling, Open Source, Transportation]</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="an">prefer-html:</span><span class="co"> true</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Under active development</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>Drut is a work in progress. If you hit a bug, please <span class="co">[</span><span class="ot">open an issue</span><span class="co">](https://github.com/ar-puuk/drut-dev/issues)</span>.</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>Travel demand models are programs. In much of the U.S., the language they are written in is Cube Voyager's control-statement script (<span class="in">`.s`</span> and <span class="in">`.block`</span> files), and the tooling for it is thin: usually no syntax highlighting, no error checking until the model actually runs, and no consistent formatting across a team. A missing <span class="in">`ENDIF`</span> can cost you a full model run to find.</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>Drut is my attempt to give those scripts the tooling that every mainstream language takes for granted: a parser that understands the block structure, diagnostics as you type, a formatter you can trust with model code, and editor support in VS Code and anything else that speaks the Language Server Protocol. This post covers what it does and the parts that were harder than they looked.</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa book &gt;}} Docs</span><span class="co">](https://ar-puuk.github.io/drut-dev/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/drut-dev)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why Voyager scripts need tooling</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>A Voyager script is a sequence of <span class="in">`RUN PGM=...`</span> steps, each with its own block of statements: <span class="in">`IF`</span>/<span class="in">`ENDIF`</span>, <span class="in">`LOOP`</span>/<span class="in">`ENDLOOP`</span>, <span class="in">`PROCESS PHASE=...`</span> sections, matrix loops (<span class="in">`JLOOP`</span>) and link loops. A regional model can have well over a hundred of these files. Without an editor that understands them, the structure lives only in the author's indentation.</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>When a block is left open, you find out when the model run reaches it. What I wanted was the experience I have in R or Python: the editor underlines the mistake while I type it, and a formatter keeps the shape of the code honest.</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## A quick tour</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="fu">### In the editor</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>Install <span class="co">[</span><span class="ot">Drut for Cube Voyager</span><span class="co">](https://marketplace.visualstudio.com/items?itemName=arpuuk.drut)</span> from the VS Code Marketplace (or from <span class="co">[</span><span class="ot">Open VSX</span><span class="co">](https://open-vsx.org/extension/arpuuk/drut)</span> in Cursor, VSCodium and others), open a <span class="in">`.s`</span> file, and you get:</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Syntax highlighting** from a static TextMate grammar, so it works even before the language server starts. Control words, function calls, <span class="in">`keyword=value`</span> pairs, data references (<span class="in">`MI`</span>, <span class="in">`MW`</span>, <span class="in">`DBA`</span>, <span class="in">`ZONES`</span>) and user variables are each independently recolorable.</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Structural diagnostics**: unmatched <span class="in">`IF`</span>/<span class="in">`LOOP`</span>/<span class="in">`RUN`</span>/<span class="in">`PROCESS`</span> blocks, unclosed comments, a <span class="in">`BREAK`</span> with no enclosing block, and similar real mistakes, flagged as you type.</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Hints about `@token@` substitutions**: a token that is used but never defined, or assigned but never used.</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Formatting** on save, on paste or on demand.</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Hover, autocomplete and "did you mean" spell-check** for control words and keyword names, plus **code folding** for every block kind.</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>You don't have to install the language server separately. On first activation the extension looks for <span class="in">`drut`</span> on your <span class="in">`PATH`</span>, then in its own storage, and otherwise downloads the right binary for your platform from the latest GitHub release and checks its SHA-256. If no prebuilt binary exists for your platform, it falls back to highlighting only.</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="fu">### On the command line</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>The same engine is a CLI for scripts and CI:</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a><span class="in">```sh</span></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> install drut-cli</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a><span class="ex">drut</span> check model/scripts            <span class="co"># structural diagnostics; --format sarif for CI tools</span></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a><span class="ex">drut</span> format model/scripts <span class="at">--diff</span>    <span class="co"># show what the formatter would change</span></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="ex">drut</span> format model/scripts <span class="at">--write</span>   <span class="co"># apply it</span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a><span class="fu">### Shared configuration</span></span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>Formatting is opt-in, one setting at a time. Every option defaults to <span class="in">`preserve`</span>, and a team writes down its own preferences in a <span class="in">`drut.toml`</span> at the project root, which the CLI, the editor and the MCP server all read:</span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a><span class="in">```toml</span></span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a><span class="in">[format]</span></span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a><span class="in">casing_control_words = "upper"   # RUN, ENDRUN, IF, ENDIF ...</span></span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a><span class="in">indent_width = 4</span></span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a><span class="in">operator_spacing = "fixed"       # one space each side of =</span></span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a><span class="in">line_wrap = "auto"               # wrap long keyword=value lists</span></span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>A formatter that rewrites model code also has to be easy to hold back, so a range can be excluded with markers. Everything between them is left exactly as written:</span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a><span class="in">```text</span></span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a><span class="in">; FMT: OFF</span></span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a><span class="in">  ... a hand-aligned section you want to keep as is ...</span></span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a><span class="in">; FMT: ON</span></span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a><span class="fu">## Three ways in, one engine</span></span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Surface <span class="pp">|</span> For <span class="pp">|</span></span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|</span></span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`drut`</span> CLI <span class="pp">|</span> scripting and CI checks <span class="pp">|</span></span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> VS Code / Open VSX extension <span class="pp">|</span> day-to-day editing (it is a Language Server Protocol server, so any LSP-capable editor can use it) <span class="pp">|</span></span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Model Context Protocol server <span class="pp">|</span> AI coding assistants <span class="pp">|</span></span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>All three are built on one shared Rust engine, so the editor, the CI check and the assistant always agree on what is valid. The core crate, <span class="in">`voyager-core`</span>, holds every grammar and parsing rule and has no runtime dependencies beyond Rust's standard library. Its public contract is a tokenizer and a parser that work on text in memory and never panic: malformed input comes back as diagnostics, not crashes. The CLI, the language server (<span class="in">`drut-lsp`</span>), the MCP server (<span class="in">`drut-mcp`</span>) and the configuration loader (<span class="in">`drut-config`</span>) are thin adapters around it. This rule is written into the project's design principles, because the alternative, a second copy of the grammar inside the editor extension, would sooner or later disagree with the first.</span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>The MCP server exposes four read-only tools: <span class="in">`diagnose`</span>, <span class="in">`format`</span>, <span class="in">`query_structure`</span> (which block encloses a given line, and where it ends) and <span class="in">`lookup_keyword`</span>. The point is that an assistant asked to edit a model script can check its work against the real parser instead of guessing from text.</span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a><span class="fu">## The hard parts</span></span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a><span class="fu">### A language without a public grammar</span></span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a>There is no published formal grammar for Voyager scripts. Drut's grammar was written up rule by rule as functional requirements, and checked against two things: the vendor's documentation and a corpus of real scripts. The project's rules forbid copying the vendor's wording anywhere: keyword lists, diagnostic messages and hover text are all in Drut's own words.</span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a>Some of what the documentation describes is odd. <span class="in">`RUN`</span> and <span class="in">`PROCESS`</span> blocks can close *implicitly*, when the next block of the same family opens (and a <span class="in">`RUN`</span> can be closed by a shell-escape line), as well as with an explicit <span class="in">`ENDRUN`</span> or <span class="in">`ENDPROCESS`</span>. The parser is a recursive-descent block matcher that handles these cases, along with a single-line short <span class="in">`IF`</span> form and a disabled <span class="in">`!RUN`</span> variant. Interestingly, a full scan of the real corpus found no implicit closes at all; the parser supports them because the documentation says they are valid.</span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a><span class="fu">### The real corpus as the test oracle</span></span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>Correctness is measured against real code. Nine representative files (about 5,200 lines) from a production regional travel demand model, checked first for paths, credentials and other sensitive content, are committed as fixtures, and the model's full set of 161 scripts was used for validation passes: 161 of 161 parsed with zero diagnostics and zero panics.</span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a>The guiding rule is that a false alarm on working code is worse than a missed bug. An unflagged mistake is forgivable; a red squiggle on a script that runs fine teaches people to ignore the tool. That is why only a handful of block kinds produce diagnostics when left open, and why several of the newer checks are Hint-level, editor-only messages.</span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>Running against real files found real bugs early:</span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**An encoding surprise.** One real script contained a single Windows-1252 byte that isn't valid UTF-8, so the parser couldn't even load it. The fix decodes UTF-8 first and falls back to Windows-1252 only for the bytes that fail, leaving valid UTF-8 elsewhere in the file untouched. Only a byte with no Windows-1252 meaning at all becomes a diagnostic.</span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Subscripted assignments.** <span class="in">`MW[1] = ...`</span> (over 6,000 occurrences in one file alone) was being classified as a control statement instead of an assignment. No diagnostic fired either way, so the "zero diagnostics" test couldn't see it, but a formatter consuming that classification could have mangled real scripts. A dedicated test now checks statement kinds directly.</span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Quotes.** A <span class="in">`word = value`</span> shape inside a quoted string (scripts that <span class="in">`PRINT`</span> other scripts do this) was read as a second keyword pair.</span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a>The corpus also supplies data. The autocomplete list of <span class="in">`keyword=value`</span> names was built from a census of the real scripts (keywords appearing in at least three files), not copied from documentation, and the default indentation width of 4 matches what the corpus uses: 82.4% of 30,652 nested-line indents.</span>
+<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a>Sometimes the data settled a question by showing there was no right answer. I expected the formatter to offer a "canonical" keyword casing. But for <span class="in">`IF`</span>, <span class="in">`ELSE`</span>, <span class="in">`LOOP`</span> and their closers, the real scripts are 81 to 95% lowercase while the vendor's documentation is 71 to 94% uppercase. Any built-in house style would either rewrite most real code or contradict the manual. So Drut ships no preset: every casing option defaults to <span class="in">`preserve`</span>, and casing is split into four independent categories (control words, keyword names, data references, function names) that each project sets for itself in <span class="in">`drut.toml`</span>.</span>
+<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a><span class="fu">### A formatter you can trust with model code</span></span>
+<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a>The formatter has hard rules: it is idempotent (<span class="in">`format(format(x)) == format(x)`</span>), it never reorders statements, never changes which lines are continuations, and never alters program meaning. It changes whitespace and, if you ask, keyword casing. Every formatter change is checked against golden files from the fixture corpus.</span>
+<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a>The subtlest bug was about broken code. If a <span class="in">`PROCESS`</span> block was left unclosed, the parser's best guess made the following <span class="in">`RUN`</span> block a child of it, and the formatter indented it accordingly. When the author then added the missing <span class="in">`ENDPROCESS`</span>, the <span class="in">`RUN`</span> block became top-level again, but its formatter-written indentation stayed, because Drut deliberately never rewrites top-level indentation by default. (Only 20.4% of real top-level statements sit at column 0, so forcing them there would touch nearly every file.) The existing idempotency tests all passed, because formatting the broken output again was a no-op. The fix was to stop guessing: the children of a block that has a diagnostic keep their original indentation, and a new set of tests formats, edits, and formats again.</span>
+<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a>Automatic line wrapping went in later and needed a carve-out in the formatter's own rules, since inserting a line break into a long <span class="in">`keyword=value`</span> list does change which lines are continuations. It is allowed only using the language's own continuation syntax, and it is off by default.</span>
+<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a><span class="fu">## How it was built</span></span>
+<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a>Drut was developed with GitHub's spec-kit workflow: each feature got a written specification, a plan, a task list and a pre-implementation review before any code, and the commit history reads that way, from the first parser crate in August to the CLI, the language server and extension, the MCP server and the configuration file. The editor extension's structure (language IDs, bracket and comment configuration, scope naming) follows Bill Hereth's earlier <span class="co">[</span><span class="ot">Cube Voyager VS Code extension</span><span class="co">](https://github.com/WFRCAnalytics/Resources/tree/master/7-Other/VSCode-Extensions/bhereth.language-citilabscubevoyager)</span>, with his permission and credit, rewritten in Drut's own code.</span>
+<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a><span class="fu">## What's next</span></span>
+<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a>Drut checks structure today, not meaning. Two larger phases are on the roadmap as stretch goals: validating keywords against the specific program a <span class="in">`RUN`</span> block calls, and semantic checks that look across all the files in a model rather than one script at a time. Closer in, the roadmap logs a possible fifth casing category for matrix assignment targets (<span class="in">`MW[1] = ...`</span>), which real authors write differently from other data references, and the Marketplace listing still needs real screenshots of the extension at work.</span>
+<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a>The extension resolves a working <span class="in">`drut`</span> language server automatically on first activation:</span>
+<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**VS Code**: <span class="co">[</span><span class="ot">Drut for Cube Voyager</span><span class="co">](https://marketplace.visualstudio.com/items?itemName=arpuuk.drut)</span> on the Marketplace.</span>
+<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Cursor, VSCodium and others**: the same extension on <span class="co">[</span><span class="ot">Open VSX</span><span class="co">](https://open-vsx.org/extension/arpuuk/drut)</span>.</span>
+<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**CLI only**: <span class="in">`cargo install drut-cli`</span>, or build from source with <span class="in">`cargo build --release -p drut-cli`</span> and put the binary on your <span class="in">`PATH`</span>.</span>
+<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a><span class="fu">## Documentation</span></span>
+<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a>The full user guide covers install, getting started, the CLI, editor and MCP references, formatter behavior and a field-by-field <span class="in">`drut.toml`</span> reference.</span>
+<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a>::: {.column-screen-inset}</span>
+<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
+<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;div class="app-embed-wrapper"&gt;</span></span>
+<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-toolbar"&gt;</span></span>
+<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;span class="app-embed-label"&gt;Drut User Guide&lt;/span&gt;</span></span>
+<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;button class="app-fullscreen-btn" type="button" title="Toggle fullscreen"&gt;Fullscreen&lt;/button&gt;</span></span>
+<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;div class="app-embed-frame"&gt;</span></span>
+<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a><span class="in">    &lt;iframe src="https://ar-puuk.github.io/drut-dev/" title="Drut user guide" allowfullscreen loading="lazy"&gt;&lt;/iframe&gt;</span></span>
+<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a><span class="in">  &lt;/div&gt;</span></span>
+<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/div&gt;</span></span>
+<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a>::: {.app-links}</span>
+<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa arrow-up-right-from-square &gt;}} Open docs</span><span class="co">](https://ar-puuk.github.io/drut-dev/)</span>{.btn .btn-primary target="_blank" rel="noopener"}</span>
+<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">{{&lt; fa brands github &gt;}} GitHub</span><span class="co">](https://github.com/ar-puuk/drut-dev)</span>{.btn .btn-outline-secondary target="_blank" rel="noopener"}</span>
+<span id="cb4-161"><a href="#cb4-161" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb4-162"><a href="#cb4-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a>Drut is dual-licensed under MIT or Apache 2.0, and the code is on <span class="co">[</span><span class="ot">GitHub</span><span class="co">](https://github.com/ar-puuk/drut-dev)</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
