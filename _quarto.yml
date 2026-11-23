@@ -35,7 +35,7 @@ website:
   announcement:
     icon: megaphone
     dismissable: true
-    content: "**New:** [Demographic Profiles](/work/community-profiles/){.no-external target='_self'}, a zero-backend, map-first dashboard of Census and economic indicators for Utah."
+    content: "**New:** [basemapper](/posts/basemapper/){.no-external target='_self'}, sharp vector basemaps for ggplot2, tmap, matplotlib and plotnine figures, rendered in R and Python without a browser."
     type: primary
     position: below-navbar
 
