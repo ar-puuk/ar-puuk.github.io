@@ -25,7 +25,8 @@ website:
 
   repo-url: "https://github.com/ar-puuk/ar-puuk.github.io"
   repo-branch: master
-  # "Edit this page" and "Report an issue" links in the page footer
+  # "Edit this page" and "Report an issue" links, shown under the table of contents only
+  # (the footer copy Quarto adds is hidden in assets/theme/_content.scss)
   repo-actions: [edit, issue]
 
   # page-navigation: false

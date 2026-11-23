@@ -307,6 +307,11 @@ div.callout.callout.callout-style-default {
 .nav-footer .nav-footer-right {
   text-wrap: balance;
 }
+// "Edit this page" / "Report an issue" live in the table-of-contents sidebar only; Quarto also
+// copies them into the footer (on phones, and on pages without a TOC), which is hidden here.
+.nav-footer .toc-actions {
+  display: none !important;
+}
 // Light theme: the navbar icons are drawn in the light brand orange (3.3:1 on cream, and thin);
 // darken them a little. The reader-mode icon is excluded because it is painted as a mask.
 body.quarto-light .navbar .bi::before,
