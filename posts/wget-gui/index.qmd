@@ -1,19 +1,21 @@
 ---
 title: "Fetch: a Wget Command Builder"
 image-alt: "Fetch in the Conduit app: a Target form with a web address and save folder, preset buttons along the top and the generated wget command on the right."
+subtitle: A form that knows which Wget options belong together, and says so when a choice is risky
 description: "A browser-based builder for GNU Wget commands, covering every option in wget 1.21 with plain-language explanations and warnings for risky choices"
 author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com
 image: "wget_gui.png"
 date: "2026-01-25"
+date-modified: "2026-11-23"
 categories: [Developer Tools, JavaScript, Web Apps, Open Source]
 prefer-html: true
 ---
 
 GNU Wget can download a file, a folder or a whole website, but only if you remember which of its many switches to combine. **Fetch** lets you build the command visually instead. It covers every option in `wget --help` for version 1.21 (155 settings), explains what each one does, and warns about risky choices. It runs entirely in your browser; nothing is uploaded.
 
-Fetch started as a Wget companion to my Robocopy tool and was redesigned as part of **Conduit**, a pair of command builders that share one design system. Its sister app is [Mirror](../robocopy-gui/index.qmd), the Robocopy builder.
+Fetch started as a Wget companion to my Robocopy tool and was redesigned as part of **Conduit**, a pair of command builders that share one design system. Its sister app is [Mirror](../robocopy-gui/index.qmd), the Robocopy builder. This post covers what Fetch is for, what it does, and the parts of building it that were specific to Wget.
 
 ## Try it
 
@@ -36,25 +38,59 @@ Fetch started as a Wget companion to my Robocopy tool and was redesigned as part
 [{{< fa brands github >}} GitHub](https://github.com/ar-puuk/wget-gui){.btn .btn-outline-secondary target="_blank" rel="noopener"}
 :::
 
-## How it works
+## Why Wget needs a builder
+
+Downloading one file with Wget is easy. Everything past that is a combination of options that only work well together. A usable offline copy of a documentation site, for example, needs Wget to follow links, stay below the starting folder, fetch the images and stylesheets each page uses, rewrite links so they point at the saved copies, give pages a proper extension, and slow down so the server is not hammered:
+
+```sh
+wget --mirror --no-parent --page-requisites --convert-links --adjust-extension \
+     --wait=1 --random-wait --limit-rate=2m --tries=5 "https://docs.example.org/handbook/"
+```
+
+Leave out one of those and the copy is incomplete, or the crawl is much ruder to the server than it needs to be. Some options are also risky in ways that are not obvious from their names: `--no-check-certificate` accepts any certificate, even a fake one, and a password typed into the command ends up in your shell history. I wanted a form that knows these combinations, explains each flag in plain words, and says so when a choice is risky.
+
+## A quick tour
 
 1. **Pick a starting point.** Choose a preset (One file, Offline site copy, Images only, Check for broken links, or Gentle crawl) or start from scratch.
 2. **Fill in the tabs.** Target, What to download, Save layout, Filters, Performance, Requests, Security, Logging and Advanced. Rarely used options stay hidden until you turn on **Show advanced**.
 3. **Watch the command.** It updates as you choose, with every flag explained and notes for risky choices such as skipping certificate checks, putting a password in the command, or crawling with no wait.
 4. **Add to queue.** Build several downloads, reorder them, then download one `.bat` or `.ps1` script. Stop on first failure is on by default.
 
-## Other ways in
+The presets are where most of the Wget knowledge lives. **Offline site copy** is the command above. **Images only** follows links two levels deep and keeps only common image types. **Check for broken links** uses `--spider` to test every address without downloading anything and writes the results to a log. **Gentle crawl** waits three seconds between requests, limits the speed and skips large archives and installers.
+
+The "What to download" tab starts with one choice that sets the shape of the whole command: one file, follow links to a chosen depth (`-r`), or mirror the site (`--mirror`). Mirror is flagged "Can be very large", with a note to set a wait and a speed limit. Fetch also catches combinations that do not do what you might expect:
+
+- following links with no wait, which sends requests back to back;
+- saving as one file (`-O`) while following links, which puts every page into that one file;
+- "skip files you already have" (`--no-clobber`) together with "only download newer files" (`--timestamping`), which cannot be combined;
+- quiet output with a progress bar, which still shows the bar.
+
+### Other ways in
 
 - **Find an option.** Type a name or a flag, such as `cookies` or `--limit-rate`, to search every tab at once.
 - **Paste a command.** Paste an existing `wget` command and the form fills in. Flags the builder does not recognise are kept under Advanced.
 - **Command palette.** `Ctrl+K` jumps to any option, preset or page, and `Ctrl+Enter` adds the current command to the queue.
 - **Profiles.** Save a full set of options and load it later. Profiles, the queue and the form are remembered in your browser.
 
-## Technical details
+## How it works
 
-Fetch is one self-contained `index.html` with no build step to run it and no backend, so your URLs and credentials never leave the browser. It is generated from the shared source in the [Mirror repository](https://github.com/ar-puuk/robocopy-gui), so the two apps keep identical design tokens and components. Icons are from [Lucide](https://lucide.dev) and the fonts are Bricolage Grotesque, Instrument Sans and JetBrains Mono. The code lives in the [source repository](https://github.com/ar-puuk/wget-gui).
+Fetch is generated from the same source as Mirror, so the engine is shared: each option is written once as a declarative entry (flag, label, explanation, tab, risk), and the form, the command, the explanations, search, the palette and the parser are all built from that list. The [Mirror post](../robocopy-gui/index.qmd#how-it-works) explains that part and the build in more detail. The interesting differences come from Wget itself.
 
-## Use cases
+**Long flags out, short flags in.** Wget has a short and a long form for many options (`-k` and `--convert-links`). Fetch writes the long form for most options, so a saved script explains itself when you come back to it months later, but each option also lists its short aliases, so a pasted command using `-k -p -E` fills the form just as well.
+
+**Case matters.** Robocopy's switches are case-insensitive; Wget's are not (`-E` and `-e` are different options). The parser matches Robocopy flags in upper case and Wget flags exactly as typed. It understands both `--tries=5` and `--tries 5`, and treats the last address on the line as the URL. As in Mirror, anything it does not recognise is kept in the **Extra flags** field rather than dropped.
+
+**Secrets are flagged, not stored somewhere else.** Fetch has fields for HTTP, FTP and proxy passwords because Wget does, and each one carries the same caution: a password typed here appears in the command text and in your shell history. There is no backend, so the URLs and credentials never leave the browser, but the script you download is plain text like any other.
+
+**A different idea of failure.** In the exported scripts, a Robocopy job counts as failed only at exit code 8 or above, because Robocopy uses the lower codes to report success. Wget uses non-zero codes for errors, so Fetch's scripts stop on any non-zero exit code when stop on first failure is on.
+
+Like Mirror, Fetch is one self-contained `index.html` with no build step to run it. It is generated from the shared source in the [Mirror repository](https://github.com/ar-puuk/robocopy-gui), so the two apps keep identical design tokens and components, with an orange accent for Fetch where Mirror is green. Icons are from [Lucide](https://lucide.dev) and the fonts are Bricolage Grotesque, Instrument Sans and JetBrains Mono. The code lives in the [source repository](https://github.com/ar-puuk/wget-gui).
+
+## How it got here
+
+The first Fetch, in December 2025, was a Wget version of the Robocopy GUI in a Fluent-style design inspired by Windows 11, with toggles for flags, tooltips, and a queue exported as one `.bat` file. In November 2026 I rebuilt it alongside Mirror as part of Conduit, with Claude as a pair programmer. The rebuild added full coverage of `wget --help`, the tabs and presets, risk notes, search, the command palette, paste-to-fill, profiles and PowerShell export.
+
+## Who it is for
 
 - **Digital archivists** creating offline mirrors of websites before they go offline
 - **Developers** checking a site for broken links

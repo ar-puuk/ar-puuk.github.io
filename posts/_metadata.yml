@@ -89,5 +89,6 @@ engine: knitr
 citation: true
 page-navigation: true
 
-# Show a "Modified" date taken from the file modification time
+# Dates: each page sets `date` (published) and, once revised, an explicit `date-modified`.
+# Pages without one fall back to the file modification time.
 date-modified: last-modified

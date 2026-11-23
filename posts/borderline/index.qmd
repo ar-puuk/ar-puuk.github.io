@@ -1,18 +1,21 @@
 ---
 title: "Borderline: A U.S. Geography Guessing Game"
 image-alt: "Borderline game start screen with mode, difficulty, timing and round options and a Play button, in a dark theme."
-subtitle: Name a state, click its outline — no interior borders to give it away
-description: A browser geography game for U.S. states and counties, built as plain static HTML, CSS and JavaScript with no build step.
+subtitle: Name a state or county, click its outline, with no interior borders to give it away
+description: A browser geography game for U.S. states and counties, built as plain static HTML, CSS and JavaScript with no build step. Here is how it plays, and the projection, hit-testing and caching problems behind it.
 image: "borderline.png"
 author:
   - name: Pukar Bhandari
     email: pukar.bhandari@outlook.com
 date: "2026-09-21"
+date-modified: "2026-11-23"
 categories: [JavaScript, Web Apps, Open Source, GIS]
 prefer-html: true
 ---
 
 I spend my days around maps of the U.S., which makes it a little embarrassing how often I cannot place a county. Borderline is the fix: you are given a place name, you click where you think it is on a black outline map, and you find out how close to "borderline" your geography really is.
+
+It is a small game, but it turned out to be a good excuse to deal with some real cartography problems in plain JavaScript: which projection to draw a single state in, how to tell whether a click landed inside a county with a coastline full of islands, and how to keep an offline web app from serving stale code forever.
 
 ## Play
 
@@ -35,18 +38,74 @@ I spend my days around maps of the U.S., which makes it a little embarrassing ho
 [{{< fa brands github >}} GitHub](https://github.com/ar-puuk/borderline){.btn .btn-outline-secondary target="_blank" rel="noopener"}
 :::
 
+## The idea: no interior borders
+
+Most map quizzes show you every state line and ask you to pick one. That turns the game into shape recognition with a lot of help: once you have found the neighbours, the answer is the only blank piece left. Borderline draws only the outer outline. In States mode you see the outline of the country and nothing inside it; in Counties mode you pick a state, the map zooms to that state's outline, and again there are no county lines. You have to know roughly where Kansas is, not just what it looks like.
+
 ## How it plays
 
-- **States mode**: the outline of the U.S. appears with no interior borders. Click inside the named state to score. Miss, and the correct state is highlighted.
-- **Counties mode**: pick a state and the map zooms to its outline. You get county names, or the locally correct equivalent (parishes, boroughs and so on).
-- **Easy or Hard**: Easy keeps every answered shape colored on the map as a running record; Hard clears it between guesses.
-- **Untimed or Blitz**: choose 10, 25 or all rounds, or race a 60-second clock.
-- **Zoom and pan** for fiddly shapes like tiny islands and thin coastal counties.
+- **States mode**: click inside the named state to score. Miss, and the correct state is highlighted in red and your click is marked, so you can see how far off you were.
+- **Counties mode**: you get county names, or the locally correct equivalent: parishes in Louisiana, boroughs and census areas in Alaska, and independent cities in Virginia, Maryland, Missouri and Nevada.
+- **Easy or Hard**: Easy keeps every answered shape on the map (green for a hit, red with a diagonal hatch for a miss) as a running record of the game; Hard clears it between guesses.
+- **Untimed or Blitz**: choose 10, 25 or all rounds, or race a 60-second clock. Counties mode hides round counts a state can't fill: county totals run from 3 in Delaware to 254 in Texas, so Delaware only offers "All".
+- **Zoom and pan** for fiddly shapes like tiny islands and thin coastal counties: scroll or pinch to zoom, drag to pan, or use the on-map buttons. The view resets every round.
 
-The game remembers your best score per mode in `localStorage`, and once you have missed something enough times it surfaces a "you struggle most with" list. At the end, **Retry these** replays just what you got wrong, and **Copy result** puts a Wordle-style summary on your clipboard to share.
+The game remembers your best score per mode, round count, state and difficulty in `localStorage`, and across all your games it keeps a per-place miss rate. Once something has been asked at least twice and you keep getting it wrong, it shows up in a "you struggle most with" list on the start screen. At the end of a game, **Retry these** replays just what you missed, and **Copy result** puts a Wordle-style summary (score, a green and red grid of the rounds in order, and a link) on your clipboard.
+
+The start screen's settings are also mirrored into the URL, so the address bar is always a link to the current setup. For example, `?mode=counties&state=Texas&difficulty=hard&rounds=25&play=1` drops you straight into 25 rounds of Texas counties on Hard.
 
 ## Under the hood
 
-It is pure static HTML, CSS and JavaScript (ES modules): no build step, no server, no CDN, built to live on GitHub Pages. Boundary data comes from the U.S. Census Bureau via [us-atlas](https://github.com/topojson/us-atlas). Keeping it dependency-free means it loads fast and is easy for anyone to read and fork.
+Borderline is pure static HTML, CSS and JavaScript (ES modules): no build step, no server, no CDN, built to live on GitHub Pages. The map is drawn on a `<canvas>`. Boundary data comes from the U.S. Census Bureau via [us-atlas](https://github.com/topojson/us-atlas), which packages TIGER/Line boundaries as TopoJSON. The two libraries it needs, `topojson-client` and `d3-geo`, are bundled once with esbuild into small ES modules and committed to the repository, and the fonts (Space Grotesk and Space Mono) are self-hosted. Keeping it dependency-free means it loads fast and is easy for anyone to read and fork.
 
-The code is on [GitHub](https://github.com/ar-puuk/borderline) — it is still borderline playable, so bug reports are welcome.
+The code is split into small modules: `game.js` is the round and scoring state machine, `mapData.js` loads the topology and builds prompt lists and labels, `geometry.js` holds projections and hit-testing, `renderer.js` does the canvas drawing, and `stats.js` tracks the lifetime miss rates.
+
+## The interesting parts
+
+### One projection for the country, another for each state
+
+States mode uses us-atlas's pre-projected Albers USA file, with Alaska and Hawaii already scaled into insets. That is the familiar look for a whole-country map, and since the coordinates are already in pixel space, `d3.geoPath()` can draw them with a null projection.
+
+The first version of Counties mode reused the same Albers coordinates and simply zoomed into one state's bounding box. It looked wrong. Albers is a conic projection whose meridians converge toward the pole; at continental scale you never notice, but zoomed into a single rectangular state like Utah, Wyoming or Colorado the whole state visibly tilts. The fix was to switch Counties mode to the *unprojected* (longitude and latitude) county file and fit a fresh Web Mercator projection to each state's extent every time the canvas resizes. Utah and Wyoming came out as clean, upright rectangles.
+
+Alaska then broke that fix. Its Aleutian chain crosses the 180° meridian, and a plain Mercator fit sees a feature spanning almost 360° of longitude, so the state shrinks to a speck. `d3.geoBounds` is spherical-aware and reports a crossing feature with its west edge greater than its east edge, so the fitting function checks for exactly that and rotates the projection to centre on the state's own longitude before fitting:
+
+```js
+const [[west], [east]] = geoBounds(feature);
+const crossesAntimeridian = west > east;
+const centerLon = crossesAntimeridian
+  ? (((west + east + 360) / 2 + 180) % 360) - 180
+  : (west + east) / 2;
+
+return geoMercator().rotate([-centerLon, 0]).fitExtent([[x0, y0], [x1, y1]], feature);
+```
+
+A related bug from the very first day went the other way: the bounding-box helper used `d3.geoBounds` on the already-projected Albers coordinates, and since that function expects degrees, it silently returned the whole world. The rule I ended up with is planar bounds for projected data, spherical bounds for longitude and latitude.
+
+### Did the click land inside?
+
+Hit-testing reuses the drawing code. The target feature is turned into a `Path2D` in the same pixel space the renderer draws in, and a tiny off-screen canvas answers `isPointInPath()`. Because the path comes from the same projection as the picture, the answer matches what you see, including holes and multi-part shapes. Zoom and pan sit on top as a separate view transform, which the click handler inverts before the per-mode inversion, so hit-testing stays correct at any zoom level. Pointer handling tells a tap from a drag or pinch with a movement threshold and a pointer count, so panning never registers as a guess.
+
+### County names are not in the data
+
+The county `name` property has no suffix, so the game adds one. Louisiana gets "Parish". Alaska's units (boroughs, census areas, consolidated municipalities, and "City and Borough" units like Juneau and Sitka) come from a hand-written lookup table, because they can't be derived from the data. For the states with independent cities, the FIPS code decides: codes of 500 and above are cities, so the game can tell "Baltimore County" from "Baltimore City" and "Richmond County" from "Richmond City". As a safety net, any name that still collides within a state gets its FIPS code appended. Washington, D.C. is never prompted (it would be a single-pixel target), though its outline stays on the map.
+
+### Keeping a fast first load
+
+The county file is about 840 KB, against about 80 KB for the states, so it is fetched only the first time you switch to Counties mode. A player who only plays States never downloads it.
+
+### The offline bug that hid a fix
+
+Borderline is an installable progressive web app: a service worker precaches the app shell on first visit and serves it cache-first afterward, so the game works with no network. That design has a sharp edge, which I found the hard way. A fix for Blitz mode getting stuck in a background tab (the countdown relied on `setInterval` ticks, which browsers throttle in hidden tabs; it now checks a wall-clock deadline) was correct in the source but never reached anyone who had already visited, because the cache name had not changed since the service worker was added. Their browsers kept serving the first cached `main.js`. The fix was to bump the cache name, add a regression test that seeds a stale cache and checks it gets purged on activation, and write a note in the README: any commit that touches a precached file must bump the cache name.
+
+### Tests that look at pixels
+
+The game itself has zero dependencies, but there is a dev-only Playwright suite. It checks the things that actually broke during development: hit-testing across all states and the trickiest county cases (Utah's tilt, Alaska's antimeridian, Hawaii's scattered islands, Virginia's name collisions), Easy and Hard history by reading rendered canvas pixels, pan and zoom correctness, offline loading with the network disabled, and Blitz timing with a mocked clock instead of a real 60-second wait. A few counties are so thin or scattered that a random click point can miss them, so those checks use a 60% floor; a real regression drops the hit rate to zero, which is what the suite is there to catch.
+
+One feature didn't survive: I added a typed-answer box so screen-reader users could play unaided, then removed it the same day. The prompt already names the place ("Find Kansas"), so typing the name back tested nothing about geography. The canvas does keep a live `aria-label` and announces each result through an `aria-live` region, and every control is a real button.
+
+## What's next
+
+The data is a fixed vintage from us-atlas: Connecticut still has its eight traditional counties rather than the newer planning regions, and Puerto Rico is not in the Albers files the game uses. Swapping in newer Census data would mean updating that handling.
+
+The code is on [GitHub](https://github.com/ar-puuk/borderline). It is still borderline playable, so bug reports are welcome.
