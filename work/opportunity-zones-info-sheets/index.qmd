@@ -58,13 +58,13 @@ The first version of the maps used raster basemap tiles, and in print they looke
 
 ::: {layout-ncol="2"}
 :::: {}
-[![](../../posts/basemapper/oz_tract_raster.png){.img-fluid alt="Census tract map on Salt Lake City's east bench over a raster basemap with soft, partly hidden labels and blurry contours."}](https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/blob/02ef3387d76be82796106dd97d4a01b8d6e1c444/data/map_cache/49035101402_xl.png)
+![](../../posts/basemapper/oz_tract_raster.png){.img-fluid alt="Census tract map on Salt Lake City's east bench over a raster basemap with soft, partly hidden labels and blurry contours."}
 
 **Before:** raster basemap tiles
 ::::
 
 :::: {}
-[![](oz_tract_map.png){.img-fluid alt="The same census tract map over a UGRC Lite vector basemap with crisp hillshade, contours and roads."}](https://github.com/WFRCAnalytics/GIS_OpportunityZones_InfoSheets/blob/f02bfd8008e297a7775d2ac9a59461d2f339eb7e/data/map_cache/49035101402_xl.png)
+![](oz_tract_map.png){.img-fluid alt="The same census tract map over a UGRC Lite vector basemap with crisp hillshade, contours and roads."}
 
 **After:** UGRC Lite vector, rendered by basemapper
 ::::
