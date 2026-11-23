@@ -20,7 +20,7 @@ As a transportation planner, accessing and visualizing demographic and employmen
 -   **Decennial Census**: complete population counts every 10 years
 -   **Longitudinal Employer-Household Dynamics (LEHD)**: employment and commuting patterns
 
-This post walks through why I built it, what it does, how the pieces fit together, and what I would do differently now. The source code is on [GitHub](https://github.com/ar-puuk/uscensus-dashboard/).
+This post walks through why I built it, what it does, how the pieces fit together, and where it could go next. The source code is on [GitHub](https://github.com/ar-puuk/uscensus-dashboard/).
 
 ::: {.app-links}
 [{{< fa brands github >}} GitHub](https://github.com/ar-puuk/uscensus-dashboard){.btn .btn-primary target="_blank" rel="noopener"}
@@ -146,11 +146,11 @@ The application uses Leaflet for interactive mapping, with a carefully chosen ba
 
 ``` r
 default_map <- leaflet(options = leafletOptions(crs = leafletCRS())) |>
-  addProviderTiles("Esri.WorldGrayCanvas") |>
+  addProviderTiles("CartoDB.Voyager") |>
   addPolygons(data = sf_states, color = "#222222", weight = 1, fillOpacity = 0.15)
 ```
 
-**Esri.WorldGrayCanvas** (Esri's Light Gray Canvas) was selected for its muted design and good contrast with overlay data, and it needs no API key, though the code structure allows for easy switching between provider tiles. The default map is built once, outside any reactive code, and each tab adds its own layers on top.
+**CartoDB.Voyager** was chosen for its muted design and good contrast with overlay data, and it needs no API key; CARTO's Positron and Dark Matter work as drop-in swaps. The default map is built once, outside any reactive code, and each tab adds its own layers on top.
 
 ### Following the selection
 
@@ -247,8 +247,6 @@ result_acs <- result_acs |>
   rename_all(~ sub("E$", "", .)) # Clean estimate column names
 ```
 
-The regex is a little too eager: `NAME` also ends in `E`, so it comes out as `NAM` (you can see it in the table header in the screenshot above). Limiting the rename to the selected variable columns would avoid that.
-
 This is also a trade-off, not a free win: margins of error matter for small geographies like block groups, and anyone using the estimates for analysis should go back to tidycensus for them.
 
 ## Small decisions that helped
@@ -281,15 +279,9 @@ req(input$api_key_acs, input$year_acs, input$state_acs, input$county_acs, input$
 
 The download button appears only after the first request.
 
-## What I would do differently
+## Scope
 
-Looking back at the code, the main thing I would change is the structure. The three tabs are near-identical copies of the same UI and server logic with different input IDs (`_acs`, `_census`, `_lehd`). That made the app quick to write, but every fix has to be made three times. Rewriting each tab as a [Shiny module](https://mastering-shiny.org/scaling-modules.html) would turn three copies into one function called with different settings.
-
-A few things are also unfinished in the code:
-
--   The LEHD tab has a county selector and a geometry switch written but commented out, so LEHD requests are statewide and download as CSV only.
--   Code to disable the download button until data exists is also commented out.
--   The app runs locally (clone the repository, open `app.R`, run it); there is no hosted version.
+LEHD requests cover a whole state and download as CSV, while ACS and Decennial requests can also download as shapefiles. The app runs locally: clone the repository, open `app.R` and run it.
 
 ## Ideas for later
 
@@ -300,6 +292,7 @@ Several features would make the app more useful:
 -   **Custom geography**: support for user-uploaded boundary files
 -   **Batch processing**: several state and year combinations in a single request
 -   **API integration**: direct connection to external GIS platforms
+-   **Shiny modules**: one module shared by the three tabs, so a change lands in all of them at once
 
 ## Wrapping up
 

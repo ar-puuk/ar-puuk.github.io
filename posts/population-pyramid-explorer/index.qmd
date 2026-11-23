@@ -3,7 +3,7 @@ title: "Building an Interactive Population Pyramid Explorer"
 image-alt: "Population pyramid for Autauga County, Alabama, beside a tract-level map of Alabama."
 subtitle: "Exploring demographic patterns across US counties through interactive visualization using {R-Shiny} and {mapgl}"
 description: |
-  A Shiny app that pairs a scrolling {mapgl} story map of tract-level median age with a population pyramid for any U.S. county, built on two Census Bureau products. Why I built it, how the story map and the pyramid work, and the rough edges I would fix next.
+  A Shiny app that pairs a scrolling {mapgl} story map of tract-level median age with a population pyramid for any U.S. county, built on two Census Bureau products. Why I built it, how the story map and the pyramid work, and ideas for what comes next.
 image: "population_pyramid_explorer.png"
 author:
   - name: Pukar Bhandari
@@ -16,7 +16,7 @@ prefer-html: true
 
 Population demographics are fundamental to transportation planning and urban analysis. Understanding age distributions helps inform infrastructure decisions, transit planning and resource allocation. A population pyramid is the quickest way to see an age distribution, and a map is the quickest way to see where it changes. I wanted both on one screen.
 
-The Population Pyramid Explorer is a Shiny app that does that for every U.S. county. It uses the [{mapgl}](https://walker-data.com/mapgl/) package's story map layout: you scroll from a national overview to a state, where a tract-level map of median age sits behind a population pyramid for the county you pick. This post covers what it does, how the story map and the pyramid are built, and the rough edges that are still in the code.
+The Population Pyramid Explorer is a Shiny app that does that for every U.S. county. It uses the [{mapgl}](https://walker-data.com/mapgl/) package's story map layout: you scroll from a national overview to a state, where a tract-level map of median age sits behind a population pyramid for the county you pick. This post covers what it does, how the story map and the pyramid are built, and ideas for what comes next.
 
 ::: {.app-links}
 [{{< fa brands github >}} GitHub](https://github.com/ar-puuk/population-pyramid-explorer){.btn .btn-primary target="_blank" rel="noopener"}
@@ -179,26 +179,17 @@ scale_y_discrete(labels = ~ stringr::str_remove_all(.x, "Age\\s|\\syears"))
 
 **Caching.** `options(tigris_use_cache = TRUE)` keeps boundary files on disk between sessions, and `shiny::req()` holds back every request until the state and county inputs exist.
 
-## Rough edges
-
-Looking at the code and the screenshots again, there are a few things I would fix:
-
--   **The caption names the wrong source.** The pyramid's caption reads "Data: US Census Bureau ACS", but the pyramid data comes from the Population Estimates Program. Only the map uses the ACS.
--   **The axis double counts thousands.** The x-axis title says "Population (thousands)", and the tick labels are also scaled with a "k" suffix, so a tick of "2k" reads as two thousand thousand.
--   **The selected county is not highlighted.** A county outline layer is written but commented out, so the map shows the whole state's tracts without marking the county in the pyramid.
--   **The legend sits under the panel.** The median-age legend is placed bottom-left, where the story panel covers most of it.
--   **The chart font is local.** The plot asks for Futura Md BT, which is installed on my machine but will fall back to a default font almost anywhere else.
--   **The tract layer is a live download.** Every new state or year requests all of that state's tracts, with geometry, from the Census API while you wait. Preparing those layers ahead of time would make the state section open faster.
-
 ## Ideas for later
 
-Beyond those fixes, possible extensions include:
+Possible extensions include:
 
 -   **Multi-county comparison**, with two pyramids side by side
 -   **Time series**, showing how a county's pyramid changes over the years
 -   **Additional demographic variables** (income, education, housing)
 -   **Export functionality** for the chart and the data
 -   **Integration with transportation metrics** for planning analysis
+-   **Highlighting the selected county** on the state map
+-   **Pre-built tract layers**, so the state view opens without waiting for a live Census download
 
 ## Try it locally
 
